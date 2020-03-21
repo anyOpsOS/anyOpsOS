@@ -1,0 +1,10 @@
+<div class="col folders__body" *ngIf="activeConnectionUuid === null || (getActiveConnectionObs() | async)?.state !== 'ready'">
+
+  <aasftp-body-new-connection></aasftp-body-new-connection>
+
+</div>
+
+<alfolder-explorer-main *ngIf="activeConnectionUuid !== null && (getActiveConnectionObs() | async)?.state === 'ready'"
+                        [application]="application"
+                        [connection]="(getActiveConnectionObs() | async)"
+></alfolder-explorer-main>

@@ -1,0 +1,46 @@
+<div class="window__actions">
+  <a class="window__item" matTooltip="Home" (click)="goHome()">
+    <i class="fas fa-home text-success"></i>
+  </a>
+  <a class="window__item" matTooltip="New connection" (click)="newConnection()">
+    <i class="fas fa-plus text-success"></i>
+  </a>
+  <a class="window__item separator" ></a>
+  <a class="window__item" matTooltip="Edit connection" (click)="editConnection()">
+    <i class="fas fa-edit" [ngClass]="{'text-primary': activeConnectionUuid !== null}"></i>
+  </a>
+  <a class="window__item" matTooltip="Disconnect" (click)="disconnectConnection()">
+    <i class="fas fa-times" [ngClass]="{'text-danger': activeConnectionUuid !== null && activeConnection.state === 'connected'}"></i>
+  </a>
+  <a class="window__item" matTooltip="Delete" (click)="deleteConnection()">
+    <i class="fas fa-trash" [ngClass]="{'text-danger': activeConnectionUuid !== null}"></i>
+  </a>
+  <a class="window__item separator"></a>
+  <a class="window__item" matTooltip="Edit options" (click)="openOptionsModal()">
+    <i class="fas fa-cog" [ngClass]="{'text-primary': activeConnectionUuid !== null}"></i>
+  </a>
+  <a class="window__item" matTooltip="Alarms" (click)="openAlarmsModal()">
+    <i class="fas fa-bell" [ngClass]="{'text-primary': activeConnectionUuid !== null && !activeConnection.snapshotData}"></i>
+  </a>
+  <a class="window__item separator"></a>
+  <a class="window__item" matTooltip="import / load a netdata snapshot" (click)="openImportModal()">
+    <i class="fas fa-download text-primary"></i>
+  </a>
+  <a class="window__item" matTooltip="export / save a netdata snapshot" (click)="openExportModal()">
+    <i class="fas fa-upload" [ngClass]="{'text-primary': activeConnectionUuid !== null}"></i>
+  </a>
+  <a class="window__item separator"></a>
+  <a class="window__item" matTooltip="get help on using the charts" (click)="openHelpModal()">
+    <i class="fas fa-question-circle text-primary"></i>
+  </a>
+
+  <div class="navbar-highlight" *ngIf="connection && connection.returnFromHighlight && connection.returnFromHighlight.showHighlight">
+    <div id="navbar-highlight-content" class="navbar-highlight-content">
+
+      <span class="navbar-highlight-bar highlight-tooltip" (click)="connection.urlOptions.showHighlight();" matTooltip="restore the highlighted view">
+        highlighted time-frame <b>{{connection.returnFromHighlight.d1}} <code>{{connection.after}}</code></b> to <b>{{connection.d2}} <code>{{connection.before}}</code></b>, duration <b>{{connection.duration}}</b>
+      </span>
+      <span class="navbar-highlight-button-right highlight-tooltip" (click)="connection.clearHighlight();" matTooltip="clear the highlighted time-frame"><i class="fas fa-times"></i></span>
+    </div>
+  </div>
+</div>

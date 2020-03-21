@@ -1,0 +1,60 @@
+{
+  "name": "@anyopsos/anyopsos",
+  "version": "0.0.1",
+  "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anyOpsOS/anyOpsOS.git"
+  },
+  "bugs": "https://github.com/anyOpsOS/anyOpsOS/issues",
+  "keywords": [],
+  "description": "Web based operating system for SysOps, DevOps, NetOps, SecOps... Monitor, manage, configure, backup & recovery your virtual and physical infrastructure.",
+  "author": "Isart Navarro <contact@isartnavarro.io> (https://isartnavarro.io)",
+  "license": "GPL-3.0-or-later",
+  "engines": {
+    "yarn": "1.0.x || >=1.2.1",
+    "node": ">=10.0.0 <13.0.0"
+  },
+  "private": true,
+  "dependencies": {
+    "tslib": "^1.10.0"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~0.803.21",
+    "@angular-devkit/build-ng-packagr": "~0.803.21",
+    "@angular/compiler-cli": "~8.2.14",
+    "@anyopsos/cli": "~0.0.1",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "download-git-repo": "^3.0.2",
+    "husky": "^3.1.0",
+    "ng-packagr": "^5.4.0",
+    "tsickle": "^0.37.0",
+    "tslint": "^6.0.0",
+    "typescript": "^3.7.5",
+    "yarn": "^1.21.1"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "workspaces": {
+    "packages": [
+      "src/frontend",
+      "src/backend-core",
+      "src/backend-auth",
+      "src/backend-fileSystem",
+      "cli",
+      "projects/*/*"
+    ]
+  }
+}

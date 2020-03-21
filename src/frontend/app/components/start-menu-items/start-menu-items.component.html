@@ -1,0 +1,19 @@
+<li class="start-menu__{{application.uuid}}" (click)="toggleApplication(application.uuid)" *ngIf="application.uuid !== 'start'" (contextmenu)="onAppContextMenu($event)">
+  <span>
+    <i class="{{application.ico}}"></i>
+    {{application.name}}
+  </span>
+</li>
+<div style="position: fixed"
+     [style.left]="contextMenuPosition.x"
+     [style.top]="contextMenuPosition.y"
+     [matMenuTriggerFor]="contextMenuApp">
+</div>
+<mat-menu #contextMenuApp="matMenu">
+  <ng-template matMenuContent>
+    <ng-container *ngFor="let menuItem of appContextMenuItems">
+      <button mat-menu-item *ngIf="menuItem.text !== 'divider'" (click)="menuItem.action(application)" [disabled]="checkIfDisabled(menuItem, application)" [innerHTML]="contextToText(menuItem, application)"></button>
+      <mat-divider *ngIf="menuItem.text === 'divider'"></mat-divider>
+    </ng-container>
+  </ng-template>
+</mat-menu>

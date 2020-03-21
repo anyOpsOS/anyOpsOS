@@ -1,0 +1,2858 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "anyOpsOS": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "",
+      "sourceRoot": "src/frontend",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/anyOpsOS/core/public",
+            "index": "src/frontend/index.html",
+            "main": "src/frontend/main.ts",
+            "polyfills": "src/frontend/polyfills.ts",
+            "tsConfig": "src/frontend/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "src/frontend/favicon.ico",
+              "src/frontend/assets"
+            ],
+            "styles": [
+              "src/frontend/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/systemjs/dist/system.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "anyOpsOS:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "anyOpsOS:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "anyOpsOS:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/frontend/test.ts",
+            "polyfills": "src/frontend/polyfills.ts",
+            "tsConfig": "src/frontend/tsconfig.spec.json",
+            "karmaConfig": "src/frontend/karma.conf.js",
+            "assets": [
+              "src/frontend/favicon.ico",
+              "src/frontend/assets"
+            ],
+            "styles": [
+              "src/frontend/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/frontend/tsconfig.app.json",
+              "src/frontend/tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "anyOpsOS:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "anyOpsOS:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "anyopsos-lib-angular-material": {
+      "projectType": "library",
+      "root": "projects/libraries/angular-material",
+      "sourceRoot": "projects/libraries/angular-material/src",
+      "prefix": "alam",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/angular-material/tsconfig.lib.json",
+            "project": "projects/libraries/angular-material/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/angular-material/src/test.ts",
+            "tsConfig": "projects/libraries/angular-material/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/angular-material/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/angular-material/tsconfig.lib.json",
+              "projects/libraries/angular-material/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-application": {
+      "projectType": "library",
+      "root": "projects/libraries/application",
+      "sourceRoot": "projects/libraries/application/src",
+      "prefix": "alapp",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/application/tsconfig.lib.json",
+            "project": "projects/libraries/application/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/application/src/test.ts",
+            "tsConfig": "projects/libraries/application/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/application/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/application/tsconfig.lib.json",
+              "projects/libraries/application/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-file": {
+      "projectType": "library",
+      "root": "projects/libraries/file",
+      "sourceRoot": "projects/libraries/file/src",
+      "prefix": "alfile",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/file/tsconfig.lib.json",
+            "project": "projects/libraries/file/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/file/src/test.ts",
+            "tsConfig": "projects/libraries/file/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/file/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/file/tsconfig.lib.json",
+              "projects/libraries/file/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-file-system": {
+      "projectType": "library",
+      "root": "projects/libraries/file-system",
+      "sourceRoot": "projects/libraries/file-system/src",
+      "prefix": "alfs",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/file-system/tsconfig.lib.json",
+            "project": "projects/libraries/file-system/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/file-system/src/test.ts",
+            "tsConfig": "projects/libraries/file-system/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/file-system/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/file-system/tsconfig.lib.json",
+              "projects/libraries/file-system/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-file-system-ui": {
+      "projectType": "library",
+      "root": "projects/libraries/file-system-ui",
+      "sourceRoot": "projects/libraries/file-system-ui/src",
+      "prefix": "alfsui",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/file-system-ui/tsconfig.lib.json",
+            "project": "projects/libraries/file-system-ui/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/file-system-ui/src/test.ts",
+            "tsConfig": "projects/libraries/file-system-ui/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/file-system-ui/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/file-system-ui/tsconfig.lib.json",
+              "projects/libraries/file-system-ui/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-folder": {
+      "projectType": "library",
+      "root": "projects/libraries/folder",
+      "sourceRoot": "projects/libraries/folder/src",
+      "prefix": "alfolder",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/folder/tsconfig.lib.json",
+            "project": "projects/libraries/folder/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/folder/src/test.ts",
+            "tsConfig": "projects/libraries/folder/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/folder/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/folder/tsconfig.lib.json",
+              "projects/libraries/folder/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-node-kubernetes": {
+      "projectType": "library",
+      "root": "projects/libraries/node-kubernetes",
+      "sourceRoot": "projects/libraries/node-kubernetes/src",
+      "prefix": "alk8s",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/node-kubernetes/tsconfig.lib.json",
+            "project": "projects/libraries/node-kubernetes/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/node-kubernetes/src/test.ts",
+            "tsConfig": "projects/libraries/node-kubernetes/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/node-kubernetes/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/node-kubernetes/tsconfig.lib.json",
+              "projects/libraries/node-kubernetes/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-logger": {
+      "projectType": "library",
+      "root": "projects/libraries/logger",
+      "sourceRoot": "projects/libraries/logger/src",
+      "prefix": "allog",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/logger/tsconfig.lib.json",
+            "project": "projects/libraries/logger/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/logger/src/test.ts",
+            "tsConfig": "projects/libraries/logger/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/logger/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/logger/tsconfig.lib.json",
+              "projects/libraries/logger/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-modal": {
+      "projectType": "library",
+      "root": "projects/libraries/modal",
+      "sourceRoot": "projects/libraries/modal/src",
+      "prefix": "almodal",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/modal/tsconfig.lib.json",
+            "project": "projects/libraries/modal/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/modal/src/test.ts",
+            "tsConfig": "projects/libraries/modal/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/modal/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/modal/tsconfig.lib.json",
+              "projects/libraries/modal/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-node-netapp": {
+      "projectType": "library",
+      "root": "projects/libraries/node-netapp",
+      "sourceRoot": "projects/libraries/node-netapp/src",
+      "prefix": "alnetapp",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/node-netapp/tsconfig.lib.json",
+            "project": "projects/libraries/node-netapp/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/node-netapp/src/test.ts",
+            "tsConfig": "projects/libraries/node-netapp/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/node-netapp/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/node-netapp/tsconfig.lib.json",
+              "projects/libraries/node-netapp/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-pipes": {
+      "projectType": "library",
+      "root": "projects/libraries/pipes",
+      "sourceRoot": "projects/libraries/pipes/src",
+      "prefix": "alpipes",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/pipes/tsconfig.lib.json",
+            "project": "projects/libraries/pipes/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/pipes/src/test.ts",
+            "tsConfig": "projects/libraries/pipes/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/pipes/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/pipes/tsconfig.lib.json",
+              "projects/libraries/pipes/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-scroll-spy": {
+      "projectType": "library",
+      "root": "projects/libraries/scroll-spy",
+      "sourceRoot": "projects/libraries/scroll-spy/src",
+      "prefix": "alsspy",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/scroll-spy/tsconfig.lib.json",
+            "project": "projects/libraries/scroll-spy/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/scroll-spy/src/test.ts",
+            "tsConfig": "projects/libraries/scroll-spy/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/scroll-spy/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/scroll-spy/tsconfig.lib.json",
+              "projects/libraries/scroll-spy/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-selectable": {
+      "projectType": "library",
+      "root": "projects/libraries/selectable",
+      "sourceRoot": "projects/libraries/selectable/src",
+      "prefix": "alselect",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/selectable/tsconfig.lib.json",
+            "project": "projects/libraries/selectable/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/selectable/src/test.ts",
+            "tsConfig": "projects/libraries/selectable/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/selectable/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/selectable/tsconfig.lib.json",
+              "projects/libraries/selectable/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-service-injector": {
+      "projectType": "library",
+      "root": "projects/libraries/service-injector",
+      "sourceRoot": "projects/libraries/service-injector/src",
+      "prefix": "alsi",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/service-injector/tsconfig.lib.json",
+            "project": "projects/libraries/service-injector/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/service-injector/src/test.ts",
+            "tsConfig": "projects/libraries/service-injector/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/service-injector/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/service-injector/tsconfig.lib.json",
+              "projects/libraries/service-injector/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-terminal": {
+      "projectType": "library",
+      "root": "projects/libraries/terminal",
+      "sourceRoot": "projects/libraries/terminal/src",
+      "prefix": "alterm",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/terminal/tsconfig.lib.json",
+            "project": "projects/libraries/terminal/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/terminal/src/test.ts",
+            "tsConfig": "projects/libraries/terminal/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/terminal/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/terminal/tsconfig.lib.json",
+              "projects/libraries/terminal/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-ext-lib-theia": {
+      "projectType": "library",
+      "root": "projects/external-libraries/theia",
+      "sourceRoot": "projects/external-libraries/theia/src",
+      "prefix": "altheia",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/external-libraries/theia/tsconfig.lib.json",
+            "project": "projects/external-libraries/theia/ng-package.json"
+          }
+        },
+        "build-webpack": {
+          "builder": "@angular-devkit/build-webpack:webpack",
+          "options": {
+            "webpackConfig": "projects/external-libraries/theia/webpack.config.js"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/external-libraries/theia/src/test.ts",
+            "tsConfig": "projects/external-libraries/theia/tsconfig.spec.json",
+            "karmaConfig": "projects/external-libraries/theia/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/external-libraries/theia/tsconfig.lib.json",
+              "projects/external-libraries/theia/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-types": {
+      "projectType": "library",
+      "root": "projects/libraries/types",
+      "sourceRoot": "projects/libraries/types/src",
+      "prefix": "altypes",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/types/tsconfig.lib.json",
+            "project": "projects/libraries/types/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/types/src/test.ts",
+            "tsConfig": "projects/libraries/types/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/types/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/types/tsconfig.lib.json",
+              "projects/libraries/types/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-user": {
+      "projectType": "library",
+      "root": "projects/libraries/user",
+      "sourceRoot": "projects/libraries/user/src",
+      "prefix": "aluser",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/user/tsconfig.lib.json",
+            "project": "projects/libraries/user/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/user/src/test.ts",
+            "tsConfig": "projects/libraries/user/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/user/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/user/tsconfig.lib.json",
+              "projects/libraries/user/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-utils": {
+      "projectType": "library",
+      "root": "projects/libraries/utils",
+      "sourceRoot": "projects/libraries/utils/src",
+      "prefix": "alutil",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/utils/tsconfig.lib.json",
+            "project": "projects/libraries/utils/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/utils/src/test.ts",
+            "tsConfig": "projects/libraries/utils/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/utils/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/utils/tsconfig.lib.json",
+              "projects/libraries/utils/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-node-vmware": {
+      "projectType": "library",
+      "root": "projects/libraries/node-vmware",
+      "sourceRoot": "projects/libraries/node-vmware/src",
+      "prefix": "alvmware",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/node-vmware/tsconfig.lib.json",
+            "project": "projects/libraries/node-vmware/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/node-vmware/src/test.ts",
+            "tsConfig": "projects/libraries/node-vmware/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/node-vmware/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/node-vmware/tsconfig.lib.json",
+              "projects/libraries/node-vmware/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-ext-lib-dygraphs": {
+      "projectType": "library",
+      "root": "projects/external-libraries/dygraphs",
+      "sourceRoot": "projects/external-libraries/dygraphs/src",
+      "prefix": "aeldygraphs",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/external-libraries/dygraphs/tsconfig.lib.json",
+            "project": "projects/external-libraries/dygraphs/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/external-libraries/dygraphs/src/test.ts",
+            "tsConfig": "projects/external-libraries/dygraphs/tsconfig.spec.json",
+            "karmaConfig": "projects/external-libraries/dygraphs/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/external-libraries/dygraphs/tsconfig.lib.json",
+              "projects/external-libraries/dygraphs/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-ext-lib-easy-pie-chart": {
+      "projectType": "library",
+      "root": "projects/external-libraries/easy-pie-chart",
+      "sourceRoot": "projects/external-libraries/easy-pie-chart/src",
+      "prefix": "aelepc",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/external-libraries/easy-pie-chart/tsconfig.lib.json",
+            "project": "projects/external-libraries/easy-pie-chart/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/external-libraries/easy-pie-chart/src/test.ts",
+            "tsConfig": "projects/external-libraries/easy-pie-chart/tsconfig.spec.json",
+            "karmaConfig": "projects/external-libraries/easy-pie-chart/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/external-libraries/easy-pie-chart/tsconfig.lib.json",
+              "projects/external-libraries/easy-pie-chart/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-ext-lib-gauge-js": {
+      "projectType": "library",
+      "root": "projects/external-libraries/gauge-js",
+      "sourceRoot": "projects/external-libraries/gauge-js/src",
+      "prefix": "aelgaugejs",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/external-libraries/gauge-js/tsconfig.lib.json",
+            "project": "projects/external-libraries/gauge-js/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/external-libraries/gauge-js/src/test.ts",
+            "tsConfig": "projects/external-libraries/gauge-js/tsconfig.spec.json",
+            "karmaConfig": "projects/external-libraries/gauge-js/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/external-libraries/gauge-js/tsconfig.lib.json",
+              "projects/external-libraries/gauge-js/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-ext-lib-jquery": {
+      "projectType": "library",
+      "root": "projects/external-libraries/jquery",
+      "sourceRoot": "projects/external-libraries/jquery/src",
+      "prefix": "aeljquery",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/external-libraries/jquery/tsconfig.lib.json",
+            "project": "projects/external-libraries/jquery/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/external-libraries/jquery/src/test.ts",
+            "tsConfig": "projects/external-libraries/jquery/tsconfig.spec.json",
+            "karmaConfig": "projects/external-libraries/jquery/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/external-libraries/jquery/tsconfig.lib.json",
+              "projects/external-libraries/jquery/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-ext-lib-lz-string": {
+      "projectType": "library",
+      "root": "projects/external-libraries/lz-string",
+      "sourceRoot": "projects/external-libraries/lz-string/src",
+      "prefix": "aellzstring",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/external-libraries/lz-string/tsconfig.lib.json",
+            "project": "projects/external-libraries/lz-string/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/external-libraries/lz-string/src/test.ts",
+            "tsConfig": "projects/external-libraries/lz-string/tsconfig.spec.json",
+            "karmaConfig": "projects/external-libraries/lz-string/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/external-libraries/lz-string/tsconfig.lib.json",
+              "projects/external-libraries/lz-string/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-ext-lib-mxgraph": {
+      "projectType": "library",
+      "root": "projects/external-libraries/mxgraph",
+      "sourceRoot": "projects/external-libraries/mxgraph/src",
+      "prefix": "aelmxgraph",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/external-libraries/mxgraph/tsconfig.lib.json",
+            "project": "projects/external-libraries/mxgraph/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/external-libraries/mxgraph/src/test.ts",
+            "tsConfig": "projects/external-libraries/mxgraph/tsconfig.spec.json",
+            "karmaConfig": "projects/external-libraries/mxgraph/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/external-libraries/mxgraph/tsconfig.lib.json",
+              "projects/external-libraries/mxgraph/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-ext-lib-netdata": {
+      "projectType": "library",
+      "root": "projects/external-libraries/netdata",
+      "sourceRoot": "projects/external-libraries/netdata/src",
+      "prefix": "aelnetdata",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/external-libraries/netdata/tsconfig.lib.json",
+            "project": "projects/external-libraries/netdata/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/external-libraries/netdata/src/test.ts",
+            "tsConfig": "projects/external-libraries/netdata/tsconfig.spec.json",
+            "karmaConfig": "projects/external-libraries/netdata/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/external-libraries/netdata/tsconfig.lib.json",
+              "projects/external-libraries/netdata/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-ext-lib-pako": {
+      "projectType": "library",
+      "root": "projects/external-libraries/pako",
+      "sourceRoot": "projects/external-libraries/pako/src",
+      "prefix": "aelpako",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/external-libraries/pako/tsconfig.lib.json",
+            "project": "projects/external-libraries/pako/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/external-libraries/pako/src/test.ts",
+            "tsConfig": "projects/external-libraries/pako/tsconfig.spec.json",
+            "karmaConfig": "projects/external-libraries/pako/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/external-libraries/pako/tsconfig.lib.json",
+              "projects/external-libraries/pako/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-ext-lib-perfect-scrollbar": {
+      "projectType": "library",
+      "root": "projects/external-libraries/perfect-scrollbar",
+      "sourceRoot": "projects/external-libraries/perfect-scrollbar/src",
+      "prefix": "aelps",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/external-libraries/perfect-scrollbar/tsconfig.lib.json",
+            "project": "projects/external-libraries/perfect-scrollbar/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/external-libraries/perfect-scrollbar/src/test.ts",
+            "tsConfig": "projects/external-libraries/perfect-scrollbar/tsconfig.spec.json",
+            "karmaConfig": "projects/external-libraries/perfect-scrollbar/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/external-libraries/perfect-scrollbar/tsconfig.lib.json",
+              "projects/external-libraries/perfect-scrollbar/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-app-backups-manager": {
+      "projectType": "library",
+      "root": "projects/applications/backups-manager",
+      "sourceRoot": "projects/applications/backups-manager/src",
+      "prefix": "aabm",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/applications/backups-manager/tsconfig.lib.json",
+            "project": "projects/applications/backups-manager/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/applications/backups-manager/src/test.ts",
+            "tsConfig": "projects/applications/backups-manager/tsconfig.spec.json",
+            "karmaConfig": "projects/applications/backups-manager/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/applications/backups-manager/tsconfig.lib.json",
+              "projects/applications/backups-manager/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-app-credentials-manager": {
+      "projectType": "library",
+      "root": "projects/applications/credentials-manager",
+      "sourceRoot": "projects/applications/credentials-manager/src",
+      "prefix": "aacm",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/applications/credentials-manager/tsconfig.lib.json",
+            "project": "projects/applications/credentials-manager/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/applications/credentials-manager/src/test.ts",
+            "tsConfig": "projects/applications/credentials-manager/tsconfig.spec.json",
+            "karmaConfig": "projects/applications/credentials-manager/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/applications/credentials-manager/tsconfig.lib.json",
+              "projects/applications/credentials-manager/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-app-datastore-explorer": {
+      "projectType": "library",
+      "root": "projects/applications/datastore-explorer",
+      "sourceRoot": "projects/applications/datastore-explorer/src",
+      "prefix": "aade",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/applications/datastore-explorer/tsconfig.lib.json",
+            "project": "projects/applications/datastore-explorer/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/applications/datastore-explorer/src/test.ts",
+            "tsConfig": "projects/applications/datastore-explorer/tsconfig.spec.json",
+            "karmaConfig": "projects/applications/datastore-explorer/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/applications/datastore-explorer/tsconfig.lib.json",
+              "projects/applications/datastore-explorer/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-app-drawer": {
+      "projectType": "library",
+      "root": "projects/applications/drawer",
+      "sourceRoot": "projects/applications/drawer/src",
+      "prefix": "aadrw",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/applications/drawer/tsconfig.lib.json",
+            "project": "projects/applications/drawer/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/applications/drawer/src/test.ts",
+            "tsConfig": "projects/applications/drawer/tsconfig.spec.json",
+            "karmaConfig": "projects/applications/drawer/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/applications/drawer/tsconfig.lib.json",
+              "projects/applications/drawer/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-app-file-explorer": {
+      "projectType": "library",
+      "root": "projects/applications/file-explorer",
+      "sourceRoot": "projects/applications/file-explorer/src",
+      "prefix": "aafe",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/applications/file-explorer/tsconfig.lib.json",
+            "project": "projects/applications/file-explorer/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/applications/file-explorer/src/test.ts",
+            "tsConfig": "projects/applications/file-explorer/tsconfig.spec.json",
+            "karmaConfig": "projects/applications/file-explorer/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/applications/file-explorer/tsconfig.lib.json",
+              "projects/applications/file-explorer/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-app-infrastructure-as-code": {
+      "projectType": "library",
+      "root": "projects/applications/infrastructure-as-code",
+      "sourceRoot": "projects/applications/infrastructure-as-code/src",
+      "prefix": "aaiac",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/applications/infrastructure-as-code/tsconfig.lib.json",
+            "project": "projects/applications/infrastructure-as-code/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/applications/infrastructure-as-code/src/test.ts",
+            "tsConfig": "projects/applications/infrastructure-as-code/tsconfig.spec.json",
+            "karmaConfig": "projects/applications/infrastructure-as-code/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/applications/infrastructure-as-code/tsconfig.lib.json",
+              "projects/applications/infrastructure-as-code/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-app-infrastructure-manager": {
+      "projectType": "library",
+      "root": "projects/applications/infrastructure-manager",
+      "sourceRoot": "projects/applications/infrastructure-manager/src",
+      "prefix": "aaim",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/applications/infrastructure-manager/tsconfig.lib.json",
+            "project": "projects/applications/infrastructure-manager/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/applications/infrastructure-manager/src/test.ts",
+            "tsConfig": "projects/applications/infrastructure-manager/tsconfig.spec.json",
+            "karmaConfig": "projects/applications/infrastructure-manager/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/applications/infrastructure-manager/tsconfig.lib.json",
+              "projects/applications/infrastructure-manager/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-app-monitor": {
+      "projectType": "library",
+      "root": "projects/applications/monitor",
+      "sourceRoot": "projects/applications/monitor/src",
+      "prefix": "aamon",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/applications/monitor/tsconfig.lib.json",
+            "project": "projects/applications/monitor/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/applications/monitor/src/test.ts",
+            "tsConfig": "projects/applications/monitor/tsconfig.spec.json",
+            "karmaConfig": "projects/applications/monitor/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/applications/monitor/tsconfig.lib.json",
+              "projects/applications/monitor/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-app-notepad": {
+      "projectType": "library",
+      "root": "projects/applications/notepad",
+      "sourceRoot": "projects/applications/notepad/src",
+      "prefix": "aanote",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/applications/notepad/tsconfig.lib.json",
+            "project": "projects/applications/notepad/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/applications/notepad/src/test.ts",
+            "tsConfig": "projects/applications/notepad/tsconfig.spec.json",
+            "karmaConfig": "projects/applications/notepad/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/applications/notepad/tsconfig.lib.json",
+              "projects/applications/notepad/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-app-sftp": {
+      "projectType": "library",
+      "root": "projects/applications/sftp",
+      "sourceRoot": "projects/applications/sftp/src",
+      "prefix": "aasftp",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/applications/sftp/tsconfig.lib.json",
+            "project": "projects/applications/sftp/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/applications/sftp/src/test.ts",
+            "tsConfig": "projects/applications/sftp/tsconfig.spec.json",
+            "karmaConfig": "projects/applications/sftp/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/applications/sftp/tsconfig.lib.json",
+              "projects/applications/sftp/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-app-ssh": {
+      "projectType": "library",
+      "root": "projects/applications/ssh",
+      "sourceRoot": "projects/applications/ssh/src",
+      "prefix": "aassh",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/applications/ssh/tsconfig.lib.json",
+            "project": "projects/applications/ssh/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/applications/ssh/src/test.ts",
+            "tsConfig": "projects/applications/ssh/tsconfig.spec.json",
+            "karmaConfig": "projects/applications/ssh/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/applications/ssh/tsconfig.lib.json",
+              "projects/applications/ssh/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-app-wmks": {
+      "projectType": "library",
+      "root": "projects/applications/wmks",
+      "sourceRoot": "projects/applications/wmks/src",
+      "prefix": "aawmks",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/applications/wmks/tsconfig.lib.json",
+            "project": "projects/applications/wmks/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/applications/wmks/src/test.ts",
+            "tsConfig": "projects/applications/wmks/tsconfig.spec.json",
+            "karmaConfig": "projects/applications/wmks/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/applications/wmks/tsconfig.lib.json",
+              "projects/applications/wmks/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-ext-lib-spin-js": {
+      "projectType": "library",
+      "root": "projects/external-libraries/spin-js",
+      "sourceRoot": "projects/external-libraries/spin-js/src",
+      "prefix": "aelspinjs",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/external-libraries/spin-js/tsconfig.lib.json",
+            "project": "projects/external-libraries/spin-js/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/external-libraries/spin-js/src/test.ts",
+            "tsConfig": "projects/external-libraries/spin-js/tsconfig.spec.json",
+            "karmaConfig": "projects/external-libraries/spin-js/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/external-libraries/spin-js/tsconfig.lib.json",
+              "projects/external-libraries/spin-js/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-default-plain": {
+      "projectType": "library",
+      "root": "projects/modals/default-plain",
+      "sourceRoot": "projects/modals/default-plain/src",
+      "prefix": "amplain",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/default-plain/tsconfig.lib.json",
+            "project": "projects/modals/default-plain/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/default-plain/src/test.ts",
+            "tsConfig": "projects/modals/default-plain/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/default-plain/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/default-plain/tsconfig.lib.json",
+              "projects/modals/default-plain/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-default-input": {
+      "projectType": "library",
+      "root": "projects/modals/default-input",
+      "sourceRoot": "projects/modals/default-input/src",
+      "prefix": "amundefined",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/default-input/tsconfig.lib.json",
+            "project": "projects/modals/default-input/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/default-input/src/test.ts",
+            "tsConfig": "projects/modals/default-input/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/default-input/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/default-input/tsconfig.lib.json",
+              "projects/modals/default-input/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-default-question": {
+      "projectType": "library",
+      "root": "projects/modals/default-question",
+      "sourceRoot": "projects/modals/default-question/src",
+      "prefix": "amquestion",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/default-question/tsconfig.lib.json",
+            "project": "projects/modals/default-question/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/default-question/src/test.ts",
+            "tsConfig": "projects/modals/default-question/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/default-question/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/default-question/tsconfig.lib.json",
+              "projects/modals/default-question/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-default-json-textarea": {
+      "projectType": "library",
+      "root": "projects/modals/default-json-textarea",
+      "sourceRoot": "projects/modals/default-json-textarea/src",
+      "prefix": "amjsontextarea",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/default-json-textarea/tsconfig.lib.json",
+            "project": "projects/modals/default-json-textarea/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/default-json-textarea/src/test.ts",
+            "tsConfig": "projects/modals/default-json-textarea/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/default-json-textarea/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/default-json-textarea/tsconfig.lib.json",
+              "projects/modals/default-json-textarea/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-folder-explorer": {
+      "projectType": "library",
+      "root": "projects/libraries/folder-explorer",
+      "sourceRoot": "projects/libraries/folder-explorer/src",
+      "prefix": "alfolder-explorer",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/folder-explorer/tsconfig.lib.json",
+            "project": "projects/libraries/folder-explorer/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/folder-explorer/src/test.ts",
+            "tsConfig": "projects/libraries/folder-explorer/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/folder-explorer/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/folder-explorer/tsconfig.lib.json",
+              "projects/libraries/folder-explorer/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-ssh": {
+      "projectType": "library",
+      "root": "projects/libraries/ssh",
+      "sourceRoot": "projects/libraries/ssh/src",
+      "prefix": "alssh",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/ssh/tsconfig.lib.json",
+            "project": "projects/libraries/ssh/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/ssh/src/test.ts",
+            "tsConfig": "projects/libraries/ssh/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/ssh/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/ssh/tsconfig.lib.json",
+              "projects/libraries/ssh/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-loader": {
+      "projectType": "library",
+      "root": "projects/libraries/loader",
+      "sourceRoot": "projects/libraries/loader/src",
+      "prefix": "alloader",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/loader/tsconfig.lib.json",
+            "project": "projects/libraries/loader/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/loader/src/test.ts",
+            "tsConfig": "projects/libraries/loader/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/loader/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/loader/tsconfig.lib.json",
+              "projects/libraries/loader/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-desktop-task-bar": {
+      "projectType": "library",
+      "root": "projects/libraries/desktop-task-bar",
+      "sourceRoot": "projects/libraries/desktop-task-bar/src",
+      "prefix": "aldtask-bar",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/desktop-task-bar/tsconfig.lib.json",
+            "project": "projects/libraries/desktop-task-bar/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/desktop-task-bar/src/test.ts",
+            "tsConfig": "projects/libraries/desktop-task-bar/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/desktop-task-bar/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/desktop-task-bar/tsconfig.lib.json",
+              "projects/libraries/desktop-task-bar/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-credential": {
+      "projectType": "library",
+      "root": "projects/libraries/credential",
+      "sourceRoot": "projects/libraries/credential/src",
+      "prefix": "alcredential",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/credential/tsconfig.lib.json",
+            "project": "projects/libraries/credential/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/credential/src/test.ts",
+            "tsConfig": "projects/libraries/credential/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/credential/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/credential/tsconfig.lib.json",
+              "projects/libraries/credential/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-node-docker": {
+      "projectType": "library",
+      "root": "projects/libraries/node-docker",
+      "sourceRoot": "projects/libraries/node-docker/src",
+      "prefix": "aldocker",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/node-docker/tsconfig.lib.json",
+            "project": "projects/libraries/node-docker/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/node-docker/src/test.ts",
+            "tsConfig": "projects/libraries/node-docker/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/node-docker/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/node-docker/tsconfig.lib.json",
+              "projects/libraries/node-docker/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-node-snmp": {
+      "projectType": "library",
+      "root": "projects/libraries/node-snmp",
+      "sourceRoot": "projects/libraries/node-snmp/src",
+      "prefix": "alsnmp",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/node-snmp/tsconfig.lib.json",
+            "project": "projects/libraries/node-snmp/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/node-snmp/src/test.ts",
+            "tsConfig": "projects/libraries/node-snmp/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/node-snmp/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/node-snmp/tsconfig.lib.json",
+              "projects/libraries/node-snmp/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-workspace": {
+      "projectType": "library",
+      "root": "projects/libraries/workspace",
+      "sourceRoot": "projects/libraries/workspace/src",
+      "prefix": "alworkspace",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/workspace/tsconfig.lib.json",
+            "project": "projects/libraries/workspace/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/workspace/src/test.ts",
+            "tsConfig": "projects/libraries/workspace/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/workspace/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/workspace/tsconfig.lib.json",
+              "projects/libraries/workspace/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-node-linux": {
+      "projectType": "library",
+      "root": "projects/libraries/node-linux",
+      "sourceRoot": "projects/libraries/node-linux/src",
+      "prefix": "allinux",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/node-linux/tsconfig.lib.json",
+            "project": "projects/libraries/node-linux/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/node-linux/src/test.ts",
+            "tsConfig": "projects/libraries/node-linux/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/node-linux/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/node-linux/tsconfig.lib.json",
+              "projects/libraries/node-linux/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-node": {
+      "projectType": "library",
+      "root": "projects/libraries/node",
+      "sourceRoot": "projects/libraries/node/src",
+      "prefix": "alnode",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/node/tsconfig.lib.json",
+            "project": "projects/libraries/node/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/node/src/test.ts",
+            "tsConfig": "projects/libraries/node/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/node/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/node/tsconfig.lib.json",
+              "projects/libraries/node/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-diagram": {
+      "projectType": "library",
+      "root": "projects/libraries/diagram",
+      "sourceRoot": "projects/libraries/diagram/src",
+      "prefix": "aldiagram",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/diagram/tsconfig.lib.json",
+            "project": "projects/libraries/diagram/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/diagram/src/test.ts",
+            "tsConfig": "projects/libraries/diagram/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/diagram/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/diagram/tsconfig.lib.json",
+              "projects/libraries/diagram/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-kubernetes-create-resource": {
+      "projectType": "library",
+      "root": "projects/modals/kubernetes-create-resource",
+      "sourceRoot": "projects/modals/kubernetes-create-resource/src",
+      "prefix": "amkubernetes-create-resource",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/kubernetes-create-resource/tsconfig.lib.json",
+            "project": "projects/modals/kubernetes-create-resource/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/kubernetes-create-resource/src/test.ts",
+            "tsConfig": "projects/modals/kubernetes-create-resource/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/kubernetes-create-resource/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/kubernetes-create-resource/tsconfig.lib.json",
+              "projects/modals/kubernetes-create-resource/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-kubernetes-edit-resource": {
+      "projectType": "library",
+      "root": "projects/modals/kubernetes-edit-resource",
+      "sourceRoot": "projects/modals/kubernetes-edit-resource/src",
+      "prefix": "amkubernetes-edit-resource",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/kubernetes-edit-resource/tsconfig.lib.json",
+            "project": "projects/modals/kubernetes-edit-resource/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/kubernetes-edit-resource/src/test.ts",
+            "tsConfig": "projects/modals/kubernetes-edit-resource/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/kubernetes-edit-resource/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/kubernetes-edit-resource/tsconfig.lib.json",
+              "projects/modals/kubernetes-edit-resource/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-kubernetes-logs": {
+      "projectType": "library",
+      "root": "projects/modals/kubernetes-logs",
+      "sourceRoot": "projects/modals/kubernetes-logs/src",
+      "prefix": "amkubernetes-logs",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/kubernetes-logs/tsconfig.lib.json",
+            "project": "projects/modals/kubernetes-logs/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/kubernetes-logs/src/test.ts",
+            "tsConfig": "projects/modals/kubernetes-logs/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/kubernetes-logs/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/kubernetes-logs/tsconfig.lib.json",
+              "projects/modals/kubernetes-logs/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-kubernetes-scale-resource": {
+      "projectType": "library",
+      "root": "projects/modals/kubernetes-scale-resource",
+      "sourceRoot": "projects/modals/kubernetes-scale-resource/src",
+      "prefix": "amkubernetes-scale-resource",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/kubernetes-scale-resource/tsconfig.lib.json",
+            "project": "projects/modals/kubernetes-scale-resource/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/kubernetes-scale-resource/src/test.ts",
+            "tsConfig": "projects/modals/kubernetes-scale-resource/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/kubernetes-scale-resource/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/kubernetes-scale-resource/tsconfig.lib.json",
+              "projects/modals/kubernetes-scale-resource/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-kubernetes-shell": {
+      "projectType": "library",
+      "root": "projects/modals/kubernetes-shell",
+      "sourceRoot": "projects/modals/kubernetes-shell/src",
+      "prefix": "amkubernetes-shell",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/kubernetes-shell/tsconfig.lib.json",
+            "project": "projects/modals/kubernetes-shell/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/kubernetes-shell/src/test.ts",
+            "tsConfig": "projects/modals/kubernetes-shell/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/kubernetes-shell/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/kubernetes-shell/tsconfig.lib.json",
+              "projects/modals/kubernetes-shell/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-monitor-alarms": {
+      "projectType": "library",
+      "root": "projects/modals/monitor-alarms",
+      "sourceRoot": "projects/modals/monitor-alarms/src",
+      "prefix": "ammonitor-alarms",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/monitor-alarms/tsconfig.lib.json",
+            "project": "projects/modals/monitor-alarms/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/monitor-alarms/src/test.ts",
+            "tsConfig": "projects/modals/monitor-alarms/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/monitor-alarms/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/monitor-alarms/tsconfig.lib.json",
+              "projects/modals/monitor-alarms/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-monitor-export": {
+      "projectType": "library",
+      "root": "projects/modals/monitor-export",
+      "sourceRoot": "projects/modals/monitor-export/src",
+      "prefix": "ammonitor-export",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/monitor-export/tsconfig.lib.json",
+            "project": "projects/modals/monitor-export/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/monitor-export/src/test.ts",
+            "tsConfig": "projects/modals/monitor-export/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/monitor-export/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/monitor-export/tsconfig.lib.json",
+              "projects/modals/monitor-export/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-monitor-help": {
+      "projectType": "library",
+      "root": "projects/modals/monitor-help",
+      "sourceRoot": "projects/modals/monitor-help/src",
+      "prefix": "ammonitor-help",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/monitor-help/tsconfig.lib.json",
+            "project": "projects/modals/monitor-help/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/monitor-help/src/test.ts",
+            "tsConfig": "projects/modals/monitor-help/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/monitor-help/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/monitor-help/tsconfig.lib.json",
+              "projects/modals/monitor-help/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-monitor-import": {
+      "projectType": "library",
+      "root": "projects/modals/monitor-import",
+      "sourceRoot": "projects/modals/monitor-import/src",
+      "prefix": "ammonitor-import",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/monitor-import/tsconfig.lib.json",
+            "project": "projects/modals/monitor-import/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/monitor-import/src/test.ts",
+            "tsConfig": "projects/modals/monitor-import/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/monitor-import/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/monitor-import/tsconfig.lib.json",
+              "projects/modals/monitor-import/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-monitor-options": {
+      "projectType": "library",
+      "root": "projects/modals/monitor-options",
+      "sourceRoot": "projects/modals/monitor-options/src",
+      "prefix": "ammonitor-options",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/monitor-options/tsconfig.lib.json",
+            "project": "projects/modals/monitor-options/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/monitor-options/src/test.ts",
+            "tsConfig": "projects/modals/monitor-options/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/monitor-options/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/monitor-options/tsconfig.lib.json",
+              "projects/modals/monitor-options/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-modal-monitor-xss": {
+      "projectType": "library",
+      "root": "projects/modals/monitor-xss",
+      "sourceRoot": "projects/modals/monitor-xss/src",
+      "prefix": "ammonitor-xss",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/modals/monitor-xss/tsconfig.lib.json",
+            "project": "projects/modals/monitor-xss/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/modals/monitor-xss/src/test.ts",
+            "tsConfig": "projects/modals/monitor-xss/tsconfig.spec.json",
+            "karmaConfig": "projects/modals/monitor-xss/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/modals/monitor-xss/tsconfig.lib.json",
+              "projects/modals/monitor-xss/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    }
+  },
+  "defaultProject": "anyOpsOS"
+}

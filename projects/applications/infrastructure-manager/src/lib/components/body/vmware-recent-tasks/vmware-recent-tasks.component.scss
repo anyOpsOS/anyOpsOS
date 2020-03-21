@@ -1,0 +1,88 @@
+:host ::ng-deep table.mat-table {
+  width: 100%;
+  height: 100%;
+  display: grid;
+
+  thead {
+    display: inline-table;
+  }
+
+  tbody {
+    overflow-y: scroll;
+  }
+}
+
+tr.mat-header-row {
+  height: 30px;
+  background: #f3f3f3;
+}
+
+.table {
+  margin-bottom: 0;
+  height: 100%;
+  display: grid;
+  position: relative;
+
+  tr {
+    display: inline-table;
+    width: 100%;
+  }
+
+  tbody {
+    overflow-y: scroll;
+  }
+}
+.table-elipsis td {
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 24px;
+  padding: 4px;
+}
+
+.table-elipsis td:nth-child(1) {
+  width: 5%;
+}
+.table-elipsis td:nth-child(2) {
+  width: 10%;
+}
+.table-elipsis td:nth-child(3) {
+  width: 20%;
+}
+.table-elipsis td:nth-child(4) {
+  width: 20%;
+}
+.table-elipsis td:nth-child(5) {
+  width: 7%;
+}
+.table-elipsis td:nth-child(6) {
+  width: 10%;
+}
+.table-elipsis td:nth-child(7) {
+  width: 13%;
+}
+.table-elipsis td:nth-child(8) {
+  width: 15%;
+}
+
+.mat-tab-group {
+  box-shadow: 0 -2px 3px 3px hsla(0,0%,77%,.2);
+  height: 100%;
+
+  ::ng-deep .mat-tab-header {
+    box-shadow: inset 0 -1px 0 #ccc;
+    background: #fff;
+  }
+
+  ::ng-deep .mat-tab-body-wrapper {
+    height: 100%;
+  }
+
+  ::ng-deep .mat-tab-label {
+    height: 38px;
+  }
+}
+
+
+

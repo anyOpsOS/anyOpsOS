@@ -1,0 +1,32 @@
+<div class="window__body" [ngClass]="{'with_status': application.status, 'with_actions': application.actions}">
+
+  <div class="window__side" *ngIf="viewSide">
+
+    <ng-container *ngFor="let connectionObject of connectionObjects; index as $index">
+      <div class="menu__item" *ngIf="connectionObject != undefined" [ngClass]="{'active': connectionObject.info.uuid === activeConnectionObjectUuid}" (click)="setActiveConnection(connectionObject)">
+        <h5 class="position-relative">
+          {{connectionObject.info.obj.name}} <small class="d-block">({{getMainConnectionHost(connectionObject)}})</small>
+
+          <i [ngClass]="LibNodeTemplateHelpers.getObjectIcon(connectionObject).data" *ngIf="LibNodeTemplateHelpers.getObjectIcon(connectionObject).type === 'class'"></i>
+          <img alt="{{connectionObject.name}}" [src]="LibNodeTemplateHelpers.getObjectIcon(connectionObject).data" width="25px" class="mr-1" *ngIf="LibNodeTemplateHelpers.getObjectIcon(connectionObject).type === 'image'" />
+        </h5>
+      </div>
+    </ng-container>
+
+    <div class="secondary-content__new__box__toggle pointer visible-lg">
+      <div class="secondary-content__new__box__toggle__slide" (click)="toggleSide()">
+        <i class="fas fa-arrow-left sidebar-open-font open-sidebar"></i>
+      </div>
+    </div>
+  </div>
+  <div class="secondary-content__new__box__toggle toggle_left pointer visible-lg" *ngIf="!viewSide" (click)="toggleSide()">
+    <i class="fas fa-arrow-right sidebar-open-font open-sidebar"></i>
+  </div>
+  <div class="window__main row no_padding" [ngClass]="{'with__stats': viewExchange === true}">
+
+    <alfolder-explorer-main [application]="application"></alfolder-explorer-main>
+    <aade-body-server [application]="application" #bodyContainer></aade-body-server>
+    <aade-body-exchange></aade-body-exchange>
+
+  </div>
+</div>

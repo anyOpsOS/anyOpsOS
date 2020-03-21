@@ -1,0 +1,437 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2019",
+      "dom"
+    ],
+    "paths": {
+      "@anyopsos/app-backups-manager": [
+        "projects/applications/backups-manager/src/public-api"
+      ],
+      "@anyopsos/app-backups-manager/*": [
+        "projects/applications/backups-manager/*"
+      ],
+      "@anyopsos/app-credentials-manager": [
+        "projects/applications/credentials-manager/src/public-api"
+      ],
+      "@anyopsos/app-credentials-manager/*": [
+        "projects/applications/credentials-manager/*"
+      ],
+      "@anyopsos/app-datastore-explorer": [
+        "projects/applications/datastore-explorer/src/public-api"
+      ],
+      "@anyopsos/app-datastore-explorer/*": [
+        "projects/applications/datastore-explorer/*"
+      ],
+      "@anyopsos/app-drawer": [
+        "projects/applications/drawer/src/public-api"
+      ],
+      "@anyopsos/app-drawer/*": [
+        "projects/applications/drawer/*"
+      ],
+      "@anyopsos/app-file-explorer": [
+        "projects/applications/file-explorer/src/public-api"
+      ],
+      "@anyopsos/app-file-explorer/*": [
+        "projects/applications/file-explorer/*"
+      ],
+      "@anyopsos/app-infrastructure-as-code": [
+        "projects/applications/infrastructure-as-code/src/public-api"
+      ],
+      "@anyopsos/app-infrastructure-as-code/*": [
+        "projects/applications/infrastructure-as-code/*"
+      ],
+      "@anyopsos/app-infrastructure-manager": [
+        "projects/applications/infrastructure-manager/src/public-api"
+      ],
+      "@anyopsos/app-infrastructure-manager/*": [
+        "projects/applications/infrastructure-manager/*"
+      ],
+      "@anyopsos/app-monitor": [
+        "projects/applications/monitor/src/public-api"
+      ],
+      "@anyopsos/app-monitor/*": [
+        "projects/applications/monitor/*"
+      ],
+      "@anyopsos/app-notepad": [
+        "projects/applications/notepad/src/public-api"
+      ],
+      "@anyopsos/app-notepad/*": [
+        "projects/applications/notepad/*"
+      ],
+      "@anyopsos/app-sftp": [
+        "projects/applications/sftp/src/public-api"
+      ],
+      "@anyopsos/app-sftp/*": [
+        "projects/applications/sftp/*"
+      ],
+      "@anyopsos/app-ssh": [
+        "projects/applications/ssh/src/public-api"
+      ],
+      "@anyopsos/app-ssh/*": [
+        "projects/applications/ssh/*"
+      ],
+      "@anyopsos/app-wmks": [
+        "projects/applications/wmks/src/public-api"
+      ],
+      "@anyopsos/app-wmks/*": [
+        "projects/applications/wmks/*"
+      ],
+      "@anyopsos/ext-lib-dygraphs": [
+        "projects/external-libraries/dygraphs/src/public-api"
+      ],
+      "@anyopsos/ext-lib-dygraphs/*": [
+        "projects/external-libraries/dygraphs/*"
+      ],
+      "@anyopsos/ext-lib-easy-pie-chart": [
+        "projects/external-libraries/easy-pie-chart/src/public-api"
+      ],
+      "@anyopsos/ext-lib-easy-pie-chart/*": [
+        "projects/external-libraries/easy-pie-chart/*"
+      ],
+      "@anyopsos/ext-lib-gauge-js": [
+        "projects/external-libraries/gauge-js/src/public-api"
+      ],
+      "@anyopsos/ext-lib-gauge-js/*": [
+        "projects/external-libraries/gauge-js/*"
+      ],
+      "@anyopsos/ext-lib-jquery": [
+        "projects/external-libraries/jquery/src/public-api"
+      ],
+      "@anyopsos/ext-lib-jquery/*": [
+        "projects/external-libraries/jquery/*"
+      ],
+      "@anyopsos/ext-lib-lz-string": [
+        "projects/external-libraries/lz-string/src/public-api"
+      ],
+      "@anyopsos/ext-lib-lz-string/*": [
+        "projects/external-libraries/lz-string/*"
+      ],
+      "@anyopsos/ext-lib-mxgraph": [
+        "projects/external-libraries/mxgraph/src/public-api"
+      ],
+      "@anyopsos/ext-lib-mxgraph/*": [
+        "projects/external-libraries/mxgraph/*"
+      ],
+      "@anyopsos/ext-lib-netdata": [
+        "projects/external-libraries/netdata/src/public-api"
+      ],
+      "@anyopsos/ext-lib-netdata/*": [
+        "projects/external-libraries/netdata/*"
+      ],
+      "@anyopsos/ext-lib-pako": [
+        "projects/external-libraries/pako/src/public-api"
+      ],
+      "@anyopsos/ext-lib-pako/*": [
+        "projects/external-libraries/pako/*"
+      ],
+      "@anyopsos/ext-lib-perfect-scrollbar": [
+        "projects/external-libraries/perfect-scrollbar/src/public-api"
+      ],
+      "@anyopsos/ext-lib-perfect-scrollbar/*": [
+        "projects/external-libraries/perfect-scrollbar/*"
+      ],
+      "@anyopsos/ext-lib-spin-js": [
+        "projects/external-libraries/spin-js/src/public-api"
+      ],
+      "@anyopsos/ext-lib-spin-js/*": [
+        "projects/external-libraries/spin-js/*"
+      ],
+      "@anyopsos/ext-lib-theia": [
+        "projects/external-libraries/theia/src/public-api"
+      ],
+      "@anyopsos/ext-lib-theia/*": [
+        "projects/external-libraries/theia/*"
+      ],
+      "@anyopsos/lib-angular-material": [
+        "projects/libraries/angular-material/src/public-api"
+      ],
+      "@anyopsos/lib-angular-material/*": [
+        "projects/libraries/angular-material/*"
+      ],
+      "@anyopsos/lib-application": [
+        "projects/libraries/application/src/public-api"
+      ],
+      "@anyopsos/lib-application/*": [
+        "projects/libraries/application/*"
+      ],
+      "@anyopsos/lib-credential": [
+        "projects/libraries/credential/src/public-api"
+      ],
+      "@anyopsos/lib-credential/*": [
+        "projects/libraries/credential/*"
+      ],
+      "@anyopsos/lib-desktop-task-bar": [
+        "projects/libraries/desktop-task-bar/src/public-api"
+      ],
+      "@anyopsos/lib-desktop-task-bar/*": [
+        "projects/libraries/desktop-task-bar/*"
+      ],
+      "@anyopsos/lib-node-docker": [
+        "projects/libraries/node-docker/src/public-api"
+      ],
+      "@anyopsos/lib-node-docker/*": [
+        "projects/libraries/node-docker/*"
+      ],
+      "@anyopsos/lib-file": [
+        "projects/libraries/file/src/public-api"
+      ],
+      "@anyopsos/lib-file-system": [
+        "projects/libraries/file-system/src/public-api"
+      ],
+      "@anyopsos/lib-file-system-ui": [
+        "projects/libraries/file-system-ui/src/public-api"
+      ],
+      "@anyopsos/lib-file-system-ui/*": [
+        "projects/libraries/file-system-ui/*"
+      ],
+      "@anyopsos/lib-file-system/*": [
+        "projects/libraries/file-system/*"
+      ],
+      "@anyopsos/lib-file/*": [
+        "projects/libraries/file/*"
+      ],
+      "@anyopsos/lib-folder": [
+        "projects/libraries/folder/src/public-api"
+      ],
+      "@anyopsos/lib-folder-explorer": [
+        "projects/libraries/folder-explorer/src/public-api"
+      ],
+      "@anyopsos/lib-folder-explorer/*": [
+        "projects/libraries/folder-explorer/*"
+      ],
+      "@anyopsos/lib-folder/*": [
+        "projects/libraries/folder/*"
+      ],
+      "@anyopsos/lib-node-kubernetes": [
+        "projects/libraries/node-kubernetes/src/public-api"
+      ],
+      "@anyopsos/lib-node-kubernetes/*": [
+        "projects/libraries/node-kubernetes/*"
+      ],
+      "@anyopsos/lib-loader": [
+        "projects/libraries/loader/src/public-api"
+      ],
+      "@anyopsos/lib-loader/*": [
+        "projects/libraries/loader/*"
+      ],
+      "@anyopsos/lib-logger": [
+        "projects/libraries/logger/src/public-api"
+      ],
+      "@anyopsos/lib-logger/*": [
+        "projects/libraries/logger/*"
+      ],
+      "@anyopsos/lib-modal": [
+        "projects/libraries/modal/src/public-api"
+      ],
+      "@anyopsos/lib-modal/*": [
+        "projects/libraries/modal/*"
+      ],
+      "@anyopsos/lib-node-netapp": [
+        "projects/libraries/node-netapp/src/public-api"
+      ],
+      "@anyopsos/lib-node-netapp/*": [
+        "projects/libraries/node-netapp/*"
+      ],
+      "@anyopsos/lib-pipes": [
+        "projects/libraries/pipes/src/public-api"
+      ],
+      "@anyopsos/lib-pipes/*": [
+        "projects/libraries/pipes/*"
+      ],
+      "@anyopsos/lib-scroll-spy": [
+        "projects/libraries/scroll-spy/src/public-api"
+      ],
+      "@anyopsos/lib-scroll-spy/*": [
+        "projects/libraries/scroll-spy/*"
+      ],
+      "@anyopsos/lib-selectable": [
+        "projects/libraries/selectable/src/public-api"
+      ],
+      "@anyopsos/lib-selectable/*": [
+        "projects/libraries/selectable/*"
+      ],
+      "@anyopsos/lib-service-injector": [
+        "projects/libraries/service-injector/src/public-api"
+      ],
+      "@anyopsos/lib-service-injector/*": [
+        "projects/libraries/service-injector/*"
+      ],
+      "@anyopsos/lib-node-snmp": [
+        "projects/libraries/node-snmp/src/public-api"
+      ],
+      "@anyopsos/lib-node-snmp/*": [
+        "projects/libraries/node-snmp/*"
+      ],
+      "@anyopsos/lib-ssh": [
+        "projects/libraries/ssh/src/public-api"
+      ],
+      "@anyopsos/lib-ssh/*": [
+        "projects/libraries/ssh/*"
+      ],
+      "@anyopsos/lib-terminal": [
+        "projects/libraries/terminal/src/public-api"
+      ],
+      "@anyopsos/lib-terminal/*": [
+        "projects/libraries/terminal/*"
+      ],
+      "@anyopsos/lib-types": [
+        "projects/libraries/types/src/public-api"
+      ],
+      "@anyopsos/lib-types/*": [
+        "projects/libraries/types/*"
+      ],
+      "@anyopsos/lib-user": [
+        "projects/libraries/user/src/public-api"
+      ],
+      "@anyopsos/lib-user/*": [
+        "projects/libraries/user/*"
+      ],
+      "@anyopsos/lib-utils": [
+        "projects/libraries/utils/src/public-api"
+      ],
+      "@anyopsos/lib-utils/*": [
+        "projects/libraries/utils/*"
+      ],
+      "@anyopsos/lib-node-vmware": [
+        "projects/libraries/node-vmware/src/public-api"
+      ],
+      "@anyopsos/lib-node-vmware/*": [
+        "projects/libraries/node-vmware/*"
+      ],
+      "@anyopsos/lib-workspace": [
+        "projects/libraries/workspace/src/public-api"
+      ],
+      "@anyopsos/lib-workspace/*": [
+        "projects/libraries/workspace/*"
+      ],
+      "@anyopsos/modal-default-input": [
+        "projects/modals/default-input/src/public-api"
+      ],
+      "@anyopsos/modal-default-input/*": [
+        "projects/modals/default-input/*"
+      ],
+      "@anyopsos/modal-default-json-textarea": [
+        "projects/modals/default-json-textarea/src/public-api"
+      ],
+      "@anyopsos/modal-default-json-textarea/*": [
+        "projects/modals/default-json-textarea/*"
+      ],
+      "@anyopsos/modal-default-plain": [
+        "projects/modals/default-plain/src/public-api"
+      ],
+      "@anyopsos/modal-default-plain/*": [
+        "projects/modals/default-plain/*"
+      ],
+      "@anyopsos/modal-default-question": [
+        "projects/modals/default-question/src/public-api"
+      ],
+      "@anyopsos/modal-default-question/*": [
+        "projects/modals/default-question/*"
+      ],
+      "@anyopsos/lib-node-linux": [
+        "projects/libraries/node-linux/src/public-api"
+      ],
+      "@anyopsos/lib-node-linux/*": [
+        "projects/libraries/node-linux/*"
+      ],
+      "@anyopsos/lib-node": [
+        "projects/libraries/node/src/public-api"
+      ],
+      "@anyopsos/lib-node/*": [
+        "projects/libraries/node/*"
+      ],
+      "@anyopsos/lib-diagram": [
+        "projects/libraries/diagram/src/public-api"
+      ],
+      "@anyopsos/lib-diagram/*": [
+        "projects/libraries/diagram/*"
+      ],
+      "@anyopsos/modal-kubernetes-create-resource": [
+        "projects/modals/kubernetes-create-resource/src/public-api"
+      ],
+      "@anyopsos/modal-kubernetes-create-resource/*": [
+        "projects/modals/kubernetes-create-resource/*"
+      ],
+      "@anyopsos/modal-kubernetes-edit-resource": [
+        "projects/modals/kubernetes-edit-resource/src/public-api"
+      ],
+      "@anyopsos/modal-kubernetes-edit-resource/*": [
+        "projects/modals/kubernetes-edit-resource/*"
+      ],
+      "@anyopsos/modal-kubernetes-logs": [
+        "projects/modals/kubernetes-logs/src/public-api"
+      ],
+      "@anyopsos/modal-kubernetes-logs/*": [
+        "projects/modals/kubernetes-logs/*"
+      ],
+      "@anyopsos/modal-kubernetes-scale-resource": [
+        "projects/modals/kubernetes-scale-resource/src/public-api"
+      ],
+      "@anyopsos/modal-kubernetes-scale-resource/*": [
+        "projects/modals/kubernetes-scale-resource/*"
+      ],
+      "@anyopsos/modal-kubernetes-shell": [
+        "projects/modals/kubernetes-shell/src/public-api"
+      ],
+      "@anyopsos/modal-kubernetes-shell/*": [
+        "projects/modals/kubernetes-shell/*"
+      ],
+      "@anyopsos/modal-monitor-alarms": [
+        "projects/modals/monitor-alarms/src/public-api"
+      ],
+      "@anyopsos/modal-monitor-alarms/*": [
+        "projects/modals/monitor-alarms/*"
+      ],
+      "@anyopsos/modal-monitor-export": [
+        "projects/modals/monitor-export/src/public-api"
+      ],
+      "@anyopsos/modal-monitor-export/*": [
+        "projects/modals/monitor-export/*"
+      ],
+      "@anyopsos/modal-monitor-help": [
+        "projects/modals/monitor-help/src/public-api"
+      ],
+      "@anyopsos/modal-monitor-help/*": [
+        "projects/modals/monitor-help/*"
+      ],
+      "@anyopsos/modal-monitor-import": [
+        "projects/modals/monitor-import/src/public-api"
+      ],
+      "@anyopsos/modal-monitor-import/*": [
+        "projects/modals/monitor-import/*"
+      ],
+      "@anyopsos/modal-monitor-options": [
+        "projects/modals/monitor-options/src/public-api"
+      ],
+      "@anyopsos/modal-monitor-options/*": [
+        "projects/modals/monitor-options/*"
+      ],
+      "@anyopsos/modal-monitor-xss": [
+        "projects/modals/monitor-xss/src/public-api"
+      ],
+      "@anyopsos/modal-monitor-xss/*": [
+        "projects/modals/monitor-xss/*"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "disableTypeScriptVersionCheck": true
+  }
+}

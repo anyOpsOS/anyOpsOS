@@ -1,0 +1,10 @@
+<div class="col folders__body" *ngIf="activeConnectionObjectUuid === null">
+
+  <span class="text-center p-4">Select a Datastore</span>
+
+</div>
+
+<alfolder-explorer-main *ngIf="activeConnectionObjectUuid !== null"
+                        [application]="application"
+                        [connection]="getMainActiveConnection()"
+></alfolder-explorer-main>
