@@ -5,7 +5,7 @@
     "@anyopsos/backend-core": "~0.0.1",
     "@types/node": "^12.12.21",
     "express": "^4.17.1",
-    "typescript": "^3.7.4"
+    "typescript": "^3.8.3"
   },
   "main": "src/index.ts",
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",

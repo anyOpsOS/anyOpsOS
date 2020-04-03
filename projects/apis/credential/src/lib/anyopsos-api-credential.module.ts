@@ -1,7 +1,12 @@
-import {Controller, Get, Put, Authorized, Req, Res, BodyParam, Delete, Param, Patch} from 'routing-controllers';
-import {SessionParam} from 'routing-controllers/decorator/SessionParam';
 import {Request, Response} from 'express';
-import {getLogger, Logger} from 'log4js';
+import routingControllers from 'routing-controllers';
+import routingControllersSessionParam from 'routing-controllers/decorator/SessionParam';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {Controller, Get, Put, Authorized, Req, Res, BodyParam, Delete, Param, Patch} = routingControllers;
+const {SessionParam}  = routingControllersSessionParam
+const {getLogger} = log4js;
 
 import {AnyOpsOSApiGlobalsModule} from '@anyopsos/module-api-globals';
 import {AnyOpsOSCredentialModule, Credential} from '@anyopsos/module-credential';

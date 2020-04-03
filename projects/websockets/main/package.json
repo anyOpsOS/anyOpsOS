@@ -2,6 +2,7 @@
   "name": "@anyopsos/websocket-main",
   "version": "0.0.1",
   "main": "src/index.ts",
+  "type": "module",
   "dependencies": {
     "log4js": "^6.1.0"
   },
@@ -9,7 +10,7 @@
   "devDependencies": {
     "socket.io": "^2.3.0",
     "socket-controllers": "https://github.com/anyOpsOS/socket-controllers.git#build",
-    "typescript": "^3.7.4"
+    "typescript": "^3.8.3"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

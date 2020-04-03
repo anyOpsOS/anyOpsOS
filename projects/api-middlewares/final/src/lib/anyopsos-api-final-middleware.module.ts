@@ -1,6 +1,10 @@
-import {Middleware, ExpressMiddlewareInterface} from 'routing-controllers';
+import routingControllers, {ExpressMiddlewareInterface} from 'routing-controllers';
 import {Request, Response, NextFunction} from 'express';
-import {getLogger, Logger} from 'log4js';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {getLogger} = log4js;
+const {Middleware} = routingControllers;
 
 import {AnyOpsOSApiGlobalsModule} from '@anyopsos/module-api-globals';
 

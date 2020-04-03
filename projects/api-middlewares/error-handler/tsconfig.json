@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/api-middlewares/error-handler",
+    "outDir": "../../../.dist/api-middlewares/error-handler",
     "baseUrl": ".",
     "paths": {
       "*": [

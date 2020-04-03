@@ -1,10 +1,8 @@
-#!/usr/bin/env node
-
 import {anyOpsOS} from '../src';
 
-const chalk = require('chalk');
-const clear = require('clear');
-const figlet = require('figlet');
+import chalk from 'chalk';
+import clear from 'clear';
+import figlet from 'figlet';
 
 clear();
 console.log(chalk.blueBright(

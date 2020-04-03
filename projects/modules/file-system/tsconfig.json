@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/modules/file-system",
+    "outDir": "../../../.dist/modules/file-system",
     "baseUrl": ".",
     "paths": {
       "*": [

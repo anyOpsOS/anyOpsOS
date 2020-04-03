@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/apis/sftp-file",
+    "outDir": "../../../.dist/apis/sftp-file",
     "baseUrl": ".",
     "paths": {
       "*": [

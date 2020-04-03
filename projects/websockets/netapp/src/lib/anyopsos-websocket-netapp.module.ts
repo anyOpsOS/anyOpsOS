@@ -1,11 +1,14 @@
 import {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam} from 'socket-controllers';
-import {getLogger} from 'log4js';
 import {Socket} from 'socket.io';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {getLogger} = log4js;
 
 import {AnyOpsOSNodeNetappModule} from '@anyopsos/module-node-netapp';
 import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
 
-const logger = getLogger('mainLog');
+const logger: Logger = getLogger('mainLog');
 
 @SocketController()
 export class AnyOpsOSNetappWebsocketController {

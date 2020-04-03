@@ -1,7 +1,10 @@
 import {getSocketIO} from 'socket-controllers';
 import fetch, {Headers, Response} from 'node-fetch';
 import {parseStringPromise} from 'xml2js';
-import {getLogger, Logger} from 'log4js';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {getLogger} = log4js;
 
 import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
 import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';

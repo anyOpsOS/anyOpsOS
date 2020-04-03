@@ -28,7 +28,7 @@ metadata:
 spec:
   tls:
     - hosts:
-        - filesystem.anyopsos.local
+      - filesystem.anyopsos.local
   rules:
     - host: filesystem.anyopsos.local
       http:
@@ -62,7 +62,7 @@ spec:
             secretName: anyopsos-certificates
         - name: anyopsos-code
           hostPath:
-            path: /c/Users/nada/WebstormProjects/anyOpsOS
+            path: /run/desktop/mnt/host/wsl/docker-desktop-data/data/docker/volumes/anyopsos-data/_data
             type: Directory
       containers:
         - name: filesystem
@@ -102,9 +102,9 @@ spec:
               readOnly: true
             # anyOpsOS Code
             - name: anyopsos-code
-              mountPath: /var/www/dist
-              subPath: dist/anyOpsOS/fileSystem/
-              readOnly: true
+              mountPath: /var/www
+              subPath: .dist/anyOpsOS/fileSystem/
+            #  readOnly: true
             - name: anyopsos-code
               mountPath: /var/www/node_modules
               subPath: node_modules/

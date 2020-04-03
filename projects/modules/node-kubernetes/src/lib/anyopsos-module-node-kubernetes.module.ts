@@ -2,7 +2,10 @@ import {KubeConfig, Watch, Log, Exec, Attach, V1Status} from '@kubernetes/client
 import {Cluster} from '@kubernetes/client-node/dist/config_types';
 import {get, Response, Options, Request} from 'request';
 import {Readable, Writable} from 'stream';
-import {getLogger, Logger} from 'log4js';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {getLogger} = log4js;
 
 import {AnyOpsOSTerminalModule} from '@anyopsos/module-terminal';
 import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';

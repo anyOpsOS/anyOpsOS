@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/websockets/ssh",
+    "outDir": "../../../.dist/websockets/ssh",
     "baseUrl": ".",
     "paths": {
       "*": [

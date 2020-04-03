@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/websockets/kubernetes",
+    "outDir": "../../../.dist/websockets/kubernetes",
     "baseUrl": ".",
     "paths": {
       "*": [

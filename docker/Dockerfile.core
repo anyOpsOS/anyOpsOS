@@ -1,19 +1,16 @@
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.1
+FROM registry.access.redhat.com/ubi8/ubi:8.1
 
 MAINTAINER anyOpsOS
 
 WORKDIR /var/www
 
-RUN microdnf -y update && \
-microdnf -y install nodejs && \
-npm install -g yarn
-
-COPY . ./dist
+RUN yum -y update && \
+curl -sL https://rpm.nodesource.com/setup_12.x | bash - && \
+yum -y install nodejs && \
+npm install -g yarn nodemon
 
 ENV NODE_ENV production
 
-RUN yarn install
-
 EXPOSE 443
 
-ENTRYPOINT ["node", "dist/index.js"]
+ENTRYPOINT ["nodemon", "--experimental-modules", "--experimental-loader", "./https-loader.js", "--experimental-specifier-resolution=node", "index.js"]

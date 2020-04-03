@@ -3,412 +3,412 @@
   "compilerOptions": {
     "paths": {
       "@anyopsos/app-backups-manager": [
-        "dist/applications/backups-manager"
+        ".dist/applications/backups-manager"
       ],
       "@anyopsos/app-backups-manager/*": [
-        "dist/applications/backups-manager/*"
+        ".dist/applications/backups-manager/*"
       ],
       "@anyopsos/app-credentials-manager": [
-        "dist/applications/credentials-manager"
+        ".dist/applications/credentials-manager"
       ],
       "@anyopsos/app-credentials-manager/*": [
-        "dist/applications/credentials-manager/*"
+        ".dist/applications/credentials-manager/*"
       ],
       "@anyopsos/app-datastore-explorer": [
-        "dist/applications/datastore-explorer"
+        ".dist/applications/datastore-explorer"
       ],
       "@anyopsos/app-datastore-explorer/*": [
-        "dist/applications/datastore-explorer/*"
+        ".dist/applications/datastore-explorer/*"
       ],
       "@anyopsos/app-drawer": [
-        "dist/applications/drawer"
+        ".dist/applications/drawer"
       ],
       "@anyopsos/app-drawer/*": [
-        "dist/applications/drawer/*"
+        ".dist/applications/drawer/*"
       ],
       "@anyopsos/app-file-explorer": [
-        "dist/applications/file-explorer"
+        ".dist/applications/file-explorer"
       ],
       "@anyopsos/app-file-explorer/*": [
-        "dist/applications/file-explorer/*"
+        ".dist/applications/file-explorer/*"
       ],
       "@anyopsos/app-infrastructure-as-code": [
-        "dist/applications/infrastructure-as-code"
+        ".dist/applications/infrastructure-as-code"
       ],
       "@anyopsos/app-infrastructure-as-code/*": [
-        "dist/applications/infrastructure-as-code/*"
+        ".dist/applications/infrastructure-as-code/*"
       ],
       "@anyopsos/app-infrastructure-manager": [
-        "dist/applications/infrastructure-manager"
+        ".dist/applications/infrastructure-manager"
       ],
       "@anyopsos/app-infrastructure-manager/*": [
-        "dist/applications/infrastructure-manager/*"
+        ".dist/applications/infrastructure-manager/*"
       ],
       "@anyopsos/app-monitor": [
-        "dist/applications/monitor"
+        ".dist/applications/monitor"
       ],
       "@anyopsos/app-monitor/*": [
-        "dist/applications/monitor/*"
+        ".dist/applications/monitor/*"
       ],
       "@anyopsos/app-notepad": [
-        "dist/applications/notepad"
+        ".dist/applications/notepad"
       ],
       "@anyopsos/app-notepad/*": [
-        "dist/applications/notepad/*"
+        ".dist/applications/notepad/*"
       ],
       "@anyopsos/app-sftp": [
-        "dist/applications/sftp"
+        ".dist/applications/sftp"
       ],
       "@anyopsos/app-sftp/*": [
-        "dist/applications/sftp/*"
+        ".dist/applications/sftp/*"
       ],
       "@anyopsos/app-ssh": [
-        "dist/applications/ssh"
+        ".dist/applications/ssh"
       ],
       "@anyopsos/app-ssh/*": [
-        "dist/applications/ssh/*"
+        ".dist/applications/ssh/*"
       ],
       "@anyopsos/app-wmks": [
-        "dist/applications/wmks"
+        ".dist/applications/wmks"
       ],
       "@anyopsos/app-wmks/*": [
-        "dist/applications/wmks/*"
+        ".dist/applications/wmks/*"
       ],
       "@anyopsos/ext-lib-dygraphs": [
-        "dist/external-libraries/dygraphs"
+        ".dist/external-libraries/dygraphs"
       ],
       "@anyopsos/ext-lib-dygraphs/*": [
-        "dist/external-libraries/dygraphs/*"
+        ".dist/external-libraries/dygraphs/*"
       ],
       "@anyopsos/ext-lib-easy-pie-chart": [
-        "dist/external-libraries/easy-pie-chart"
+        ".dist/external-libraries/easy-pie-chart"
       ],
       "@anyopsos/ext-lib-easy-pie-chart/*": [
-        "dist/external-libraries/easy-pie-chart/*"
+        ".dist/external-libraries/easy-pie-chart/*"
       ],
       "@anyopsos/ext-lib-gauge-js": [
-        "dist/external-libraries/gauge-js"
+        ".dist/external-libraries/gauge-js"
       ],
       "@anyopsos/ext-lib-gauge-js/*": [
-        "dist/external-libraries/gauge-js/*"
+        ".dist/external-libraries/gauge-js/*"
       ],
       "@anyopsos/ext-lib-jquery": [
-        "dist/external-libraries/jquery"
+        ".dist/external-libraries/jquery"
       ],
       "@anyopsos/ext-lib-jquery/*": [
-        "dist/external-libraries/jquery/*"
+        ".dist/external-libraries/jquery/*"
       ],
       "@anyopsos/ext-lib-lz-string": [
-        "dist/external-libraries/lz-string"
+        ".dist/external-libraries/lz-string"
       ],
       "@anyopsos/ext-lib-lz-string/*": [
-        "dist/external-libraries/lz-string/*"
+        ".dist/external-libraries/lz-string/*"
       ],
       "@anyopsos/ext-lib-mxgraph": [
-        "dist/external-libraries/mxgraph"
+        ".dist/external-libraries/mxgraph"
       ],
       "@anyopsos/ext-lib-mxgraph/*": [
-        "dist/external-libraries/mxgraph/*"
+        ".dist/external-libraries/mxgraph/*"
       ],
       "@anyopsos/ext-lib-netdata": [
-        "dist/external-libraries/netdata"
+        ".dist/external-libraries/netdata"
       ],
       "@anyopsos/ext-lib-netdata/*": [
-        "dist/external-libraries/netdata/*"
+        ".dist/external-libraries/netdata/*"
       ],
       "@anyopsos/ext-lib-pako": [
-        "dist/external-libraries/pako"
+        ".dist/external-libraries/pako"
       ],
       "@anyopsos/ext-lib-pako/*": [
-        "dist/external-libraries/pako/*"
+        ".dist/external-libraries/pako/*"
       ],
       "@anyopsos/ext-lib-perfect-scrollbar": [
-        "dist/external-libraries/perfect-scrollbar"
+        ".dist/external-libraries/perfect-scrollbar"
       ],
       "@anyopsos/ext-lib-perfect-scrollbar/*": [
-        "dist/external-libraries/perfect-scrollbar/*"
+        ".dist/external-libraries/perfect-scrollbar/*"
       ],
       "@anyopsos/ext-lib-spin-js": [
-        "dist/external-libraries/spin-js"
+        ".dist/external-libraries/spin-js"
       ],
       "@anyopsos/ext-lib-spin-js/*": [
-        "dist/external-libraries/spin-js/*"
+        ".dist/external-libraries/spin-js/*"
       ],
       "@anyopsos/ext-lib-theia": [
-        "dist/external-libraries/theia"
+        ".dist/external-libraries/theia"
       ],
       "@anyopsos/ext-lib-theia/*": [
-        "dist/external-libraries/theia/*"
+        ".dist/external-libraries/theia/*"
       ],
       "@anyopsos/lib-angular-material": [
-        "dist/libraries/angular-material"
+        ".dist/libraries/angular-material"
       ],
       "@anyopsos/lib-angular-material/*": [
-        "dist/libraries/angular-material/*"
+        ".dist/libraries/angular-material/*"
       ],
       "@anyopsos/lib-application": [
-        "dist/libraries/application"
+        ".dist/libraries/application"
       ],
       "@anyopsos/lib-application/*": [
-        "dist/libraries/application/*"
+        ".dist/libraries/application/*"
       ],
       "@anyopsos/lib-credential": [
-        "dist/libraries/credential"
+        ".dist/libraries/credential"
       ],
       "@anyopsos/lib-credential/*": [
-        "dist/libraries/credential/*"
+        ".dist/libraries/credential/*"
       ],
       "@anyopsos/lib-desktop-task-bar": [
-        "dist/libraries/desktop-task-bar"
+        ".dist/libraries/desktop-task-bar"
       ],
       "@anyopsos/lib-desktop-task-bar/*": [
-        "dist/libraries/desktop-task-bar/*"
+        ".dist/libraries/desktop-task-bar/*"
       ],
       "@anyopsos/lib-node-docker": [
-        "dist/libraries/node-docker"
+        ".dist/libraries/node-docker"
       ],
       "@anyopsos/lib-node-docker/*": [
-        "dist/libraries/node-docker/*"
+        ".dist/libraries/node-docker/*"
       ],
       "@anyopsos/lib-file": [
-        "dist/libraries/file"
+        ".dist/libraries/file"
       ],
       "@anyopsos/lib-file-system": [
-        "dist/libraries/file-system"
+        ".dist/libraries/file-system"
       ],
       "@anyopsos/lib-file-system-ui": [
-        "dist/libraries/file-system-ui"
+        ".dist/libraries/file-system-ui"
       ],
       "@anyopsos/lib-file-system-ui/*": [
-        "dist/libraries/file-system-ui/*"
+        ".dist/libraries/file-system-ui/*"
       ],
       "@anyopsos/lib-file-system/*": [
-        "dist/libraries/file-system/*"
+        ".dist/libraries/file-system/*"
       ],
       "@anyopsos/lib-file/*": [
-        "dist/libraries/file/*"
+        ".dist/libraries/file/*"
       ],
       "@anyopsos/lib-folder": [
-        "dist/libraries/folder"
+        ".dist/libraries/folder"
       ],
       "@anyopsos/lib-folder-explorer": [
-        "dist/libraries/folder-explorer"
+        ".dist/libraries/folder-explorer"
       ],
       "@anyopsos/lib-folder-explorer/*": [
-        "dist/libraries/folder-explorer/*"
+        ".dist/libraries/folder-explorer/*"
       ],
       "@anyopsos/lib-folder/*": [
-        "dist/libraries/folder/*"
+        ".dist/libraries/folder/*"
       ],
       "@anyopsos/lib-node-kubernetes": [
-        "dist/libraries/node-kubernetes"
+        ".dist/libraries/node-kubernetes"
       ],
       "@anyopsos/lib-node-kubernetes/*": [
-        "dist/libraries/node-kubernetes/*"
+        ".dist/libraries/node-kubernetes/*"
       ],
       "@anyopsos/lib-loader": [
-        "dist/libraries/loader"
+        ".dist/libraries/loader"
       ],
       "@anyopsos/lib-loader/*": [
-        "dist/libraries/loader/*"
+        ".dist/libraries/loader/*"
       ],
       "@anyopsos/lib-logger": [
-        "dist/libraries/logger"
+        ".dist/libraries/logger"
       ],
       "@anyopsos/lib-logger/*": [
-        "dist/libraries/logger/*"
+        ".dist/libraries/logger/*"
       ],
       "@anyopsos/lib-modal": [
-        "dist/libraries/modal"
+        ".dist/libraries/modal"
       ],
       "@anyopsos/lib-modal/*": [
-        "dist/libraries/modal/*"
+        ".dist/libraries/modal/*"
       ],
       "@anyopsos/lib-node-netapp": [
-        "dist/libraries/node-netapp"
+        ".dist/libraries/node-netapp"
       ],
       "@anyopsos/lib-node-netapp/*": [
-        "dist/libraries/node-netapp/*"
+        ".dist/libraries/node-netapp/*"
       ],
       "@anyopsos/lib-pipes": [
-        "dist/libraries/pipes"
+        ".dist/libraries/pipes"
       ],
       "@anyopsos/lib-pipes/*": [
-        "dist/libraries/pipes/*"
+        ".dist/libraries/pipes/*"
       ],
       "@anyopsos/lib-scroll-spy": [
-        "dist/libraries/scroll-spy"
+        ".dist/libraries/scroll-spy"
       ],
       "@anyopsos/lib-scroll-spy/*": [
-        "dist/libraries/scroll-spy/*"
+        ".dist/libraries/scroll-spy/*"
       ],
       "@anyopsos/lib-selectable": [
-        "dist/libraries/selectable"
+        ".dist/libraries/selectable"
       ],
       "@anyopsos/lib-selectable/*": [
-        "dist/libraries/selectable/*"
+        ".dist/libraries/selectable/*"
       ],
       "@anyopsos/lib-service-injector": [
-        "dist/libraries/service-injector"
+        ".dist/libraries/service-injector"
       ],
       "@anyopsos/lib-service-injector/*": [
-        "dist/libraries/service-injector/*"
+        ".dist/libraries/service-injector/*"
       ],
       "@anyopsos/lib-node-snmp": [
-        "dist/libraries/node-snmp"
+        ".dist/libraries/node-snmp"
       ],
       "@anyopsos/lib-node-snmp/*": [
-        "dist/libraries/node-snmp/*"
+        ".dist/libraries/node-snmp/*"
       ],
       "@anyopsos/lib-ssh": [
-        "dist/libraries/ssh"
+        ".dist/libraries/ssh"
       ],
       "@anyopsos/lib-ssh/*": [
-        "dist/libraries/ssh/*"
+        ".dist/libraries/ssh/*"
       ],
       "@anyopsos/lib-terminal": [
-        "dist/libraries/terminal"
+        ".dist/libraries/terminal"
       ],
       "@anyopsos/lib-terminal/*": [
-        "dist/libraries/terminal/*"
+        ".dist/libraries/terminal/*"
       ],
       "@anyopsos/lib-types": [
-        "dist/libraries/types"
+        ".dist/libraries/types"
       ],
       "@anyopsos/lib-types/*": [
-        "dist/libraries/types/*"
+        ".dist/libraries/types/*"
       ],
       "@anyopsos/lib-user": [
-        "dist/libraries/user"
+        ".dist/libraries/user"
       ],
       "@anyopsos/lib-user/*": [
-        "dist/libraries/user/*"
+        ".dist/libraries/user/*"
       ],
       "@anyopsos/lib-utils": [
-        "dist/libraries/utils"
+        ".dist/libraries/utils"
       ],
       "@anyopsos/lib-utils/*": [
-        "dist/libraries/utils/*"
+        ".dist/libraries/utils/*"
       ],
       "@anyopsos/lib-node-vmware": [
-        "dist/libraries/node-vmware"
+        ".dist/libraries/node-vmware"
       ],
       "@anyopsos/lib-node-vmware/*": [
-        "dist/libraries/node-vmware/*"
+        ".dist/libraries/node-vmware/*"
       ],
       "@anyopsos/lib-workspace": [
-        "dist/libraries/workspace"
+        ".dist/libraries/workspace"
       ],
       "@anyopsos/lib-workspace/*": [
-        "dist/libraries/workspace/*"
+        ".dist/libraries/workspace/*"
       ],
       "@anyopsos/modal-default-input": [
-        "dist/modals/default-input"
+        ".dist/modals/default-input"
       ],
       "@anyopsos/modal-default-input/*": [
-        "dist/modals/default-input/*"
+        ".dist/modals/default-input/*"
       ],
       "@anyopsos/modal-default-json-textarea": [
-        "dist/modals/default-json-textarea"
+        ".dist/modals/default-json-textarea"
       ],
       "@anyopsos/modal-default-json-textarea/*": [
-        "dist/modals/default-json-textarea/*"
+        ".dist/modals/default-json-textarea/*"
       ],
       "@anyopsos/modal-default-plain": [
-        "dist/modals/default-plain"
+        ".dist/modals/default-plain"
       ],
       "@anyopsos/modal-default-plain/*": [
-        "dist/modals/default-plain/*"
+        ".dist/modals/default-plain/*"
       ],
       "@anyopsos/modal-default-question": [
-        "dist/modals/default-question"
+        ".dist/modals/default-question"
       ],
       "@anyopsos/modal-default-question/*": [
-        "dist/modals/default-question/*"
+        ".dist/modals/default-question/*"
       ],
       "@anyopsos/lib-node-linux": [
-        "dist/libraries/node-linux"
+        ".dist/libraries/node-linux"
       ],
       "@anyopsos/lib-node-linux/*": [
-        "dist/libraries/node-linux/*"
+        ".dist/libraries/node-linux/*"
       ],
       "@anyopsos/lib-node": [
-        "dist/libraries/node"
+        ".dist/libraries/node"
       ],
       "@anyopsos/lib-node/*": [
-        "dist/libraries/node/*"
+        ".dist/libraries/node/*"
       ],
       "@anyopsos/lib-diagram": [
-        "dist/libraries/diagram"
+        ".dist/libraries/diagram"
       ],
       "@anyopsos/lib-diagram/*": [
-        "dist/libraries/diagram/*"
+        ".dist/libraries/diagram/*"
       ],
       "@anyopsos/modal-kubernetes-create-resource": [
-        "dist/modals/kubernetes-create-resource"
+        ".dist/modals/kubernetes-create-resource"
       ],
       "@anyopsos/modal-kubernetes-create-resource/*": [
-        "dist/modals/kubernetes-create-resource/*"
+        ".dist/modals/kubernetes-create-resource/*"
       ],
       "@anyopsos/modal-kubernetes-edit-resource": [
-        "dist/modals/kubernetes-edit-resource"
+        ".dist/modals/kubernetes-edit-resource"
       ],
       "@anyopsos/modal-kubernetes-edit-resource/*": [
-        "dist/modals/kubernetes-edit-resource/*"
+        ".dist/modals/kubernetes-edit-resource/*"
       ],
       "@anyopsos/modal-kubernetes-logs": [
-        "dist/modals/kubernetes-logs"
+        ".dist/modals/kubernetes-logs"
       ],
       "@anyopsos/modal-kubernetes-logs/*": [
-        "dist/modals/kubernetes-logs/*"
+        ".dist/modals/kubernetes-logs/*"
       ],
       "@anyopsos/modal-kubernetes-scale-resource": [
-        "dist/modals/kubernetes-scale-resource"
+        ".dist/modals/kubernetes-scale-resource"
       ],
       "@anyopsos/modal-kubernetes-scale-resource/*": [
-        "dist/modals/kubernetes-scale-resource/*"
+        ".dist/modals/kubernetes-scale-resource/*"
       ],
       "@anyopsos/modal-kubernetes-shell": [
-        "dist/modals/kubernetes-shell"
+        ".dist/modals/kubernetes-shell"
       ],
       "@anyopsos/modal-kubernetes-shell/*": [
-        "dist/modals/kubernetes-shell/*"
+        ".dist/modals/kubernetes-shell/*"
       ],
       "@anyopsos/modal-monitor-alarms": [
-        "dist/modals/monitor-alarms"
+        ".dist/modals/monitor-alarms"
       ],
       "@anyopsos/modal-monitor-alarms/*": [
-        "dist/modals/monitor-alarms/*"
+        ".dist/modals/monitor-alarms/*"
       ],
       "@anyopsos/modal-monitor-export": [
-        "dist/modals/monitor-export"
+        ".dist/modals/monitor-export"
       ],
       "@anyopsos/modal-monitor-export/*": [
-        "dist/modals/monitor-export/*"
+        ".dist/modals/monitor-export/*"
       ],
       "@anyopsos/modal-monitor-help": [
-        "dist/modals/monitor-help"
+        ".dist/modals/monitor-help"
       ],
       "@anyopsos/modal-monitor-help/*": [
-        "dist/modals/monitor-help/*"
+        ".dist/modals/monitor-help/*"
       ],
       "@anyopsos/modal-monitor-import": [
-        "dist/modals/monitor-import"
+        ".dist/modals/monitor-import"
       ],
       "@anyopsos/modal-monitor-import/*": [
-        "dist/modals/monitor-import/*"
+        ".dist/modals/monitor-import/*"
       ],
       "@anyopsos/modal-monitor-options": [
-        "dist/modals/monitor-options"
+        ".dist/modals/monitor-options"
       ],
       "@anyopsos/modal-monitor-options/*": [
-        "dist/modals/monitor-options/*"
+        ".dist/modals/monitor-options/*"
       ],
       "@anyopsos/modal-monitor-xss": [
-        "dist/modals/monitor-xss"
+        ".dist/modals/monitor-xss"
       ],
       "@anyopsos/modal-monitor-xss/*": [
-        "dist/modals/monitor-xss/*"
+        ".dist/modals/monitor-xss/*"
       ]
     }
   }

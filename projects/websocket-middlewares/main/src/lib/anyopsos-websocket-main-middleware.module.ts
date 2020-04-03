@@ -1,6 +1,9 @@
 import {Middleware, MiddlewareInterface} from 'socket-controllers';
-import {getLogger, Logger} from 'log4js';
 import {Socket} from 'socket.io';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {getLogger} = log4js;
 
 const logger: Logger = getLogger('mainLog');
 

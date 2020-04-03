@@ -1,6 +1,9 @@
 import {promisifyAll} from 'bluebird';
-import {Client, ClientChannel, ExecOptions, SFTPWrapper} from 'ssh2';
-const validator = require('validator');
+import ssh2, {Client as SshClient, ClientChannel, ExecOptions, SFTPWrapper} from 'ssh2';
+import validator from 'validator';
+
+// TODO ESM
+const {Client} = ssh2;
 
 import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
 import {AnyOpsOSCredentialModule} from '@anyopsos/module-credential';
@@ -34,7 +37,7 @@ export class AnyOpsOSSshSessionStateModule {
   /**
    * SSH Connections
    */
-  async createSession(): Promise<Client> {
+  async createSession(): Promise<SshClient> {
     if (!sshSessions[this.workspaceUuid]) sshSessions[this.workspaceUuid] = {};
     sshSessions[this.workspaceUuid][this.connectionUuid] = new Client();
 
@@ -80,7 +83,7 @@ export class AnyOpsOSSshSessionStateModule {
     if (sshSessions[this.workspaceUuid][this.connectionUuid]) sshSessions[this.workspaceUuid][this.connectionUuid].end();
   }
 
-  getSession(): Client {
+  getSession(): SshClient {
     if (!sshSessions[this.workspaceUuid]?.[this.connectionUuid]) throw new Error('resource_invalid');
 
     return sshSessions[this.workspaceUuid][this.connectionUuid];

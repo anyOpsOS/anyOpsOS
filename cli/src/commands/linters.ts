@@ -1,5 +1,9 @@
-import {blue} from 'chalk';
-import {readdir, statSync} from 'fs-extra';
+import chalk from 'chalk';
+import fs from 'fs-extra';
+
+// TODO ESM
+const {blue} = chalk;
+const {readdir, statSync} = fs;
 
 import {runInDocker} from '../utils';
 import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants';
@@ -7,10 +11,10 @@ import {Types} from '../types/types';
 
 export class Linters {
 
-  private packageType;
-  private packageLongType;
-  private packagePrefix;
-  private projectPath;
+  private packageType!: string;
+  private packageLongType!: string;
+  private packagePrefix!: string;
+  private projectPath!: string;
 
   constructor() {
   }

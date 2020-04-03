@@ -1,4 +1,8 @@
-import {readFile} from 'fs-extra';
+import fs from 'fs-extra';
+
+// TODO ESM
+const {readFile} = fs;
+
 import {runInDocker} from '../utils';
 import {MAIN_PATH_CWD} from '../constants';
 

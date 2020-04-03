@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
+import {AnyOpsOSLibUserService} from '@anyopsos/lib-user';
 import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
 import {AnyOpsOSLibFileSystemUiService} from '@anyopsos/lib-file-system-ui';
 import {Application, AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
@@ -15,24 +16,27 @@ import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response
 export class DesktopComponent implements OnInit {
   openedApplications: Application[];
 
-  readonly currentPath: string = '/home/root/Desktop/';
+  currentPath: string = '/';
   currentData: AnyOpsOSFile[] = [];
 
   currentActive: number = 0;
 
   constructor(private readonly logger: AnyOpsOSLibLoggerService,
+              private readonly UserState: AnyOpsOSLibUserService,
               private readonly LibFileSystem: AnyOpsOSLibFileSystemService,
               private readonly LibFileSystemUi: AnyOpsOSLibFileSystemUiService,
               private readonly LibApplication: AnyOpsOSLibApplicationService) {
-
-    // Reload Desktop data if needed
-    this.LibFileSystemUi.getObserverRefreshPath().subscribe(path => {
-      if (path === '/home/root/Desktop/') this.reloadPath();
-    });
+    
   }
 
   ngOnInit(): void {
     this.LibApplication.openedApplications.subscribe((applications: Application[]) => this.openedApplications = applications);
+    this.UserState.currentState.subscribe(state => this.currentPath = `/home/${state.username}/Desktop/`);
+
+    // Reload Desktop data if needed
+    this.LibFileSystemUi.getObserverRefreshPath().subscribe(path => {
+      if (path === this.currentPath) this.reloadPath();
+    });
 
     this.reloadPath();
   }

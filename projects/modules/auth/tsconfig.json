@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/modules/auth",
+    "outDir": "../../../.dist/modules/auth",
     "baseUrl": ".",
     "paths": {
       "*": [

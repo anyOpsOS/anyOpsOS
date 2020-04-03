@@ -8,13 +8,13 @@ data:
     .:53 {
         errors
         health
+        ready
         rewrite stop {
            name regex (.*)\.anyopsos\.local\.$ {1}.anyopsos.svc.cluster.local
            answer name (.*)\.anyopsos\.svc\.cluster\.local\.$ {1}.anyopsos.local
         }
         kubernetes cluster.local in-addr.arpa ip6.arpa {
            pods insecure
-           upstream
            fallthrough in-addr.arpa ip6.arpa
            ttl 30
         }

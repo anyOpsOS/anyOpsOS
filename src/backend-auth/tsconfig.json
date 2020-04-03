@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../dist/anyOpsOS/auth",
+    "outDir": "../../.dist/anyOpsOS/auth",
     "baseUrl": "./app",
     "paths": {
       "*": [

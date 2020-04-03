@@ -4,11 +4,13 @@ MAINTAINER anyOpsOS
 
 WORKDIR /var/www
 
-ENV PATH="/var/www/node_modules/.bin:${PATH}"
+ENV PATH="/var/www/node_modules/.bin:/var/www/bin:${PATH}"
+ENV RUNINDOCKER=true
 
 RUN yum -y update && \
+curl -sL https://rpm.nodesource.com/setup_12.x | bash - && \
 yum -y install nodejs git python3 make gcc gcc-c++ openssh-server && \
-npm install -g yarn
+npm install -g yarn nodemon
 
 ADD assets/start.sh /start.sh
 RUN chmod +x /start.sh

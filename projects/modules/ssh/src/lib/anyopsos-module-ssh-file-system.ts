@@ -1,9 +1,13 @@
-import {pathExistsSync} from 'fs-extra';
 import {parse} from 'url';
 import {join} from 'path';
 import {FileEntry, Stats as SftpStats} from 'ssh2-streams';
-import {getLogger, Logger} from 'log4js';
 import {EventEmitter} from 'events';
+import fs from 'fs-extra';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {getLogger} = log4js;
+const {pathExistsSync} = fs;
 
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
 import {AnyOpsOSCredentialModule, Credential} from '@anyopsos/module-credential';

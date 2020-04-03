@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/modules/sys-redis-session",
+    "outDir": "../../../.dist/modules/sys-redis-session",
     "baseUrl": ".",
     "paths": {
       "*": [

@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/modules/config-file",
+    "outDir": "../../../.dist/modules/config-file",
     "baseUrl": ".",
     "paths": {
       "*": [

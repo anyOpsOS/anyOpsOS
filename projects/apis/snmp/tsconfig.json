@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/apis/snmp",
+    "outDir": "../../../.dist/apis/snmp",
     "baseUrl": ".",
     "paths": {
       "*": [

@@ -1,10 +1,13 @@
 import {Request, Response} from 'express';
-import {getLogger} from 'log4js';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {getLogger} = log4js;
 
 import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
 
 
-const logger = getLogger('mainLog');
+const logger: Logger = getLogger('mainLog');
 
 export class AnyOpsOSApiGlobalsModule {
 

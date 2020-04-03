@@ -23,14 +23,35 @@
               <mat-error *ngIf="rootAccount.invalid">You must enter an username</mat-error>
             </mat-form-field>
 
-
-
             <button mat-flat-button color="primary" (click)="initializeVault()">Initialize Vault and create Root Account</button>
 
           </ng-container>
 
           <!-- Vault initialized -->
           <ng-template #initializeData>
+
+            <span class="span-title">Vault initialized. Save the unseal keys and the root password. You will need these keys in case that the Vault is restarted</span>
+
+            <mat-list>
+              <div mat-subheader>Vault Unseal Keys</div>
+              <mat-list-item *ngFor="let key of vaultResult.keys">
+                <mat-icon mat-list-icon fontSet="fas" fontIcon="fa-key"></mat-icon>
+                <div mat-line>{{key}}</div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+
+              <div mat-subheader>Vault Root Token</div>
+              <mat-list-item>
+                <mat-icon mat-list-icon fontSet="fas" fontIcon="fa-user-shield"></mat-icon>
+                <div mat-line>{{vaultResult.root_token}}</div>
+              </mat-list-item>
+
+              <div mat-subheader>{{rootAccount}}'s Password</div>
+              <mat-list-item>
+                <mat-icon mat-list-icon fontSet="fas" fontIcon="fa-user"></mat-icon>
+                <div mat-line>{{vaultResult.password}}</div>
+              </mat-list-item>
+            </mat-list>
 
             <button mat-flat-button color="primary" (click)="markStateChanged()">Continue</button>
 
@@ -43,13 +64,19 @@
 
           <ng-container *ngIf="vaultState.sealed === true; else noRootAccount">
 
-            <input [(ngModel)]="unsealKey"
-                   name="unsealKey"
-                   aria-label="Unseal Key"
-                   placeholder="Unseal Key"
-                   type="text"
-                   required
-                   matInput>
+            <mat-form-field
+              [floatLabel]="'auto'"
+              [hideRequiredMarker]="false" class="w-100">
+
+              <input [(ngModel)]="unsealKey"
+                    name="unsealKey"
+                    aria-label="Unseal Key"
+                    placeholder="Unseal Key"
+                    type="text"
+                    required
+                    matInput>
+
+            </mat-form-field>
 
             <button mat-flat-button color="primary" (click)="unsealVault()">Unseal Vault</button>
 
@@ -62,13 +89,18 @@
 
           <ng-container *ngIf="!vaultResult; else accountData">
 
-            <input [(ngModel)]="rootAccount"
-                   name="rootAccount"
-                   aria-label="Main Username"
-                   placeholder="Main Username"
-                   type="text"
-                   required
-                   matInput>
+            <mat-form-field
+              [floatLabel]="'auto'"
+              [hideRequiredMarker]="false" class="w-100">
+
+              <input [(ngModel)]="rootAccount"
+                    name="rootAccount"
+                    aria-label="Main Username"
+                    placeholder="Main Username"
+                    type="text"
+                    required
+                    matInput>
+            </mat-form-field>
 
             <button mat-flat-button color="primary" (click)="createRootAccount()">Create Root Account</button>
 

@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "/dist",
+    "outDir": "/.dist",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -10,9 +10,9 @@
     "experimentalDecorators": true,
     "noImplicitAny": true,
     "strict": true,
-    "importHelpers": true,
+    "importHelpers": false,
     "esModuleInterop": true,
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "target": "es2019",
     "lib": [

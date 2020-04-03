@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/modules/api-globals",
+    "outDir": "../../../.dist/modules/api-globals",
     "baseUrl": ".",
     "paths": {
       "*": [

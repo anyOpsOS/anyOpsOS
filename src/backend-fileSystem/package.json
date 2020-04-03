@@ -13,17 +13,18 @@
   "license": "GPL-3.0-or-later",
   "engines": {
     "yarn": "1.0.x || >=1.2.1",
-    "node": ">=10.0.0 <13.0.0"
+    "node": ">=10.0.0"
   },
+  "type": "module",
   "private": true,
   "dependencies": {
+    "@anyopsos/api-middleware-error-handler": "~0.0.1",
+    "@anyopsos/api-middleware-final": "~0.0.1",
     "@anyopsos/module-config-file": "~0.0.1",
-    "@anyopsos/module-sys-get-path": "~0.0.1",
     "@anyopsos/module-credential": "~0.0.1",
     "@anyopsos/module-sys-constants": "~0.0.1",
+    "@anyopsos/module-sys-get-path": "~0.0.1",
     "@anyopsos/module-sys-redis-session": "~0.0.1",
-    "@anyopsos/api-middleware-final": "~0.0.1",
-    "@anyopsos/api-middleware-error-handler": "~0.0.1",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-redis": "^4.0.4",
@@ -31,9 +32,9 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "fs-extra": "^9.0.0",
     "helmet": "^3.21.3",
     "log4js": "^6.1.2",
-    "module-alias": "^2.2.2",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "https://github.com/anyOpsOS/routing-controllers.git#build"
   },
@@ -46,6 +47,8 @@
     "@types/express": "^4.17.3",
     "@types/express-session": "^1.17.0",
     "@types/helmet": "^0.0.45",
-    "@types/node": "^12.12.21"
+    "@types/node": "^12.12.21",
+    "tslib": "^1.11.1",
+    "typescript": "^3.8.3"
   }
 }

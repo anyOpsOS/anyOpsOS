@@ -1,17 +1,21 @@
-import {join, dirname} from 'path';
+import {join} from 'path';
 
-import {AOO_ANYOPSOS_TYPE} from '@anyopsos/module-sys-constants';
+import {AOO_BASE_PATH} from '@anyopsos/module-sys-constants';
 
 export class AnyOpsOSSysGetPathModule {
-
+  
   // @ts-ignore TODO
-  private anyOpsOSPath: string = AOO_ANYOPSOS_TYPE === 'filesystem' ? dirname(require.main.filename) : join(dirname(require.main.filename), '../');
+  private anyOpsOSPath: string = AOO_BASE_PATH;
 
   constructor() {
   }
 
   get filesystem(): string {
-    return join(this.anyOpsOSPath, './filesystem/');
+    return join(this.anyOpsOSPath, '/filesystem/');
+  }
+
+  get bin(): string {
+    return join(this.anyOpsOSPath, '/filesystem/bin/');
   }
 
   get etc(): string {

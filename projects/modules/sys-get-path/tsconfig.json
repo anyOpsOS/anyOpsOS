@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/modules/sys-get-path",
+    "outDir": "../../../.dist/modules/sys-get-path",
     "baseUrl": ".",
     "paths": {
       "*": [

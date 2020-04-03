@@ -1,4 +1,7 @@
-import {v4 as uuidv4} from 'uuid';
+import uuid from 'uuid';
+
+// TODO ESM
+const {v4} = uuid;
 
 import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
 import {AnyOpsOSCredentialModule} from '@anyopsos/module-credential';
@@ -28,7 +31,7 @@ export class AnyOpsOSTerminalSessionStateModule {
    * Terminal Connections
    */
   async createSession(type: TerminalTypes): Promise<TerminalMap> {
-    const terminalUuid = uuidv4();
+    const terminalUuid = v4();
 
     const currentTerminal: Terminal = {
       uuid: terminalUuid,

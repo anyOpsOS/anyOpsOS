@@ -1,12 +1,16 @@
-import {configure, getLogger, Logger} from 'log4js';
-import {ensureDir, pathExistsSync, writeJSONSync} from 'fs-extra';
 import {join} from 'path';
+import log4js, {Logger} from 'log4js';
+import fs from 'fs-extra';
 
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
+// TODO ESM
+const {configure, getLogger} = log4js;
+const {ensureDir} = fs;
+
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
-import {User} from '@anyopsos/module-auth';
+
 
 const logger: Logger = getLogger('mainLog');
+const GetPathModule: AnyOpsOSSysGetPathModule = new AnyOpsOSSysGetPathModule();
 
 export class Init {
 
@@ -28,57 +32,26 @@ export class Init {
   /**
    * Checks and creates if required all System folders
    */
-  private checkSystemFolders(): Promise<void> {
+  private async checkSystemFolders(): Promise<void> {
     logger.trace(`[FileSystem] -> checkSystemFolders`);
 
-    return Promise.all([
-      ensureDir(join(__dirname, '/filesystem/bin/applications')),
-      ensureDir(join(__dirname, '/filesystem/bin/libs')),
-      ensureDir(join(__dirname, '/filesystem/bin/modals')),
-      ensureDir(join(__dirname, '/filesystem/bin/apis')),
-      ensureDir(join(__dirname, '/filesystem/bin/modules')),
-      ensureDir(join(__dirname, '/filesystem/bin/websockets')),
-      ensureDir(join(__dirname, '/filesystem/mnt'))
-    ]).then(() => {}).catch((e) => {
+    try {
+      await Promise.all([
+        ensureDir(join(GetPathModule.bin, 'applications')),
+        ensureDir(join(GetPathModule.bin, 'libs')),
+        ensureDir(join(GetPathModule.bin, 'modals')),
+        ensureDir(join(GetPathModule.bin, 'apis')),
+        ensureDir(join(GetPathModule.bin, 'api-middlewares')),
+        ensureDir(join(GetPathModule.bin, 'modules')),
+        ensureDir(join(GetPathModule.bin, 'websockets')),
+        ensureDir(join(GetPathModule.filesystem, 'home')),
+        ensureDir(join(GetPathModule.filesystem, 'etc')),
+        ensureDir(join(GetPathModule.filesystem, 'mnt'))
+      ]);
+    }
+    catch (e) {
       console.log(e);
-    });
-  }
-
-  /**
-   * Checks and creates if required all Home folders
-   */
-  private async checkHomeFolders(): Promise<void> {
-    logger.trace(`[FileSystem] -> checkHomeFolders`);
-
-    const users: User[] = await new AnyOpsOSConfigFileModule().get(new AnyOpsOSSysGetPathModule().shadow) as User[];
-
-    users.forEach((user: User) => {
-      return Promise.all([
-        ensureDir(join(__dirname, `/filesystem/${user.home}/Desktop`)),
-        ensureDir(join(__dirname, `/filesystem/${user.home}/Documents`)),
-        ensureDir(join(__dirname, `/filesystem/${user.home}/Downloads`)),
-        ensureDir(join(__dirname, `/filesystem/${user.home}/Workspaces/default/etc`))
-      ]).then(() => {}).catch((e) => {
-        console.log(e);
-      });
-    });
-  }
-
-  /**
-   * Checks and creates if required all Home folders
-   */
-  private async checkHomeFiles(): Promise<void> {
-    logger.trace(`[FileSystem] -> checkHomeFiles`);
-
-    const users: User[] = await new AnyOpsOSConfigFileModule().get(new AnyOpsOSSysGetPathModule().shadow) as User[];
-
-    users.forEach((user: User) => {
-      const taskBarFile: string = join(__dirname, `/filesystem/${user.home}/Workspaces/default/etc/task_bar.json`);
-
-      if (!pathExistsSync(taskBarFile)) {
-        writeJSONSync(taskBarFile, []);
-      }
-    });
+    }
   }
 
   /**
@@ -88,9 +61,7 @@ export class Init {
     logger.trace(`[FileSystem] -> initialize`);
 
     return Promise.all([
-      this.checkSystemFolders(),
-      this.checkHomeFolders(),
-      this.checkHomeFiles()
+      this.checkSystemFolders()
     ]).then(() => {}).catch((e) => {
       console.log(e);
     });

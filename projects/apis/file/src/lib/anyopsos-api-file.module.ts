@@ -1,9 +1,16 @@
-import {Controller, Get, Authorized, Req, Res, Param, Post, BodyParam, Patch, Delete, Put, UploadedFile} from 'routing-controllers';
-import {SessionParam} from 'routing-controllers/decorator/SessionParam';
-import {Request, Response} from 'express';
-import {getLogger, Logger} from 'log4js';
-import {pathExistsSync, stat, Stats} from 'fs-extra';
+import {Stats} from 'fs';
 import {join} from 'path';
+import {Request, Response} from 'express';
+import routingControllers from 'routing-controllers';
+import routingControllersSessionParam from 'routing-controllers/decorator/SessionParam';
+import log4js, {Logger} from 'log4js';
+import fs from 'fs-extra';
+
+// TODO ESM
+const {Controller, Get, Authorized, Req, Res, Param, Post, BodyParam, Patch, Delete, Put, UploadedFile} = routingControllers;
+const {SessionParam} = routingControllersSessionParam;
+const {getLogger} = log4js;
+const {pathExistsSync, stat} = fs;
 
 import {AnyOpsOSApiGlobalsModule} from '@anyopsos/module-api-globals';
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';

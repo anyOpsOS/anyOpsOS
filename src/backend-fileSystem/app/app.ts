@@ -1,22 +1,24 @@
-import {getLogger, connectLogger, Logger} from 'log4js';
+import log4js, {Logger} from 'log4js';
 import {createServer as createServers, Server as Servers, ServerOptions} from 'https';
-import {Application, RequestHandler} from 'express';
-import {urlencoded, json} from 'body-parser';
-import {useExpressServer, Action} from 'routing-controllers';
-import express from 'express';
+import express, {Application, RequestHandler} from 'express';
+import routingControllers, {Action} from 'routing-controllers';
 import connectRedis, {RedisStore} from 'connect-redis';
+import bodyParser from 'body-parser';
 import session from 'express-session';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import * as helmet from 'helmet';
+import helmet from 'helmet';
+
+// TODO ESM
+const {getLogger, connectLogger} = log4js;
+const {urlencoded, json} = bodyParser;
+const {useExpressServer} = routingControllers;
+const {frameguard, xssFilter, noSniff, ieNoOpen, hsts} = helmet;
 
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
 import {AnyOpsOSSysRedisSessionModule} from '@anyopsos/module-sys-redis-session'
 import {AOO_SESSION_COOKIE, AOO_SESSION_COOKIE_SECRET, AOO_UNIQUE_COOKIE_NAME, SSL_DHPARAM, SSL_CA_CERT, SSL_FILESYSTEM_CERT, SSL_FILESYSTEM_CERT_KEY} from '@anyopsos/module-sys-constants';
-
-import {AnyOpsOSApiFinalMiddleware} from '@anyopsos/api-middleware-final';
-import {AnyOpsOSApiErrorHandlerMiddleware} from '@anyopsos/api-middleware-error-handler';
 
 /**
  * App class will create all the backend listeners HTTPS
@@ -67,14 +69,14 @@ export class App {
     });
 
     // Start
-    this.createApp();
+    await this.createApp();
     this.logging();
     this.createServer();
     this.listen();
     this.errorHandler();
   }
 
-  private createApp(): void {
+  private async createApp(): Promise<void> {
     this.app = express();
     this.app.use(this.Session);
     this.app.use(compress());
@@ -83,11 +85,11 @@ export class App {
     }));
     this.app.use(json({limit: '50mb'}));
     this.app.use(cookieParser(this.sessionSecret));
-    this.app.use(helmet.frameguard());
-    this.app.use(helmet.xssFilter());
-    this.app.use(helmet.noSniff());
-    this.app.use(helmet.ieNoOpen());
-    this.app.use(helmet.hsts({
+    this.app.use(frameguard());
+    this.app.use(xssFilter());
+    this.app.use(noSniff());
+    this.app.use(ieNoOpen());
+    this.app.use(hsts({
       maxAge: 10886400000,     // Must be at least 18 weeks to be approved by Google
       includeSubDomains: true, // Must be enabled to be approved by Google
       preload: true
@@ -95,7 +97,7 @@ export class App {
     this.app.disable('x-powered-by');
     this.app.use(cors());
 
-    useExpressServer(this.app, {
+    await useExpressServer(this.app, {
       defaultErrorHandler: false,
       defaults: {
         paramOptions: {
@@ -104,15 +106,19 @@ export class App {
       },
       controllers: [
         // Import modules dynamically, users should be able to override it with their
-        new AnyOpsOSSysGetPathModule().filesystem + '/bin/apis/config-file/index.js',
-        new AnyOpsOSSysGetPathModule().filesystem + '/bin/apis/file/index.js',
-        new AnyOpsOSSysGetPathModule().filesystem + '/bin/apis/folder/index.js'
+        new AnyOpsOSSysGetPathModule().bin + 'apis/config-file/index.js',
+        new AnyOpsOSSysGetPathModule().bin + 'apis/file/index.js',
+        new AnyOpsOSSysGetPathModule().bin + 'apis/folder/index.js'
       ],
       middlewares: [
-        AnyOpsOSApiFinalMiddleware,
-        AnyOpsOSApiErrorHandlerMiddleware,
+        new AnyOpsOSSysGetPathModule().bin + 'api-middlewares/final/index.js',
+        new AnyOpsOSSysGetPathModule().bin + 'api-middlewares/error-handler/index.js'
       ],
       authorizationChecker: async (action: Action, roles?: string[]) => {
+
+        // TODO REMOVE
+        return true;
+
         // No legged_in or deleted uniqueId cookie
         if (!action.request.signedCookies[this.uniqueCookie]) {
           this.logger.warn('no_uniqueId_cookie ' + action.request.url);

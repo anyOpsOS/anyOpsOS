@@ -1,6 +1,9 @@
 import {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam} from 'socket-controllers';
-import {getLogger, Logger} from 'log4js';
 import {Socket} from 'socket.io';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {getLogger} = log4js;
 
 import {AnyOpsOSNodeKubernetesModule} from '@anyopsos/module-node-kubernetes';
 import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';

@@ -1,8 +1,11 @@
-import {getLogger, Logger} from 'log4js';
 import {parse} from 'url';
 import {join} from 'path';
 import {spawn} from 'child-process-promise';
 import {EventEmitter} from 'events';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {getLogger} = log4js;
 
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
 import {HostDatastoreBrowserSearchResults} from '@anyopsos/sdk-vmware/src/lib/types/data/host-datastore-browser-search-results';

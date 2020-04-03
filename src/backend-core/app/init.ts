@@ -1,6 +1,22 @@
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {configure, getLogger} = log4js;
+
+const logger: Logger = getLogger('mainLog');
+
 export class Init {
 
   constructor() {
+    configure({
+      appenders: {
+        console: {type: 'console', level: 'trace'}
+      },
+      categories: {
+        default: {appenders: ['console'], level: 'trace'},
+        mainLog: {appenders: ['console'], level: 'trace'}
+      }
+    });
   }
 
   /**

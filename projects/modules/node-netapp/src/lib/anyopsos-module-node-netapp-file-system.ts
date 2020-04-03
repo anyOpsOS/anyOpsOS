@@ -1,7 +1,10 @@
-import {getLogger, Logger} from 'log4js';
 import {pathExistsSync, readFile} from 'fs-extra';
 import {join} from 'path';
 import {EventEmitter} from 'events';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {getLogger} = log4js;
 
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
 import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';

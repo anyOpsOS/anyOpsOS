@@ -7,7 +7,7 @@
   },
   "devDependencies": {
     "@types/node": "^12.12.21",
-    "typescript": "^3.7.4"
+    "typescript": "^3.8.3"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

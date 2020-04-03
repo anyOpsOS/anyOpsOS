@@ -13,8 +13,9 @@
   "license": "GPL-3.0-or-later",
   "engines": {
     "yarn": "1.0.x || >=1.2.1",
-    "node": ">=10.0.0 <13.0.0"
+    "node": ">=10.0.0"
   },
+  "type": "module",
   "private": true,
   "dependencies": {
     "@anyopsos/frontend": "~0.0.1",
@@ -39,7 +40,6 @@
     "fs-extra": "^8.1.0",
     "helmet": "^3.21.3",
     "log4js": "^6.1.2",
-    "module-alias": "^2.2.2",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "https://github.com/anyOpsOS/routing-controllers.git#build",
     "socket-controllers": "https://github.com/anyOpsOS/socket-controllers.git#build",
@@ -61,6 +61,8 @@
     "@types/node": "^12.12.21",
     "@types/serve-favicon": "^2.5.0",
     "@types/socket.io": "^2.1.4",
-    "@types/socket.io-redis": "^1.0.25"
+    "@types/socket.io-redis": "^1.0.25",
+    "tslib": "^1.11.1",
+    "typescript": "^3.8.3"
   }
 }

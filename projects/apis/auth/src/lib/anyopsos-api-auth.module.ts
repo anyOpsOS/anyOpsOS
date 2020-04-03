@@ -1,15 +1,19 @@
-import {Controller, Get, Authorized, Req, Res, Post, BodyParam, Put} from 'routing-controllers';
-import {SessionParam} from 'routing-controllers/decorator/SessionParam';
+import routingControllers from 'routing-controllers';
+import routingControllersSessionParam from 'routing-controllers/decorator/SessionParam';
+import log4js, {Logger} from 'log4js';
 import {Request, Response} from 'express';
-import {getLogger} from 'log4js';
+
+// TODO ESM
+const {Controller, Get, Authorized, Req, Res, Post, BodyParam, Put} = routingControllers;
+const {SessionParam} = routingControllersSessionParam;
+const {getLogger} = log4js;
 
 import {AOO_UNIQUE_COOKIE_NAME} from '@anyopsos/module-sys-constants';
 import {AnyOpsOSApiGlobalsModule} from '@anyopsos/module-api-globals';
 import {AnyOpsOSAuthModule} from '@anyopsos/module-auth';
 
 
-const logger = getLogger('mainLog');
-
+const logger: Logger = getLogger('mainLog');
 
 /**
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!

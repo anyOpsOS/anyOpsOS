@@ -1,6 +1,6 @@
 {
   "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../../dist/external-libraries/netdata",
+  "dest": "../../../.dist/external-libraries/netdata",
   "lib": {
     "entryFile": "src/public-api.ts"
   },

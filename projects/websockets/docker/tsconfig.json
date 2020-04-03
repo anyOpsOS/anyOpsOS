@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/websockets/docker",
+    "outDir": "../../../.dist/websockets/docker",
     "baseUrl": ".",
     "paths": {
       "*": [

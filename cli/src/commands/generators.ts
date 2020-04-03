@@ -1,7 +1,11 @@
-import {blue, blueBright, red} from 'chalk';
-import {copy, ensureDir, move, outputFile, outputJson, pathExistsSync, unlink} from 'fs-extra';
+import chalk from 'chalk';
+import fs from 'fs-extra';
+import replaceInFile from 'replace-in-file';
 import editJsonFile from 'edit-json-file';
-import replaceInFile from "replace-in-file";
+
+// TODO ESM
+const {blue, blueBright, red} = chalk;
+const {copy, ensureDir, move, outputFile, outputJson, pathExistsSync, unlink} = fs;
 
 import {runInDocker} from '../utils';
 import {MAIN_PATH_CWD} from '../constants';
@@ -9,15 +13,15 @@ import {Types} from '../types/types';
 
 export class Generators {
 
-  private packageType;
-  private packageLongType;
-  private packagePrefix;
-  private projectPath;
+  private packageType!: string;
+  private packageLongType!: string;
+  private packagePrefix!: string;
+  private projectPath!: string;
 
   constructor() {
   }
 
-  private async yarnInstall(argv) {
+  private async yarnInstall(argv: { type: Types; name: string; prefix: string; }) {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Running 'yarn install' on workspace @anyopsos/${this.packageType}-${argv.name}\n`));
 
     await runInDocker(`yarn workspace @anyopsos/${this.packageType}-${argv.name} install`);
@@ -26,7 +30,7 @@ export class Generators {
   /**
    * Creates main angular module (library)
    */
-  private async createLibrary(argv): Promise<void> {
+  private async createLibrary(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blue(`[anyOpsOS Cli.] Generating module ${argv.name} of type ${this.packageType}`));
     console.log(red(`[anyOpsOS Cli.] Do not cancel this command...\n`));
 
@@ -36,7 +40,7 @@ export class Generators {
       await outputJson(`${this.projectPath}/tsconfig.json`, {
         extends: '../../../tsconfig.backend.json',
         compilerOptions: {
-          outDir: `../../../dist/${this.packageLongType}/${argv.name}`,
+          outDir: `../../../.dist/${this.packageLongType}/${argv.name}`,
           baseUrl: '.',
           paths: {
             '*': [
@@ -61,7 +65,7 @@ export class Generators {
   /**
    * Renames and moves the created project to its final location
    */
-  private async moveLibraryToFinalLocation(argv): Promise<void> {
+  private async moveLibraryToFinalLocation(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Moving module ${argv.name} to its final location\n`));
 
     await move(
@@ -73,7 +77,7 @@ export class Generators {
   /**
    * Sets correct parameters/paths on files like (tsconfig, tslint, package, ng-package, angular).json
    */
-  private async standarizeLibraryFiles(argv): Promise<void> {
+  private async standarizeLibraryFiles(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Editing project files to include module ${argv.name}.\n`));
 
     const packageFile = editJsonFile(`${this.projectPath}/package.json`);
@@ -97,7 +101,7 @@ export class Generators {
     packageFile.set('private', true);
     await packageFile.save();
 
-    ngPackageFile.set('dest', `../../../dist/${this.packageLongType}/${argv.name}`);
+    ngPackageFile.set('dest', `../../../.dist/${this.packageLongType}/${argv.name}`);
     ngPackageFile.set('$schema', '../../../node_modules/ng-packagr/ng-package.schema.json');
     await ngPackageFile.save();
 
@@ -112,8 +116,8 @@ export class Generators {
     tsLintFile.set('extends', '../../../tslint.json');
     await tsLintFile.save();
 
-    modulesTsConfigFile.set(`compilerOptions.paths.@anyopsos/${this.packageType}-${argv.name}`, [`dist/${this.packageLongType}/${argv.name}`]);
-    modulesTsConfigFile.set(`compilerOptions.paths.@anyopsos/${this.packageType}-${argv.name}/*`, [`dist/${this.packageLongType}/${argv.name}/*`]);
+    modulesTsConfigFile.set(`compilerOptions.paths.@anyopsos/${this.packageType}-${argv.name}`, [`.dist/${this.packageLongType}/${argv.name}`]);
+    modulesTsConfigFile.set(`compilerOptions.paths.@anyopsos/${this.packageType}-${argv.name}/*`, [`.dist/${this.packageLongType}/${argv.name}/*`]);
     await modulesTsConfigFile.save();
 
     mainTsConfigFile.unset(`compilerOptions.paths.any-ops-o-s-${this.packageType}-${argv.name}`);
@@ -138,7 +142,7 @@ export class Generators {
   /**
    * Delete unwanted default files created by ng generate
    */
-  private async deleteDefaultFiles(argv): Promise<void> {
+  private async deleteDefaultFiles(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Deleting some angular default generated files.\n`));
 
     await unlink(`${this.projectPath}/src/lib/any-ops-o-s-${this.packageType}-${argv.name}.component.spec.ts`, (e) => { if (e) throw e; });
@@ -150,7 +154,7 @@ export class Generators {
   /**
    * Sets correct name to library Module file
    */
-  private async renameLibraryModuleFile(argv): Promise<void> {
+  private async renameLibraryModuleFile(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Renaming module.\n`));
 
     await move(
@@ -159,7 +163,7 @@ export class Generators {
     );
   };
 
-  private async removeUnwantedCodeFromFiles(argv): Promise<void> {
+  private async removeUnwantedCodeFromFiles(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Removing unwanted code from module files.\n`));
 
     // Remove unwanted exports from public-api
@@ -183,7 +187,7 @@ export class Generators {
     await copy(`${process.cwd()}/LICENSE`, `${this.projectPath}/LICENSE`, (e) => { if (e) throw e; });
   };
 
-  private async createReadMe(argv): Promise<void> {
+  private async createReadMe(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blue(`[anyOpsOS Cli.] Creating empty README.\n`));
 
     await outputFile(`${this.projectPath}/README.md`, `${this.packageType} ${argv.name}`);
@@ -196,7 +200,7 @@ export class Generators {
   /**
    * Create base application type files
    */
-  private async createBaseApplicationFiles(argv): Promise<void> {
+  private async createBaseApplicationFiles(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Generating Application base components.\n`));
 
     await runInDocker(`ng generate component components/body --project anyopsos-${this.packageType}-${argv.name}`);
@@ -208,7 +212,7 @@ export class Generators {
   /**
    * Create base modal type files
    */
-  private async createBaseModalFiles(argv): Promise<void> {
+  private async createBaseModalFiles(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Generating Modal base components.\n`));
 
     await runInDocker(`ng generate component entry --project anyopsos-${this.packageType}-${argv.name}`);
@@ -232,7 +236,7 @@ export class Generators {
 
     let dynamicModule = argv.name
       .toLowerCase()
-      .replace(/-(.)/g, (match, group1) => group1.toUpperCase());
+      .replace(/-(.)/g, (match: any, group1: string) => group1.toUpperCase());
 
     dynamicModule = `${dynamicModule.charAt(0).toUpperCase()}${dynamicModule.slice(1)}`;
 
@@ -358,7 +362,7 @@ export class ${fulldynamicComponent} implements OnInit {
   /**
    * Create base library/external-library type files
    */
-  private async createBaseLibFiles(argv): Promise<void> {
+  private async createBaseLibFiles(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Generating Library base components.\n`));
 
     await runInDocker(`ng generate service services/anyopsos-${this.packageType}-${argv.name} --project anyopsos-${this.packageType}-${argv.name}`);
@@ -367,12 +371,12 @@ export class ${fulldynamicComponent} implements OnInit {
   /**
    * Create base api type files
    */
-  private async createBaseApiFiles(argv): Promise<void> {
+  private async createBaseApiFiles(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Generating API base components.\n`));
 
     let dynamicModule = argv.name
       .toLowerCase()
-      .replace(/-(.)/g, (match, group1) => group1.toUpperCase());
+      .replace(/-(.)/g, (match: any, group1: string) => group1.toUpperCase());
 
     dynamicModule = `${dynamicModule.charAt(0).toUpperCase()}${dynamicModule.slice(1)}`;
 
@@ -382,6 +386,7 @@ export class ${fulldynamicComponent} implements OnInit {
       name: `@anyopsos/${this.packageType}-${argv.name}`,
       version: '0.0.1',
       main: 'src/index.ts',
+      type: 'module',
       dependencies: {
         log4js: '^6.1.0',
       },
@@ -436,12 +441,12 @@ export class ${fulldynamicModule} {
   /**
    * Create base module type files
    */
-  private async createBaseModuleFiles(argv): Promise<void> {
+  private async createBaseModuleFiles(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Generating Module base components.\n`));
 
     let dynamicModule = argv.name
       .toLowerCase()
-      .replace(/-(.)/g, (match, group1) => group1.toUpperCase());
+      .replace(/-(.)/g, (match: any, group1: string) => group1.toUpperCase());
 
     dynamicModule = `AnyOpsOS${dynamicModule.charAt(0).toUpperCase()}${dynamicModule.slice(1)}Module`;
 
@@ -449,6 +454,7 @@ export class ${fulldynamicModule} {
       name: `@anyopsos/${this.packageType}-${argv.name}`,
       version: '0.0.1',
       main: 'src/index.ts',
+      type: 'module',
       devDependencies: {
         '@types/node': '^12.12.21',
         typescript: '^3.7.4'
@@ -477,14 +483,14 @@ export class ${fulldynamicModule} {
   };
 
   /**
-   * Create base api type files
+   * Create base websocket type files
    */
-  private async createBaseWebsocketFiles(argv): Promise<void> {
+  private async createBaseWebsocketFiles(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Generating WebSocket base components.\n`));
 
     let dynamicModule = argv.name
       .toLowerCase()
-      .replace(/-(.)/g, (match, group1) => group1.toUpperCase());
+      .replace(/-(.)/g, (match: any, group1: string) => group1.toUpperCase());
 
     dynamicModule = `${dynamicModule.charAt(0).toUpperCase()}${dynamicModule.slice(1)}`;
 
@@ -494,6 +500,7 @@ export class ${fulldynamicModule} {
       name: `@anyopsos/${this.packageType}-${argv.name}`,
       version: '0.0.1',
       main: 'src/index.ts',
+      type: 'module',
       dependencies: {
         log4js: '^6.1.0',
       },

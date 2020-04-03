@@ -1,12 +1,11 @@
-import {configure, getLogger, connectLogger, Logger} from 'log4js';
-import {createServer as createServers, Server as Servers, ServerOptions} from 'https';
-import {Application, Request, Response, RequestHandler, static as expressStatic, NextFunction} from 'express';
+import log4js, {Logger} from 'log4js';
+import {createServer as createServers, Server as Servers, ServerOptions, get} from 'https';
+import express, {Application, Request, Response, RequestHandler, NextFunction} from 'express';
 import {ServeStaticOptions} from 'serve-static';
-import {urlencoded, json} from 'body-parser';
-import {useExpressServer, Action} from 'routing-controllers';
-import {useSocketServer} from 'socket-controllers';
 import {join} from 'path';
-import express from 'express';
+import bodyParser from 'body-parser';
+import routingControllers, {Action} from 'routing-controllers';
+import socketControllers from 'socket-controllers';
 import socketIo from 'socket.io';
 import connectRedis, {RedisStore} from 'connect-redis';
 import socketRedisStore from 'socket.io-redis';
@@ -16,14 +15,20 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import cookie from 'cookie';
 import favicon from 'serve-favicon';
-import * as helmet from 'helmet';
+import helmet from 'helmet';
 
-import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
+// TODO ESM
+const {getLogger, connectLogger} = log4js;
+const expressStatic = express.static;
+const {urlencoded, json} = bodyParser;
+const {useExpressServer} = routingControllers;
+const {useSocketServer} = socketControllers;
+const {frameguard, xssFilter, noSniff, ieNoOpen, hsts} = helmet;
+
 import {AnyOpsOSSysRedisSessionModule} from '@anyopsos/module-sys-redis-session'
-import {AOO_SESSION_COOKIE, AOO_SESSION_COOKIE_SECRET, AOO_UNIQUE_COOKIE_NAME, SSL_DHPARAM, SSL_CA_CERT, SSL_CORE_CERT, SSL_CORE_CERT_KEY} from '@anyopsos/module-sys-constants';
+import {AOO_SESSION_COOKIE, AOO_SESSION_COOKIE_SECRET, AOO_UNIQUE_COOKIE_NAME, SSL_DHPARAM, SSL_CA_CERT, SSL_CORE_CERT, SSL_CORE_CERT_KEY, AOO_FILESYSTEM_HOST, AOO_FILESYSTEM_PORT, AOO_BASE_PATH} from '@anyopsos/module-sys-constants';
+import {AnyOpsOSFile} from './types/anyopsos-file';
 
-import {AnyOpsOSApiFinalMiddleware} from '@anyopsos/api-middleware-final';
-import {AnyOpsOSApiErrorHandlerMiddleware} from '@anyopsos/api-middleware-error-handler';
 
 /**
  * App class will create all the backend listeners HTTPS/WSS
@@ -88,15 +93,15 @@ export class App {
     });
 
     // Start
-    this.createApp();
+    await this.createApp();
     this.logging();
     this.createServer();
-    this.sockets();
+    await this.sockets();
     this.listen();
     this.errorHandler();
   }
 
-  private createApp(): void {
+  private async createApp(): Promise<void> {
     this.app = express();
     this.app.use(this.Session);
     this.app.use(compress({
@@ -111,31 +116,48 @@ export class App {
     }));
     this.app.use(json({limit: '50mb'}));
     this.app.use(cookieParser(this.sessionSecret));
-    this.app.use(helmet.frameguard());
-    this.app.use(helmet.xssFilter());
-    this.app.use(helmet.noSniff());
-    this.app.use(helmet.ieNoOpen());
-    this.app.use(helmet.hsts({
+    this.app.use(frameguard());
+    this.app.use(xssFilter());
+    this.app.use(noSniff());
+    this.app.use(ieNoOpen());
+    this.app.use(hsts({
       maxAge: 10886400000,     // Must be at least 18 weeks to be approved by Google
       includeSubDomains: true, // Must be enabled to be approved by Google
       preload: true
     }));
     this.app.disable('x-powered-by');
     this.app.use(cors());
-    this.app.use(favicon(__dirname + '/public/favicon.ico'));
-    this.app.use(expressStatic(join(__dirname, '/public'), this.expressOptions));
+    this.app.use(favicon(join(AOO_BASE_PATH, '/public/favicon.ico')));
+    this.app.use(expressStatic(join(AOO_BASE_PATH, '/public'), this.expressOptions));
 
-    useExpressServer(this.app, {
+    // Get all APIS not used in fileSystem nor Auth backend
+    const controllers: string[] = await new Promise((resolve, reject) => {
+      get(`https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/folder/${encodeURIComponent('bin/apis')}`, (res) => {
+        let data = '';
+        res.on('data', (chunk) => data += chunk);
+        res.on('end', () => {
+
+          return resolve(
+            JSON.parse(data).data
+              .filter((file: AnyOpsOSFile) => file.longName.startsWith('d') && !['auth', 'credential', 'vault', 'config-file', 'file', 'folder'].includes(file.fileName))
+              .map((file: AnyOpsOSFile) => `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${ encodeURIComponent(`bin/apis/${file.fileName}/index.js`) }`)
+          );
+        
+        });
+      }).on('error', (err) => reject(err));
+    });
+
+    await useExpressServer(this.app, {
       defaultErrorHandler: false,
       defaults: {
         paramOptions: {
           required: true
         }
       },
-      controllers: [new AnyOpsOSSysGetPathModule().filesystem + '/bin/apis/*/index.js'],
+      controllers: controllers,
       middlewares: [
-        AnyOpsOSApiFinalMiddleware,
-        AnyOpsOSApiErrorHandlerMiddleware,
+        `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/api-middlewares/final/index.js')}`,
+        `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/api-middlewares/error-handler/index.js')}`
       ],
       authorizationChecker: async (action: Action, roles?: string[]) => {
         // No legged_in or deleted uniqueId cookie
@@ -180,16 +202,6 @@ export class App {
   }
 
   private logging(): void {
-    configure({
-      appenders: {
-        console: {type: 'console', level: 'trace'}
-      },
-      categories: {
-        default: {appenders: ['console'], level: 'trace'},
-        mainLog: {appenders: ['console'], level: 'trace'}
-      }
-    });
-
     this.logger = getLogger('mainLog');
     this.app.use(connectLogger(this.logger, {
       level: 'trace',
@@ -203,7 +215,7 @@ export class App {
     this.servers = createServers(this.options, this.app);
   }
 
-  private sockets(): void {
+  private async sockets(): Promise<void> {
     this.io = socketIo(this.servers);
 
     // Set socket.io adapter to RedisStore
@@ -304,8 +316,25 @@ export class App {
 
     });
 
+    // Get all websockets to be loaded
+    const controllers: string[] = await new Promise((resolve, reject) => {
+      get(`https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/folder/${encodeURIComponent('bin/websockets')}`, (res) => {
+        let data = '';
+        res.on('data', (chunk) => data += chunk);
+        res.on('end', () => {
+
+          return resolve(
+            JSON.parse(data).data
+              .filter((file: AnyOpsOSFile) => file.longName.startsWith('d'))
+              .map((file: AnyOpsOSFile) => `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${ encodeURIComponent(`bin/websockets/${file.fileName}/index.js`) }`)
+          );
+        
+        });
+      }).on('error', (err) => reject(err));
+    });
+
     useSocketServer(this.io, {
-      controllers: [new AnyOpsOSSysGetPathModule().filesystem + '/bin/websockets/*/index.js'],
+      controllers: controllers,
     });
   }
 

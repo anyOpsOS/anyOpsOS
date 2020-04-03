@@ -1,7 +1,10 @@
-import {getLogger, Logger} from 'log4js';
-import {readFile} from 'fs-extra';
-const nodeVault = require('node-vault');
-import {client} from 'node-vault';
+import log4js, {Logger} from 'log4js';
+import fs from 'fs-extra';
+import nodeVault, {client} from 'node-vault';
+
+// TODO ESM
+const {getLogger} = log4js;
+const {readFile} = fs;
 
 import {AOO_ANYOPSOS_TYPE, AOO_VAULT_HOST, AOO_VAULT_PORT, AOO_VAULT_API_VERSION, AOO_VAULT_SECRET_SHARES, AOO_VAULT_SECRET_THRESHOLD} from '@anyopsos/module-sys-constants';
 
@@ -41,7 +44,7 @@ export class AnyOpsOSVaultModule {
   async getUsersList(): Promise<string[]> {
     logger.trace(`[Module Vault] -> getUsersList`);
 
-    return vaultClient.list('/auth/userpass/users').then(users =>  users.data.keys).catch(() => []);
+    return vaultClient.list('/auth/userpass/users').then(users => users.data.keys).catch(() => []);
   }
 
   /**
@@ -206,9 +209,9 @@ export class AnyOpsOSVaultModule {
     // Allow access to Workspace secrets
     await vaultClient.addPolicy({
       name: AOO_ANYOPSOS_TYPE,
-      policy: `path "secret/workspaces/*" { capabilities = ["create", "update", "read", "delete", "list"] }
-      path "auth/userpass/users" { capabilities = ["create", "update", "read", "delete", "list"] }
-      path "auth/*" { capabilities = ["create"] }`
+      policy: `path "auth/userpass/users/*" { capabilities = ["create", "update", "read", "delete", "list"] }
+      path "secret/workspaces/*" { capabilities = ["create", "update", "read", "delete", "list"] }
+      path "secret/users/*" { capabilities = ["create", "update", "read", "delete", "list"] }`
     });
 
     await vaultClient.write(`auth/kubernetes/role/${AOO_ANYOPSOS_TYPE}`, {

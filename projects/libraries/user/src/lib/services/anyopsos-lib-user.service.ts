@@ -11,7 +11,7 @@ import {UserState} from '../types/user-state';
 export class AnyOpsOSLibUserService {
   private readonly stateSource: BehaviorSubject<UserState> = new BehaviorSubject({
     userLoggedIn: false,
-    username: 'root'
+    username: ''
   });
 
   readonly currentState = this.stateSource.asObservable();

@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/websocket-middlewares/main",
+    "outDir": "../../../.dist/websocket-middlewares/main",
     "baseUrl": ".",
     "paths": {
       "*": [

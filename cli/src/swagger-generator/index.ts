@@ -1,22 +1,27 @@
 import 'reflect-metadata';
+import classValidator from 'class-validator';
+import classValidatorJsonschema from 'class-validator-jsonschema';
+import routingControllers from 'routing-controllers';
+import routingControllersOpenapi from 'routing-controllers-openapi';
+import chalk from 'chalk';
+import apiSpecConverter from 'api-spec-converter';
+import fs from 'fs-extra';
+
+// TODO ESM
+const {getFromContainer, MetadataStorage} = classValidator;
+const {validationMetadatasToSchemas} = classValidatorJsonschema;
+const {createExpressServer, getMetadataArgsStorage} = routingControllers;
+const {routingControllersToSpec} = routingControllersOpenapi;
+const {blueBright} = chalk;
+const {convert} = apiSpecConverter;
+const {writeJson} = fs;
 
 import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants';
-const moduleAlias = require('module-alias');
-moduleAlias.addAlias('@anyopsos', `${MAIN_PATH_CWD}/dist/anyOpsOS/fileSystem/filesystem/bin/modules/`);
-
-import {getFromContainer, MetadataStorage} from 'class-validator';
-import {validationMetadatasToSchemas} from 'class-validator-jsonschema';
-import {createExpressServer, getMetadataArgsStorage} from 'routing-controllers';
-import {routingControllersToSpec} from 'routing-controllers-openapi';
-import {writeJson} from 'fs-extra';
-import {blueBright} from 'chalk';
-import * as Converter from 'api-spec-converter';
-
 import {runInDocker} from '../utils';
 
 
 const routingControllersOptions = {
-  controllers: [`${MAIN_PATH_CWD}/dist/apis/*/lib/*.js`]
+  controllers: [`${MAIN_PATH_CWD}/.dist/apis/*/index.js`]
 };
 createExpressServer(routingControllersOptions);
 
@@ -46,11 +51,11 @@ const spec = routingControllersToSpec(storage, routingControllersOptions, {
 });
 
 console.log(blueBright(`[anyOpsOS Cli. Internals] Generating APIs swagger.json file.`));
-Converter.convert({
+convert({
   from: 'openapi_3',
   to: 'swagger_2',
   source: spec,
-}).then(async (converted): Promise<void> => {
+}).then(async (converted: any): Promise<void> => {
 
   console.log(blueBright(`[anyOpsOS Cli. Internals] Copying API Main swagger.json file.\n`));
   await writeJson(
@@ -60,9 +65,11 @@ Converter.convert({
   );
 
   // Generate one swagger file per api project
-  const projects = [];
+  const projects: { [key: string]: any } = {};
 
   Object.keys(converted.spec.paths).map((path: string) => {
+
+    console.log(path);
 
     let projectName = path.split('/')[2];
 
@@ -88,7 +95,7 @@ Converter.convert({
   for (const project of Object.keys(projects)) {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Copying API ${projects[project].projectName} swagger.json file.`));
     await writeJson(
-      `${process.cwd()}/projects/apis/${projects[project].projectName}/swagger.json`,
+      `${MAIN_PATH_CWD}/projects/apis/${projects[project].projectName}/swagger.json`,
       projects[project],
       {spaces: 2}
     );

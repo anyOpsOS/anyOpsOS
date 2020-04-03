@@ -1,4 +1,7 @@
-import {readFileSync, pathExistsSync} from 'fs-extra';
+import fs from 'fs-extra';
+
+// TODO ESM
+const {readFileSync, pathExistsSync} = fs;
 
 /**
  * Redis
@@ -18,14 +21,15 @@ export const AOO_VAULT_API_VERSION: string = process.env.VAULT_APIVERSION ?? 'v1
 /**
  * anyOpsOS hostnames
  */
-export const AOO_FILESYSTEM_HOST: string = process.env.FILESYSTEM_HOST ?? 'filesystem.anyopsos.local';
-export const AOO_FILESYSTEM_PORT: string = process.env.FILESYSTEM_PORT ?? '443';
-export const AOO_AUTH_HOST: string = process.env.AUTH_HOST ?? 'auth.anyopsos.local';
-export const AOO_AUTH_PORT: string = process.env.AUTH_PORT ?? '443';
-export const AOO_CORE_HOST: string = process.env.CORE_HOST ?? 'core.anyopsos.local';
-export const AOO_CORE_PORT: string = process.env.CORE_PORT ?? '443';
+export const AOO_FILESYSTEM_HOST: string = process.env.AOO_FILESYSTEM_HOST ?? 'filesystem.anyopsos.local';
+export const AOO_FILESYSTEM_PORT: string = process.env.AOO_FILESYSTEM_PORT ?? '443';
+export const AOO_AUTH_HOST: string = process.env.AOO_AUTH_HOST ?? 'auth.anyopsos.local';
+export const AOO_AUTH_PORT: string = process.env.AOO_AUTH_PORT ?? '443';
+export const AOO_CORE_HOST: string = process.env.AOO_CORE_HOST ?? 'core.anyopsos.local';
+export const AOO_CORE_PORT: string = process.env.AOO_CORE_PORT ?? '443';
 
 export const AOO_ANYOPSOS_TYPE: 'filesystem' | 'auth' | 'core' |string = process.env.AOO_ANYOPSOS_TYPE ?? 'core';
+export const AOO_BASE_PATH: string = process.env.AOO_BASE_PATH ?? '/var/www';
 
 /**
  * Session params

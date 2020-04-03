@@ -1,7 +1,11 @@
-import * as yargs from 'yargs';
-import {blue, blueBright, green, red} from 'chalk';
+import chalk from 'chalk';
+import fs from 'fs-extra';
 import awaitSpawn from 'await-spawn';
-import {ensureFile} from 'fs-extra';
+import yargs from 'yargs';
+
+// TODO ESM
+const {blue, blueBright, green, red, yellow} = chalk
+const {ensureFile} = fs;
 
 import {Builders} from './commands/builders';
 import {Linters} from './commands/linters';
@@ -30,8 +34,9 @@ export class anyOpsOS {
     * <attach>: Attach to the container Shell
 
     Code Development:
-    * <download>: Performs a 'get clone' of anyOpsOS repository
+    * <download>: Performs a 'git clone' of anyOpsOS repository
     * <install>: Performs a 'yarn install' inside the container
+    * <build>: Build the required Docker images for use with <k8s>
 
     Environment:
     * <certificate>: Generates all required certificates used for Pod to Pod communication
@@ -46,15 +51,12 @@ export class anyOpsOS {
             demand: false,
             describe: 'specify module type',
             hidden: true,
-            choices: ['prepare', 'attach', 'download', 'install', 'certificate', 'k8s']
+            choices: ['prepare', 'attach', 'download', 'install', 'build', 'certificate', 'k8s']
           }
         },
         handler: async (args) => {
           try {
 
-            if (args.action === 'attach') return runInDocker('bash');
-            if (args.action === 'install') return runInDocker('yarn install');
-            if (args.action === 'download') return runInDocker('git clone https://github.com/anyOpsOS/anyOpsOS .');
             if (args.action === 'prepare') {
               if (args.force) console.log(red(`[anyOpsOS Cli. Internals] Force recreation of Docker Development Image and Container.`));
 
@@ -68,7 +70,7 @@ export class anyOpsOS {
               if (containerExists) {
 
                 // Stop here
-                if (!args.force) return console.log(blueBright(`[anyOpsOS Cli. Internals] Docker Development container already exists.`));
+                if (!args.force) return console.log(yellow(`[anyOpsOS Cli. Internals] Docker Development container already exists.`));
 
                 await awaitSpawn('docker', ['rm', '--force', 'anyopsos-devel'], {
                   cwd: MAIN_PATH_CWD
@@ -86,7 +88,7 @@ export class anyOpsOS {
               // Create image
               if (!imageExists || args.force) {
 
-                console.log(blueBright(`[anyOpsOS Cli. Internals] Creating Docker Development Image.`));
+                console.log(blueBright(`[anyOpsOS Cli.] Creating Docker Development Image.`));
 
                 // Build devel image
                 await awaitSpawn('docker', ['build', '-f', 'docker/Dockerfile.devel', '-t', 'anyopsos-devel', './docker'], {
@@ -105,7 +107,7 @@ export class anyOpsOS {
               // Create image
               if (!volumeExists || args.force) {
 
-                console.log(blueBright(`[anyOpsOS Cli. Internals] Creating Docker Development Volume.`));
+                console.log(blueBright(`[anyOpsOS Cli.] Creating Docker Development Volume.`));
 
                 // Create data volume
                 await awaitSpawn('docker', ['volume', 'create', 'anyopsos-data'], {
@@ -114,18 +116,18 @@ export class anyOpsOS {
                 });
               }
 
-              console.log(blueBright(`[anyOpsOS Cli. Internals] Creating Docker Development container.`));
+              console.log(blueBright(`[anyOpsOS Cli.] Creating Docker Development container.`));
 
               await ensureFile('ssh.key');
 
               // Run container
               await awaitSpawn('docker', [
                 'run',
-                '--rm',
+                // '--rm',
                 '-d',
                 '-p', '2222:22',
                 '--mount', `src=anyopsos-data,target=${INTERNAL_PATH_CWD},type=volume`,
-                '--mount', `src=${MAIN_PATH_CWD}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
+                // '--mount', `src=${MAIN_PATH_CWD}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
                 '--name', 'anyopsos-devel',
                 'anyopsos-devel'
               ], {
@@ -135,6 +137,30 @@ export class anyOpsOS {
 
               console.log(red(`[anyOpsOS Cli.] SSH key file [ssh.key] generated. Use this key to manage the container files from your IDE.`));
             }
+            if (args.action === 'attach') return runInDocker('bash');
+            if (args.action === 'download') return runInDocker('git clone https://github.com/anyOpsOS/anyOpsOS .');
+            if (args.action === 'install') return runInDocker('yarn install --link-duplicates --ignore-engines');
+            if (args.action === 'build') {
+
+              console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker Auth Image.`));
+              await awaitSpawn('docker', ['build', '-f', 'docker/Dockerfile.auth', '-t', 'anyopsos-auth', './docker'], {
+                cwd: MAIN_PATH_CWD,
+                stdio: 'inherit'
+              });
+
+              console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker Core Image.`));
+              await awaitSpawn('docker', ['build', '-f', 'docker/Dockerfile.core', '-t', 'anyopsos-core', './docker'], {
+                cwd: MAIN_PATH_CWD,
+                stdio: 'inherit'
+              });
+
+              console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker FileSystem Image.`));
+              await awaitSpawn('docker', ['build', '-f', 'docker/Dockerfile.fileSystem', '-t', 'anyopsos-filesystem', './docker'], {
+                cwd: MAIN_PATH_CWD,
+                stdio: 'inherit'
+              });
+
+            }
 
           } catch (err) {
             console.error(err);
@@ -143,8 +169,8 @@ export class anyOpsOS {
         }
       })
       .command({
-        command: blue('basic code architecture information'),
-        describe: `${blue('List of module <type>s:')}
+        command: blueBright('basic code architecture information'),
+        describe: `${blueBright('List of module <type>s:')}
       ----
       Frontend:
       * <frontend>: The Frontend
@@ -239,7 +265,7 @@ export class anyOpsOS {
             demand: true,
             describe: 'specify module type',
             hidden: true,
-            choices: ['all', 'backend', 'frontend', 'library', 'external-library', 'application', 'modal', 'module', 'api-middleware', 'api', 'websocket']
+            choices: ['all', 'backend', 'frontend', 'library', 'external-library', 'application', 'modal', 'module', 'api-middleware', 'api', 'websocket', 'cli']
           }
         },
         handler: async (argv: & { type: Types; moduleName?: string }) => {
@@ -247,7 +273,7 @@ export class anyOpsOS {
             if (argv.type === 'all') return await new Builders().buildAll();
             if (argv.type === 'module') return await new Builders().buildBackendTypes(argv);
             if (argv.type === 'api-middleware') return await new Builders().buildBackendTypes(argv);
-            if (argv.type === 'api') return await new Builders().buildBackendTypes(argv).then(async () => await require('./swagger-generator/index'));
+            if (argv.type === 'api') return await new Builders().buildBackendTypes(argv).then(async () => await import('./swagger-generator/index'));
             if (argv.type === 'websocket') return await new Builders().buildBackendTypes(argv);
             if (argv.type === 'backend') return await new Builders().buildBackend();
             if (argv.type === 'frontend') return await new Builders().buildFrontend();
@@ -255,6 +281,7 @@ export class anyOpsOS {
             if (argv.type === 'external-library') return await new Builders().buildFrontendTypes(argv);
             if (argv.type === 'application') return await new Builders().buildFrontendTypes(argv);
             if (argv.type === 'modal') return await new Builders().buildFrontendTypes(argv);
+            if (argv.type === 'cli') return await runInDocker('cd cli/ && yarn build').then(async () => await new Builders().buildCli());
           } catch (err) {
             console.error(err);
             process.exit(1);
@@ -262,8 +289,8 @@ export class anyOpsOS {
         }
       })
       .updateStrings({
-        'Options:': blue('Options:'),
-        'Commands:': blue('Commands:')
+        'Options:': blueBright('Options:'),
+        'Commands:': blueBright('Commands:')
       })
       .example('$0 new modal file-system fs', 'Will create a new modal with prefix \'amfs\'')
       .help()

@@ -1,13 +1,17 @@
-import {BodyParam, Controller, Get, Post, Req, Res} from 'routing-controllers';
 import {Request, Response} from 'express';
-import {getLogger} from 'log4js';
+import routingControllers from 'routing-controllers';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {BodyParam, Controller, Get, Post, Req, Res} = routingControllers;
+const {getLogger} = log4js;
 
 import {AnyOpsOSApiGlobalsModule} from '@anyopsos/module-api-globals';
 import {AnyOpsOSVaultModule, VaultState} from '@anyopsos/module-vault';
 import {AnyOpsOSAuthModule} from '@anyopsos/module-auth';
 
 
-const logger = getLogger('mainLog');
+const logger: Logger = getLogger('mainLog');
 
 /**
  * This API is not authorized, which means anyone can use it

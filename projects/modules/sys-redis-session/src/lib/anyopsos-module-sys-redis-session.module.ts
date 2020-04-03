@@ -1,5 +1,8 @@
-import {createClient, RedisClient, RetryStrategyOptions} from 'redis';
 import {hostname} from 'os';
+import redis, {RedisClient, RetryStrategyOptions} from 'redis';
+
+// TODO ESM
+const {createClient} = redis;
 
 import {AOO_REDIS_HOST} from '@anyopsos/module-sys-constants';
 

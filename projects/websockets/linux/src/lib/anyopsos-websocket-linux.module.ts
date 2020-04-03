@@ -1,8 +1,11 @@
 import {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, ReturnAck} from 'socket-controllers';
-import {getLogger} from 'log4js';
 import {Socket} from 'socket.io';
+import log4js, {Logger} from 'log4js';
 
-const logger = getLogger('mainLog');
+// TODO ESM
+const {getLogger} = log4js;
+
+const logger: Logger = getLogger('mainLog');
 
 @SocketController()
 export class AnyOpsOSLinuxWebsocketController {

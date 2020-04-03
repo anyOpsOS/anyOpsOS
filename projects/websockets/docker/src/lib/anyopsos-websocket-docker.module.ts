@@ -8,8 +8,11 @@ import {
   ReturnAck,
   SocketSessionParam
 } from 'socket-controllers';
-import {getLogger, Logger} from 'log4js';
 import {Socket} from 'socket.io';
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {getLogger} = log4js;
 
 import {AnyOpsOSNodeDockerModule} from '@anyopsos/module-node-docker';
 import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';

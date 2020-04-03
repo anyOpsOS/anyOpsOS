@@ -1,15 +1,45 @@
-import {getLogger, Logger} from 'log4js';
-import {copy, ensureDir, move, outputFile, pathExistsSync, readdir, remove, stat, Stats} from 'fs-extra';
+import log4js, {Logger} from 'log4js';
+import {Stats} from 'fs';
 import {parse} from 'url';
 import {join} from 'path';
-import {spawn} from 'child-process-promise';
+import fs from 'fs-extra';
+import childProcessPromise from 'child-process-promise';
 
+// TODO ESM
+const {getLogger} = log4js;
+const {copy, ensureDir, move, outputFile, pathExistsSync, readdir, remove, stat} = fs;
+const {spawn} = childProcessPromise;
+
+import {AnyOpsOSSysApiCallerModule} from '@anyopsos/module-sys-api-caller';
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
 import {AnyOpsOSCredentialModule, Credential} from '@anyopsos/module-credential';
 import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
+import {AOO_ANYOPSOS_TYPE} from '@anyopsos/module-sys-constants';
 
 
 const logger: Logger = getLogger('mainLog');
+
+function ApiCaller() {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+
+    const method = descriptor.value; // references the method being decorated
+    descriptor.value = function(...args: any[]) {
+
+      // Call the original event
+      if (AOO_ANYOPSOS_TYPE === 'filesystem') return method.apply(this, args);
+
+      const ApiCallerModule: AnyOpsOSSysApiCallerModule = new AnyOpsOSSysApiCallerModule();
+      
+      // Rewrite the method to call the fileSystem API
+      if (propertyKey === 'getFolder') return ApiCallerModule.call('filesystem', 'GET', `/api/folder/${encodeURIComponent(args[0])}`);
+      if (propertyKey === 'putFolder') return ApiCallerModule.call('filesystem', 'PUT', `/api/folder/${encodeURIComponent(args[0])}`);
+
+      if (propertyKey === 'getFile') return ApiCallerModule.call('filesystem', 'GET', `/api/file/${encodeURIComponent(args[0])}`);
+      if (propertyKey === 'putFile') return ApiCallerModule.call('filesystem', 'PUT', `/api/file/${encodeURIComponent(args[1])}`, { file: args[0] });
+      if (propertyKey === 'deleteFile') return ApiCallerModule.call('filesystem', 'DELETE', `/api/file/${encodeURIComponent(args[0])}`);
+    };
+  };
+}
 
 export class AnyOpsOSFileSystemModule {
 
@@ -54,6 +84,7 @@ export class AnyOpsOSFileSystemModule {
    *
    * realSrcPath & realDstPath are used for local files since it will be a full path instead of relative
    */
+  @ApiCaller()
   async getFolder(srcPath: string): Promise<AnyOpsOSFile[]> {
     logger.debug(`[Module FileSystem] -> getFolder -> srcPath [${srcPath}]`);
 
@@ -89,6 +120,7 @@ export class AnyOpsOSFileSystemModule {
     );
   }
 
+  @ApiCaller()
   async putFolder(dstPath: string): Promise<void> {
     logger.debug(`[Module FileSystem] -> putFolder -> dstPath [${dstPath}]`);
 
@@ -107,6 +139,7 @@ export class AnyOpsOSFileSystemModule {
    *
    * realSrcPath & realDstPath are used for local files since it will be a full path instead of relative
    */
+  @ApiCaller()
   async getFile(srcPath: string): Promise<void> {
     logger.debug(`[Module FileSystem] -> getFile -> srcPath [${srcPath}]`);
 
@@ -132,6 +165,7 @@ export class AnyOpsOSFileSystemModule {
 
   }
 
+  @ApiCaller()
   async putFile(file: Express.Multer.File, dstPath: string): Promise<void> {
     logger.debug(`[Module FileSystem] -> putFile -> file [${file.originalname}], dstPath [${dstPath}]`);
 
@@ -145,6 +179,7 @@ export class AnyOpsOSFileSystemModule {
     return outputFile(realDstPath, file.buffer);
   }
 
+  @ApiCaller()
   async downloadFileFromUrl(url: string, dstPath: string, credentialUuid?: string, workspaceUuid?: string): Promise<void> {
     logger.debug(`[Module FileSystem] -> downloadFileFromUrl -> url [${url}], dstPath [${dstPath}], credentialUuid [${credentialUuid}]`);
 
@@ -174,6 +209,7 @@ export class AnyOpsOSFileSystemModule {
     return outputFile(realDownloadPath, curlData);
   }
 
+  @ApiCaller()
   async patchFile(type: 'copy' | 'move' | 'rename', srcPath: string, dstPath: string): Promise<void> {
     logger.debug(`[Module FileSystem] -> patchFile -> type [${type}], srcPath [${srcPath}], dstPath [${dstPath}]`);
 
@@ -192,6 +228,7 @@ export class AnyOpsOSFileSystemModule {
     if (type === 'rename') await move(realSrcPath, realDstPath);
   }
 
+  @ApiCaller()
   async patchFilePermissions(type: 'chmod' | 'chown', srcPath: string, permissions: string): Promise<void> {
     logger.debug(`[Module FileSystem] -> patchFilePermissions -> type [${type}], srcPath [${srcPath}], permissions [${permissions}]`);
 
@@ -205,6 +242,7 @@ export class AnyOpsOSFileSystemModule {
     // TODO chmod/chown
   }
 
+  @ApiCaller()
   async deleteFile(srcPath: string): Promise<void> {
     logger.debug(`[Module FileSystem] -> deleteFile -> srcPath [${srcPath}]`);
 

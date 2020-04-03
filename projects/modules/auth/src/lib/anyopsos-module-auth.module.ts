@@ -1,6 +1,10 @@
-import {getLogger, Logger} from 'log4js';
-import {v4 as uuidv4} from 'uuid';
+import log4js, {Logger} from 'log4js';
+import uuid from 'uuid';
 import {client} from 'node-vault';
+
+// TODO ESM
+const {getLogger} = log4js;
+const {v4} = uuid;
 
 import {AnyOpsOSVaultModule} from '@anyopsos/module-vault';
 
@@ -34,10 +38,12 @@ export class AnyOpsOSAuthModule {
   /**
    * Returns a user and its data
    */
-  private async geUserDetail(username: string): Promise<User> {
+  async geUserDetail(username: string): Promise<User> {
     logger.trace(`[Module Vault] -> geUserDetail`);
 
-    return this.vaultClient.read(`/auth/userpass/users/${username}`);
+    const user: { data: User } = await this.vaultClient.read(`secret/users/${username}`);
+
+    return user.data;
   }
 
   /**
@@ -49,22 +55,41 @@ export class AnyOpsOSAuthModule {
 
     // Check if user not exists
     const users: string[] = await this.VaultModule.getUsersList();
+
+    console.log(users);
+
     if (!users.includes(username)) {
-      logger.warn(`[Module Vault] -> geUserDetail -> Invalid Username -> username [${username}]`);
+      logger.warn(`[Module Vault] -> authenticateUser -> Invalid Username -> username [${username}]`);
       throw new Error('resource_not_found');
     }
 
-    const user: User = await this.geUserDetail(username);
+    this.vaultClient.generateFunction('authenticateUser', {
+      method: 'POST',
+      path: '/auth/userpass/login/{{username}}',
+      schema: {
+        req: {
+          type: 'object',
+          properties: {
+            password: {
+              type: 'string',
+            },
+          },
+          required: ['password'],
+        },
+        res: {}
+      },
+    })
 
     // Check login against Vault
-    const successLogin: boolean = await this.vaultClient.userpassLogin({ username, password });
-    if (!successLogin) {
-      logger.warn(`[Module Vault] -> geUserDetail -> Invalid Password -> username [${username}]`);
-      throw new Error('resource_invalid');
-    }
+    // @ts-ignore
+    await this.vaultClient.authenticateUser({ username, password });
+
+    const user: User = await this.geUserDetail(username);
+
+    console.log(user);
 
     return {
-      successLogin,
+      successLogin: true,
       userUuid: user.uuid
     }
   }
@@ -83,7 +108,7 @@ export class AnyOpsOSAuthModule {
     const users: string[] = await this.VaultModule.getUsersList();
 
     // Allow to create the first user (when initializing the vault)
-    if (users.length !== 0  && !this.validPrivilegedUser) {
+    if (users.length !== 0 && !this.validPrivilegedUser) {
       logger.warn(`[Module Auth] -> createUser -> Insufficient permissions to create a User [${username}] -> userUuid [${this.userUuid}]`);
       throw new Error('action_not_allowed');
     }
@@ -93,20 +118,20 @@ export class AnyOpsOSAuthModule {
     if (users.includes(username)) throw new Error('resource_already_exists');
 
     // Generate new random password & uuid
-    const password: string = await this.vaultClient.tokenCreate();
-    const userUuid: string = uuidv4();
+    const password: string = Math.random().toString(32);
+    const userUuid: string = v4();
 
     // TODO: create user folders
     // TODO: change Shadow file
 
     // Insert user into Vault
-    const successCreated: boolean = await this.vaultClient.write(`auth/userpass/users/${username}`, { password });
-    if (!successCreated) throw new Error('resource_invalid');
+    await this.vaultClient.write(`auth/userpass/users/${username}`, { password });
+    await this.vaultClient.write(`secret/users/${username}`, { uuid: userUuid, home: `/home/${username}` });
 
-    logger.info(`[Module Auth] -> createUser -> New User created [${username}] -> userUuid [${this.userUuid}]`);
+    logger.info(`[Module Auth] -> createUser -> New User created [${username}] -> userUuid [${userUuid}]`);
 
     return {
-      successCreated,
+      successCreated: true,
       userUuid,
       password
     }

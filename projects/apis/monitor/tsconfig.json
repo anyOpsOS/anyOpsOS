@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.backend.json",
   "compilerOptions": {
-    "outDir": "../../../dist/apis/monitor",
+    "outDir": "../../../.dist/apis/monitor",
     "baseUrl": ".",
     "paths": {
       "*": [

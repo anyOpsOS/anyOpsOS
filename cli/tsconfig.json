@@ -1,11 +1,10 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig.backend.json",
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "rootDir": ".",
-    "outDir": "../dist/cli",
-    "module": "commonjs",
+    "outDir": "../.dist/cli",
     "esModuleInterop": true,
     "skipLibCheck": true
   },

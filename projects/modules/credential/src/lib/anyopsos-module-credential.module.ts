@@ -1,5 +1,9 @@
-import {getLogger, Logger} from 'log4js';
 import {client} from 'node-vault';
+
+import log4js, {Logger} from 'log4js';
+
+// TODO ESM
+const {getLogger} = log4js;
 
 import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
 import {AnyOpsOSVaultModule} from '@anyopsos/module-vault';

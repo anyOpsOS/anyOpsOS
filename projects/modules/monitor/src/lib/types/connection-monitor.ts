@@ -1,5 +1,5 @@
 // TODO
-// import {VMWareObject} from "../../../../../../dist/applications/infrastructure-manager";
+// import {VMWareObject} from "../../../../../../.dist/applications/infrastructure-manager";
 
 import {MonitorConnectionTypes} from './monitor-connection-types';
 
