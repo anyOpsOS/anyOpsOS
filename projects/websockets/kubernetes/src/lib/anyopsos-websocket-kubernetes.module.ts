@@ -1,9 +1,10 @@
-import {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam} from 'socket-controllers';
+import socketControllers from 'socket-controllers';
 import {Socket} from 'socket.io';
 import log4js, {Logger} from 'log4js';
 
 // TODO ESM
 const {getLogger} = log4js;
+const {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam} = socketControllers;
 
 import {AnyOpsOSNodeKubernetesModule} from '@anyopsos/module-node-kubernetes';
 import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
@@ -29,7 +30,7 @@ export class AnyOpsOSKubernetesWebsocketController {
                        @MessageBody() connectionData: { connectionUuid: string; workspaceUuid: string; }) {
     logger.info(`[Websocket kubernetes] -> disconnect -> id [${id}], connectionUuid [${connectionData.connectionUuid}], workspaceUuid [${connectionData.workspaceUuid}]`);
 
-    const KubernetesModule: AnyOpsOSNodeKubernetesModule = new AnyOpsOSNodeKubernetesModule(userUuid, sessionUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
+    const KubernetesModule: AnyOpsOSNodeKubernetesModule = new AnyOpsOSNodeKubernetesModule(userUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
 
     return KubernetesModule.disconnectConnection().then((result: BackendResponse) => {
       return result;
@@ -47,7 +48,7 @@ export class AnyOpsOSKubernetesWebsocketController {
                        @MessageBody() connectionData: { connectionUuid: string; workspaceUuid: string; }) {
     logger.info(`[Websocket kubernetes] -> newSession -> id [${id}], connectionUuid [${connectionData.connectionUuid}], workspaceUuid [${connectionData.workspaceUuid}]`);
 
-    const KubernetesModule: AnyOpsOSNodeKubernetesModule = new AnyOpsOSNodeKubernetesModule(userUuid, sessionUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
+    const KubernetesModule: AnyOpsOSNodeKubernetesModule = new AnyOpsOSNodeKubernetesModule(userUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
 
     return KubernetesModule.newConnection().then((result: BackendResponse) => {
       return result;

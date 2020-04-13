@@ -13,11 +13,11 @@ import {AnyOpsOSLibCredentialApiService} from './anyopsos-lib-credential-api.ser
 export class AnyOpsOSLibCredentialStateService {
   private credentialsInitialized: boolean = false;
 
-  readonly $credentials: BehaviorSubject<Credential[] |[]>;
+  readonly $credentials: BehaviorSubject<Omit<Credential, 'password'>[] |[]>;
   private dataStore: {
-    credentials: Credential[],
+    credentials: Omit<Credential, 'password'>[],
   };
-  readonly credentials: Observable<Credential[]>;
+  readonly credentials: Observable<Omit<Credential, 'password'>[]>;
 
   constructor(private readonly logger: AnyOpsOSLibLoggerService,
               private readonly LibCredentialApi: AnyOpsOSLibCredentialApiService) {
@@ -48,6 +48,8 @@ export class AnyOpsOSLibCredentialStateService {
   /**
    * Updates the current state with a new credential
    */
+  async putCredential(credential: Omit<Credential, 'password'>): Promise<void>;
+  async putCredential(credential: Omit<Credential, 'uuid'>): Promise<void>
   async putCredential(credential: Credential): Promise<void> {
     this.logger.debug('LibCredential', 'New credential received');
 
@@ -71,74 +73,66 @@ export class AnyOpsOSLibCredentialStateService {
   /**
    * Updates a credential state
    */
-  async patchCredential(credentialUuid: string, param: string, data: any): Promise<void> {
-    const credentialIndex: number = this.dataStore.credentials.findIndex((conn: Credential) => conn.uuid === credentialUuid);
+  async patchCredential(credentialUuid: string, toUpdate: Partial<Credential>): Promise<void> {
+    const credentialIndex: number = this.dataStore.credentials.findIndex((cred: Omit<Credential, 'password'>) => cred.uuid === credentialUuid);
     if (credentialIndex === -1) {
       this.logger.error('LibCredential', 'patchCredential -> Resource invalid');
       throw new Error('resource_invalid');
     }
 
-    this.dataStore.credentials[credentialIndex][param] = data;
+    await this.saveBackend(toUpdate, 'patch', credentialUuid);
+
+    // Update Credential and delete the password
+    const newCredentialData: Credential = { ...this.dataStore.credentials[credentialIndex], ...toUpdate };
+    delete newCredentialData.password;
+
+    this.dataStore.credentials[credentialIndex] = newCredentialData;
 
     // broadcast data to subscribers
     this.$credentials.next(Object.assign({}, this.dataStore).credentials);
-
-    await this.saveBackend(this.dataStore.credentials[credentialIndex], 'patch');
-  }
-
-  async patchFullCredential(credential: Credential): Promise<void> {
-    const credentialIndex: number = this.dataStore.credentials.findIndex((conn: Credential) => conn.uuid === credential.uuid);
-    if (credentialIndex === -1) {
-      this.logger.error('LibCredential', 'patchFullCredential -> Resource invalid');
-      throw new Error('resource_invalid');
-    }
-
-    this.dataStore.credentials[credentialIndex] = credential;
-
-    // broadcast data to subscribers
-    this.$credentials.next(Object.assign({}, this.dataStore).credentials);
-
-    await this.saveBackend(this.dataStore.credentials[credentialIndex], 'patch');
   }
 
   /**
    * Deletes a credential from state
    */
   async deleteCredential(credentialUuid: string): Promise<void> {
-    const currentCredential: Credential = this.dataStore.credentials.find((credential: Credential) => credential.uuid === credentialUuid);
+    const currentCredential: Omit<Credential, 'password'> = this.dataStore.credentials.find(credential => credential.uuid === credentialUuid);
     if (!currentCredential) {
       this.logger.error('LibCredential', 'deleteCredential -> Resource invalid');
       throw new Error('resource_invalid');
     }
 
-    this.dataStore.credentials = this.dataStore.credentials.filter((credential: Credential) => credential.uuid !== credentialUuid);
+    await this.saveBackend(currentCredential, 'delete');
+
+    this.dataStore.credentials = this.dataStore.credentials.filter((credential: Omit<Credential, 'password'>) => credential.uuid !== credentialUuid);
 
     // broadcast data to subscribers
     this.$credentials.next(Object.assign({}, this.dataStore).credentials);
-
-    await this.saveBackend(currentCredential, 'delete');
   }
 
   /**
    * Saves current state persistently
    */
-  private saveBackend(currentCredential: Credential, type: 'put' | 'patch' | 'delete'): Promise<string> {
+  private saveBackend(currentCredential: Omit<Credential, 'uuid'>, type: 'put'): Promise<string>;
+  private saveBackend(currentCredential: Omit<Credential, 'password'>, type: 'delete'): Promise<string>;
+  private saveBackend(currentCredential: Partial<Credential>, type: 'patch', credentialUuid: string): Promise<string>;
+  private saveBackend(currentCredential: Credential, type: 'put' | 'patch' | 'delete', credentialUuid?: string): Promise<string> {
     return new Promise(async (resolve, reject) => {
 
       let credentialObservable: Observable<Object>;
 
       if (type === 'put') credentialObservable = this.LibCredentialApi.putCredential(currentCredential);
-      if (type === 'patch') credentialObservable = this.LibCredentialApi.patchCredential(currentCredential.uuid, currentCredential);
+      if (type === 'patch') credentialObservable = this.LibCredentialApi.patchCredential(credentialUuid, currentCredential);
       if (type === 'delete') credentialObservable = this.LibCredentialApi.deleteCredential(currentCredential.uuid);
 
-      credentialObservable.subscribe((credentialStatus: BackendResponse & { data: Credential }) => {
+      credentialObservable.subscribe((credentialStatus: BackendResponse & { data: string }) => {
           if (credentialStatus.status === 'error') {
             this.logger.error('LibCredential', 'Error while saving credential', null, credentialStatus.data);
             return reject(credentialStatus.data);
           }
 
           this.logger.debug('LibCredential', 'Saved credential successfully');
-          return resolve(credentialStatus.data);
+          return resolve(credentialStatus.data.uuid);
         },
         error => {
           this.logger.error('LibCredential', 'Error while saving credential', null, error);

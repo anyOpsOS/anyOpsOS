@@ -1,5 +1,8 @@
-import {emptyDir, pathExistsSync, readFile, unlink, writeFile} from 'fs-extra';
+import fs from 'fs-extra';
 import {HTMLElement, parse} from 'node-html-parser';
+
+// TODO ESM
+const {emptyDir, pathExistsSync, readFile, unlink, writeFile} = fs;
 
 interface MethodData {
   h1: string;

@@ -1,6 +1,10 @@
-import {getSocketIO} from 'socket-controllers';
-import {KubeConfig} from '@kubernetes/client-node';
+import socketControllers from 'socket-controllers';
+import k8sClientNode, {KubeConfig as IKubeConfig} from '@kubernetes/client-node';
 import {Cluster, User} from '@kubernetes/client-node/dist/config_types';
+
+// TODO ESM
+const {getSocketIO} = socketControllers;
+const {KubeConfig} = k8sClientNode;
 
 import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
 import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
@@ -22,16 +26,15 @@ export class AnyOpsOSNodeKubernetesSessionStateModule {
   private readonly CredentialModule: AnyOpsOSCredentialModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    this.WorkspaceModule = new AnyOpsOSSysWorkspaceModule(this.userUuid, this.sessionUuid);
-    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.sessionUuid, this.workspaceUuid);
-    this.CredentialModule = new AnyOpsOSCredentialModule(this.userUuid, this.sessionUuid, this.workspaceUuid);
+    this.WorkspaceModule = new AnyOpsOSSysWorkspaceModule(this.userUuid);
+    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.workspaceUuid);
+    this.CredentialModule = new AnyOpsOSCredentialModule(this.userUuid, this.workspaceUuid);
   }
 
-  async createSession(): Promise<KubeConfig> {
+  async createSession(): Promise<IKubeConfig> {
     if (!kubernetesSessions[this.workspaceUuid]) kubernetesSessions[this.workspaceUuid] = {};
 
     const mainServer: ConnectionKubernetesServer = await this.getConnectionMainServer();
@@ -48,7 +51,7 @@ export class AnyOpsOSNodeKubernetesSessionStateModule {
       token: mainServer.credential.password
     };
 
-    const kc: KubeConfig = new KubeConfig();
+    const kc: IKubeConfig = new KubeConfig();
     await kc.loadFromClusterAndUser(cluster, user);
 
     // Set connection as ready
@@ -80,7 +83,7 @@ export class AnyOpsOSNodeKubernetesSessionStateModule {
   /**
    * Returns a Kubernetes session
    */
-  getSession(): KubeConfig {
+  getSession(): IKubeConfig {
     if (!kubernetesSessions[this.workspaceUuid]?.[this.connectionUuid]) throw new Error('resource_invalid');
 
     return kubernetesSessions[this.workspaceUuid][this.connectionUuid];

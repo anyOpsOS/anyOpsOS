@@ -7,6 +7,8 @@ const {getLogger} = log4js;
 const {v4} = uuid;
 
 import {AnyOpsOSVaultModule} from '@anyopsos/module-vault';
+import {AnyOpsOSFileSystemModule} from '@anyopsos/module-file-system';
+import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
 
 import {User} from './types/user';
 
@@ -28,11 +30,16 @@ export class AnyOpsOSAuthModule {
 
   private validPrivilegedUser: boolean = false;
 
-  constructor(private readonly userUuid?: string,
-              private readonly sessionUuid?: string) {
+  // With no parameters, means no authentication.
+  constructor();
 
-    // TODO: check if matches
-    if (this.userUuid && this.sessionUuid) this.validPrivilegedUser = true;
+  // User authenticated
+  constructor(userUuid: string);
+
+  constructor(private readonly userUuid?: string) {
+
+    // TODO: VALIDATE PRIVILEGES
+    if (this.userUuid) this.validPrivilegedUser = true;
   }
 
   /**
@@ -81,8 +88,8 @@ export class AnyOpsOSAuthModule {
     })
 
     // Check login against Vault
-    // @ts-ignore
-    await this.vaultClient.authenticateUser({ username, password });
+    await (this.vaultClient as client & { authenticateUser: (...args: [{username: string; password: string}]) => Promise<void> })
+      .authenticateUser({ username, password });
 
     const user: User = await this.geUserDetail(username);
 
@@ -121,12 +128,13 @@ export class AnyOpsOSAuthModule {
     const password: string = Math.random().toString(32);
     const userUuid: string = v4();
 
-    // TODO: create user folders
-    // TODO: change Shadow file
+    const userData = { uuid: userUuid, home: `/home/${username}` };
 
     // Insert user into Vault
     await this.vaultClient.write(`auth/userpass/users/${username}`, { password });
     await this.vaultClient.write(`secret/users/${username}`, { uuid: userUuid, home: `/home/${username}` });
+
+    await this.createUserWorkspace({...userData, username} as User);
 
     logger.info(`[Module Auth] -> createUser -> New User created [${username}] -> userUuid [${userUuid}]`);
 
@@ -135,6 +143,38 @@ export class AnyOpsOSAuthModule {
       userUuid,
       password
     }
+  }
+
+  /**
+   * Creates the basic filesystem structure for a user.
+   */
+  async createUserWorkspace(user: User): Promise<void> {
+
+    // TODO, extract sessionId to pass security, and get realWorkspaceUuid
+    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(user.uuid);
+    const WorkspaceModule: AnyOpsOSSysWorkspaceModule = new AnyOpsOSSysWorkspaceModule(user.uuid);
+
+    // Continue if resources already exists
+    await FileSystemModule.putFolder(`${user.home}/Desktop`).catch((e: any) => {
+      if (e === 'resource_already_exists') return;
+      throw e;
+    });
+    await FileSystemModule.putFolder(`${user.home}/Documents`).catch((e: any) => {
+      if (e === 'resource_already_exists') return;
+      throw e;
+    });
+    await FileSystemModule.putFolder(`${user.home}/Downloads`).catch((e: any) => {
+      if (e === 'resource_already_exists') return;
+      throw e;
+    });
+    await FileSystemModule.putFolder(`${user.home}/Workspaces`).catch((e: any) => {
+      if (e === 'resource_already_exists') return;
+      throw e;
+    });
+    await WorkspaceModule.createWorkspace('default', `${user.home}/Workspaces/default/`, true).catch((e: any) => {
+      if (e === 'resource_already_exists') return;
+      throw e;
+    });
   }
 
 }

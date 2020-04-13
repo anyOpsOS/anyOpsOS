@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
 import {AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService} from '@anyopsos/lib-modal';
@@ -14,6 +15,8 @@ import {AnyOpsOSModalMonitorExportComponent} from './anyopsos-modal-monitor-expo
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     // Shared module import
     AnyOpsOSLibAngularMaterialModule,
     AnyOpsOSLibModalModule

@@ -7,22 +7,22 @@ import {runInDocker} from '../utils';
 import {MAIN_PATH_CWD} from '../constants';
 
 const projectInOrder = [
-  'anyopsos-lib-workspace',
   'anyopsos-lib-angular-material',
   'anyopsos-lib-pipes',
   'anyopsos-lib-logger',
+  'anyopsos-lib-workspace',
   'anyopsos-lib-modal',
   'anyopsos-lib-application',
   'anyopsos-lib-file-system-ui',
   'anyopsos-lib-file-system',
   'anyopsos-lib-loader',
-  'anyopsos-lib-desktop-task-bar',
-  'anyopsos-lib-ssh',
   'anyopsos-lib-selectable',
   'anyopsos-lib-types',
   'anyopsos-lib-user',
   'anyopsos-lib-file',
-  'anyopsos-lib-folder'
+  'anyopsos-lib-folder',
+  'anyopsos-lib-desktop',
+  'anyopsos-lib-ssh'
 ];
 
 export class BuildLibs {

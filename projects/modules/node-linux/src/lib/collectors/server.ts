@@ -5,11 +5,10 @@ export class ServerMonitorModule {
   private readonly SshSessionStateModule: AnyOpsOSSshSessionStateModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    this.SshSessionStateModule = new AnyOpsOSSshSessionStateModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
+    this.SshSessionStateModule = new AnyOpsOSSshSessionStateModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
   }
 
   async getRelease(): Promise<string> {

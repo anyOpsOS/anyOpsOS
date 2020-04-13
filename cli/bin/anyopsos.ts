@@ -1,3 +1,7 @@
+if (process.env.RUNINDOCKER) {
+  process.env.NODE_OPTIONS = "--no-warnings --experimental-modules --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node"
+}
+
 import {anyOpsOS} from '../src';
 
 import chalk from 'chalk';

@@ -1,8 +1,9 @@
-import {promisifyAll} from 'bluebird';
+import bluebird from 'bluebird';
 import ssh2, {Client as SshClient, ClientChannel, ExecOptions, SFTPWrapper} from 'ssh2';
 import validator from 'validator';
 
 // TODO ESM
+const {promisifyAll} = bluebird;
 const {Client} = ssh2;
 
 import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
@@ -26,12 +27,11 @@ export class AnyOpsOSSshSessionStateModule {
   private readonly CredentialModule: AnyOpsOSCredentialModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.sessionUuid, this.workspaceUuid);
-    this.CredentialModule = new AnyOpsOSCredentialModule(this.userUuid, this.sessionUuid, this.workspaceUuid);
+    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.workspaceUuid);
+    this.CredentialModule = new AnyOpsOSCredentialModule(this.userUuid, this.workspaceUuid);
   }
 
   /**

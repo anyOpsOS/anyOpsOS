@@ -1,12 +1,16 @@
 import {client} from 'node-vault';
+import uuid from 'uuid';
 
 import log4js, {Logger} from 'log4js';
 
 // TODO ESM
 const {getLogger} = log4js;
+const {v4} = uuid;
 
 import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
 import {AnyOpsOSVaultModule} from '@anyopsos/module-vault';
+
+import {ApiCaller} from './decorators/api-caller'
 
 import {Credential} from './types/credential';
 
@@ -23,12 +27,11 @@ export class AnyOpsOSCredentialModule {
   private readonly vaultClient: client = this.VaultModule.getVaultClient();
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string) {
 
-    // TODO: check if userUuid & sessionUuid matches
     // TODO: check if userUuid is allowed to access the data from workspaceUuid
-    this.WorkspaceModule = new AnyOpsOSSysWorkspaceModule(this.userUuid, this.sessionUuid);
+    // TODO: VALIDATE PRIVILEGES
+    this.WorkspaceModule = new AnyOpsOSSysWorkspaceModule(this.userUuid);
 
     // this.WorkspaceModule.getUserPermissions();
   }
@@ -45,10 +48,29 @@ export class AnyOpsOSCredentialModule {
    * This is the main function called by the credentials library (lib-credentials) to show to the users the credentials available for the current workspace
    * Frontend call this using the API
    */
-  async getCredentials(): Promise<Credential[]> {
-    logger.trace(`[Module Credentials] -> getCredential -> userUuid [${this.userUuid}], workspaceUuid [${this.workspaceUuid}]`);
+  // TODO type any required bevause of the catch
+  @ApiCaller()
+  async getCredentials(): Promise<Omit<Credential, 'password'>[] | any> {
+    logger.trace(`[Module Credentials] -> getCredentials -> userUuid [${this.userUuid}], workspaceUuid [${this.workspaceUuid}]`);
 
-    return this.vaultClient.list(`secret/workspaces/${this.workspaceUuid}`);
+    return this.vaultClient.list(`secret/workspaces/${this.workspaceUuid}/`).then(request => {
+
+      return Promise.all(request.data.keys.map(async (credential: string) => {
+
+        // Do no send the password back
+        const credentialData: Credential = await this.getCredential(credential);
+        delete credentialData.password;
+
+        return {
+          ...credentialData,
+          uuid: credential
+        } as Omit<Credential, 'password'>;
+      }));
+
+    }).catch(e => {
+      if (e.response?.statusCode === 404) return [];
+      throw e;
+    });
   }
 
   /**
@@ -57,10 +79,11 @@ export class AnyOpsOSCredentialModule {
    * This is used by other modules to connect with "something"
    * TODO: since this function is exposed by an API, make sure this can't be called by an user from the browser. Validate 'anyopsos-core' Pod certificate
    */
+  @ApiCaller()
   async getCredential(credentialUuid: string): Promise<Credential> {
     logger.trace(`[Module Credentials] -> getCredential -> userUuid [${this.userUuid}], workspaceUuid [${this.workspaceUuid}], credentialUuid [${credentialUuid}]`);
 
-    return this.vaultClient.read(`secret/workspaces/${this.workspaceUuid}/${credentialUuid}`);
+    return this.vaultClient.read(`secret/workspaces/${this.workspaceUuid}/${credentialUuid}`).then(request => request.data);
   }
 
   /**
@@ -69,12 +92,15 @@ export class AnyOpsOSCredentialModule {
    * TODO: check if user is allowed to write data to this workspace (not read-only)
    * TODO: check if already exists (patch)
    */
-  async putCredential(credential: Credential): Promise<string> {
-    logger.trace(`[Module Credentials] -> putCredential -> userUuid [${this.userUuid}], workspaceUuid [${this.workspaceUuid}], credentialUuid [${credential.uuid}]`);
+  @ApiCaller()
+  async putCredential(credential: Omit<Credential, 'uuid'>): Promise<string> {
+    logger.trace(`[Module Credentials] -> putCredential -> userUuid [${this.userUuid}], workspaceUuid [${this.workspaceUuid}]`);
 
-    await this.vaultClient.write(`secret/workspaces/${this.workspaceUuid}/${credential.uuid}`, credential);
+    const credentialUuid: string = v4();
 
-    return credential.uuid;
+    await this.vaultClient.write(`secret/workspaces/${this.workspaceUuid}/${credentialUuid}`, credential);
+
+    return credentialUuid;
   }
 
   /**
@@ -83,12 +109,17 @@ export class AnyOpsOSCredentialModule {
    * TODO: check if user is allowed to modify data from this workspace (not read-only)
    * TODO: check if not exists (put)
    */
-  async patchCredential(credentialUuid: string, credential: Credential): Promise<string> {
+  @ApiCaller()
+  async patchCredential(credentialUuid: string, credential: Partial<Credential>): Promise<string> {
     logger.trace(`[Module Credentials] -> patchCredential -> userUuid [${this.userUuid}], workspaceUuid [${this.workspaceUuid}], credentialUuid [${credentialUuid}]`);
 
-    await this.vaultClient.write(`secret/workspaces/${this.workspaceUuid}/${credentialUuid}`, credential);
+    const currentCredential: Credential = await this.getCredential(credentialUuid);
+    const newCredential: Credential = { ...currentCredential, ...credential };
+    delete newCredential.uuid;
 
-    return credential.uuid;
+    await this.vaultClient.write(`secret/workspaces/${this.workspaceUuid}/${credentialUuid}`, newCredential);
+
+    return credentialUuid;
   }
 
   /**
@@ -97,6 +128,7 @@ export class AnyOpsOSCredentialModule {
    * TODO: check if user is allowed to delete data from this workspace (not read-only)
    * TODO: check if not exists
    */
+  @ApiCaller()
   async deleteCredential(credentialUuid: string): Promise<void> {
     logger.trace(`[Module Credentials] -> deleteCredential -> userUuid [${this.userUuid}], workspaceUuid [${this.workspaceUuid}], credentialUuid [${credentialUuid}]`);
 

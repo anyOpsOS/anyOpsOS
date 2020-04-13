@@ -1,10 +1,11 @@
-import {pathExistsSync, readFile} from 'fs-extra';
 import {join} from 'path';
 import {EventEmitter} from 'events';
 import log4js, {Logger} from 'log4js';
+import fs from 'fs-extra';
 
 // TODO ESM
 const {getLogger} = log4js;
+const {pathExistsSync, readFile} = fs;
 
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
 import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
@@ -23,13 +24,12 @@ export class AnyOpsOSNodeNetappFileSystemModule {
   private readonly NetappSessionStateModule: AnyOpsOSNodeNetappSessionStateModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
     this.GetPathModule = new AnyOpsOSSysGetPathModule();
-    this.NetappModule  = new AnyOpsOSNodeNetappModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
-    this.NetappSessionStateModule = new AnyOpsOSNodeNetappSessionStateModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
+    this.NetappModule  = new AnyOpsOSNodeNetappModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
+    this.NetappSessionStateModule = new AnyOpsOSNodeNetappSessionStateModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
   }
 
   /**

@@ -27,7 +27,7 @@ export class AnyOpsOSFolderApiController {
                   @Param('srcPath') srcPath: string) {
     logger.info(`[API Folder] -> Reading folder files -> srcPath [${srcPath}]`);
 
-    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(userUuid, sessionUuid);
+    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(userUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     if (!srcPath.endsWith('/')) srcPath += '/';
@@ -45,7 +45,7 @@ export class AnyOpsOSFolderApiController {
                      @Param('dstPath') dstPath: string) {
     logger.info(`[API Folder] -> Creating folder -> dstPath [${dstPath}]`);
 
-    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(userUuid, sessionUuid);
+    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(userUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     await FileSystemModule.putFolder(dstPath);

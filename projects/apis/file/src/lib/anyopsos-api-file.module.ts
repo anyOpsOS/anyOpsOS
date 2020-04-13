@@ -76,7 +76,7 @@ export class AnyOpsOSFileApiController {
                 @UploadedFile('file') file: Express.Multer.File) {
     logger.info(`[API File] -> Creating file -> dstPath [${dstPath}], file [${file.originalname}]`);
 
-    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(userUuid, sessionUuid);
+    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(userUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const realDstPath: string = join(dstPath, file.originalname);
@@ -91,12 +91,12 @@ export class AnyOpsOSFileApiController {
                        @Res() response: Response,
                        @SessionParam('userUuid') userUuid: string,
                        @SessionParam('id') sessionUuid: string,
-                       @BodyParam('dstPath') dstPath: string,
                        @BodyParam('url') url: string,
+                       @BodyParam('dstPath') dstPath: string,
                        @BodyParam('credentialUuid') credentialUuid?: string) {
     logger.info(`[API File] -> Creating file -> Downloading file from internet -> dstPath [${dstPath}], url [${url}]`);
 
-    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(userUuid, sessionUuid);
+    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(userUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     await FileSystemModule.downloadFileFromUrl(url, dstPath, credentialUuid);
@@ -115,7 +115,7 @@ export class AnyOpsOSFileApiController {
                   @BodyParam('permissions', { required: false }) permissions?: string) {
     logger.info(`[API File] -> Rename/Move/Copy/Chown/Chmod file -> type [${type}], srcPath [${srcPath}], dstPath [${dstPath}]`);
 
-    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(userUuid, sessionUuid);
+    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(userUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     // 'dst' is required by 'copy' | 'move' | 'rename'
@@ -138,7 +138,7 @@ export class AnyOpsOSFileApiController {
                    @Param('srcPath') srcPath: string) {
     logger.info(`[API File] -> Delete file -> srcPath [${srcPath}]`);
 
-    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(userUuid, sessionUuid);
+    const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(userUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     await FileSystemModule.deleteFile(srcPath);

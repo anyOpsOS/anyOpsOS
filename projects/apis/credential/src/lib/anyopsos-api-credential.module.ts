@@ -26,10 +26,10 @@ export class AnyOpsOSCredentialApiController {
                           @Param('workspaceUuid') workspaceUuid: string) {
     logger.info(`[API Credentials] -> Get credentials -> workspaceUuid [${workspaceUuid}]`);
 
-    const CredentialModule: AnyOpsOSCredentialModule = new AnyOpsOSCredentialModule(userUuid, sessionUuid, workspaceUuid);
+    const CredentialModule: AnyOpsOSCredentialModule = new AnyOpsOSCredentialModule(userUuid, workspaceUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
-    const credentials: Credential[] = await CredentialModule.getCredentials();
+    const credentials: Omit<Credential, 'password'>[] = await CredentialModule.getCredentials();
 
     return ApiGlobalsModule.jsonDataResponse(credentials);
   }
@@ -39,11 +39,11 @@ export class AnyOpsOSCredentialApiController {
                       @Res() response: Response,
                       @SessionParam('userUuid') userUuid: string,
                       @SessionParam('id') sessionUuid: string,
-                      @BodyParam('credential') credential: Credential,
+                      @BodyParam('credential') credential: Omit<Credential, 'uuid'>,
                       @Param('workspaceUuid') workspaceUuid: string) {
     logger.info(`[API Credentials] -> Put credential -> workspaceUuid [${workspaceUuid}]`);
 
-    const CredentialModule: AnyOpsOSCredentialModule = new AnyOpsOSCredentialModule(userUuid, sessionUuid, workspaceUuid);
+    const CredentialModule: AnyOpsOSCredentialModule = new AnyOpsOSCredentialModule(userUuid, workspaceUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const credentialUuid: string = await CredentialModule.putCredential(credential);
@@ -58,19 +58,21 @@ export class AnyOpsOSCredentialApiController {
                         @Res() response: Response,
                         @SessionParam('userUuid') userUuid: string,
                         @SessionParam('id') sessionUuid: string,
-                        @BodyParam('credential') credential: Credential,
+                        @BodyParam('credential') credential: Partial<Credential>,
                         @Param('workspaceUuid') workspaceUuid: string,
                         @Param('credentialUuid') credentialUuid: string) {
     logger.info(`[API Credentials] -> Patch credential -> workspaceUuid [${workspaceUuid}], credentialUuid [${credentialUuid}]`);
 
     if (!credential.uuid) throw new Error('resource_not_found');
 
-    const CredentialModule: AnyOpsOSCredentialModule = new AnyOpsOSCredentialModule(userUuid, sessionUuid, workspaceUuid);
+    const CredentialModule: AnyOpsOSCredentialModule = new AnyOpsOSCredentialModule(userUuid, workspaceUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     await CredentialModule.patchCredential(credentialUuid, credential);
 
-    return ApiGlobalsModule.jsonDataResponse(credential.uuid);
+    return ApiGlobalsModule.jsonDataResponse({
+      uuid: credentialUuid
+    });
   }
 
   @Delete('/:workspaceUuid/:credentialUuid')
@@ -82,12 +84,14 @@ export class AnyOpsOSCredentialApiController {
                          @Param('workspaceUuid') workspaceUuid: string) {
     logger.info(`[API Credentials] -> Delete credentials -> workspaceUuid [${workspaceUuid}], credentialUuid [${credentialUuid}]`);
 
-    const CredentialModule: AnyOpsOSCredentialModule = new AnyOpsOSCredentialModule(userUuid, sessionUuid, workspaceUuid);
+    const CredentialModule: AnyOpsOSCredentialModule = new AnyOpsOSCredentialModule(userUuid, workspaceUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     await CredentialModule.deleteCredential(credentialUuid);
 
-    return ApiGlobalsModule.validResponse();
+    return ApiGlobalsModule.jsonDataResponse({
+      uuid: credentialUuid
+    });
   }
 
 }

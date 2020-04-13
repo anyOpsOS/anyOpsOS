@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
+import {FormGroup, FormBuilder, AbstractControl, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 
 import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
@@ -14,20 +15,35 @@ interface InitializeResult {
   templateUrl: './initialize.component.html',
   styleUrls: ['./initialize.component.scss']
 })
-export class InitializeComponent {
+export class InitializeComponent implements OnInit {
   @Input() readonly vaultState: VaultState;
   @Output() private stateChanged = new EventEmitter<void>();
 
   vaultResult: InitializeResult;
 
-  // Inputs
-  rootAccount: string;
-  unsealKey: string;
+  initializeForm: FormGroup;
+  unsealForm: FormGroup;
 
-  constructor(private readonly http: HttpClient,
+  constructor(private readonly formBuilder: FormBuilder,
+              private readonly http: HttpClient,
               private readonly logger: AnyOpsOSLibLoggerService) {
 
   }
+
+  ngOnInit(): void {
+    this.initializeForm = this.formBuilder.group({
+      rootAccount: ['root', Validators.required],
+    });
+    this.unsealForm = this.formBuilder.group({
+      unsealKey: ['', Validators.required],
+    });
+  }
+
+  /**
+   * Form getter
+   */
+  get getInitializeForm(): { [key: string]: AbstractControl } { return this.initializeForm.controls; }
+  get getUnsealForm(): { [key: string]: AbstractControl } { return this.initializeForm.controls; }
 
   /**
    * User actions
@@ -35,7 +51,7 @@ export class InitializeComponent {
   initializeVault(): void {
 
     this.http.post('/api/vault/initialize', {
-      username: this.rootAccount
+      username: this.getInitializeForm.rootAccount.value
     }).subscribe(
       (res: BackendResponse & { data: InitializeResult }) => {
         if (res.status === 'error') this.logger.error('anyOpsOS', 'initializeVault -> Error while initializing the Vault', null, res.data);
@@ -50,7 +66,7 @@ export class InitializeComponent {
   unsealVault(): void {
 
     this.http.post('/api/vault/unseal', {
-      key: this.unsealKey
+      key: this.getUnsealForm.unsealKey.value
     }).subscribe(
       (res: BackendResponse & { data: InitializeResult }) => {
         if (res.status === 'error') this.logger.error('anyOpsOS', 'unsealVault -> Error while initializing the Vault', null, res.data);

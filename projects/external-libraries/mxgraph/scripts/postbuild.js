@@ -9,7 +9,7 @@ console.log('Running mxgraph.js');
 /**
  * mxGraph
  */
-module.exports = fs.readFile('dist/external-libraries/mxgraph/bundles/anyopsos-ext-lib-mxgraph.umd.js', 'utf8').then(async function (data) {
+module.exports = fs.readFile('.dist/external-libraries/mxgraph/bundles/anyopsos-ext-lib-mxgraph.umd.js', 'utf8').then(async function (data) {
   let mxClient = await readFile('node_modules/mxgraph/javascript/mxClient.js');
 
   let result = data;
@@ -63,7 +63,7 @@ module.exports = fs.readFile('dist/external-libraries/mxgraph/bundles/anyopsos-e
 
   result = result.replace('var mx = {', 'return mx = {');
 
-  return fs.writeFile('dist/external-libraries/mxgraph/bundles/anyopsos-ext-lib-mxgraph.umd.js', result, 'utf8').then(function () {
+  return fs.writeFile('.dist/external-libraries/mxgraph/bundles/anyopsos-ext-lib-mxgraph.umd.js', result, 'utf8').then(function () {
     console.log("Mxgraph end");
   });
 });

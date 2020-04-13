@@ -1,9 +1,13 @@
-import {SocketController, SocketId, OnConnect, OnDisconnect, ConnectedSocket} from 'socket-controllers';
+import socketControllers from 'socket-controllers';
 import {Socket} from 'socket.io';
 import log4js, {Logger} from 'log4js';
 
 // TODO ESM
 const {getLogger} = log4js;
+const {SocketController, SocketId, OnConnect, OnDisconnect, ConnectedSocket} = socketControllers;
+
+import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
+
 
 const logger: Logger = getLogger('mainLog');
 
@@ -11,15 +15,17 @@ const logger: Logger = getLogger('mainLog');
 export class AnyOpsOSMainWebsocketController {
 
   @OnConnect()
-  connection(@SocketId() id: string,
-             @ConnectedSocket() socket: Socket) {
+  async connection(@SocketId() id: string,
+                   @ConnectedSocket() socket: Socket) {
     logger.info(`[Socket] -> Connected id [${id}]`);
 
     socket.join(socket.client.request.session.sessionId);
-    socket.join('user-' + socket.client.request.session.user_id);
+    socket.join('user-' + socket.client.request.session.userUuid);
 
-    // TODO
-    socket.join('someWorkspaceUuid');
+    const WorkspaceModule: AnyOpsOSSysWorkspaceModule = new AnyOpsOSSysWorkspaceModule(socket.client.request.session.userUuid);
+    const defaultWorkspace: string = await WorkspaceModule.getDefaultWorkspaceUuid();
+
+    socket.join(defaultWorkspace);
   }
 
   @OnDisconnect()

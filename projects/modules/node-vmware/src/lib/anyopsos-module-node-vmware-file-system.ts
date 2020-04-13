@@ -1,11 +1,12 @@
 import {parse} from 'url';
 import {join} from 'path';
-import {spawn} from 'child-process-promise';
 import {EventEmitter} from 'events';
+import childProcessPromise from 'child-process-promise';
 import log4js, {Logger} from 'log4js';
 
 // TODO ESM
 const {getLogger} = log4js;
+const {spawn} = childProcessPromise;
 
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
 import {HostDatastoreBrowserSearchResults} from '@anyopsos/sdk-vmware/src/lib/types/data/host-datastore-browser-search-results';
@@ -27,13 +28,12 @@ export class AnyOpsOSNodeVmwareFileSystemModule {
   private readonly VmwareSessionStateModule: AnyOpsOSNodeVmwareSessionStateModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
     this.GetPathModule = new AnyOpsOSSysGetPathModule();
-    this.VmwareModule = new AnyOpsOSNodeVmwareModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
-    this.VmwareSessionStateModule = new AnyOpsOSNodeVmwareSessionStateModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
+    this.VmwareModule = new AnyOpsOSNodeVmwareModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
+    this.VmwareSessionStateModule = new AnyOpsOSNodeVmwareSessionStateModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
   }
 
   /**

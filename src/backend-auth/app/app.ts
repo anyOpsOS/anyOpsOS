@@ -1,5 +1,6 @@
 import log4js, {Logger} from 'log4js';
 import {createServer as createServers, Server as Servers, ServerOptions} from 'https';
+import {PeerCertificate} from 'tls';
 import express, {Application, RequestHandler} from 'express';
 import routingControllers, {Action} from 'routing-controllers';
 import connectRedis, {RedisStore} from 'connect-redis';
@@ -17,7 +18,7 @@ const {useExpressServer} = routingControllers;
 const {frameguard, xssFilter, noSniff, ieNoOpen, hsts} = helmet;
 
 import {AnyOpsOSSysRedisSessionModule} from '@anyopsos/module-sys-redis-session'
-import {AOO_SESSION_COOKIE, AOO_SESSION_COOKIE_SECRET, AOO_UNIQUE_COOKIE_NAME, SSL_DHPARAM, SSL_CA_CERT, SSL_AUTH_CERT, SSL_AUTH_CERT_KEY, AOO_FILESYSTEM_HOST, AOO_FILESYSTEM_PORT} from '@anyopsos/module-sys-constants';
+import {AOO_SESSION_COOKIE, AOO_SESSION_COOKIE_SECRET, AOO_UNIQUE_COOKIE_NAME, SSL_DHPARAM, SSL_CA_CERT, SSL_AUTH_CERT, SSL_AUTH_CERT_KEY, AOO_FILESYSTEM_HOST, AOO_FILESYSTEM_PORT, AOO_CORE_HOST} from '@anyopsos/module-sys-constants';
 
 /**
  * App class will create all the backend listeners HTTPS
@@ -45,6 +46,8 @@ export class App {
   async initializeApiServer() {
 
     this.options = {
+      requestCert: true,
+      rejectUnauthorized: false,
       minVersion: 'TLSv1.2',
       dhparam: this.sslDhParam,
       ca: this.sslCa,
@@ -96,6 +99,10 @@ export class App {
     this.app.disable('x-powered-by');
     this.app.use(cors());
 
+    this.app.get('/status', (req: express.Request, res: express.Response) => {
+      res.send('ok');
+    });
+
     await useExpressServer(this.app, {
       defaultErrorHandler: false,
       defaults: {
@@ -107,13 +114,24 @@ export class App {
         // Import APIs from filesystem
         `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/apis/auth/index.js')}`,
         `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/apis/credential/index.js')}`,
-        `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/apis/vault/index.js')}`
+        `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/apis/vault/index.js')}`,
+        `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/apis/workspace/index.js')}`
       ],
       middlewares: [
         `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/api-middlewares/final/index.js')}`,
         `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/api-middlewares/error-handler/index.js')}`
       ],
       authorizationChecker: async (action: Action, roles?: string[]) => {
+        // Certificate authentication
+        if (action.request.client.authorized) {
+          const cert: PeerCertificate = action.request.socket.getPeerCertificate();
+
+          if (cert.subject.CN !== AOO_FILESYSTEM_HOST && cert.subject.CN !== AOO_CORE_HOST) return false;
+          
+          action.request.session.userUuid = 'internal';
+          return true;
+        }
+
         // No legged_in or deleted uniqueId cookie
         if (!action.request.signedCookies[this.uniqueCookie]) {
           this.logger.warn('no_uniqueId_cookie ' + action.request.url);

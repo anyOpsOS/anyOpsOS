@@ -1,9 +1,10 @@
-import {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam} from 'socket-controllers';
+import socketControllers from 'socket-controllers';
 import {Socket} from 'socket.io';
 import log4js, {Logger} from 'log4js';
 
 // TODO ESM
 const {getLogger} = log4js;
+const {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam} = socketControllers;
 
 import {AnyOpsOSSshModule} from '@anyopsos/module-ssh';
 import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
@@ -29,7 +30,7 @@ export class AnyOpsOSSshWebsocketController {
            @MessageBody() connectionData: { connectionUuid: string; workspaceUuid: string; terminalUuid: string;}) {
     logger.info(`[Websocket ssh] -> shell -> id [${id}], connectionUuid [${connectionData.connectionUuid}], workspaceUuid [${connectionData.workspaceUuid}], terminalUuid [${connectionData.terminalUuid}]`);
 
-    const SshModule: AnyOpsOSSshModule = new AnyOpsOSSshModule(userUuid, sessionUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
+    const SshModule: AnyOpsOSSshModule = new AnyOpsOSSshModule(userUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
 
     return SshModule.createShellToTerminal(connectionData.terminalUuid).then((result: BackendResponse) => {
       return result;
@@ -47,7 +48,7 @@ export class AnyOpsOSSshWebsocketController {
           @MessageBody() connectionData: { connectionUuid: string; workspaceUuid: string; }) {
     logger.info(`[Websocket ssh] -> sftp -> id [${id}], connectionUuid [${connectionData.connectionUuid}], workspaceUuid [${connectionData.workspaceUuid}]`);
 
-    const SshModule: AnyOpsOSSshModule = new AnyOpsOSSshModule(userUuid, sessionUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
+    const SshModule: AnyOpsOSSshModule = new AnyOpsOSSshModule(userUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
 
     return SshModule.createSftpClient().then((result: BackendResponse) => {
       return result;
@@ -65,7 +66,7 @@ export class AnyOpsOSSshWebsocketController {
                 @MessageBody() connectionData: { connectionUuid: string; workspaceUuid: string; }) {
     logger.info(`[Websocket ssh] -> disconnect -> id [${id}], connectionUuid [${connectionData.connectionUuid}], workspaceUuid [${connectionData.workspaceUuid}]`);
 
-    const SshModule: AnyOpsOSSshModule = new AnyOpsOSSshModule(userUuid, sessionUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
+    const SshModule: AnyOpsOSSshModule = new AnyOpsOSSshModule(userUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
 
     return SshModule.disconnectConnection().then((result: BackendResponse) => {
       return result;
@@ -83,7 +84,7 @@ export class AnyOpsOSSshWebsocketController {
                       @MessageBody() connectionData: { connectionUuid: string; workspaceUuid: string; }) {
     logger.info(`[Websocket ssh] -> newSession -> id [${id}], connectionUuid [${connectionData.connectionUuid}], workspaceUuid [${connectionData.workspaceUuid}]`);
 
-    const SshModule: AnyOpsOSSshModule = new AnyOpsOSSshModule(userUuid, sessionUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
+    const SshModule: AnyOpsOSSshModule = new AnyOpsOSSshModule(userUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
 
     return SshModule.newConnection().then((result: BackendResponse) => {
       return result;

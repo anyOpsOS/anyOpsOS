@@ -6,8 +6,6 @@ const {configure, getLogger} = log4js
 
 import {AnyOpsOSVaultModule, VaultState} from '@anyopsos/module-vault'
 import {AnyOpsOSAuthModule, User} from '@anyopsos/module-auth'
-import {AnyOpsOSFileSystemModule} from '@anyopsos/module-file-system';
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -16,10 +14,6 @@ export class Init {
 
   private VaultModule: AnyOpsOSVaultModule = new AnyOpsOSVaultModule();
   private AuthModule: AnyOpsOSAuthModule = new AnyOpsOSAuthModule();
-
-  // @ts-ignore TODO
-  private FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule();
-  private ConfigFileModule: AnyOpsOSConfigFileModule = new AnyOpsOSConfigFileModule();
 
   constructor() {
     configure({
@@ -42,8 +36,6 @@ export class Init {
   private async checkUsers(state: VaultState): Promise<void> {
     logger.info(`[Auth] -> initialize -> checkUsers`);
 
-    await this.FileSystemModule.putFolder(`/home/nada/Desktop`);
-
     if (state.users === 0) return;
 
     const users: string[] = await this.VaultModule.getUsersList();
@@ -51,23 +43,11 @@ export class Init {
     users.forEach(async (username: string) => {
       const user: User = await this.AuthModule.geUserDetail(username);
 
-      // Check for user Home folder
-      this.FileSystemModule.getFolder(user.home).catch(async (e: Error) => {
+      // Is workspace filesystem already exists, this will throw an error. Handle it and continue
+      await this.AuthModule.createUserWorkspace(user).catch((e: Error) => {
+        if (e.message === 'resource_already_exists') return;
 
-        console.log(e);
-
-        // Home folder for that user doesn't exists
-        if (e.message === 'resource_not_found') {
-          await this.FileSystemModule.putFolder(`${user.home}/Desktop`);
-          await this.FileSystemModule.putFolder(`${user.home}/Documents`);
-          await this.FileSystemModule.putFolder(`${user.home}/Desktop`);
-          await this.FileSystemModule.putFolder(`${user.home}/Downloads`);
-          await this.FileSystemModule.putFolder(`${user.home}/Workspaces/default/etc`);
-          await this.ConfigFileModule.put(`${user.home}/Workspaces/default/etc/task_bar.json`, []);
-        }
-
-      // TODO: Check for each user Workspace folders are created
-      }).then(() => {
+        throw e;
       });
     })
     

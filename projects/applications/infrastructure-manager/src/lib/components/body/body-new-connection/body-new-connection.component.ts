@@ -29,7 +29,7 @@ export class BodyNewConnectionComponent implements OnInit, OnDestroy {
   private readonly destroySubject$: Subject<void> = new Subject();
   private currentGraphTopology: string = 'all';
 
-  credentials: Credential[];
+  credentials: Omit<Credential, 'password'>[];
   sshConnections: ConnectionSsh[];
   connectionForm: FormGroup;
   newConnectionType: string = null;
@@ -83,7 +83,7 @@ export class BodyNewConnectionComponent implements OnInit, OnDestroy {
 
     // Listen for credentials changes
     this.LibCredentialHelpers.getAllCredentialsObserver()
-      .pipe(takeUntil(this.destroySubject$)).subscribe((credentials: Credential[]) => this.credentials = credentials);
+      .pipe(takeUntil(this.destroySubject$)).subscribe((credentials: Omit<Credential, 'password'>[]) => this.credentials = credentials);
 
     // Listen for connections changes
     this.LibSshHelpers.getAllConnectionsObserver()

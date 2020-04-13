@@ -11,12 +11,12 @@ metadata:
 spec:
   tls:
     - hosts:
-        - anyopsos.local
+      - anyopsos.local
   rules:
     - host: anyopsos.local
       http:
         paths:
-          - path: /api/(auth|credential|vault)
+          - path: /api/(auth|credential|vault|workspace)
             backend:
               serviceName: auth
               servicePort: auth-api

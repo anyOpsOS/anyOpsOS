@@ -1,5 +1,8 @@
-import {getSocketIO} from 'socket-controllers';
+import socketControllers from 'socket-controllers';
 import * as Dockerode from 'dockerode';
+
+// TODO ESM
+const {getSocketIO} = socketControllers;
 
 import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
 
@@ -10,12 +13,11 @@ export class AnyOpsOSNodeDockerModule {
   private readonly DockerSessionStateModule: AnyOpsOSNodeDockerSessionStateModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
 
-    this.DockerSessionStateModule = new AnyOpsOSNodeDockerSessionStateModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
+    this.DockerSessionStateModule = new AnyOpsOSNodeDockerSessionStateModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
   }
 
   /**

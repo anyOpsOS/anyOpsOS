@@ -14,7 +14,7 @@ export class AnyOpsOSModalDefaultQuestionComponent implements OnInit {
   text: string;
 
   // To show some kind of alert box
-  boxIcon: string = 'info';
+  boxIcon: string = 'fa-info';
   boxClass: string;
   boxContent: string;
 

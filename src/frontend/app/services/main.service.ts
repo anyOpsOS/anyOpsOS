@@ -6,7 +6,7 @@ import {Socket} from 'ngx-socket-io';
 import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
 import {AnyOpsOSLibLoaderService} from '@anyopsos/lib-loader';
 import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
-import {AnyOpsOSLibDesktopTaskBarService} from '@anyopsos/lib-desktop-task-bar';
+import {AnyOpsOSLibDesktopTaskBarService} from '@anyopsos/lib-desktop';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +43,7 @@ export class MainService {
       e.preventDefault();
     });
 
+    // Connect to the socket
     this.socket.connect();
 
     this.socket.on('connect', () => {
@@ -55,22 +56,26 @@ export class MainService {
       this.logger.fatal('anyOpsOS', 'Socket.io error', null, err);
     });
 
-    // Load External libraries (dependencies)
-    this.LibLoader.loadExternalLibraries().then(() => {
+    // Load user workspaces first, since other libraries can require it to work
+    this.LibWorkspace.loadWorkspaces().then(() => {
+
+      // Load External libraries (dependencies)
+      return this.LibLoader.loadExternalLibraries();
+    }).then(() => {
 
       // Load Application next
       return this.LibLoader.loadApplications();
     }).then(() => {
 
       // Since some Modals have an Application as a dependency, load it after
-      return Promise.all([
-        this.LibLoader.loadModals(),
-        this.LibWorkspace.loadWorkspaces()
-      ]);
-
+      return this.LibLoader.loadModals();
     }).then(() => {
+
+      // Load Desktop TaskBar data
       return this.LibDesktopTaskBar.getTaskBarApplications();
     }).then(() => {
+
+      // Emit that the APP is fully loaded
       this.setBootstrapState({
         appBootstrapped: true
       });

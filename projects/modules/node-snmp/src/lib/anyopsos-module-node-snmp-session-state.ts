@@ -1,6 +1,9 @@
-import {getSocketIO} from 'socket-controllers';
-// @ts-ignore
+import socketControllers from 'socket-controllers';
+// @ts-ignore TODO
 import * as netSnmp from 'net-snmp';
+
+// TODO ESM
+const {getSocketIO} = socketControllers;
 
 import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
 import {AnyOpsOSCredentialModule} from '@anyopsos/module-credential';
@@ -17,12 +20,11 @@ export class AnyOpsOSNodeSnmpSessionStateModule {
   private readonly CredentialModule: AnyOpsOSCredentialModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.sessionUuid, this.workspaceUuid);
-    this.CredentialModule = new AnyOpsOSCredentialModule(this.userUuid, this.sessionUuid, this.workspaceUuid);
+    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.workspaceUuid);
+    this.CredentialModule = new AnyOpsOSCredentialModule(this.userUuid, this.workspaceUuid);
   }
 
   async createSession(): Promise<netSnmp.Session> {

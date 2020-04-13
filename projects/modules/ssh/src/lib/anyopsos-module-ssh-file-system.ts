@@ -27,15 +27,14 @@ export class AnyOpsOSSshFileSystemModule {
   private readonly SftpWrapper: AsyncSFTPWrapper;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    if (!this.userUuid || !this.sessionUuid || !this.workspaceUuid || !this.connectionUuid) throw new Error('invalid_constructor_params');
+    if (!this.userUuid || !this.workspaceUuid || !this.connectionUuid) throw new Error('invalid_constructor_params');
 
     this.GetPathModule = new AnyOpsOSSysGetPathModule();
-    this.CredentialModule = new AnyOpsOSCredentialModule(this.userUuid, this.sessionUuid, this.workspaceUuid);
-    this.SshSessionStateModule = new AnyOpsOSSshSessionStateModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
+    this.CredentialModule = new AnyOpsOSCredentialModule(this.userUuid, this.workspaceUuid);
+    this.SshSessionStateModule = new AnyOpsOSSshSessionStateModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
     this.SftpWrapper = this.SshSessionStateModule.getSFTPWrapper();
   }
 

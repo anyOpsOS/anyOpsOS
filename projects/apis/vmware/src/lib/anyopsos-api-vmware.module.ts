@@ -32,7 +32,7 @@ export class AnyOpsOSVmwareApiController {
                                @Param('connectionUuid') connectionUuid: string) {
     logger.info(`[API VMWare] -> getClientVersion -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}]`);
 
-    const VmwareModule: AnyOpsOSNodeVmwareModule = new AnyOpsOSNodeVmwareModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const VmwareModule: AnyOpsOSNodeVmwareModule = new AnyOpsOSNodeVmwareModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const clientVersion: BackendResponse = await VmwareModule.getClientVersion();
@@ -53,7 +53,7 @@ export class AnyOpsOSVmwareApiController {
                        @Param('connectionUuid') connectionUuid: string) {
     logger.info(`[API VMWare] -> call -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], apiPath [${apiPath}]`);
 
-    const VmwareModule: AnyOpsOSNodeVmwareModule = new AnyOpsOSNodeVmwareModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const VmwareModule: AnyOpsOSNodeVmwareModule = new AnyOpsOSNodeVmwareModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const restResult: BackendResponse = await VmwareModule.callRestApi(apiPath);
@@ -73,7 +73,7 @@ export class AnyOpsOSVmwareApiController {
                        @Param('connectionUuid') connectionUuid: string) {
     logger.info(`[API VMWare] -> call -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], action [${action}]`);
 
-    const VmwareModule: AnyOpsOSNodeVmwareModule = new AnyOpsOSNodeVmwareModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const VmwareModule: AnyOpsOSNodeVmwareModule = new AnyOpsOSNodeVmwareModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     // @ts-ignore TODO
@@ -96,7 +96,7 @@ export class AnyOpsOSVmwareApiController {
                           @Param('connectionUuid') connectionUuid: string) {
     logger.info(`[API VMWare] -> uploadToDatastore -> Uploading file to datastore -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], dstPath [${dstPath}], datastoreUrl [${datastoreUrl}]`);
 
-    const VmwareFileSystemModule: AnyOpsOSNodeVmwareFileSystemModule = new AnyOpsOSNodeVmwareFileSystemModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const VmwareFileSystemModule: AnyOpsOSNodeVmwareFileSystemModule = new AnyOpsOSNodeVmwareFileSystemModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     await VmwareFileSystemModule.uploadToDatastore(dstPath, datastoreUrl);

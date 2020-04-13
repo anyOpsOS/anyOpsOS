@@ -1,6 +1,10 @@
-import {getSocketIO} from 'socket-controllers';
-import fetch, {Headers, Response} from 'node-fetch';
-import {parseStringPromise} from 'xml2js';
+import socketControllers from 'socket-controllers';
+import fetch, {Response} from 'node-fetch';
+import xml2js from 'xml2js';
+
+// TODO ESM
+const {getSocketIO} = socketControllers;
+const {parseStringPromise} = xml2js;
 
 import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
 import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
@@ -24,13 +28,12 @@ export class AnyOpsOSNodeNetappModule {
   private readonly NetappDataRefresherModule: AnyOpsOSNodeNetappDataRefresherModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.sessionUuid, this.workspaceUuid);
-    this.NetappSessionStateModule = new AnyOpsOSNodeNetappSessionStateModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
-    this.NetappDataRefresherModule = new AnyOpsOSNodeNetappDataRefresherModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
+    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.workspaceUuid);
+    this.NetappSessionStateModule = new AnyOpsOSNodeNetappSessionStateModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
+    this.NetappDataRefresherModule = new AnyOpsOSNodeNetappDataRefresherModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
   }
 
   /**
@@ -178,11 +181,12 @@ export class AnyOpsOSNodeNetappModule {
     const mainServer: ConnectionNetappServer = await this.NetappSessionStateModule.getConnectionMainServer();
     const proto: string = (mainServer.port === 80 ? 'http' : 'https');
 
-    const requestHeaders: Headers = new Headers();
-    requestHeaders.append('Content-Type', 'text/xml');
-    requestHeaders.append('Authorization', 'Basic ' + Buffer.from(mainServer.credential.username + ':' + mainServer.credential.password).toString('base64'));
-    requestHeaders.append('Content-Length', Buffer.byteLength(xml).toString());
-    requestHeaders.append('Cookie', soapSessionCookie);
+    const requestHeaders: { [key: string]: string } = {
+      'Content-Type': 'text/xml',
+      'Authorization': 'Basic ' + Buffer.from(mainServer.credential.username + ':' + mainServer.credential.password).toString('base64'),
+      'Content-Length': Buffer.byteLength(xml).toString(),
+      'Cookie': soapSessionCookie
+    };
 
     return fetch(`${proto}://${mainServer.host}:${mainServer.port}/servlets/netapp.servlets.admin.XMLrequest_filer`, {
       method: 'POST',

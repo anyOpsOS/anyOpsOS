@@ -4,13 +4,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "aldtaskBar",
+      "aldesktop",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "aldtask-bar",
+      "aldesktop",
       "kebab-case"
     ]
   }

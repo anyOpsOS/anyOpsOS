@@ -1,6 +1,9 @@
-import {getSocketIO} from 'socket-controllers';
-import fetch, {Headers, Response} from 'node-fetch';
-const validator = require('validator');
+import socketControllers from 'socket-controllers';
+import fetch, {Response} from 'node-fetch';
+import validator from 'validator';
+
+// TODO ESM
+const {getSocketIO} = socketControllers;
 
 import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
 import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
@@ -22,13 +25,12 @@ export class AnyOpsOSNodeNetappSessionStateModule {
   private readonly CredentialModule: AnyOpsOSCredentialModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    this.WorkspaceModule = new AnyOpsOSSysWorkspaceModule(this.userUuid, this.sessionUuid);
-    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.sessionUuid, this.workspaceUuid);
-    this.CredentialModule = new AnyOpsOSCredentialModule(this.userUuid, this.sessionUuid, this.workspaceUuid);
+    this.WorkspaceModule = new AnyOpsOSSysWorkspaceModule(this.userUuid);
+    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.workspaceUuid);
+    this.CredentialModule = new AnyOpsOSCredentialModule(this.userUuid, this.workspaceUuid);
   }
 
   /**
@@ -110,11 +112,12 @@ export class AnyOpsOSNodeNetappSessionStateModule {
     const proto: string = (mainServer.port === 80 ? 'http' : 'https');
     const xml = `unknown>`;
 
-    const requestHeaders: Headers = new Headers();
-    requestHeaders.append('Content-Type', 'text/xml');
-    requestHeaders.append('SOAPAction', 'urn:vim25/6.0');
-    requestHeaders.append('Content-Length', Buffer.byteLength(xml).toString());
-    requestHeaders.append('Expect', '100-continue');
+    const requestHeaders: { [key: string]: string } = {
+      'Content-Type': 'text/xml',
+      'SOAPAction': 'urn:vim25/6.0',
+      'Content-Length': Buffer.byteLength(xml).toString(),
+      'Expect': '100-continue'
+    };
 
     return fetch(`${proto}://${mainServer.host}:${mainServer.port}/sdk`, {
       method: 'POST',

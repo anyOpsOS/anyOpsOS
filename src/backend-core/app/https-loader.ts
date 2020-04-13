@@ -1,5 +1,6 @@
-import {get} from 'https';
+import {get, Agent} from 'https';
 import {dirname} from 'path';
+import {readFileSync} from 'fs';
 
 export function resolve(specifier: string, context: { parentURL?: any }, defaultResolve: (...args: any) => any) {
   const { parentURL = null } = context;
@@ -23,6 +24,12 @@ export function resolve(specifier: string, context: { parentURL?: any }, default
 
     return {
       url: `https://filesystem.anyopsos.local/api/file/${encodeURIComponent( `${specifier.replace('@anyopsos/api-', 'bin/apis/')}/index.js` )}`
+    };
+
+  } else if (specifier.startsWith('@anyopsos/websocket-')) {
+
+    return {
+      url: `https://filesystem.anyopsos.local/api/file/${encodeURIComponent( `${specifier.replace('@anyopsos/websocket-', 'bin/websockets/')}/index.js` )}`
     };
 
   // Right now we don't use this case directly. Ex: import {xx} from 'https://filesystem.anyopsos.local/api/file/something.js'
@@ -74,8 +81,25 @@ export function getSource(url: string, context: { parentURL?: any }, defaultGetS
 
   if (url.startsWith('https://')) {
 
+    const DEFAULT_CERT: () => string = () => readFileSync('/dev/shm/server.cert').toString();
+    const DEFAULT_CERT_KEY: () => string = () => readFileSync('/dev/shm/server.key').toString();
+
+    const options = {
+      key: DEFAULT_CERT_KEY(),
+      cert: DEFAULT_CERT(),
+      headers: {
+        'User-Agent': 'Node.js/https'
+      },
+      // Disable session caching
+      agent: new Agent({
+        maxCachedSessions: 0
+      }),
+      // Certificate validation
+      strictSSL: true,
+    }
+
     return new Promise((resolve, reject) => {
-      get(url, (res) => {
+      get(url, options, (res) => {
         let data = '';
         res.on('data', (chunk) => data += chunk);
         res.on('end', () => {

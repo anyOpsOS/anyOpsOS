@@ -18,10 +18,10 @@ export class AnyOpsOSLibCredentialHelpersService {
   /**
    * Gets a credential state by given credentialUuid
    */
-  getCredentialByUuid(credentialUuid: string): Credential {
-    const credentials: Credential[] = this.getAllCredentials();
+  getCredentialByUuid(credentialUuid: string): Omit<Credential, 'password'> {
+    const credentials: Omit<Credential, 'password'>[] = this.getAllCredentials();
 
-    const currentCredential: Credential = credentials.find((credential: Credential) => {
+    const currentCredential: Omit<Credential, 'password'> = credentials.find((credential: Omit<Credential, 'password'>) => {
       return credential.uuid === credentialUuid;
     });
 
@@ -35,14 +35,14 @@ export class AnyOpsOSLibCredentialHelpersService {
   /**
    * Returns all connections
    */
-  getAllCredentials(): Credential[] {
+  getAllCredentials(): Omit<Credential, 'password'>[] {
     return this.LibCredentialState.$credentials.getValue();
   }
 
   /**
    * Returns all connections as Observable
    */
-  getAllCredentialsObserver(): Observable<Credential[]> {
+  getAllCredentialsObserver(): Observable<Omit<Credential, 'password'>[]> {
     return this.LibCredentialState.credentials;
   }
 }

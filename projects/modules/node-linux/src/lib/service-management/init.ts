@@ -5,11 +5,10 @@ export class InitServiceManagementModule {
   private readonly SshSessionStateModule: AnyOpsOSSshSessionStateModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    this.SshSessionStateModule = new AnyOpsOSSshSessionStateModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
+    this.SshSessionStateModule = new AnyOpsOSSshSessionStateModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
   }
 
   // Returns an error message if program is not installed, bin location if all is OK

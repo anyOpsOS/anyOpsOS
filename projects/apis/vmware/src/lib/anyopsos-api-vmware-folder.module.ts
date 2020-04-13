@@ -32,7 +32,7 @@ export class AnyOpsOSVmwareFolderApiController {
                         @Param('datastoreBrowserName') datastoreBrowserName: string) {
     logger.info(`[API VmwareFolder] -> Reading folder files -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], srcPath [${srcPath}]`);
 
-    const VmwareFileSystemModule: AnyOpsOSNodeVmwareFileSystemModule = new AnyOpsOSNodeVmwareFileSystemModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const VmwareFileSystemModule: AnyOpsOSNodeVmwareFileSystemModule = new AnyOpsOSNodeVmwareFileSystemModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const pathData: AnyOpsOSFile[] = await VmwareFileSystemModule.getFolder(srcPath, datastoreName, datastoreBrowserName);
@@ -52,7 +52,7 @@ export class AnyOpsOSVmwareFolderApiController {
                            @Param('datacenterName') datacenterName: string) {
     logger.info(`[API VmwareFolder] -> Creating folder -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], dstPath [${dstPath}]`);
 
-    const VmwareFileSystemModule: AnyOpsOSNodeVmwareFileSystemModule = new AnyOpsOSNodeVmwareFileSystemModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const VmwareFileSystemModule: AnyOpsOSNodeVmwareFileSystemModule = new AnyOpsOSNodeVmwareFileSystemModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     await VmwareFileSystemModule.putFolder(dstPath, datastoreName, datacenterName);

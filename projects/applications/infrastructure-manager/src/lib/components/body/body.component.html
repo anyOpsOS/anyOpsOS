@@ -38,8 +38,8 @@
         matTooltip="{{node.type}}"
       >
         <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.name">
-          <mat-icon class="mat-icon-rtl-mirror">
-            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          <mat-icon class="mat-icon-rtl-mirror" fontSet="fa" fontIcon="{{treeControl.isExpanded(node) ? 'fa-chevron-down' : 'fa-chevron-right'}}">
+            
           </mat-icon>
         </button>
 

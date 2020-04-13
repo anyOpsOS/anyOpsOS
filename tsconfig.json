@@ -176,11 +176,11 @@
       "@anyopsos/lib-credential/*": [
         "projects/libraries/credential/*"
       ],
-      "@anyopsos/lib-desktop-task-bar": [
-        "projects/libraries/desktop-task-bar/src/public-api"
+      "@anyopsos/lib-desktop": [
+        "projects/libraries/desktop/src/public-api"
       ],
-      "@anyopsos/lib-desktop-task-bar/*": [
-        "projects/libraries/desktop-task-bar/*"
+      "@anyopsos/lib-desktop/*": [
+        "projects/libraries/desktop/*"
       ],
       "@anyopsos/lib-node-docker": [
         "projects/libraries/node-docker/src/public-api"

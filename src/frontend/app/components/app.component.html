@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12 p-0">
-      <div class="min-vh-100 text-center m-0 bg-info d-flex flex-column justify-content-center">
+      <div class="min-vh-100 text-center m-auto bg-info d-flex flex-column justify-content-center">
 
         <!-- Loading Vault state -->
         <mat-spinner *ngIf="!vaultState; else checkState"></mat-spinner>
@@ -31,7 +31,7 @@
         <!-- App Bootstrapped. Show Desktop -->
         <ng-template #desktop>
 
-          <app-desktop></app-desktop>
+          <app-desktop class="m-0 text-left"></app-desktop>
 
         </ng-template>
 

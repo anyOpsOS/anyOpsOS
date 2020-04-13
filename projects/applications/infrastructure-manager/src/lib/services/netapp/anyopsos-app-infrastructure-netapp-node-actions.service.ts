@@ -97,7 +97,7 @@ export class AnyOpsOSAppInfrastructureNetappNodeActionsService {
       no: 'Cancel',
       boxContent: 'This action is permanent.',
       boxClass: 'text-danger',
-      boxIcon: 'warning'
+      boxIcon: 'fa-exclamation-triangle'
     });
 
     modalInstance.afterClosed().subscribe(async (result: boolean) => {

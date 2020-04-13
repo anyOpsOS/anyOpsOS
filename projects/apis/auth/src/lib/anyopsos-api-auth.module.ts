@@ -76,7 +76,7 @@ export class AnyOpsOSAuthApiController {
                    @BodyParam('username') username: string) {
     logger.info(`[API auth] -> createUser -> user [${username}]`);
 
-    const AuthModule: AnyOpsOSAuthModule = new AnyOpsOSAuthModule(userUuid, sessionUuid);
+    const AuthModule: AnyOpsOSAuthModule = new AnyOpsOSAuthModule(userUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const createResult: { successCreated: boolean; userUuid: string; } = await AuthModule.createUser(username);

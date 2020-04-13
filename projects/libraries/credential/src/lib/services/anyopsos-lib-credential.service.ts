@@ -27,16 +27,16 @@ export class AnyOpsOSLibCredentialService {
     if (this.LibCredentialState.getCredentialsInitialized()) throw new Error('credentials_already_initialized');
 
     this.LibCredentialApi.getCredentials().subscribe(
-      (credentialsData: BackendResponse & { data: Credential[]; }) => {
+      (credentialsData: BackendResponse & { data: Omit<Credential, 'password'>[]; }) => {
         if (credentialsData.status === 'error') {
           this.logger.error('LibCredential', 'initCredentials -> Error while getting credentials', null, credentialsData.data);
           throw credentialsData.data;
         }
 
         // Update state
-        credentialsData.data.forEach((credential: Credential) => this.LibCredentialState.putCredential(credential));
+        credentialsData.data.forEach((credential: Omit<Credential, 'password'>) => this.LibCredentialState.putCredential(credential));
 
-        this.logger.info('Credentials Manager', 'Got credentials successfully');
+        this.logger.info('LibCredential', 'Got credentials successfully');
       },
       (error: any) => {
         this.logger.error('LibCredential', 'Error while getting credentials', null, error);
@@ -53,7 +53,7 @@ export class AnyOpsOSLibCredentialService {
 
     return new Promise((resolve, reject) => {
 
-      const currentCredential: Credential = this.LibCredentialHelpers.getCredentialByUuid(credentialUuid);
+      const currentCredential: Omit<Credential, 'password'> = this.LibCredentialHelpers.getCredentialByUuid(credentialUuid);
       if (!currentCredential) {
         this.logger.error('LibCredential', 'deleteCredential -> Resource invalid');
         throw new Error('resource_invalid');

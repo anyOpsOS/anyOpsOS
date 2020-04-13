@@ -31,7 +31,7 @@ export class AnyOpsOSVmwareFolderApiController {
                         @Param('srcPath') srcPath: string) {
     logger.info(`[API VmwareFolder] -> Reading folder files -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], srcPath [${srcPath}]`);
 
-    const NetappFileSystemModule: AnyOpsOSNodeNetappFileSystemModule = new AnyOpsOSNodeNetappFileSystemModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const NetappFileSystemModule: AnyOpsOSNodeNetappFileSystemModule = new AnyOpsOSNodeNetappFileSystemModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const pathData: AnyOpsOSFile[] = await NetappFileSystemModule.getFolder(vfiler, srcPath);
@@ -50,7 +50,7 @@ export class AnyOpsOSVmwareFolderApiController {
                            @Param('dstPath') dstPath: string) {
     logger.info(`[API VmwareFolder] -> Creating folder -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], dstPath [${dstPath}]`);
 
-    const NetappFileSystemModule: AnyOpsOSNodeNetappFileSystemModule = new AnyOpsOSNodeNetappFileSystemModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const NetappFileSystemModule: AnyOpsOSNodeNetappFileSystemModule = new AnyOpsOSNodeNetappFileSystemModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     await NetappFileSystemModule.putFolder(vfiler, dstPath);

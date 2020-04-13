@@ -12,7 +12,7 @@
   <mat-form-field class="w-100">
     <ngx-mat-file-input #removableInput formControlName="objectFile" placeholder="Choose YAML or JSON file" required></ngx-mat-file-input>
     <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
-      <mat-icon>clear</mat-icon>
+      <mat-icon fontSet="fa" fontIcon="fa-times"></mat-icon>
     </button>
     <mat-error *ngIf="newObjectForm?.get('objectFile')?.hasError('required')">
       Please select a file

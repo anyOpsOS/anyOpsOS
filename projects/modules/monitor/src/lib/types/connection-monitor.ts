@@ -17,4 +17,8 @@ export interface ConnectionMonitor {
   type: MonitorConnectionTypes;
   error?: string;
   snapshotData?: any;
+  NETDATA?: any;
+  options?: any;
+  snapshotOptions?: any;
+  netdataDashboard?: any;
 }

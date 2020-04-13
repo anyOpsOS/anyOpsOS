@@ -19,13 +19,13 @@ export class AnyOpsOSLibCredentialApiService {
     return this.http.get(`/api/credential/${this.LibWorkspace.getCurrentWorkspaceUuid()}`);
   }
 
-  putCredential(credential: Credential): Observable<Object> {
+  putCredential(credential: Omit<Credential, 'uuid'>): Observable<Object> {
     return this.http.put(`/api/credential/${this.LibWorkspace.getCurrentWorkspaceUuid()}`, {
       credential
     });
   }
 
-  patchCredential(credentialUuid: string, credential: Credential): Observable<Object> {
+  patchCredential(credentialUuid: string, credential: Partial<Credential>): Observable<Object> {
     return this.http.patch(`/api/credential/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${encodeURIComponent(credentialUuid)}`, {
       credential
     })

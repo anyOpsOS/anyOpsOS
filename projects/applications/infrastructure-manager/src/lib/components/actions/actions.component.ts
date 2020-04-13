@@ -179,7 +179,7 @@ export class ActionsComponent implements OnDestroy, OnInit {
           activeObject.info.data.metadata.namespace ? `-n ${activeObject.info.data.metadata.namespace}` : ''
 }
 ${activeObject.type} ${activeObject.name}</code>`,
-        boxIcon: 'info'
+        boxIcon: 'fa-info'
       }
     );
 

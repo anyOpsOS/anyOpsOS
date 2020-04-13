@@ -2,51 +2,29 @@ import log4js, {Logger} from 'log4js';
 import {Stats} from 'fs';
 import {parse} from 'url';
 import {join} from 'path';
+import {get} from 'http';
 import fs from 'fs-extra';
-import childProcessPromise from 'child-process-promise';
+
 
 // TODO ESM
 const {getLogger} = log4js;
-const {copy, ensureDir, move, outputFile, pathExistsSync, readdir, remove, stat} = fs;
-const {spawn} = childProcessPromise;
+const {createWriteStream, copy, ensureDir, move, outputFile, pathExistsSync, readdir, remove, unlink, stat} = fs;
 
-import {AnyOpsOSSysApiCallerModule} from '@anyopsos/module-sys-api-caller';
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
 import {AnyOpsOSCredentialModule, Credential} from '@anyopsos/module-credential';
+
+import {ApiCaller} from './decorators/api-caller'
+
 import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
-import {AOO_ANYOPSOS_TYPE} from '@anyopsos/module-sys-constants';
 
 
 const logger: Logger = getLogger('mainLog');
 
-function ApiCaller() {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-
-    const method = descriptor.value; // references the method being decorated
-    descriptor.value = function(...args: any[]) {
-
-      // Call the original event
-      if (AOO_ANYOPSOS_TYPE === 'filesystem') return method.apply(this, args);
-
-      const ApiCallerModule: AnyOpsOSSysApiCallerModule = new AnyOpsOSSysApiCallerModule();
-      
-      // Rewrite the method to call the fileSystem API
-      if (propertyKey === 'getFolder') return ApiCallerModule.call('filesystem', 'GET', `/api/folder/${encodeURIComponent(args[0])}`);
-      if (propertyKey === 'putFolder') return ApiCallerModule.call('filesystem', 'PUT', `/api/folder/${encodeURIComponent(args[0])}`);
-
-      if (propertyKey === 'getFile') return ApiCallerModule.call('filesystem', 'GET', `/api/file/${encodeURIComponent(args[0])}`);
-      if (propertyKey === 'putFile') return ApiCallerModule.call('filesystem', 'PUT', `/api/file/${encodeURIComponent(args[1])}`, { file: args[0] });
-      if (propertyKey === 'deleteFile') return ApiCallerModule.call('filesystem', 'DELETE', `/api/file/${encodeURIComponent(args[0])}`);
-    };
-  };
-}
-
 export class AnyOpsOSFileSystemModule {
 
-  private readonly GetPathModule: AnyOpsOSSysGetPathModule;
+  private readonly GetPathModule: AnyOpsOSSysGetPathModule = new AnyOpsOSSysGetPathModule();
 
-  constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string) {
+  constructor(private readonly userUuid: string) {
 
     this.GetPathModule = new AnyOpsOSSysGetPathModule();
   }
@@ -166,7 +144,8 @@ export class AnyOpsOSFileSystemModule {
   }
 
   @ApiCaller()
-  async putFile(file: Express.Multer.File, dstPath: string): Promise<void> {
+  // TODO file: Express.Multer.File
+  async putFile(file: any, dstPath: string): Promise<void> {
     logger.debug(`[Module FileSystem] -> putFile -> file [${file.originalname}], dstPath [${dstPath}]`);
 
     // Security check
@@ -186,27 +165,41 @@ export class AnyOpsOSFileSystemModule {
     // Security check
     if (dstPath.indexOf('\0') !== -1) throw new Error('param_security_stop');
 
-    // TODO: check file already exists
-
     const fileUrl: string = parse(url).href;
-
     // @ts-ignore TODO
     const fileName: string = parse(fileUrl).pathname.split('/').pop();
     const realDownloadPath: string = join(this.GetPathModule.filesystem, dstPath, fileName);
 
-    let curlData;
+    if (pathExistsSync(realDownloadPath)) throw new Error('resource_already_exists');
+
+    let options: {};
     if (credentialUuid && workspaceUuid) {
 
-      const CredentialModule: AnyOpsOSCredentialModule = new AnyOpsOSCredentialModule(this.userUuid, this.sessionUuid, workspaceUuid);
-
+      const CredentialModule: AnyOpsOSCredentialModule = new AnyOpsOSCredentialModule(this.userUuid, workspaceUuid);
       const credential: Credential = await CredentialModule.getCredential(credentialUuid);
 
-      curlData = await spawn('curl', ['-k', '--user', `${credential.username}:${credential.password}`, fileUrl], { capture: [ 'stdout', 'stderr' ]});
+      options = {
+        auth: `${credential.username}:${credential.password}`
+      }
+
     } else {
-      curlData = await spawn('curl', ['-k', fileUrl], { capture: [ 'stdout', 'stderr' ]});
+      options = {}
     }
 
-    return outputFile(realDownloadPath, curlData);
+    // Download file
+    return new Promise((resolve, reject) => {
+      const file = createWriteStream(realDownloadPath);
+      get(fileUrl, options, (response) => {
+        response.pipe(file);
+        file.on('finish', () => {
+          file.close();
+          return resolve();
+        });
+      }).on('error', (e) => { 
+        unlink(realDownloadPath);
+        return reject(e);
+      });
+    });
   }
 
   @ApiCaller()

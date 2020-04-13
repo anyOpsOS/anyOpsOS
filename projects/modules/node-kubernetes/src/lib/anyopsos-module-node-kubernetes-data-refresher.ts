@@ -1,4 +1,7 @@
-import {getSocketIO} from 'socket-controllers';
+import socketControllers from 'socket-controllers';
+
+// TODO ESM
+const {getSocketIO} = socketControllers;
 
 import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
 import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
@@ -9,11 +12,10 @@ export class AnyOpsOSNodeKubernetesDataRefresherModule {
   private readonly ConfigFileModule: AnyOpsOSConfigFileModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.sessionUuid, this.workspaceUuid);
+    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.workspaceUuid);
   }
 
   async retry<T>(

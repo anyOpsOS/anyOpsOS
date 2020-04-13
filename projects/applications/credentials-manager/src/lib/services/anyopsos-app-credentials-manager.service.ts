@@ -13,10 +13,10 @@ import {Credential} from '@anyopsos/module-credential';
   providedIn: 'root'
 })
 export class AnyOpsOSAppCredentialsManagerService {
-  private readonly $activeCredential: BehaviorSubject<Credential | null>;
+  private readonly $activeCredential: BehaviorSubject<Omit<Credential, 'password'> | null>;
   private readonly $activeCredentialUuid: BehaviorSubject<string | null>;
   private dataStore: {
-    activeCredential: Credential | null;
+    activeCredential: Omit<Credential, 'password'> | null;
     activeCredentialUuid: string | null;
   };
   readonly activeCredential: Observable<Credential | null>;
@@ -79,18 +79,19 @@ export class AnyOpsOSAppCredentialsManagerService {
     this.$activeCredential.next(Object.assign({}, this.dataStore).activeCredential);
   }
 
+  async saveCredential(credential: Omit<Credential, 'password'>): Promise<void>
+  async saveCredential(credential: Omit<Credential, 'uuid'>): Promise<void>
   async saveCredential(credential: Credential): Promise<void> {
     if (!credential) throw new Error('resource_invalid');
     this.logger.debug('CredentialsManager', 'Credential received');
 
     // Editing an existing credential
     if (credential.uuid) {
-      return this.LibCredentialState.patchFullCredential(credential);
+      return this.LibCredentialState.patchCredential(credential.uuid, credential);
 
     // New credential received
     } else {
-      credential = {
-        uuid: null, // Backend will return the correct uuid
+      (credential as Omit<Credential, 'uuid'>) = {
         description: credential.description,
         type: credential.type,
         username: credential.username,
@@ -115,7 +116,7 @@ export class AnyOpsOSAppCredentialsManagerService {
         no: 'Cancel',
         boxContent: 'This action is permanent. All resources using this credential will fail...',
         boxClass: 'text-danger',
-        boxIcon: 'warning'
+        boxIcon: 'fa-exclamation-triangle'
       }
     );
 

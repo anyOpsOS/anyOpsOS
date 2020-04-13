@@ -29,7 +29,7 @@ export class AnyOpsOSMonitorApiController {
                          @Param('type') type: MonitorConnectionTypes) {
     logger.info(`[API Monitor] -> getCharts -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], type [${type}]`);
 
-    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, sessionUuid, workspaceUuid, connectionUuid, request);
+    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, workspaceUuid, connectionUuid, request);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const chartsDatabase: ForwarderResponse = await MonitorModule.getCharts();
@@ -48,7 +48,7 @@ export class AnyOpsOSMonitorApiController {
                         @QueryParam('chart') chart: string) {
     logger.info(`[API Monitor] -> getChart -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], type [${type}], chart [${chart}]`);
 
-    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, sessionUuid, workspaceUuid, connectionUuid, request);
+    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, workspaceUuid, connectionUuid, request);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const chartDatabase: ForwarderResponse = await MonitorModule.getChart();
@@ -67,7 +67,7 @@ export class AnyOpsOSMonitorApiController {
                        @QueryParam('chart') chart: string) {
     logger.info(`[API Monitor] -> getData -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], type [${type}], chart [${chart}]`);
 
-    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, sessionUuid, workspaceUuid, connectionUuid, request);
+    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, workspaceUuid, connectionUuid, request);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const chartData: ForwarderResponse = await MonitorModule.getChartData();
@@ -86,7 +86,7 @@ export class AnyOpsOSMonitorApiController {
                          @QueryParam('type') alarmType: string) {
     logger.info(`[API Monitor] -> getAlarms -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], type [${type}], alarmType [${alarmType}]`);
 
-    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, sessionUuid, workspaceUuid, connectionUuid, request);
+    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, workspaceUuid, connectionUuid, request);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const chartAlarms: ForwarderResponse = await MonitorModule.getAlarms();
@@ -104,7 +104,7 @@ export class AnyOpsOSMonitorApiController {
                             @Param('type') type: MonitorConnectionTypes) {
     logger.info(`[API Monitor] -> getAlarmsLog -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], type [${type}]`);
 
-    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, sessionUuid, workspaceUuid, connectionUuid, request);
+    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, workspaceUuid, connectionUuid, request);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const chartAlarmsLog: ForwarderResponse = await MonitorModule.getAlarmsLog();
@@ -122,7 +122,7 @@ export class AnyOpsOSMonitorApiController {
                         @Param('type') type: MonitorConnectionTypes) {
     logger.info(`[API Monitor] -> getBadge -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], type [${type}]`);
 
-    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, sessionUuid, workspaceUuid, connectionUuid, request);
+    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, workspaceUuid, connectionUuid, request);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const chartBadge: ForwarderResponse = await MonitorModule.getBadge();
@@ -140,7 +140,7 @@ export class AnyOpsOSMonitorApiController {
                                     @Param('type') type: MonitorConnectionTypes) {
     logger.info(`[API Monitor] -> Connect -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], type [${type}]`);
 
-    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, sessionUuid, workspaceUuid, connectionUuid, request);
+    const MonitorModule: AnyOpsOSMonitorModule = new AnyOpsOSMonitorModule(userUuid, workspaceUuid, connectionUuid, request);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const successConnection: boolean = await MonitorModule.createSession();

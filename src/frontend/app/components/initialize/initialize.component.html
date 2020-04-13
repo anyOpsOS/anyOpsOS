@@ -1,123 +1,116 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12 p-0">
-      <div class="min-vh-100 text-center m-auto bg-info d-flex flex-column justify-content-center bootstrap-div">
+<div class="bootstrap-div">
 
-        <!-- Vault not initialized -->
-        <ng-container *ngIf="vaultState.initialized === false; else vaultSealed">
+  <!-- Vault not initialized -->
+  <ng-container *ngIf="vaultState.initialized === false; else vaultSealed">
 
-          <ng-container *ngIf="!vaultResult; else initializeData">
+    <form class="form-horizontal" [formGroup]="initializeForm" (ngSubmit)="initializeVault()" *ngIf="!vaultResult; else initializeData">
 
-            <mat-form-field
-              [floatLabel]="'auto'"
-              [hideRequiredMarker]="false" class="w-100">
+      <mat-form-field
+        [floatLabel]="'auto'"
+        [hideRequiredMarker]="false" class="w-100">
 
-              <input [(ngModel)]="rootAccount"
-                     name="rootAccount"
-                     aria-label="Main Username"
-                     placeholder="Main Username"
-                     type="text"
-                     required
-                     matInput>
+        <input formControlName="rootAccount"
+                name="rootAccount"
+                aria-label="Main Username"
+                placeholder="Main Username"
+                type="text"
+                required
+                matInput>
 
-              <mat-error *ngIf="rootAccount.invalid">You must enter an username</mat-error>
-            </mat-form-field>
+        <mat-error *ngIf="getInitializeForm.rootAccount.invalid">You must enter an username</mat-error>
+      </mat-form-field>
 
-            <button mat-flat-button color="primary" (click)="initializeVault()">Initialize Vault and create Root Account</button>
+      <button mat-flat-button color="primary" type="submit">Initialize Vault and create Root Account</button>
 
-          </ng-container>
+    </form>
 
-          <!-- Vault initialized -->
-          <ng-template #initializeData>
+    <!-- Vault initialized -->
+    <ng-template #initializeData>
 
-            <span class="span-title">Vault initialized. Save the unseal keys and the root password. You will need these keys in case that the Vault is restarted</span>
+      <span class="span-title">Vault initialized. Save the unseal keys and the root password. You will need these keys in case that the Vault is restarted</span>
 
-            <mat-list>
-              <div mat-subheader>Vault Unseal Keys</div>
-              <mat-list-item *ngFor="let key of vaultResult.keys">
-                <mat-icon mat-list-icon fontSet="fas" fontIcon="fa-key"></mat-icon>
-                <div mat-line>{{key}}</div>
-              </mat-list-item>
-              <mat-divider></mat-divider>
+      <mat-list>
+        <div mat-subheader>Vault Unseal Keys</div>
+        <mat-list-item *ngFor="let key of vaultResult.keys">
+          <mat-icon mat-list-icon fontSet="fas" fontIcon="fa-key"></mat-icon>
+          <div mat-line>{{key}}</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
 
-              <div mat-subheader>Vault Root Token</div>
-              <mat-list-item>
-                <mat-icon mat-list-icon fontSet="fas" fontIcon="fa-user-shield"></mat-icon>
-                <div mat-line>{{vaultResult.root_token}}</div>
-              </mat-list-item>
+        <div mat-subheader>Vault Root Token</div>
+        <mat-list-item>
+          <mat-icon mat-list-icon fontSet="fas" fontIcon="fa-user-shield"></mat-icon>
+          <div mat-line>{{vaultResult.root_token}}</div>
+        </mat-list-item>
 
-              <div mat-subheader>{{rootAccount}}'s Password</div>
-              <mat-list-item>
-                <mat-icon mat-list-icon fontSet="fas" fontIcon="fa-user"></mat-icon>
-                <div mat-line>{{vaultResult.password}}</div>
-              </mat-list-item>
-            </mat-list>
+        <div mat-subheader>{{getInitializeForm.rootAccount.value}}'s Password</div>
+        <mat-list-item>
+          <mat-icon mat-list-icon fontSet="fas" fontIcon="fa-user"></mat-icon>
+          <div mat-line>{{vaultResult.password}}</div>
+        </mat-list-item>
+      </mat-list>
 
-            <button mat-flat-button color="primary" (click)="markStateChanged()">Continue</button>
+      <button mat-flat-button color="primary" (click)="markStateChanged()">Continue</button>
 
-          </ng-template>
+    </ng-template>
 
-        </ng-container>
+  </ng-container>
 
-        <!-- Vault initialized but sealed -->
-        <ng-template #vaultSealed>
+  <!-- Vault initialized but sealed -->
+  <ng-template #vaultSealed>
 
-          <ng-container *ngIf="vaultState.sealed === true; else noRootAccount">
+    <form class="form-horizontal" [formGroup]="initializeForm" (ngSubmit)="unsealVault()" *ngIf="vaultState.sealed === true; else noRootAccount">
 
-            <mat-form-field
-              [floatLabel]="'auto'"
-              [hideRequiredMarker]="false" class="w-100">
+      <mat-form-field
+        [floatLabel]="'auto'"
+        [hideRequiredMarker]="false" class="w-100">
 
-              <input [(ngModel)]="unsealKey"
-                    name="unsealKey"
-                    aria-label="Unseal Key"
-                    placeholder="Unseal Key"
-                    type="text"
-                    required
-                    matInput>
+        <input formControlName="unsealKey"
+                name="unsealKey"
+                aria-label="Unseal Key"
+                placeholder="Unseal Key"
+                type="text"
+                required
+                matInput>
 
-            </mat-form-field>
+      </mat-form-field>
 
-            <button mat-flat-button color="primary" (click)="unsealVault()">Unseal Vault</button>
+      <button mat-flat-button color="primary" type="submit">Unseal Vault</button>
 
-          </ng-container>
+    </form>
 
-        </ng-template>
+  </ng-template>
 
-        <!-- Vault initialized, unsealed, but no use -->
-        <ng-template #noRootAccount>
+  <!-- Vault initialized, unsealed, but no use -->
+  <ng-template #noRootAccount>
 
-          <ng-container *ngIf="!vaultResult; else accountData">
+    <form class="form-horizontal" [formGroup]="initializeForm" (ngSubmit)="createRootAccount()" *ngIf="!vaultResult; else accountData">
 
-            <mat-form-field
-              [floatLabel]="'auto'"
-              [hideRequiredMarker]="false" class="w-100">
+      <mat-form-field
+        [floatLabel]="'auto'"
+        [hideRequiredMarker]="false" class="w-100">
 
-              <input [(ngModel)]="rootAccount"
-                    name="rootAccount"
-                    aria-label="Main Username"
-                    placeholder="Main Username"
-                    type="text"
-                    required
-                    matInput>
-            </mat-form-field>
+        <input formControlName="rootAccount"
+                name="rootAccount"
+                aria-label="Main Username"
+                placeholder="Main Username"
+                type="text"
+                required
+                matInput>
+      </mat-form-field>
 
-            <button mat-flat-button color="primary" (click)="createRootAccount()">Create Root Account</button>
+      <button mat-flat-button color="primary" type="submit">Create Root Account</button>
 
-          </ng-container>
+    </form>
 
-          <!-- New Root Account created -->
-          <ng-template #accountData>
+    <!-- New Root Account created -->
+    <ng-template #accountData>
 
-            <button mat-flat-button color="primary" (click)="markStateChanged()">Continue</button>
+      <button mat-flat-button color="primary" (click)="markStateChanged()">Continue</button>
 
-          </ng-template>
+    </ng-template>
 
-        </ng-template>
+  </ng-template>
 
-      </div>
-    </div>
-  </div>
 </div>
-
 

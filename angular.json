@@ -2093,46 +2093,6 @@
         }
       }
     },
-    "anyopsos-lib-desktop-task-bar": {
-      "projectType": "library",
-      "root": "projects/libraries/desktop-task-bar",
-      "sourceRoot": "projects/libraries/desktop-task-bar/src",
-      "prefix": "aldtask-bar",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "projects/libraries/desktop-task-bar/tsconfig.lib.json",
-            "project": "projects/libraries/desktop-task-bar/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/libraries/desktop-task-bar/src/test.ts",
-            "tsConfig": "projects/libraries/desktop-task-bar/tsconfig.spec.json",
-            "karmaConfig": "projects/libraries/desktop-task-bar/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/libraries/desktop-task-bar/tsconfig.lib.json",
-              "projects/libraries/desktop-task-bar/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      },
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      }
-    },
     "anyopsos-lib-credential": {
       "projectType": "library",
       "root": "projects/libraries/credential",
@@ -2840,6 +2800,46 @@
             "tsConfig": [
               "projects/modals/monitor-xss/tsconfig.lib.json",
               "projects/modals/monitor-xss/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-desktop": {
+      "projectType": "library",
+      "root": "projects/libraries/desktop",
+      "sourceRoot": "projects/libraries/desktop/src",
+      "prefix": "aldesktop",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/desktop/tsconfig.lib.json",
+            "project": "projects/libraries/desktop/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/desktop/src/test.ts",
+            "tsConfig": "projects/libraries/desktop/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/desktop/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/desktop/tsconfig.lib.json",
+              "projects/libraries/desktop/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

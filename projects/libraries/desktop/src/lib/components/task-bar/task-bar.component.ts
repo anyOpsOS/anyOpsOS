@@ -5,7 +5,9 @@ import {Subject} from 'rxjs';
 
 import {CdkDragDrop, moveItemInArray} from '@anyopsos/lib-angular-material';
 import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSLibDesktopTaskBarService, TaskbarApplication} from '@anyopsos/lib-desktop-task-bar';
+
+import {AnyOpsOSLibDesktopTaskBarService} from '../../services/anyopsos-lib-desktop-task-bar.service';
+import {TaskbarApplication} from '../../types/taskbar-application';
 
 @Component({
   selector: 'app-task-bar',

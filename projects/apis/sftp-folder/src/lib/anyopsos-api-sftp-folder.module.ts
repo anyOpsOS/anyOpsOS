@@ -29,7 +29,7 @@ export class AnyOpsOSRemoteFolderApiController {
                         @Param('srcPath') srcPath: string) {
     logger.info(`[API RemoteFolder] -> Reading folder files -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], srcPath [${srcPath}]`);
 
-    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const pathData: AnyOpsOSFile[] = await SshFileSystemModule.getFolder(srcPath);
@@ -47,7 +47,7 @@ export class AnyOpsOSRemoteFolderApiController {
                            @Param('dstPath') dstPath: string) {
     logger.info(`[API RemoteFolder] -> Creating folder -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], dstPath [${dstPath}]`);
 
-    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     await SshFileSystemModule.putFolder(dstPath);

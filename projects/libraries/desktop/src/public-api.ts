@@ -1,0 +1,9 @@
+/*
+ * Public API Surface of anyopsos-lib-desktop
+ */
+
+export * from './lib/types/taskbar-application';
+
+export * from './lib/services/anyopsos-lib-desktop-task-bar.service';
+export * from './lib/services/anyopsos-lib-desktop.service';
+export * from './lib/anyopsos-lib-desktop.module';

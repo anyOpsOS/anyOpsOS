@@ -30,7 +30,7 @@ export class AnyOpsOSSnmpApiController {
                 @Param('oid') oid: string | string[]) {
     logger.info(`[API snmp] -> -> Call -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], oid [${oid}]`);
 
-    const SnmpModule: AnyOpsOSNodeSnmpModule = new AnyOpsOSNodeSnmpModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const SnmpModule: AnyOpsOSNodeSnmpModule = new AnyOpsOSNodeSnmpModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const soapResult: BackendResponse = await SnmpModule.getOid(oid);

@@ -2,8 +2,9 @@ import {Component, Input, ViewChild} from '@angular/core';
 
 import {MatMenuTrigger} from '@anyopsos/lib-angular-material';
 import {Application, AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSLibDesktopTaskBarService} from '@anyopsos/lib-desktop-task-bar';
 import {ContextMenuItem} from '@anyopsos/lib-types';
+
+import {AnyOpsOSLibDesktopTaskBarService} from '../../services/anyopsos-lib-desktop-task-bar.service';
 
 @Component({
   selector: 'app-start-menu-items',

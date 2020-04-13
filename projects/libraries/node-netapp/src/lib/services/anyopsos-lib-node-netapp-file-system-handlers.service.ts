@@ -140,7 +140,7 @@ export class AnyOpsOSLibNodeNetappFileSystemHandlersService {
               no: 'Cancel',
               boxContent: 'This action is permanent.',
               boxClass: 'text-danger',
-              boxIcon: 'warning'
+              boxIcon: 'fa-exclamation-triangle'
             }
           );
 

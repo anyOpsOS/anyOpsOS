@@ -35,7 +35,7 @@ export class AnyOpsOSNetappApiController {
                        @Param('vfiler', { required: false }) vfiler?: string) {
     logger.info(`[API NetApp] -> Call -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}]`);
 
-    const NetappModule: AnyOpsOSNodeNetappModule = new AnyOpsOSNodeNetappModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const NetappModule: AnyOpsOSNodeNetappModule = new AnyOpsOSNodeNetappModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     let soapResult: BackendResponse;

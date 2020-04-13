@@ -14,14 +14,16 @@ import {MonacoEditorModule} from 'ngx-monaco-editor'; // this is an application 
 
 // Internal libraries
 import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibLoggerModule} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibCredentialModule} from '@anyopsos/lib-credential';
-import {AnyOpsOSLibServiceInjectorModule} from '@anyopsos/lib-service-injector';
-import {AnyOpsOSLibFileSystemModule} from '@anyopsos/lib-file-system';
-import {AnyOpsOSLibFileModule} from '@anyopsos/lib-file';
-import {AnyOpsOSLibSelectableService} from '@anyopsos/lib-selectable';
-import {AnyOpsOSLibFolderModule} from '@anyopsos/lib-folder';
 import {AnyOpsOSLibApplicationModule} from '@anyopsos/lib-application';
+import {AnyOpsOSLibCredentialModule} from '@anyopsos/lib-credential';
+import {AnyOpsOSLibDesktopModule} from '@anyopsos/lib-desktop';
+
+import {AnyOpsOSLibFileModule} from '@anyopsos/lib-file';
+import {AnyOpsOSLibFileSystemModule} from '@anyopsos/lib-file-system';
+import {AnyOpsOSLibFolderModule} from '@anyopsos/lib-folder';
+import {AnyOpsOSLibLoggerModule} from '@anyopsos/lib-logger';
+import {AnyOpsOSLibServiceInjectorModule} from '@anyopsos/lib-service-injector';
+import {AnyOpsOSLibSelectableService} from '@anyopsos/lib-selectable';
 import {AnyOpsOSLibPipesModule} from '@anyopsos/lib-pipes';
 
 import {AnyOpsOSLibSshModule} from '@anyopsos/lib-ssh';
@@ -36,12 +38,6 @@ import {AnyOpsOSLibNodeSnmpModule} from '@anyopsos/lib-node-snmp';
 import {AppComponent} from './components/app.component';
 import {InitializeComponent} from './components/initialize/initialize.component';
 import {LoginComponent} from './components/login/login.component';
-import {DesktopComponent} from './components/desktop/desktop.component';
-
-import {StartMenuComponent} from './components/start-menu/start-menu.component';
-import {StartMenuItemsComponent} from './components/start-menu-items/start-menu-items.component';
-import {TaskBarComponent} from './components/task-bar/task-bar.component';
-import {TaskBarItemsComponent} from './components/task-bar-items/task-bar-items.component';
 
 import {CapsLockDirective} from './directives/caps-lock.directive';
 import {HttpErrorInterceptor} from './interceptors/http-error-interceptor';
@@ -65,11 +61,6 @@ export function createCompiler(fn: CompilerFactory): Compiler {
     AppComponent,
     InitializeComponent,
     LoginComponent,
-    DesktopComponent,
-    StartMenuComponent,
-    StartMenuItemsComponent,
-    TaskBarComponent,
-    TaskBarItemsComponent,
     CapsLockDirective
   ],
   imports: [
@@ -82,6 +73,7 @@ export function createCompiler(fn: CompilerFactory): Compiler {
     SocketIoModule.forRoot(config),
 
     AnyOpsOSLibApplicationModule,
+    AnyOpsOSLibDesktopModule,
     AnyOpsOSLibFileSystemModule,
     AnyOpsOSLibFileModule,
     AnyOpsOSLibFolderModule,

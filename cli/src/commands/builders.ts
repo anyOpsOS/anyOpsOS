@@ -62,6 +62,8 @@ export class Builders {
     console.log(blue(`[anyOpsOS Cli. Internals] Removing sourcemap line from bundle.`));
 
     const lines2nuke = 1;
+    // TODO readlines
+    return;
 
     return new Promise((resolve, reject) => {
       readLines(filename, lines2nuke).then((lines: string[]) => {
@@ -77,6 +79,19 @@ export class Builders {
         });
       });
     });
+  };
+
+  async moveExternalLibraryAsDep(): Promise<void> {
+
+    // Move Netdata to Deps
+    console.log(blueBright(`[anyOpsOS Cli. Internals] Moving fileSystem dependencies.\n`));
+    if (pathExistsSync(`${process.cwd()}/.dist/anyOpsOS/fileSystem/filesystem/bin/external-libraries/anyopsos-ext-lib-netdata.umd.js`)) {
+      await runInDocker(`mv -f \
+        ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/external-libraries/anyopsos-ext-lib-netdata.umd.js \
+        ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/external-libraries/deps/anyopsos-ext-lib-netdata.umd.js`
+      );
+    }
+
   };
 
   /**
@@ -102,7 +117,8 @@ export class Builders {
       if (pathExistsSync(`${MAIN_PATH_CWD}${this.projectPath}/scripts/postbuild.js`)) {
 
         console.log(blueBright(`[anyOpsOS Cli.] Running anyOpsOS Modal ${argv.moduleName} postbuild script.\n`));
-        await import(`${MAIN_PATH_CWD}${this.projectPath}/scripts/postbuild.js`);
+        const postModule = await import(`${MAIN_PATH_CWD}${this.projectPath}/scripts/postbuild.js`);
+        await postModule.default;
       }
 
       // Copy to filesystem
@@ -113,42 +129,44 @@ export class Builders {
         ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/${this.packageLongType}/anyopsos-${this.packageType}-${argv.moduleName}.umd.js`
       );
 
-      return;
-    }
+    } else {
 
-    // Build all modules of this type
-    console.log(blueBright(`[anyOpsOS Cli.] Building anyOpsOS ${this.packageLongType}.\n`));
-    if (this.packageType === 'modal') await new BuildModals().build();
-    if (this.packageType === 'ext-lib') await new BuildExtLibs().build();
-    if (this.packageType === 'lib') await new BuildLibs().build();
-    if (this.packageType === 'app') await new BuildApps().build();
+      // Build all modules of this type
+      console.log(blueBright(`[anyOpsOS Cli.] Building anyOpsOS ${this.packageLongType}.\n`));
+      if (this.packageType === 'modal') await new BuildModals().build();
+      if (this.packageType === 'ext-lib') await new BuildExtLibs().build();
+      if (this.packageType === 'lib') await new BuildLibs().build();
+      if (this.packageType === 'app') await new BuildApps().build();
 
-    // Run postbuild script if exists
-    const projectsFiles = await readdir(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/`);
-    await projectsFiles.map(async (directory: string): Promise<void> => {
+      // Run postbuild script if exists
+      const projectsFiles = await readdir(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/`);
+      await projectsFiles.map(async (directory: string): Promise<void> => {
 
-      if (pathExistsSync(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/${directory}/scripts/postbuild.js`)) {
+        if (pathExistsSync(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/${directory}/scripts/postbuild.js`)) {
 
-        console.log(blueBright(`[anyOpsOS Cli.] Running anyOpsOS ${this.packageType} ${directory} postbuild script.\n`));
-        await import(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/${directory}/scripts/postbuild.js`);
+          console.log(blueBright(`[anyOpsOS Cli.] Running anyOpsOS ${this.packageType} ${directory} postbuild script.\n`));
+          await import(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/${directory}/scripts/postbuild.js`);
+        }
+
+      });
+
+      // Copy to filesystem
+      const directoryFiles = await readdir(`${MAIN_PATH_CWD}/.dist/${this.packageLongType}/`);
+      for (const directory of directoryFiles) {
+        await this.removeSourceMaps(`${MAIN_PATH_CWD}/.dist/${this.packageLongType}/${directory}/bundles/anyopsos-${this.packageType}-${directory}.umd.js`);
+
+        console.log(blue(`[anyOpsOS Cli. Internals] Copying ${this.packageType} ${directory} to anyOpsOS filesystem.`));
+        await runInDocker(`cp -r \
+          ${INTERNAL_PATH_CWD}/.dist/${this.packageLongType}/${directory}/bundles/anyopsos-${this.packageType}-${directory}.umd.js \
+          ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/${this.packageLongType}/anyopsos-${this.packageType}-${directory}.umd.js`
+        );
+
       }
 
-    });
-
-    // Copy to filesystem
-    const directoryFiles = await readdir(`${MAIN_PATH_CWD}/.dist/${this.packageLongType}/`);
-    for (const directory of directoryFiles) {
-      await this.removeSourceMaps(`${MAIN_PATH_CWD}/.dist/${this.packageLongType}/${directory}/bundles/anyopsos-${this.packageType}-${directory}.umd.js`);
-
-      console.log(blue(`[anyOpsOS Cli. Internals] Copying ${this.packageType} ${directory} to anyOpsOS filesystem.`));
-      await runInDocker(`cp -r \
-        ${INTERNAL_PATH_CWD}/.dist/${this.packageLongType}/${directory}/bundles/anyopsos-${this.packageType}-${directory}.umd.js \
-        ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/${this.packageLongType}/anyopsos-${this.packageType}-${directory}.umd.js`
-      );
-
+      console.log('\n');
     }
 
-    console.log('\n');
+    if (this.packageType === 'ext-lib') await this.moveExternalLibraryAsDep();
   }
 
   /**
@@ -285,6 +303,10 @@ export class Builders {
   
   async buildCli(): Promise<void> {
 
+    // Unset node env
+    const currentNodeEnv: string | undefined = process.env.NODE_OPTIONS;
+    process.env.NODE_OPTIONS = undefined;
+
     console.log(blueBright(`
 ------------------------------------------------------------------------------
 [anyOpsOS Cli.] Building Cli for Windows.
@@ -293,9 +315,9 @@ export class Builders {
 
     await compile({
       input: `${INTERNAL_PATH_CWD}/.dist/cli/bin/anyopsos.js`,
-      targets: ['windows-x64-10.16.0'],
+      targets: ['windows-x64-12.16.1'],
       output: `${INTERNAL_PATH_CWD}/bin/anyopsos`,
-      flags: ['-experimental-modules', '--experimental-loader', `${INTERNAL_PATH_CWD}/.dist/cli/src/https-loader.js`, '--experimental-specifier-resolution=node']
+      flags: ['--build']
     }).then(() => {
       console.log(greenBright(`\n[anyOpsOS Cli.] Successfully built Cli for Windows.\n`));
     });
@@ -308,9 +330,9 @@ export class Builders {
 
     await compile({
       input: `${INTERNAL_PATH_CWD}/.dist/cli/bin/anyopsos.js`,
-      targets: ['linux-x64'],
+      targets: ['linux-x64-12.16.1'],
       output: `${INTERNAL_PATH_CWD}/bin/anyopsos`,
-      flags: ['-experimental-modules', '--experimental-loader', `${INTERNAL_PATH_CWD}/.dist/cli/src/https-loader.js`, '--experimental-specifier-resolution=node']
+      flags: ['--build']
     }).then(() => {
       console.log(greenBright(`\n[anyOpsOS Cli.] Successfully built Cli for Linux.\n`));
     });
@@ -323,9 +345,9 @@ export class Builders {
 
     await compile({
       input: `${INTERNAL_PATH_CWD}/.dist/cli/bin/anyopsos.js`,
-      targets: ['macos-x64'],
+      targets: ['mac-x64-12.15.0'],
       output: `${INTERNAL_PATH_CWD}/bin/anyopsos.mac`,
-      flags: ['-experimental-modules', '--experimental-loader', `${INTERNAL_PATH_CWD}/.dist/cli/src/https-loader.js`, '--experimental-specifier-resolution=node']
+      flags: ['--build']
     }).then(() => {
       console.log(greenBright(`\n[anyOpsOS Cli.] Successfully built Cli for MacOS.\n`));
     });
@@ -338,12 +360,15 @@ export class Builders {
 
     await compile({
       input: `${INTERNAL_PATH_CWD}/.dist/cli/bin/anyopsos.js`,
-      targets: ['alpine-x64-10.16.0'],
+      targets: ['alpine-x64-12.9.1'],
       output: `${INTERNAL_PATH_CWD}/bin/anyopsos.alpine`,
-      flags: ['-experimental-modules', '--experimental-loader', `${INTERNAL_PATH_CWD}/.dist/cli/src/https-loader.js`, '--experimental-specifier-resolution=node']
+      flags: ['--build']
     }).then(() => {
       console.log(greenBright(`\n[anyOpsOS Cli.] Successfully built Cli for Alpine.\n`));
     });
+
+    // Set node env
+    process.env.NODE_OPTIONS = currentNodeEnv;
   
   }
 }

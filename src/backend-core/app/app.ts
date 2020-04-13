@@ -1,5 +1,5 @@
 import log4js, {Logger} from 'log4js';
-import {createServer as createServers, Server as Servers, ServerOptions, get} from 'https';
+import {createServer as createServers, Server as Servers, ServerOptions, get, Agent} from 'https';
 import express, {Application, Request, Response, RequestHandler, NextFunction} from 'express';
 import {ServeStaticOptions} from 'serve-static';
 import {join} from 'path';
@@ -41,6 +41,21 @@ export class App {
   private readonly sslCa: string = SSL_CA_CERT;
   private readonly sslKey: string = SSL_CORE_CERT_KEY;
   private readonly sslCert: string = SSL_CORE_CERT;
+
+  // Used when contacting with anyopsos-filesystem API to get the Core APIs and Websockets
+  private readonly apiRequestOptions = {
+    key: this.sslKey,
+    cert: this.sslCert,
+    headers: {
+      'User-Agent': 'Node.js/https'
+    },
+    // Disable session caching
+    agent: new Agent({
+      maxCachedSessions: 0
+    }),
+    // Certificate validation
+    strictSSL: true,
+  }
 
   private app!: Application;
   private servers!: Servers;
@@ -130,16 +145,20 @@ export class App {
     this.app.use(favicon(join(AOO_BASE_PATH, '/public/favicon.ico')));
     this.app.use(expressStatic(join(AOO_BASE_PATH, '/public'), this.expressOptions));
 
+    this.app.get('/status', (req: express.Request, res: express.Response) => {
+      res.send('ok');
+    });
+
     // Get all APIS not used in fileSystem nor Auth backend
     const controllers: string[] = await new Promise((resolve, reject) => {
-      get(`https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/folder/${encodeURIComponent('bin/apis')}`, (res) => {
+      get(`https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/folder/${encodeURIComponent('bin/apis')}`, this.apiRequestOptions, (res) => {
         let data = '';
         res.on('data', (chunk) => data += chunk);
         res.on('end', () => {
 
           return resolve(
             JSON.parse(data).data
-              .filter((file: AnyOpsOSFile) => file.longName.startsWith('d') && !['auth', 'credential', 'vault', 'config-file', 'file', 'folder'].includes(file.fileName))
+              .filter((file: AnyOpsOSFile) => file.longName.startsWith('d') && !['auth', 'credential', 'vault', 'workspace', 'config-file', 'file', 'folder'].includes(file.fileName))
               .map((file: AnyOpsOSFile) => `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${ encodeURIComponent(`bin/apis/${file.fileName}/index.js`) }`)
           );
         
@@ -318,7 +337,7 @@ export class App {
 
     // Get all websockets to be loaded
     const controllers: string[] = await new Promise((resolve, reject) => {
-      get(`https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/folder/${encodeURIComponent('bin/websockets')}`, (res) => {
+      get(`https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/folder/${encodeURIComponent('bin/websockets')}`, this.apiRequestOptions, (res) => {
         let data = '';
         res.on('data', (chunk) => data += chunk);
         res.on('end', () => {
@@ -333,7 +352,7 @@ export class App {
       }).on('error', (err) => reject(err));
     });
 
-    useSocketServer(this.io, {
+    await useSocketServer(this.io, {
       controllers: controllers,
     });
   }

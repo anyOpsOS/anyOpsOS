@@ -151,7 +151,7 @@ export class AnyOpsOSAppSftpService {
         no: 'Cancel',
         boxContent: 'This action is permanent. Anything using this connection as a dependency will be deleted as well.',
         boxClass: 'text-danger',
-        boxIcon: 'warning'
+        boxIcon: 'fa-exclamation-triangle'
       }
     );
 
@@ -181,7 +181,7 @@ export class AnyOpsOSAppSftpService {
         no: 'Cancel',
         boxContent: 'Anything using this as a dependency will be disconnected.',
         boxClass: 'text-danger',
-        boxIcon: 'warning'
+        boxIcon: 'fa-exclamation-triangle'
       }
     );
 

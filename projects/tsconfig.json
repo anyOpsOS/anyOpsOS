@@ -158,11 +158,11 @@
       "@anyopsos/lib-credential/*": [
         ".dist/libraries/credential/*"
       ],
-      "@anyopsos/lib-desktop-task-bar": [
-        ".dist/libraries/desktop-task-bar"
+      "@anyopsos/lib-desktop": [
+        ".dist/libraries/desktop"
       ],
-      "@anyopsos/lib-desktop-task-bar/*": [
-        ".dist/libraries/desktop-task-bar/*"
+      "@anyopsos/lib-desktop/*": [
+        ".dist/libraries/desktop/*"
       ],
       "@anyopsos/lib-node-docker": [
         ".dist/libraries/node-docker"

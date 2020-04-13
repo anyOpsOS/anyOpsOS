@@ -36,7 +36,7 @@ const mainFunction = 'var Dashboard = function(connection, $, Dygraph, Gauge, Ps
 
 
 const options = {
-  files: 'dist/external-libraries/netdata/bundles/anyopsos-ext-lib-netdata.umd.js',
+  files: '.dist/external-libraries/netdata/bundles/anyopsos-ext-lib-netdata.umd.js',
   from: [
     /NETDATA\$1/g,
 

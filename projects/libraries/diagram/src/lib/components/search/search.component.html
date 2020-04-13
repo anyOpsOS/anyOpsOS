@@ -9,7 +9,7 @@
           [removable]="removable"
           (removed)="remove(search)">
           {{search}}
-          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          <mat-icon matChipRemove *ngIf="removable" fontSet="fa" fontIcon="fa-times"></mat-icon>
         </mat-chip>
         <input
           placeholder="Search"

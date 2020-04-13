@@ -24,7 +24,7 @@ import {AnyOpsOSAppSshService} from '../../../services/anyopsos-app-ssh.service'
 export class BodyNewConnectionComponent implements OnDestroy, OnInit {
   private readonly destroySubject$: Subject<void> = new Subject();
 
-  credentials: Credential[];
+  credentials: Omit<Credential, 'password'>[];
   connections: ConnectionSsh[];
   connectionForm: FormGroup;
 
@@ -53,7 +53,7 @@ export class BodyNewConnectionComponent implements OnDestroy, OnInit {
 
     // Listen for credentials changes
     this.LibCredentialHelpers.getAllCredentialsObserver()
-      .pipe(takeUntil(this.destroySubject$)).subscribe((credentials: Credential[]) => this.credentials = credentials);
+      .pipe(takeUntil(this.destroySubject$)).subscribe((credentials: Omit<Credential, 'password'>[]) => this.credentials = credentials);
 
     // Listen for connections changes
     this.LibSshHelpers.getAllConnectionsObserver()

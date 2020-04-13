@@ -1,5 +1,5 @@
 import {Request} from 'express';
-import fetch, {Headers, Response} from 'node-fetch';
+import fetch, {Response} from 'node-fetch';
 
 import {AnyOpsOSMonitorSessionStateModule} from './anyopsos-module-monitor-session-state';
 
@@ -12,15 +12,14 @@ export class AnyOpsOSMonitorModule {
   private readonly MonitorSessionStateModule: AnyOpsOSMonitorSessionStateModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string,
               private readonly request: Request) {
 
-    this.MonitorSessionStateModule = new AnyOpsOSMonitorSessionStateModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
+    this.MonitorSessionStateModule = new AnyOpsOSMonitorSessionStateModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
   }
 
-  private doRequest(url: string, requestHeaders: Headers): Promise<ForwarderResponse> {
+  private doRequest(url: string, requestHeaders: { [key: string]: string }): Promise<ForwarderResponse> {
     let resStatus: number;
     let contentType: string | null;
 

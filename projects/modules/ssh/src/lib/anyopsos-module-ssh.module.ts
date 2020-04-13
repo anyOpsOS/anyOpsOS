@@ -14,12 +14,11 @@ export class AnyOpsOSSshModule {
   private readonly TerminalsModule: AnyOpsOSTerminalModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    this.SshSessionStateModule = new AnyOpsOSSshSessionStateModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
-    this.TerminalsModule = new AnyOpsOSTerminalModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
+    this.SshSessionStateModule = new AnyOpsOSSshSessionStateModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
+    this.TerminalsModule = new AnyOpsOSTerminalModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
   }
 
   /**

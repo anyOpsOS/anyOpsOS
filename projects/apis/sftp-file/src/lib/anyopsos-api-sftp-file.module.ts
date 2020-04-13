@@ -30,7 +30,7 @@ export class AnyOpsOSRemoteFileApiController {
                      @Param('dstPath') dstPath: string) {
     logger.info(`[API RemoteFile] -> Download file -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], srcPath [${srcPath}], dstPath [${dstPath}]`);
 
-    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const percentageEvent: EventEmitter = await SshFileSystemModule.getFile(srcPath, dstPath);
@@ -54,7 +54,7 @@ export class AnyOpsOSRemoteFileApiController {
                    @Param('dstPath') dstPath: string) {
     logger.info(`[API RemoteFile] -> Upload file -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], srcPath [${srcPath}], dstPath [${dstPath}]`);
 
-    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const percentageEvent: EventEmitter = await SshFileSystemModule.putFile(srcPath, dstPath);
@@ -79,7 +79,7 @@ export class AnyOpsOSRemoteFileApiController {
                       @BodyParam('credentialUuid') credentialUuid?: string) {
     logger.info(`[API RemoteFile] -> Creating file -> Downloading file from internet -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], dstPath [${dstPath}], url [${url}]`);
 
-    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     await SshFileSystemModule.downloadFileFromUrl(url, dstPath, credentialUuid);
@@ -100,7 +100,7 @@ export class AnyOpsOSRemoteFileApiController {
                   @BodyParam('permissions', { required: false }) permissions?: string) {
     logger.info(`[API RemoteFile] -> Rename/Move/Copy/Chown/Chmod file -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], type [${type}], srcPath [${srcPath}], dstPath [${dstPath}], permissions [${permissions}]`);
 
-    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     // 'dst' is required by 'copy' | 'move' | 'rename'
@@ -125,7 +125,7 @@ export class AnyOpsOSRemoteFileApiController {
                    @Param('srcPath') srcPath: string) {
     logger.info(`[API RemoteFile] -> Delete file -> workspaceUuid [${workspaceUuid}], connectionUuid [${connectionUuid}], srcPath [${srcPath}]`);
 
-    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const SshFileSystemModule: AnyOpsOSSshFileSystemModule = new AnyOpsOSSshFileSystemModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     await SshFileSystemModule.deleteFile(srcPath);

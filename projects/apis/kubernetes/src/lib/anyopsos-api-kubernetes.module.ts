@@ -29,7 +29,7 @@ export class AnyOpsOSKubernetesApiController {
                               @Param('resourceLink') resourceLink: string) {
     logger.info(`[API Kubernetes] -> Get Resource -> connectionUuid [${connectionUuid}] resource [${resourceLink}]`);
 
-    const KubernetesModule: AnyOpsOSNodeKubernetesModule = new AnyOpsOSNodeKubernetesModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const KubernetesModule: AnyOpsOSNodeKubernetesModule = new AnyOpsOSNodeKubernetesModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const resourceData: string = await KubernetesModule.getResource(resourceLink);
@@ -55,7 +55,7 @@ export class AnyOpsOSKubernetesApiController {
                          @Param('showContainerName') showContainerName: boolean) {
     logger.info(`[API Kubernetes] -> Get Container Logs -> connectionUuid [${connectionUuid}] terminalUuid [${terminalUuid}] namespace [${namespace}] pod [${pod}] container [${container}] showContainerName [${showContainerName}]`);
 
-    const KubernetesModule: AnyOpsOSNodeKubernetesModule = new AnyOpsOSNodeKubernetesModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const KubernetesModule: AnyOpsOSNodeKubernetesModule = new AnyOpsOSNodeKubernetesModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     const logUuid: string = await KubernetesModule.getContainerLogs(terminalUuid, namespace, pod, container, showContainerName);
@@ -82,7 +82,7 @@ export class AnyOpsOSKubernetesApiController {
                            @Param('command') command: string) {
     logger.info(`[API Kubernetes] -> Exec or Attach into Container connectionUuid [${connectionUuid}] type [${type}] terminalUuid [${terminalUuid}] namespace [${namespace}] pod [${pod}] container [${container}] command [${command}]`);
 
-    const KubernetesModule: AnyOpsOSNodeKubernetesModule = new AnyOpsOSNodeKubernetesModule(userUuid, sessionUuid, workspaceUuid, connectionUuid);
+    const KubernetesModule: AnyOpsOSNodeKubernetesModule = new AnyOpsOSNodeKubernetesModule(userUuid, workspaceUuid, connectionUuid);
     const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
 
     if (type === 'exec') await KubernetesModule.execToTerminal(terminalUuid, namespace, pod, container, command);

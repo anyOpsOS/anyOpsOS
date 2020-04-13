@@ -10,6 +10,7 @@ const {ensureFile} = fs;
 import {Builders} from './commands/builders';
 import {Linters} from './commands/linters';
 import {Generators} from './commands/generators';
+import {swagger} from './swagger-generator/index';
 import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from './constants';
 import {Types} from './types/types';
 import {runInDocker} from './utils';
@@ -126,6 +127,7 @@ export class anyOpsOS {
                 // '--rm',
                 '-d',
                 '-p', '2222:22',
+                '-e', 'NODE_OPTIONS="--experimental-modules --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node"',
                 '--mount', `src=anyopsos-data,target=${INTERNAL_PATH_CWD},type=volume`,
                 // '--mount', `src=${MAIN_PATH_CWD}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
                 '--name', 'anyopsos-devel',
@@ -270,20 +272,20 @@ export class anyOpsOS {
         },
         handler: async (argv: & { type: Types; moduleName?: string }) => {
           try {
-            if (argv.type === 'all') return await new Builders().buildAll();
-            if (argv.type === 'module') return await new Builders().buildBackendTypes(argv);
-            if (argv.type === 'api-middleware') return await new Builders().buildBackendTypes(argv);
-            if (argv.type === 'api') return await new Builders().buildBackendTypes(argv).then(async () => await import('./swagger-generator/index'));
-            if (argv.type === 'websocket') return await new Builders().buildBackendTypes(argv);
-            if (argv.type === 'backend') return await new Builders().buildBackend();
-            if (argv.type === 'frontend') return await new Builders().buildFrontend();
-            if (argv.type === 'library') return await new Builders().buildFrontendTypes(argv);
-            if (argv.type === 'external-library') return await new Builders().buildFrontendTypes(argv);
-            if (argv.type === 'application') return await new Builders().buildFrontendTypes(argv);
-            if (argv.type === 'modal') return await new Builders().buildFrontendTypes(argv);
-            if (argv.type === 'cli') return await runInDocker('cd cli/ && yarn build').then(async () => await new Builders().buildCli());
+            if (argv.type === 'all') return new Builders().buildAll();
+            if (argv.type === 'module') return new Builders().buildBackendTypes(argv);
+            if (argv.type === 'api-middleware') return new Builders().buildBackendTypes(argv);
+            if (argv.type === 'api') return new Builders().buildBackendTypes(argv).then(async () => await new swagger().createSwaggerFiles());
+            if (argv.type === 'websocket') return new Builders().buildBackendTypes(argv);
+            if (argv.type === 'backend') return new Builders().buildBackend();
+            if (argv.type === 'frontend') return new Builders().buildFrontend();
+            if (argv.type === 'library') return new Builders().buildFrontendTypes(argv);
+            if (argv.type === 'external-library') return new Builders().buildFrontendTypes(argv);
+            if (argv.type === 'application') return new Builders().buildFrontendTypes(argv);
+            if (argv.type === 'modal') return new Builders().buildFrontendTypes(argv);
+            if (argv.type === 'cli') return runInDocker('cd cli/ && yarn build').then(() => new Builders().buildCli());
           } catch (err) {
-            console.error(err);
+            console.trace(err);
             process.exit(1);
           }
         }

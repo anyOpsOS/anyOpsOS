@@ -24,7 +24,7 @@ export class AnyOpsOSLibModalHelpersService {
     });
 
     if (!currentModal) {
-      this.logger.error('LibSsh', 'getConnectionByUuid -> Resource invalid');
+      this.logger.error('LibModal', 'getModalByUuid -> Resource invalid');
       throw new Error('resource_invalid');
     }
     return currentModal;

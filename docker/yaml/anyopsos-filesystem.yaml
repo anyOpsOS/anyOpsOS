@@ -74,6 +74,20 @@ spec:
               memory: 100Mi
           ports:
             - containerPort: 443
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: 443
+              scheme: HTTPS
+            failureThreshold: 1
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /status
+              port: 443
+              scheme: HTTPS
+            failureThreshold: 5
+            periodSeconds: 5
           # Get image from local
           imagePullPolicy: Never
           env:
@@ -82,6 +96,8 @@ spec:
               value: /dev/shm/ca.cert
             - name: NODE_ENV
               value: development
+            - name: AOO_ANYOPSOS_TYPE
+              value: filesystem
           volumeMounts:
             # Certificates
             - name: certificates

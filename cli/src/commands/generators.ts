@@ -386,7 +386,6 @@ export class ${fulldynamicComponent} implements OnInit {
       name: `@anyopsos/${this.packageType}-${argv.name}`,
       version: '0.0.1',
       main: 'src/index.ts',
-      type: 'module',
       dependencies: {
         log4js: '^6.1.0',
       },
@@ -454,7 +453,6 @@ export class ${fulldynamicModule} {
       name: `@anyopsos/${this.packageType}-${argv.name}`,
       version: '0.0.1',
       main: 'src/index.ts',
-      type: 'module',
       devDependencies: {
         '@types/node': '^12.12.21',
         typescript: '^3.7.4'
@@ -500,7 +498,6 @@ export class ${fulldynamicModule} {
       name: `@anyopsos/${this.packageType}-${argv.name}`,
       version: '0.0.1',
       main: 'src/index.ts',
-      type: 'module',
       dependencies: {
         log4js: '^6.1.0',
       },

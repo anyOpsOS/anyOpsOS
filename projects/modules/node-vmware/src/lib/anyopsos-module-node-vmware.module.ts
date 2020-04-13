@@ -1,9 +1,11 @@
-import {getSocketIO} from 'socket-controllers';
-import fetch, {Headers, Response} from 'node-fetch';
-import {parseStringPromise} from 'xml2js';
+import socketControllers from 'socket-controllers';
+import fetch, {Response} from 'node-fetch';
+import xml2js from 'xml2js';
 import log4js, {Logger} from 'log4js';
 
 // TODO ESM
+const {getSocketIO} = socketControllers;
+const {parseStringPromise} = xml2js;
 const {getLogger} = log4js;
 
 import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
@@ -31,13 +33,12 @@ export class AnyOpsOSNodeVmwareModule {
   private readonly VmwareDataRefresherModule: AnyOpsOSNodeVmwareDataRefresherModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.sessionUuid, this.workspaceUuid);
-    this.VmwareSessionStateModule = new AnyOpsOSNodeVmwareSessionStateModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
-    this.VmwareDataRefresherModule = new AnyOpsOSNodeVmwareDataRefresherModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
+    this.ConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, this.workspaceUuid);
+    this.VmwareSessionStateModule = new AnyOpsOSNodeVmwareSessionStateModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
+    this.VmwareDataRefresherModule = new AnyOpsOSNodeVmwareDataRefresherModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
   }
 
   /**
@@ -163,9 +164,10 @@ export class AnyOpsOSNodeVmwareModule {
     const mainServer: ConnectionVmwareServer = await this.VmwareSessionStateModule.getConnectionMainServer();
     const proto: string = (mainServer.port === 80 ? 'http' : 'https');
 
-    const requestHeaders: Headers = new Headers();
-    requestHeaders.append('Accept', 'application/xml');
-    requestHeaders.append('Content-Type', 'application/xml');
+    const requestHeaders: { [key: string]: string } = {
+      'Accept': 'application/xml',
+      'Content-Type': 'application/xml'
+    };
 
     return fetch(`${proto}://${mainServer.host}:${mainServer.port}/client/clients.xml`, {
       method: 'GET',
@@ -202,12 +204,13 @@ export class AnyOpsOSNodeVmwareModule {
     const mainServer: ConnectionVmwareServer = await this.VmwareSessionStateModule.getConnectionMainServer();
     const proto: string = (mainServer.port === 80 ? 'http' : 'https');
 
-    const requestHeaders: Headers = new Headers();
-    requestHeaders.append('Content-Type', 'text/xml');
-    requestHeaders.append('SOAPAction', 'urn:vim25/6.0');
-    requestHeaders.append('Content-Length', Buffer.byteLength(xml).toString());
-    requestHeaders.append('Expect', '100-continue');
-    requestHeaders.append('Cookie', soapSessionCookie);
+    const requestHeaders: { [key: string]: string } = {
+      'Content-Type': 'text/xml',
+      'SOAPAction': 'urn:vim25/6.0',
+      'Content-Length': Buffer.byteLength(xml).toString(),
+      'Expect': '100-continue',
+      'Cookie': soapSessionCookie
+    };
 
     return fetch(`${proto}://${mainServer.host}:${mainServer.port}/sdk`, {
       method: 'POST',
@@ -254,10 +257,11 @@ export class AnyOpsOSNodeVmwareModule {
 
     // https://code.vmware.com/apis/191/vsphere-automation
 
-    const requestHeaders: any = new Headers();
-    requestHeaders.append('Accept', 'application/json');
-    requestHeaders.append('Content-Type', 'application/json');
-    requestHeaders.append('Cookie', apiSessionCookie);
+    const requestHeaders: { [key: string]: string } = {
+      'Accept': 'application/xml',
+      'Content-Type': 'application/xml',
+      'Cookie': apiSessionCookie
+    };
 
     return fetch(`${proto}://${mainServer.host}:${mainServer.port}${apiPath}`, {
       method: 'GET',

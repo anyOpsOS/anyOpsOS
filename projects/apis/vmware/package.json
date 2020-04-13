@@ -2,7 +2,6 @@
   "name": "@anyopsos/api-vmware",
   "version": "0.0.1",
   "main": "src/index.ts",
-  "type": "module",
   "dependencies": {
     "child-process-promise": "^2.2.1",
     "log4js": "^6.1.0"
@@ -15,7 +14,7 @@
   },
   "devDependencies": {
     "@types/child-process-promise": "^2.2.1",
-    "@types/node-fetch": "^2.5.4",
+    "@types/node-fetch": "^2.5.5",
     "class-validator": "^0.11.0",
     "node-fetch": "^2.6.0",
     "express": "^4.17.1",

@@ -136,7 +136,7 @@ export class AnyOpsOSLibLoaderService {
     return new Promise((resolve) => {
 
       // Get all external libraries files
-      this.LibFileSystem.getFolder('/bin/libs/' + (srcPath ? srcPath : '')).subscribe(
+      this.LibFileSystem.getFolder('/bin/external-libraries/' + (srcPath ? srcPath : '')).subscribe(
         async (res: BackendResponse & { data: AnyOpsOSFile[]; }) => {
           if (res.status === 'error') return this.logger.fatal('anyOpsOS', `Error while getting installed libs on /bin/libs/${srcPath ? srcPath : ''}`, loggerArgs, res.data);
 
@@ -145,7 +145,7 @@ export class AnyOpsOSLibLoaderService {
 
           // If returned AnyOpsOSFile is a folder, get all files inside a folder. If its a .js file, load it as an external library
           res.data.forEach((value) => {
-            if (this.FileSystemUiHelpers.getFileType(value.longName) === 'folder') return libFolders.push(this.loadExternalLibraries(value.fileName + '/'));
+            if (this.FileSystemUiHelpers.getFileType(value.longName) === 'folder') return libFolders.push(value.fileName + '/');
             if (value.fileName.endsWith('.umd.js')) return libPromises.push(this.loadLib(value, srcPath));
           });
 
@@ -154,7 +154,7 @@ export class AnyOpsOSLibLoaderService {
           // TODO system.js is not returning a real promise.
           //  Hard waiting 1 second before loading next folder dependencies
           await new Promise(r => setTimeout(r, 1000));
-          await Promise.all(libFolders);
+          await Promise.all(libFolders.map((folder: string) => this.loadExternalLibraries(folder)));
           return resolve();
         },
         error => {
@@ -166,7 +166,7 @@ export class AnyOpsOSLibLoaderService {
   }
 
   async loadLib(library: AnyOpsOSFile, srcPath: string): Promise<void> {
-    return SystemJS.import(`/api/file/${encodeURIComponent('/bin/libs/' + (srcPath ? srcPath : '') + library.fileName)}`);
+    return SystemJS.import(`/api/file/${encodeURIComponent('/bin/external-libraries/' + (srcPath ? srcPath : '') + library.fileName)}`);
   }
 
 }

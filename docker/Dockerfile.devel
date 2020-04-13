@@ -6,6 +6,7 @@ WORKDIR /var/www
 
 ENV PATH="/var/www/node_modules/.bin:/var/www/bin:${PATH}"
 ENV RUNINDOCKER=true
+ENV NODE_OPTIONS="--experimental-modules --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node"
 
 RUN yum -y update && \
 curl -sL https://rpm.nodesource.com/setup_12.x | bash - && \

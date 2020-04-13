@@ -1,11 +1,13 @@
-import {KubeConfig, Watch, Log, Exec, Attach, V1Status} from '@kubernetes/client-node';
+import k8sClientNode, {KubeConfig as IKubeConfig, Watch as IWatch, Log as ILog, Exec as IExec, Attach as IAttach, V1Status} from '@kubernetes/client-node';
 import {Cluster} from '@kubernetes/client-node/dist/config_types';
-import {get, Response, Options, Request} from 'request';
+import request, {Response, Options, Request} from 'request';
 import {Readable, Writable} from 'stream';
 import log4js, {Logger} from 'log4js';
 
 // TODO ESM
 const {getLogger} = log4js;
+const {Watch, Log, Exec, Attach} = k8sClientNode;
+const {get} = request;
 
 import {AnyOpsOSTerminalModule} from '@anyopsos/module-terminal';
 import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
@@ -25,13 +27,12 @@ export class AnyOpsOSNodeKubernetesModule {
   private readonly TerminalsModule: AnyOpsOSTerminalModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    this.KubernetesSessionStateModule = new AnyOpsOSNodeKubernetesSessionStateModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
-    this.KubernetesDataRefresherModule = new AnyOpsOSNodeKubernetesDataRefresherModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
-    this.TerminalsModule = new AnyOpsOSTerminalModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
+    this.KubernetesSessionStateModule = new AnyOpsOSNodeKubernetesSessionStateModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
+    this.KubernetesDataRefresherModule = new AnyOpsOSNodeKubernetesDataRefresherModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
+    this.TerminalsModule = new AnyOpsOSTerminalModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
 
   }
 
@@ -96,11 +97,11 @@ export class AnyOpsOSNodeKubernetesModule {
       '/apis/networking.k8s.io/v1/networkpolicies'
     ];
 
-    return this.KubernetesSessionStateModule.createSession().then(async (kc: KubeConfig) => {
+    return this.KubernetesSessionStateModule.createSession().then(async (kc: IKubeConfig) => {
 
       await this.KubernetesDataRefresherModule.createConnectionFolders();
 
-      const watch: Watch = new Watch(kc);
+      const watch: IWatch = new Watch(kc);
       apiUrls.forEach((url: string) => {
 
         watch.watch(url,
@@ -141,7 +142,7 @@ export class AnyOpsOSNodeKubernetesModule {
    */
   async getResource(resourceUrl: string): Promise<string> {
 
-    const kc: KubeConfig = this.KubernetesSessionStateModule.getSession();
+    const kc: IKubeConfig = this.KubernetesSessionStateModule.getSession();
     const kcCluster: Cluster | null = kc.getCurrentCluster();
 
     if (!kcCluster) throw new Error('invalid_resource');
@@ -187,8 +188,8 @@ export class AnyOpsOSNodeKubernetesModule {
 
     this.TerminalsModule.setTerminalStream(terminalUuid, undefined, stdout);
 
-    const kc: KubeConfig = this.KubernetesSessionStateModule.getSession();
-    const log: Log = new Log(kc);
+    const kc: IKubeConfig = this.KubernetesSessionStateModule.getSession();
+    const log: ILog = new Log(kc);
 
     const logRequest: Request = log.log(namespace, pod, container, stdout, (e: any) => {
       console.log(e);
@@ -216,8 +217,8 @@ export class AnyOpsOSNodeKubernetesModule {
 
     this.TerminalsModule.setTerminalStream(terminalUuid, undefined, stdout, stdin);
 
-    const kc: KubeConfig = this.KubernetesSessionStateModule.getSession();
-    const exec: Exec = new Exec(kc);
+    const kc: IKubeConfig = this.KubernetesSessionStateModule.getSession();
+    const exec: IExec = new Exec(kc);
 
     return exec.exec(namespace, pod, container, command, stdout, stdout, stdin, true, (status: V1Status) => {
       // tslint:disable-next-line:no-console
@@ -250,8 +251,8 @@ export class AnyOpsOSNodeKubernetesModule {
 
     this.TerminalsModule.setTerminalStream(terminalUuid, undefined, stdout, stdin);
 
-    const kc: KubeConfig = this.KubernetesSessionStateModule.getSession();
-    const attach: Attach = new Attach(kc);
+    const kc: IKubeConfig = this.KubernetesSessionStateModule.getSession();
+    const attach: IAttach = new Attach(kc);
 
     return attach.attach(namespace, pod, container, stdout, stdout, stdin, true)
     // @ts-ignore TODO

@@ -13,9 +13,12 @@ const {lock} = properLockfile;
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
 import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
 
+import {ApiCaller} from './decorators/api-caller'
+
 import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
 import {ConfigFile} from './types/config-file';
 import {ConfigFileData} from './types/config-file-data';
+import { Workspace } from '@anyopsos/module-sys-workspace/src/lib/types/workspace';
 
 
 const logger = getLogger('mainLog');
@@ -25,20 +28,21 @@ export class AnyOpsOSConfigFileModule {
   private readonly GetPathModule: AnyOpsOSSysGetPathModule;
   private readonly WorkspaceModule!: AnyOpsOSSysWorkspaceModule;
 
-  private readonly workSpacePath!: string;
+  // If no data is passed to the constructor, only can manipulate config giles from main /etc path
+  constructor();
+
+  // Manipulate workspaces config files
+  constructor(userUuid: string, workspaceUuid: string);
 
   constructor(private readonly userUuid?: string,
-              private readonly sessionUuid?: string,
               private readonly workspaceUuid?: string) {
 
     this.GetPathModule = new AnyOpsOSSysGetPathModule();
 
     // If no data is passed to the constructor, only can load config from main /etc path
-    // TODO cookieSessionKey is visible to everyone...
-    if (this.userUuid && this.sessionUuid && this.workspaceUuid) {
-      this.WorkspaceModule = new AnyOpsOSSysWorkspaceModule(this.userUuid, this.sessionUuid);
-
-      this.workSpacePath = this.WorkspaceModule.getWorkspaceConfigPath(this.workspaceUuid);
+    // TODO: VALIDATE PRIVILEGES
+    if (this.userUuid && this.workspaceUuid) {
+      this.WorkspaceModule = new AnyOpsOSSysWorkspaceModule(this.userUuid);
     }
   }
 
@@ -65,14 +69,17 @@ export class AnyOpsOSConfigFileModule {
   async get(filePath: string): Promise<ConfigFile>;
   async get(filePath: string, configUuid: string): Promise<ConfigFileData>;
   async get(filePath: string, configUuid: string, dataUuid: string): Promise<DataObject>;
+
+  @ApiCaller()
   async get(filePath: string, configUuid?: string, dataUuid?: string): Promise<ConfigFileData | ConfigFile | DataObject> {
     let configPath: string;
 
     // Security check
     if (filePath.indexOf('\0') !== -1) throw new Error('param_security_stop');
 
-    if (this.workSpacePath) {
-      configPath = join(this.workSpacePath, filePath);
+    if (this.userUuid && this.workspaceUuid) {
+      const workspace: Workspace = await this.WorkspaceModule.getWorkspaceByUuid(this.workspaceUuid);
+      configPath = join(this.GetPathModule.filesystem, workspace.path, 'etc', filePath);
     } else {
       configPath = join(this.GetPathModule.etc, filePath);
     }
@@ -112,14 +119,17 @@ export class AnyOpsOSConfigFileModule {
   async put(filePath: string, fileData: ConfigFile): Promise<ConfigFile>;
   async put(filePath: string, fileData: ConfigFileData, configUuid: string): Promise<ConfigFileData>;
   async put(filePath: string, fileData: DataObject, configUuid: string, dataUuid: string): Promise<DataObject>;
+
+  @ApiCaller()
   async put(filePath: string, fileData: ConfigFileData | ConfigFile | DataObject, configUuid?: string, dataUuid?: string): Promise<ConfigFile | ConfigFileData | DataObject> {
     let configPath: string;
 
     // Security check
     if (filePath.indexOf('\0') !== -1) throw new Error('param_security_stop');
 
-    if (this.workSpacePath) {
-      configPath = join(this.workSpacePath, filePath);
+    if (this.userUuid && this.workspaceUuid) {
+      const workspace: Workspace = await this.WorkspaceModule.getWorkspaceByUuid(this.workspaceUuid);
+      configPath = join(this.GetPathModule.filesystem, workspace.path, 'etc', filePath);
     } else {
       configPath = join(this.GetPathModule.etc, filePath);
     }
@@ -221,14 +231,17 @@ export class AnyOpsOSConfigFileModule {
   async patch(filePath: string, fileData: ConfigFile): Promise<{ uuid: string; }>;
   async patch(filePath: string, fileData: ConfigFileData, configUuid: string): Promise<{ uuid: string; }>;
   async patch(filePath: string, fileData: DataObject, configUuid: string, dataUuid: string): Promise<{ uuid: string; }>;
+
+  @ApiCaller()
   async patch(filePath: string, fileData: ConfigFileData | ConfigFile | DataObject, configUuid?: string, dataUuid?: string): Promise<ConfigFile | { uuid: string; }> {
     let configPath: string;
 
     // Security check
     if (filePath.indexOf('\0') !== -1) throw new Error('param_security_stop');
 
-    if (this.workSpacePath) {
-      configPath = join(this.workSpacePath, filePath);
+    if (this.userUuid && this.workspaceUuid) {
+      const workspace: Workspace = await this.WorkspaceModule.getWorkspaceByUuid(this.workspaceUuid);
+      configPath = join(this.GetPathModule.filesystem, workspace.path, 'etc', filePath);
     } else {
       configPath = join(this.GetPathModule.etc, filePath);
     }
@@ -325,14 +338,16 @@ export class AnyOpsOSConfigFileModule {
   /**
    * Deletes a full resource or specific by uuid
    */
+  @ApiCaller()
   async delete(filePath: string, configUuid?: string, dataUuid?: string): Promise<void> {
     let configPath: string;
 
     // Security check
     if (filePath.indexOf('\0') !== -1) throw new Error('param_security_stop');
 
-    if (this.workSpacePath) {
-      configPath = join(this.workSpacePath, filePath);
+    if (this.userUuid && this.workspaceUuid) {
+      const workspace: Workspace = await this.WorkspaceModule.getWorkspaceByUuid(this.workspaceUuid);
+      configPath = join(this.GetPathModule.filesystem, workspace.path, 'etc', filePath);
     } else {
       configPath = join(this.GetPathModule.etc, filePath);
     }

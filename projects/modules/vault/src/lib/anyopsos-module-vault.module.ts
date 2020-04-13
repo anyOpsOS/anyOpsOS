@@ -16,6 +16,7 @@ const logger: Logger = getLogger('vault');
 const options = {
   apiVersion: AOO_VAULT_API_VERSION,
   endpoint: `https://${AOO_VAULT_HOST}:${AOO_VAULT_PORT}`,
+  noCustomHTTPVerbs: true
 };
 
 const vaultClient: client = nodeVault(options);
@@ -64,6 +65,8 @@ export class AnyOpsOSVaultModule {
     const vaultStatus = await vaultClient.status().catch((e) => {
       logger.fatal(`[Module Vault] -> Vault Error. Unable to contact Vault -> ${e}`);
     });
+
+    console.log(vaultStatus);
 
     return {
       initialized: vaultStatus.initialized,
@@ -126,8 +129,6 @@ export class AnyOpsOSVaultModule {
     return vaultClient.unseal({
       secret_shares: 1,
       key: key
-    }).catch(e => {
-      console.log(e);
     });
 
   }

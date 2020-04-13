@@ -1,12 +1,16 @@
 import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 
+import {takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+
 import {MatMenuTrigger} from '@anyopsos/lib-angular-material';
 import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
 import {AnyOpsOSLibApplicationService, Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibDesktopTaskBarService, TaskbarApplication} from '@anyopsos/lib-desktop-task-bar';
 import {ContextMenuItem} from '@anyopsos/lib-types';
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+
+import {AnyOpsOSLibDesktopTaskBarService} from '../../services/anyopsos-lib-desktop-task-bar.service';
+import {TaskbarApplication} from '../../types/taskbar-application';
+
 
 
 @Component({

@@ -1,6 +1,9 @@
-import {getSocketIO} from 'socket-controllers';
+import socketControllers from 'socket-controllers';
 import {Readable, Writable} from 'stream';
 import {ClientChannel} from 'ssh2';
+
+// TODO ESM
+const {getSocketIO} = socketControllers;
 
 import {AnyOpsOSTerminalSessionStateModule} from './anyopsos-module-terminal-session-state';
 import {TerminalTypes} from './types/terminal-types';
@@ -12,11 +15,10 @@ export class AnyOpsOSTerminalModule {
   private readonly TerminalSessionStateModule: AnyOpsOSTerminalSessionStateModule;
 
   constructor(private readonly userUuid: string,
-              private readonly sessionUuid: string,
               private readonly workspaceUuid: string,
               private readonly connectionUuid: string) {
 
-    this.TerminalSessionStateModule = new AnyOpsOSTerminalSessionStateModule(this.userUuid, this.sessionUuid, this.workspaceUuid, this.connectionUuid);
+    this.TerminalSessionStateModule = new AnyOpsOSTerminalSessionStateModule(this.userUuid, this.workspaceUuid, this.connectionUuid);
   }
 
   /**
