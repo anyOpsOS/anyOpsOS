@@ -31,7 +31,7 @@ export class AnyOpsOSSysWorkspaceModule {
   private async getWorkspaces(): Promise<string[]> {
     logger.trace(`[Module Workspace] -> getWorkspaces`);
 
-    return await this.vaultClient.list(`secret/workspaces/`).then(request => request.data.keys);
+    return this.vaultClient.list(`secret/workspaces/`).then(request => request.data.keys);
   }
 
   async createWorkspace(name: string, path: string, isDefault: boolean = false): Promise<void> {
@@ -42,7 +42,7 @@ export class AnyOpsOSSysWorkspaceModule {
     const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(this.userUuid);
     const ConfigFileModule: AnyOpsOSConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, workspaceUuid);
 
-    await this.vaultClient.write(`secret/workspaces/${workspaceUuid}`, { name, owner: this.userUuid, path, default: isDefault });
+    await this.vaultClient.write(`secret/workspaces/${workspaceUuid}`, { name, ownerUuid: this.userUuid, path, default: isDefault } as Workspace);
     await FileSystemModule.putFolder(join(path, 'etc'));
     await ConfigFileModule.put(`task_bar.json`, []);
   }
@@ -52,8 +52,6 @@ export class AnyOpsOSSysWorkspaceModule {
     logger.trace(`[Module Workspace] -> getWorkspacesDetails`);
 
     return this.getWorkspaces().then(async (workspaces: string[]) => {
-
-      console.log(workspaces);
 
       // Do not check entrys ending with '/' since they are the workspace entity containing the credentials
       return Promise.all(workspaces.filter(w => !w.endsWith('/')).map(async (workspaceUuid: string) => {
@@ -68,11 +66,12 @@ export class AnyOpsOSSysWorkspaceModule {
   }
 
   @ApiCaller()
-  async getDefaultWorkspaceUuid(): Promise<string> {
-    logger.trace(`[Module Workspace] -> getDefaultWorkspaceUuid`);
+  async getDefaultWorkspace(): Promise<Workspace> {
+    logger.trace(`[Module Workspace] -> getDefaultWorkspace`);
 
     const workspaces: Workspace[] = await this.getWorkspacesDetails();
-    return workspaces.find((workspace: Workspace) => workspace.ownerUuid === this.userUuid && workspace.default === true)!.workspaceUuid;
+
+    return workspaces.find((workspace: Workspace) => workspace.ownerUuid === this.userUuid && workspace.default === true)!;
   }
 
   @ApiCaller()

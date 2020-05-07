@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnyopsosModalKubernetesLogsComponent } from './anyopsos-modal-kubernetes-logs.component';
+import { AnyOpsOSModalKubernetesLogsComponent } from './anyopsos-modal-kubernetes-logs.component';
 
-describe('AnyopsosModalKubernetesLogsComponent', () => {
-  let component: AnyopsosModalKubernetesLogsComponent;
-  let fixture: ComponentFixture<AnyopsosModalKubernetesLogsComponent>;
+describe('AnyOpsOSModalKubernetesLogsComponent', () => {
+  let component: AnyOpsOSModalKubernetesLogsComponent;
+  let fixture: ComponentFixture<AnyOpsOSModalKubernetesLogsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AnyopsosModalKubernetesLogsComponent ]
+      declarations: [ AnyOpsOSModalKubernetesLogsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AnyopsosModalKubernetesLogsComponent);
+    fixture = TestBed.createComponent(AnyOpsOSModalKubernetesLogsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

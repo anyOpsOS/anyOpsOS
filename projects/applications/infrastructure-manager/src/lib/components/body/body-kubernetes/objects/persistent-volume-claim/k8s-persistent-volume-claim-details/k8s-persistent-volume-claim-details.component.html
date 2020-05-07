@@ -1,0 +1,58 @@
+<div className="PersistentVolumeClaimDetails">
+
+  <ng-template #metrics>
+    <aaim-k8s-object-resource-metrics
+      [loader]="daemonSetStore.loadMetrics(volumeClaim)"
+      [tabs]="metricTabs" [object]="volumeClaim" [params]="metrics">
+
+      <aaim-k8s-persistent-volume-claim-disk-chart></aaim-k8s-persistent-volume-claim-disk-chart>
+    </aaim-k8s-object-resource-metrics>
+  </ng-template>
+
+
+  <aaim-k8s-object-item [name]="'Access Modes'">
+    {{k8sObject.info.data.spec.accessModes.join(', ')}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Storage Class Name'">
+    {{k8sObject.info.data.spec.storageClassName}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Storage'">
+    {{k8sObject.info.data.spec.resources?.requests?.storage || '-'}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Pods'" class="pods">
+    <span *ngFor="let pod of pods" (click)="goToElement(pod)">{{pod.name}}</span>
+  </aaim-k8s-object-item>
+
+
+  <DrawerItem name={<Trans>Pods</Trans>} className="pods">
+    {pods.map(pod => (
+      <Link key={pod.getId()} to={getDetailsUrl(pod.selfLink)}>
+        {pod.getName()}
+      </Link>
+    ))}
+  </DrawerItem>
+  <DrawerItem name={<Trans>Status</Trans>}>
+    {volumeClaim.getStatus()}
+  </DrawerItem>
+
+  <DrawerTitle title={_i18n._(t`Selector`)}/>
+
+  <DrawerItem name={<Trans>Match Labels</Trans>} labelsOnly>
+    {volumeClaim.getMatchLabels().map(label => <Badge key={label} label={label}/>)}
+  </DrawerItem>
+
+  <DrawerItem name={<Trans>Match Expressions</Trans>}>
+    {volumeClaim.getMatchExpressions().map(({ key, operator, values }, i) => (
+      <Fragment key={i}>
+        <DrawerItem name={<Trans>Key</Trans>}>{key}</DrawerItem>
+        <DrawerItem name={<Trans>Operator</Trans>}>{operator}</DrawerItem>
+        <DrawerItem name={<Trans>Values</Trans>}>{values.join(", ")}</DrawerItem>
+      </Fragment>
+    ))}
+  </DrawerItem>
+
+  <KubeEventDetails object={volumeClaim}/>
+</div>

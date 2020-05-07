@@ -1,0 +1,7 @@
+.JobDetails {
+  .conditions {
+    .Badge {
+      @include job-condition-bgs;
+    }
+  }
+}

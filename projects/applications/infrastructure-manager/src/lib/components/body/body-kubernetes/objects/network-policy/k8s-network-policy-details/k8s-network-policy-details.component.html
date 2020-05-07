@@ -1,0 +1,81 @@
+<div class="NetworkPolicyDetails">
+
+  <aaim-k8s-object-metadata [k8sObject]="k8sObject"></aaim-k8s-object-metadata>
+
+  <aaim-k8s-object-item [name]="'Pod Selector'" [labelsOnly]="getMatchLabels().length > 0">
+    <ng-container *ngIf="getMatchLabels().length > 0; else empty">
+      <aaim-k8s-object-badge *ngFor="let selector of getMatchLabels()" [label]="selector"></aaim-k8s-object-badge>
+    </ng-container>
+    <ng-template #empty>
+      (empty) (Allowing the specific traffic to all pods in this namespace)
+    </ng-template>
+  </aaim-k8s-object-item>
+
+  <ng-container *ngIf="k8sObject.info.data.spec.ingress">
+    <aaim-k8s-object-title [title]="'Ingress'"></aaim-k8s-object-title>
+
+    <ng-container *ngFor="let ingress of k8sObject.info.data.spec.ingress">
+
+      <aaim-k8s-object-item [name]="'Ports'">
+        <ng-container *ngFor="let port of ingress.ports; let isLast=last">
+          {{port.protocol || ''}}:{{port.port || ''}}{{isLast ? '' : ', '}}
+        </ng-container>
+      </aaim-k8s-object-item>
+
+      <ng-container *ngIf="ingress.from">
+        <aaim-k8s-object-sub-title [title]="'From'"></aaim-k8s-object-sub-title>
+
+        <ng-container *ngFor="let from of ingress.from">
+          <aaim-k8s-object-item [name]="'ipBlock'">
+            cidr: {{from.ipBlock.cidr}}<ng-container *ngIf="from.ipBlock.except">, except: {{from.ipBlock.except.join(', ')}}</ng-container>
+          </aaim-k8s-object-item>
+
+          <aaim-k8s-object-item [name]="'namespaceSelector'">
+            <ng-container *ngIf="from.podSelector.matchLabels.length > 0; else emptyFromNamespaceSelector">
+              <ng-container *ngFor="let label of from.podSelector.matchLabels  | keyvalue; let isLast=last"></ng-container>
+              {{label.key}}:{{label.value}}{{isLast ? '' : ', '}}
+            </ng-container>
+            <ng-template #emptyFromNamespaceSelector>(empty)</ng-template>
+
+          </aaim-k8s-object-item>
+
+          <aaim-k8s-object-item [name]="'podSelector'">
+            <ng-container *ngIf="from.podSelector.matchLabels.length > 0; else emptyFromPodSelector">
+              <ng-container *ngFor="let label of from.podSelector.matchLabels  | keyvalue; let isLast=last"></ng-container>
+              {{label.key}}:{{label.value}}{{isLast ? '' : ', '}}
+            </ng-container>
+            <ng-template #emptyFromPodSelector>(empty)</ng-template>
+
+          </aaim-k8s-object-item>
+        </ng-container>
+
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="k8sObject.info.data.spec.egress">
+    <aaim-k8s-object-title [title]="'Egress'"></aaim-k8s-object-title>
+
+    <ng-container *ngFor="let egress of k8sObject.info.data.spec.egress">
+
+      <aaim-k8s-object-item [name]="'Ports'">
+        <ng-container *ngFor="let port of egress.ports; let isLast=last">
+          {{port.protocol || ''}}:{{port.port || ''}}{{isLast ? '' : ', '}}
+        </ng-container>
+      </aaim-k8s-object-item>
+
+      <ng-container *ngIf="egress.to">
+        <aaim-k8s-object-sub-title [title]="'To'"></aaim-k8s-object-sub-title>
+
+        <ng-container *ngFor="let to of egress.to">
+          <aaim-k8s-object-item [name]="'ipBlock'">
+            cidr: {{to.ipBlock.cidr}}<ng-container *ngIf="to.ipBlock.except">, except: {{to.ipBlock.except.join(', ')}}</ng-container>
+          </aaim-k8s-object-item>
+        </ng-container>
+      </ng-container>
+
+    </ng-container>
+  </ng-container>
+
+  <aaim-k8s-object-events [k8sObject]="k8sObject"></aaim-k8s-object-events>
+</div>

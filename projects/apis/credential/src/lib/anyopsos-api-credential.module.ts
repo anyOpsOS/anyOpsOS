@@ -34,6 +34,24 @@ export class AnyOpsOSCredentialApiController {
     return ApiGlobalsModule.jsonDataResponse(credentials);
   }
 
+  // TODO ALLOW THIS API ONLY FROM INTERNAL SOURCES, NOT FROM THE USERS
+  @Get('/:workspaceUuid/:credentialUuid')
+  async getAllCredential(@Req() request: Request,
+                          @Res() response: Response,
+                          @SessionParam('userUuid') userUuid: string,
+                          @SessionParam('id') sessionUuid: string,
+                          @Param('workspaceUuid') workspaceUuid: string,
+                          @Param('credentialUuid') credentialUuid: string) {
+    logger.info(`[API Credentials] -> Get credential -> workspaceUuid [${workspaceUuid}], credentialUuid [${credentialUuid}]`);
+
+    const CredentialModule: AnyOpsOSCredentialModule = new AnyOpsOSCredentialModule(userUuid, workspaceUuid);
+    const ApiGlobalsModule: AnyOpsOSApiGlobalsModule = new AnyOpsOSApiGlobalsModule(request, response);
+
+    const credentials: Credential = await CredentialModule.getCredential(credentialUuid);
+
+    return ApiGlobalsModule.jsonDataResponse(credentials);
+  }
+
   @Put('/:workspaceUuid')
   async putCredential(@Req() request: Request,
                       @Res() response: Response,

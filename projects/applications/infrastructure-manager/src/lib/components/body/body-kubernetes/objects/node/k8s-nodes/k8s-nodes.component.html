@@ -1,0 +1,86 @@
+<div class="Nodes" *ngIf="nodes.length > 0">
+
+  <aaim-k8s-object-title [title]="'Nodes'"></aaim-k8s-object-title>
+
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="name">Name</th>
+      <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="cpu">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="cpu">CPU</th>
+      <td mat-cell *matCellDef="let element">0</td> <!-- TODO -->
+    </ng-container>
+
+    <ng-container matColumnDef="memory">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="memory">Memory</th>
+      <td mat-cell *matCellDef="let element">0</td> <!-- TODO -->
+    </ng-container>
+
+    <ng-container matColumnDef="disk">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="disk">Disk</th>
+      <td mat-cell *matCellDef="let element">0</td> <!-- TODO -->
+    </ng-container>
+
+    <ng-container matColumnDef="taints">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="taints">Taints</th>
+      <td mat-cell *matCellDef="let element">
+        <span [matTooltip]="{node.getTaints().map(({ key, effect }) => `${key}: ${effect}`).join("\n")}">{{(element.info.data.spec.taints || []).length}}</span>
+        <!-- TODO toolipclass whiteSpace: "pre-line" -->
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="roles">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="roles">Roles</th>
+      <td mat-cell *matCellDef="let element">{{getRoleLabels(element)}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="version">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="version">Version</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.status.nodeInfo.kubeletVersion}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="age">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="age">Age</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.metadata.creationTimestamp | relatimeTime}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="conditions" class="conditions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Conditions</th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngFor="let condition of getActiveConditions(element)" class="condition" [className]="condition.type.toLowerCase()">
+          {{condition.type}}
+        </div>
+        <!-- TODO
+        <Tooltip htmlFor={tooltipId} following>
+          <TooltipContent tableView>
+            {Object.entries(condition).map(([key, value]) =>
+              <div key={key} className="flex gaps align-center">
+                <div className="name">{upperFirst(key)}</div>
+                <div className="value">{value}</div>
+              </div>
+            )}
+          </TooltipContent>
+        </Tooltip>
+        -->
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <NodeMenu object={item}/>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToElement(row)"></tr>
+  </table>
+</div>

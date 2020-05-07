@@ -15,11 +15,11 @@ export function ApiCaller() {
         const ApiCallerModule: AnyOpsOSSysApiCallerModule = new AnyOpsOSSysApiCallerModule();
         
         // Rewrite the method to call the anyopsos-auth API
-        if (propertyKey === 'getCredentials') return ApiCallerModule.call('filesystem', 'GET', `/api/credential/${(this as any).workspaceUuid}`);
-        //if (propertyKey === 'getCredential') return ApiCallerModule.call('filesystem', 'PUT', `/api/credential/${encodeURIComponent(args[0])}`);
-        if (propertyKey === 'putCredential') return ApiCallerModule.call('filesystem', 'PUT', `/api/credential/${(this as any).workspaceUuid}`, { credential: args[0] });
-        if (propertyKey === 'patchCredential') return ApiCallerModule.call('filesystem', 'PUT', `/api/credential/${(this as any).workspaceUuid}/${encodeURIComponent(args[0])}`, { credential: args[1] });
-        if (propertyKey === 'deleteCredential') return ApiCallerModule.call('filesystem', 'PUT', `/api/credential/${(this as any).workspaceUuid}/${encodeURIComponent(args[0])}`);
+        if (propertyKey === 'getCredentials') return ApiCallerModule.call('auth', 'GET', `/api/credential/${(this as any).workspaceUuid}`);
+        if (propertyKey === 'getCredential') return ApiCallerModule.call('auth', 'GET', `/api/credential/${(this as any).workspaceUuid}/${args[0]}`);
+        if (propertyKey === 'putCredential') return ApiCallerModule.call('auth', 'PUT', `/api/credential/${(this as any).workspaceUuid}`, { credential: args[0] });
+        if (propertyKey === 'patchCredential') return ApiCallerModule.call('auth', 'PATCH', `/api/credential/${(this as any).workspaceUuid}/${args[0]}`, { credential: args[1] });
+        if (propertyKey === 'deleteCredential') return ApiCallerModule.call('auth', 'DELETE', `/api/credential/${(this as any).workspaceUuid}/${args[0]}`);
       };
     };
   }

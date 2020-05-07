@@ -1,0 +1,59 @@
+<div class="PersistentVolumeDetails">
+
+  <aaim-k8s-object-metadata [k8sObject]="k8sObject"></aaim-k8s-object-metadata>
+
+  <aaim-k8s-object-item [name]="'Capacity'">
+    {{k8sObject.info.data.spec.capacity.storage}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Mount Options'" *ngIf="k8sObject.info.data.spec.mountOptions">
+    {{k8sObject.info.data.spec.mountOptions.join(', ')}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Access Modes'">
+    {{k8sObject.info.data.spec.accessModes.join(', ')}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Reclaim Policy'">
+    {{k8sObject.info.data.spec.persistentVolumeReclaimPolicy}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Storage Class Name'">
+    {{k8sObject.info.data.spec.storageClassName}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Taints'" [labelsOnly]="true">
+    <aaim-k8s-object-badge [label]="k8sObject.info.data.status.phase || '-'"></aaim-k8s-object-badge>
+  </aaim-k8s-object-item>
+
+  <ng-container *ngIf="k8sObject.info.data.spec.nfs">
+    <aaim-k8s-object-title [title]="'Network File System'"></aaim-k8s-object-title>
+
+    <aaim-k8s-object-item [name]="vol.key" *ngFor="let vol of k8sObject.info.data.spec.nfs | keyvalue">
+      {{vol.value}}
+    </aaim-k8s-object-item>
+  </ng-container>
+
+  <ng-container *ngIf="k8sObject.info.data.spec.flexVolume">
+    <aaim-k8s-object-title [title]="'FlexVolume'"></aaim-k8s-object-title>
+
+    <aaim-k8s-object-item [title]="'Driver'">{{k8sObject.info.data.spec.flexVolume.driver}}</aaim-k8s-object-item>
+
+    <aaim-k8s-object-item [name]="option.key" *ngFor="let option of k8sObject.info.data.spec.flexVolume.options | keyvalue">
+      {{option.value}}
+    </aaim-k8s-object-item>
+  </ng-container>
+
+  <ng-container *ngIf="k8sObject.info.data.spec.claimRef">
+    <aaim-k8s-object-title [title]="'Claim'"></aaim-k8s-object-title>
+
+    <aaim-k8s-object-item [title]="'Type'">{{k8sObject.info.data.spec.claimRef.kind}}</aaim-k8s-object-item>
+    <aaim-k8s-object-item [title]="'Name'">
+      <span (click)="goToElement(k8sObject.info.data.spec.claimRef)">{{k8sObject.info.data.spec.claimRef.name}}</span>
+    </aaim-k8s-object-item>
+    <aaim-k8s-object-item [title]="'Namespace'">{{k8sObject.info.data.spec.claimRef.namespace}}</aaim-k8s-object-item>
+  </ng-container>
+
+
+  <aaim-k8s-object-events [k8sObject]="k8sObject"></aaim-k8s-object-events>
+</div>

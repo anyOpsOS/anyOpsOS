@@ -1,0 +1,5 @@
+<div class="PodDetailsStatuses">
+  <span class={{item.key.toLowerCase()}} *ngFor="let item of statuses | keyvalue">
+    {{item.key}}: {{item.value}}
+  </span>
+</div>

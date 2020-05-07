@@ -1,0 +1,10 @@
+<div className="EndpointDetails">
+
+  <aaim-k8s-object-metadata [k8sObject]="k8sObject"></aaim-k8s-object-metadata>
+
+  <aaim-k8s-object-item [name]="'Subsets'">
+    <aaim-k8s-endpoint-subset-list *ngFor="let subset of k8sObject.info.data.subsets" [subset]="subset" [endpoint]="k8sObject"></aaim-k8s-endpoint-subset-list>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-events [k8sObject]="k8sObject"></aaim-k8s-object-events>
+</div>

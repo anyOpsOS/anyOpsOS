@@ -129,7 +129,13 @@ export class App {
 
           if (cert.subject.CN !== AOO_AUTH_HOST && cert.subject.CN !== AOO_CORE_HOST) return false;
 
-          action.request.session.userUuid = 'internal';
+          // Impersonate userUuid
+          if (action.request.headers['anyopsos-impersonate']) {
+            action.request.session.userUuid = action.request.headers['anyopsos-impersonate'];
+          } else {
+            action.request.session.userUuid = 'internal';
+          }
+
           return true;
         }
 

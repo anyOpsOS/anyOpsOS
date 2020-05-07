@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AnyopsosLibDesktopService } from './anyopsos-lib-desktop.service';
+import { AnyOpsOSLibDesktopService } from './anyopsos-lib-desktop.service';
 
-describe('AnyopsosLibDesktopService', () => {
+describe('AnyOpsOSLibDesktopService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyopsosLibDesktopService = TestBed.get(AnyopsosLibDesktopService);
+    const service: AnyOpsOSLibDesktopService = TestBed.get(AnyOpsOSLibDesktopService);
     expect(service).toBeTruthy();
   });
 });

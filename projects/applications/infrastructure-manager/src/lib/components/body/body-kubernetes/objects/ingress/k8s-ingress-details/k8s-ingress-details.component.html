@@ -1,0 +1,53 @@
+<div className="IngressDetails">
+
+  <mat-spinner center *ngIf="!isLoaded; else metrics"></mat-spinner>
+
+  <ng-template #metrics>
+    <aaim-k8s-object-resource-metrics
+      [loader]="daemonSetStore.loadMetrics(ingress)"
+      [tabs]="podMetricTabs" [object]="ingress" [params]="metrics">
+
+      <aaim-k8s-ingress-details-charts></aaim-k8s-ingress-details-charts>
+    </aaim-k8s-object-resource-metrics>
+  </ng-template>
+
+  <aaim-k8s-object-metadata [k8sObject]="k8sObject"></aaim-k8s-object-metadata>
+
+  <aaim-k8s-object-item [name]="'Ports'">
+    {{getPorts()}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'TLS'" *ngIf="k8sObject.info.data.spec.tls">
+    <p *ngFor="let tls of k8sObject.info.data.spec.tls">{{tls.secretName}}</p>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Service'" *ngIf="k8sObject.info.data.spec.backend?.serviceName && k8sObject.info.data.spec.backend?.servicePort">
+    {{k8sObject.info.data.spec.backend.serviceName}}:{{k8sObject.info.data.spec.backend.servicePort}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Rules'"></aaim-k8s-object-item>
+  <div className="rules" *ngFor="let rule of k8sObject.info.data.spec.rules">
+
+    <div class="host-title" *ngIf="rule.host">
+      Host: {{rule.host}}
+    </div>
+
+    <table class="paths" mat-table [dataSource]="rule.http.paths" *ngIf="rule.http">
+
+      <ng-container matColumnDef="path">
+        <th mat-header-cell *matHeaderCellDef class="path">Path</th>
+        <td mat-cell *matCellDef="let element">{{element.path || ''}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="backends">
+        <th mat-header-cell *matHeaderCellDef class="backends">Backends</th>
+        <td mat-cell *matCellDef="let element"><p>{{element.backend.serviceName}}:{{element.backend.servicePort}}</p></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <aaim-k8s-object-events [k8sObject]="k8sObject"></aaim-k8s-object-events>
+</div>

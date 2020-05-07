@@ -1,0 +1,30 @@
+<aaim-k8s-object-title class="flex gaps align-center">
+  <i class="fas fa-clock"></i>
+  <span>Events</span>
+</aaim-k8s-object-title>
+
+<div className="KubeEventDetails">
+
+  <div>
+
+    <div  *ngFor="let evt of k8sObjectEvents" class="event">
+      <div class="title" [ngClass]="{'warning': evt.info.data.type === 'Warning'}">
+        {{evt.info.data.message}}
+      </div>
+      <aaim-k8s-object-item [name]="'Source'">
+        {{getSource(evt)}}
+      </aaim-k8s-object-item>
+      <aaim-k8s-object-item [name]="'Count'">
+        {{evt.info.data.count}}
+      </aaim-k8s-object-item>
+      <aaim-k8s-object-item [name]="'Sub-object'">
+        {{evt.info.data.involvedObject.fieldPath}}
+      </aaim-k8s-object-item>
+      <aaim-k8s-object-item [name]="'Last seen'">
+        {{evt.info.data.lastTimestamp}}
+      </aaim-k8s-object-item>
+    </div>
+
+  </div>
+
+</div>

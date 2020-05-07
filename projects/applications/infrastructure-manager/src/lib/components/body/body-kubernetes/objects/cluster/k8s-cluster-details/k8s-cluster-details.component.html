@@ -1,0 +1,11 @@
+<div class="cluster">
+
+  <mat-spinner center *ngIf="!isLoaded; else cluster"></mat-spinner>
+
+  <ng-template #cluster>
+    <aaim-k8s-cluster-metrics></aaim-k8s-cluster-metrics>
+    <aaim-k8s-cluster-pie-charts></aaim-k8s-cluster-pie-charts>
+    <aaim-k8s-cluster-issues></aaim-k8s-cluster-issues>
+  </ng-template>
+    
+</div>

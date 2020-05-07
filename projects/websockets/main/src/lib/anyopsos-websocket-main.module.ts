@@ -6,7 +6,7 @@ import log4js, {Logger} from 'log4js';
 const {getLogger} = log4js;
 const {SocketController, SocketId, OnConnect, OnDisconnect, ConnectedSocket} = socketControllers;
 
-import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
+import {AnyOpsOSSysWorkspaceModule, Workspace} from '@anyopsos/module-sys-workspace';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -23,9 +23,9 @@ export class AnyOpsOSMainWebsocketController {
     socket.join('user-' + socket.client.request.session.userUuid);
 
     const WorkspaceModule: AnyOpsOSSysWorkspaceModule = new AnyOpsOSSysWorkspaceModule(socket.client.request.session.userUuid);
-    const defaultWorkspace: string = await WorkspaceModule.getDefaultWorkspaceUuid();
+    const defaultWorkspace: Workspace = await WorkspaceModule.getDefaultWorkspace();
 
-    socket.join(defaultWorkspace);
+    socket.join(defaultWorkspace.workspaceUuid);
   }
 
   @OnDisconnect()

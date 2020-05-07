@@ -1,0 +1,66 @@
+<div class="HorizontalPodAutoscalers" *ngIf="horizontalPodAutoscalers.length > 0">
+
+  <aaim-k8s-object-title [title]="'Horizontal Pod Autoscalers'"></aaim-k8s-object-title>
+
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="name">Name</th>
+      <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="namespace">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="namespace">Namespace</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.metadata.namespace}} /td>
+    </ng-container>
+
+    <ng-container matColumnDef="metrics">
+      <th mat-header-cell *matHeaderCellDef class="metrics">Metrics</th>
+      <td mat-cell *matCellDef="let element">{{element.toString()}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="mix-pods">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="min-pods">Min Pods</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.spec.minReplicas || 0}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="max-pods">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-pods">Max Pods</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.spec.maxReplicas || 0}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="replicas">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="replicas">Replicas</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.status.currentReplicas}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="age">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="age">Age</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.metadata.creationTimestamp | relatimeTime}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="status">Status</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container  *ngFor="let condition of getConditions(element)">
+          <aaim-k8s-object-badge *ngIf="condition.isReady" [label]="condition.type" [class]="condition.type.toLowerCase()" [matTooltip]="condition.tooltip"></aaim-k8s-object-badge>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <HpaMenu object={item}/>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToElement(row)"></tr>
+  </table>
+</div>

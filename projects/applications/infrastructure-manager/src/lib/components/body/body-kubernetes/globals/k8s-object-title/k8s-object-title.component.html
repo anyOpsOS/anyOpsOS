@@ -1,0 +1,7 @@
+<div class="DrawerTitle">
+  <ng-container *ngIf="title; else content">{{title}}</ng-container>
+
+  <ng-template #content>
+    <ng-content></ng-content>
+  </ng-template>
+</div>

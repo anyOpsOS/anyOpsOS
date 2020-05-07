@@ -323,7 +323,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
    */
   private getAdjacentConfigMaps(objData: DataObject): string[] {
 
-    const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+    const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
       return imObj.type === 'ConfigMap' &&
         imObj.info.data.metadata.namespace === objData.info.data.metadata.namespace &&
         (
@@ -344,7 +344,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
   private getAdjacentPods(objData: DataObject): string[] {
     if (objData.type === 'PersistentVolumeClaim') {
 
-      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
         return imObj.type === 'Pod' &&
           imObj.info.data.metadata.namespace === objData.info.data.metadata.namespace &&
           imObj.info.data.spec.volumes &&
@@ -357,7 +357,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
     if (objData.type === 'Endpoints') {
       if (!objData.info.data.subsets) return [];
 
-      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
         return imObj.type === 'Pod' &&
           objData.info.data.subsets.some(objSubset => {
             return (objSubset.addresses ? objSubset.addresses.some((subsetAddress) =>
@@ -380,7 +380,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
 
     if (objData.type === 'ConfigMap') {
 
-      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
         return imObj.type === 'Pod' &&
           imObj.info.data.metadata.namespace === objData.info.data.metadata.namespace &&
           (
@@ -403,7 +403,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
 
     if (objData.type === 'Service') {
 
-      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
         return imObj.type === 'Endpoints' &&
           imObj.name === objData.name;
       });
@@ -413,7 +413,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
 
     if (objData.type === 'Pod') {
 
-      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
         return imObj.type === 'Endpoints' &&
           imObj.info.data.subsets &&
           imObj.info.data.subsets.some(objSubset => {
@@ -444,7 +444,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
 
     if (objData.type === 'Ingress') {
 
-      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
         return imObj.type === 'Service' &&
           imObj.info.data.metadata.namespace === objData.info.data.metadata.namespace &&
           (
@@ -460,7 +460,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
 
     if (objData.type === 'Endpoints') {
 
-      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+      const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
         return imObj.type === 'Service' &&
           imObj.name === objData.name;
       });
@@ -475,7 +475,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
    */
   private getAdjacentIngresses(objData: DataObject): string[] {
 
-    const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+    const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
       return imObj.type === 'Ingress' &&
         imObj.info.data.metadata.namespace === objData.info.data.metadata.namespace &&
         (
@@ -506,7 +506,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
       const objects: string[] =objData.info.data.spec.volumes.map(objVolume => {
         if (!objVolume.persistentVolumeClaim) return null;
 
-        const foundPVCs: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+        const foundPVCs: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
           return imObj.type === 'PersistentVolumeClaim' &&
             imObj.name === objVolume.persistentVolumeClaim.claimName &&
             imObj.info.data.metadata.namespace === objData.info.data.metadata.namespace;
@@ -526,7 +526,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
    */
   private getAdjacentPersistentVolumes(objData: DataObject): string[] {
 
-    const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+    const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
       return imObj.type === 'PersistentVolume' &&
         imObj.info.data.spec.claimRef &&
         imObj.info.data.spec.claimRef.kind === 'PersistentVolumeClaim' &&
@@ -548,7 +548,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
 
     const objects: string[] = objData.info.data.subjects.map(subjectObj => {
 
-      const foundSubjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+      const foundSubjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
         return imObj.type === subjectObj.kind &&
           imObj.name === subjectObj.name &&
           (subjectObj.namespace ? imObj.info.data.metadata.namespace === subjectObj.namespace : true);
@@ -567,7 +567,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
    */
   private getAdjacentRoleBindingsFromSubjects(objData: DataObject): string[] {
 
-    const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+    const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
       return (imObj.type === 'RoleBinding' || imObj.type === 'ClusterRoleBinding') &&
         imObj.info.data.subjects &&
         imObj.info.data.subjects.some(subObj => {
@@ -586,7 +586,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
    */
   private getAdjacentRoleBindingsFromRole(objData: DataObject): string[] {
 
-    const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes',(imObj) => {
+    const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
       return (imObj.type === 'RoleBinding' || imObj.type === 'ClusterRoleBinding') &&
         imObj.info.data.roleRef &&
         imObj.info.data.roleRef.kind === objData.type &&
@@ -602,7 +602,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
    */
   private getAdjacentRole(objData: DataObject): string[] {
 
-    const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj) => {
+    const childObjects: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
       return imObj.type === objData.info.data.roleRef.kind &&
         imObj.name === objData.info.data.roleRef.name;
     });

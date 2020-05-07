@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnyopsosModalMonitorExportComponent } from './anyopsos-modal-monitor-export.component';
+import { AnyOpsOSModalMonitorExportComponent } from './anyopsos-modal-monitor-export.component';
 
-describe('AnyopsosModalMonitorExportComponent', () => {
-  let component: AnyopsosModalMonitorExportComponent;
-  let fixture: ComponentFixture<AnyopsosModalMonitorExportComponent>;
+describe('AnyOpsOSModalMonitorExportComponent', () => {
+  let component: AnyOpsOSModalMonitorExportComponent;
+  let fixture: ComponentFixture<AnyOpsOSModalMonitorExportComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AnyopsosModalMonitorExportComponent ]
+      declarations: [ AnyOpsOSModalMonitorExportComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AnyopsosModalMonitorExportComponent);
+    fixture = TestBed.createComponent(AnyOpsOSModalMonitorExportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

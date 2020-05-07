@@ -1,0 +1,69 @@
+<div class="CronJobs" *ngIf="cronJobs.length > 0">
+
+  <aaim-k8s-object-title [title]="'Cron Jobs'"></aaim-k8s-object-title>
+
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="name">Name</th>
+      <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="warning">
+      <th mat-header-cell *matHeaderCellDef class="warning"></th>
+      <td mat-cell *matCellDef="let element">
+        <aaim-k8s-object-event-icon [k8sObject]="element" [filterEvents]="(e) => {
+          !isNeverRun(element) ? e : e.filter(event => event.reason !== 'FailedNeedsStart')
+        }"></aaim-k8s-object-event-icon>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="namespace">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="namespace">Namespace</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.metadata.namespace}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="schedule">
+      <th mat-header-cell *matHeaderCellDef class="schedule">Schedule</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="isNeverRun(element); else schedule">never</ng-container>
+        <ng-template #schedule>{{k8sObject.info.data.spec.schedule}}</ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="suspend">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="suspend">Suspend</th>
+      <td mat-cell *matCellDef="let element">{{k8sObject.info.data.spec.suspend}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="active">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="active-jobs">Active</th>
+      <td mat-cell *matCellDef="let element">{{getActiveJobsNum(element)}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="last-schedule">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="schedule">Last schedule</th>
+      <td mat-cell *matCellDef="let element">{{k8sObject.info.data.lastScheduleTime | relatimeTime}} ago</td>
+    </ng-container>
+
+    <ng-container matColumnDef="age">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="age">Age</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.metadata.creationTimestamp | relatimeTime}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <CronJobMenu object={item}/>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToElement(row)"></tr>
+  </table>
+</div>

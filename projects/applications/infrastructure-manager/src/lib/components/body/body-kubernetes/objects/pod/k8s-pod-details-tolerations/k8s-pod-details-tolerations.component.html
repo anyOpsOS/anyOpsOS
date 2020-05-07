@@ -1,0 +1,20 @@
+<aaim-k8s-object-item [name]="'Tolerations'" class="PodDetailsTolerations">
+  <aaim-k8s-object-param-toggler [label]="LibNodeKubernetesObjectHelpers.getTolerations(k8sObject).length">
+
+    <div class="toleration" *ngFor="let toleration of LibNodeKubernetesObjectHelpers.getTolerations(k8sObject)">
+      <aaim-k8s-object-item [name]="'Key'">
+        {{toleration.key}}
+      </aaim-k8s-object-item>
+      <aaim-k8s-object-item [name]="'Operator'" *ngIf="toleration.operator">
+        {{toleration.operator}}
+      </aaim-k8s-object-item>
+      <aaim-k8s-object-item [name]="'Effect'" *ngIf="toleration.effect">
+        {{toleration.effect}}
+      </aaim-k8s-object-item>
+      <aaim-k8s-object-item [name]="'Effect'" *ngIf="!!toleration.tolerationSeconds">
+        {{toleration.effect}}
+      </aaim-k8s-object-item>
+    </div>
+
+  </aaim-k8s-object-param-toggler>
+</aaim-k8s-object-item>

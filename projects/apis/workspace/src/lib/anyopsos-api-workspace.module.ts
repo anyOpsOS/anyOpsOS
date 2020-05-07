@@ -24,7 +24,7 @@ export class AnyOpsOSWorkspaceApiController {
                      @Res() response: Response,
                      @SessionParam('userUuid') userUuid: string,
                      @Param('workspaceUuid', { required: false }) workspaceUuid?: string,
-                     @QueryParam('default', { required: false }) onlyDefault?: boolean) {
+                     @QueryParam('onlyDefault', { required: false }) onlyDefault?: boolean) {
     logger.info(`[API workspace] -> getWorkspace`);
 
     const WorkspaceModule: AnyOpsOSSysWorkspaceModule = new AnyOpsOSSysWorkspaceModule(userUuid);
@@ -38,8 +38,8 @@ export class AnyOpsOSWorkspaceApiController {
 
     // Return the uuid of default workspace for this user
     if (onlyDefault) {
-      const workspace: string = await WorkspaceModule.getDefaultWorkspaceUuid();
-      return ApiGlobalsModule.jsonDataResponse(workspace);
+      const defaultWorkspace: Workspace = await WorkspaceModule.getDefaultWorkspace();
+      return ApiGlobalsModule.jsonDataResponse(defaultWorkspace);
     }
 
     // Return detailed information of all workspaces for this user

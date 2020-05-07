@@ -1,0 +1,24 @@
+<div class="ConfigMapDetails">
+
+  <aaim-k8s-object-metadata [k8sObject]="k8sObject"></aaim-k8s-object-metadata>
+
+  <ng-container *ngIf="k8sObject.info.data.length > 0">
+    <aaim-k8s-object-title [title]="'Data'"></aaim-k8s-object-title>
+
+    <div *ngFor="let cm of k8sObject.info.data | keyvalue">
+
+      <div class="data">
+        <div class="name">{{cm.key}}</div>
+        <div class="flex gaps align-flex-start">
+          <Input multiLine theme="round-black" class="box grow" value="{{cm.value}}" />
+        </div>
+      </div>
+
+    </div>
+
+    <button class="btn" type="button" mat-flat-button color="primary" [class.btn-spinner]="savingData" [disabled]="savingData" (click)="save()">Save</button>
+  </ng-container>
+
+  <aaim-k8s-object-events [k8sObject]="k8sObject"></aaim-k8s-object-events>
+
+</div>

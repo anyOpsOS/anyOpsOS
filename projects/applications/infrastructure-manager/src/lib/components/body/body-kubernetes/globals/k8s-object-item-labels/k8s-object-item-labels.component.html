@@ -1,0 +1,3 @@
+<aaim-k8s-object-item [name]="name" [labelsOnly]="true" *ngIf="labels || labels.length">
+  <aaim-k8s-object-badge *ngFor="let label of labels" [label]="label" [title]="label"></aaim-k8s-object-badge>
+</aaim-k8s-object-item>

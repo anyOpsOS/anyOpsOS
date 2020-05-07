@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnyopsosModalMonitorHelpComponent } from './anyopsos-modal-monitor-help.component';
+import { AnyOpsOSModalMonitorHelpComponent } from './anyopsos-modal-monitor-help.component';
 
-describe('AnyopsosModalMonitorHelpComponent', () => {
-  let component: AnyopsosModalMonitorHelpComponent;
-  let fixture: ComponentFixture<AnyopsosModalMonitorHelpComponent>;
+describe('AnyOpsOSModalMonitorHelpComponent', () => {
+  let component: AnyOpsOSModalMonitorHelpComponent;
+  let fixture: ComponentFixture<AnyOpsOSModalMonitorHelpComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AnyopsosModalMonitorHelpComponent ]
+      declarations: [ AnyOpsOSModalMonitorHelpComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AnyopsosModalMonitorHelpComponent);
+    fixture = TestBed.createComponent(AnyOpsOSModalMonitorHelpComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

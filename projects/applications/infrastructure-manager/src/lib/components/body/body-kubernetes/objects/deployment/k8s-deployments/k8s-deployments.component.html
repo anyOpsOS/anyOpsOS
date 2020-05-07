@@ -1,0 +1,63 @@
+<div class="Deployments" *ngIf="deployments.length > 0">
+
+  <aaim-k8s-object-title [title]="'Deployments'"></aaim-k8s-object-title>
+
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="name">Name</th>
+      <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="namespace">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="namespace">Namespace</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.metadata.namespace}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="pods">
+      <th mat-header-cell *matHeaderCellDef class="pods">Pods</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.status.availableReplicas || 0}}/{{lement.info.data.status.replicas || 0}}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="replicas">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="replicas">Replicas</th>
+      <td mat-cell *matCellDef="let element">{{getChildReplicas(element).length}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="warning">
+      <th mat-header-cell *matHeaderCellDef class="warning"></th>
+      <td mat-cell *matCellDef="let element">
+        <aaim-k8s-object-event-icon [k8sObject]="element"></aaim-k8s-object-event-icon>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="age">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="age">Age</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.metadata.creationTimestamp | relatimeTime}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="conditions" class="conditions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Conditions</th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngFor="let condition of getConditions(element) | keyvalue" class="condition" [className]="condition.key.toLowerCase()" title="{{condition.value}}">
+          {{condition.key}}
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <DeploymentMenu object={item}/>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToElement(row)"></tr>
+  </table>
+</div>

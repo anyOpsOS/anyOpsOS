@@ -1,0 +1,47 @@
+<div class="CronJobDetails">
+
+  <aaim-k8s-object-metadata [k8sObject]="k8sObject"></aaim-k8s-object-metadata>
+
+  <aaim-k8s-object-item name="Schedule">
+    <ng-container *ngIf="isNeverRun(); else schedule">never ({{k8sObject.info.data.spec.schedule}})</ng-container>
+    <ng-template #schedule>{{k8sObject.info.data.spec.schedule}}</ng-template>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Active'">
+    {{getActiveJobsNum()}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Suspend'">
+    {{k8sObject.info.data.spec.suspend}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Last schedule'">
+    {{k8sObject.info.data.lastScheduleTime | relatimeTime}} ago
+  </aaim-k8s-object-item>
+
+  <ng-container *ngIf="childJobs.length > 0">
+
+    <aaim-k8s-object-title [title]="'Jobs'"></aaim-k8s-object-title>
+
+    <div *ngFor="let job of childJobs">
+      <div class="job">
+        <div class="title" (click)="goToElement(job)">
+          {{job.name}}
+        </div>
+
+        <aaim-k8s-object-item [name]="'Condition'" class="conditions" [labelsOnly]="true">
+          <aaim-k8s-object-badge [label]="getCondition(job)" [class]="getCondition(job).type.toLowerCase()"></aaim-k8s-object-badge>
+        </aaim-k8s-object-item>
+
+        <aaim-k8s-object-item [name]="'Selector'" [labelsOnly]="true">
+          <aaim-k8s-object-badge *ngFor="let selector of job.info.data.spec.selector?.matchLabels" [label]="selector"></aaim-k8s-object-badge>
+        </aaim-k8s-object-item>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+  <aaim-k8s-object-events [k8sObject]="k8sObject"></aaim-k8s-object-events>
+
+</div>

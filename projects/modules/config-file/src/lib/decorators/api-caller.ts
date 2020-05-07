@@ -15,10 +15,10 @@ export function ApiCaller() {
       const ApiCallerModule: AnyOpsOSSysApiCallerModule = new AnyOpsOSSysApiCallerModule();
 
       // Rewrite the method to call the anyopsos-filesystem API
-      if (propertyKey === 'get') return ApiCallerModule.call('filesystem', 'GET', `/api/config-file/${(this as any).workspaceUuid}/${encodeURIComponent(args[0])}${args[1] ? '/' + args[1] : ''}${args[2] ? '/' + args[2] : ''}`);
-      if (propertyKey === 'put') return ApiCallerModule.call('filesystem', 'PUT', `/api/config-file/${(this as any).workspaceUuid}/${encodeURIComponent(args[0])}${args[2] ? '/' + args[2] : ''}${args[3] ? '/' + args[3] : ''}`, { data: args[1] });
-      if (propertyKey === 'patch') return ApiCallerModule.call('filesystem', 'PATCH', `/api/config-file/${(this as any).workspaceUuid}/${encodeURIComponent(args[0])}${args[2] ? '/' + args[2] : ''}${args[3] ? '/' + args[3] : ''}`, { data: args[1] });
-      if (propertyKey === 'delete') return ApiCallerModule.call('filesystem', 'DELETE', `/api/config-file/${(this as any).workspaceUuid}/${encodeURIComponent(args[0])}${args[1] ? '/' + args[1] : ''}${args[2] ? '/' + args[2] : ''}`);
+      if (propertyKey === 'get') return ApiCallerModule.call('filesystem', 'GET', `/api/config-file/${(this as any).workspaceUuid}/${encodeURIComponent(args[0])}${args[1] ? '/' + args[1] : ''}${args[2] ? '/' + encodeURIComponent(args[2]) : ''}`);
+      if (propertyKey === 'put') return ApiCallerModule.call('filesystem', 'PUT', `/api/config-file/${(this as any).workspaceUuid}/${encodeURIComponent(args[0])}${args[2] ? '/' + args[2] : ''}${args[3] ? '/' + encodeURIComponent(args[3]) : ''}`, { data: args[1] });
+      if (propertyKey === 'patch') return ApiCallerModule.call('filesystem', 'PATCH', `/api/config-file/${(this as any).workspaceUuid}/${encodeURIComponent(args[0])}${args[2] ? '/' + args[2] : ''}${args[3] ? '/' + encodeURIComponent(args[3]) : ''}`, { data: args[1] });
+      if (propertyKey === 'delete') return ApiCallerModule.call('filesystem', 'DELETE', `/api/config-file/${(this as any).workspaceUuid}/${encodeURIComponent(args[0])}${args[1] ? '/' + args[1] : ''}${args[2] ? '/' + encodeURIComponent(args[2]) : ''}`);
     };
   };
 }

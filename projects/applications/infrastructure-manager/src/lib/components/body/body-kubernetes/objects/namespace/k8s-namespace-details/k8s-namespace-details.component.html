@@ -1,0 +1,13 @@
+<div className="NamespaceDetails">
+
+  <aaim-k8s-object-metadata [k8sObject]="k8sObject"></aaim-k8s-object-metadata>
+
+  <aaim-k8s-object-item [name]="'Status'">
+    <span class="status" [className]="k8sObject.info.data.status.toLowerCase()">{{k8sObject.info.data.status}}</span>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Resource Quotas'" class="quotas flex align-center">
+    <span *ngFor="let quota of resourceQuotas" (click)="goToElement(quota)">{{quota.name}}</span>
+  </aaim-k8s-object-item>
+
+</div>

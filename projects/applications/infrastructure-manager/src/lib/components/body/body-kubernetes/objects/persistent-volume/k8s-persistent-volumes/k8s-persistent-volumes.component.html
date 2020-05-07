@@ -1,0 +1,59 @@
+<div class="PersistentVolumes" *ngIf="persistentVolumes.length > 0">
+
+  <aaim-k8s-object-title [title]="'Persistent Volumes'"></aaim-k8s-object-title>
+
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="name">Name</th>
+      <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="storageClass">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="storageClass">Storage Class</th>
+      <td mat-cell *matCellDef="let element">
+        <span (click)="goToElement(element.info.data.spec.storageClassName)">{{element.info.data.spec.storageClassName}}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="capacity">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="capacity">Capacity</th>
+      <td mat-cell *matCellDef="let element">{{getCapacity()}}</td>
+
+      <ng-container matColumnDef="claim">
+        <th mat-header-cell *matHeaderCellDef class="claim">Claim</th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.info.data.spec.claimRef" (click)="goToElement(element.info.data.spec.claimRef)">
+            {{element.info.data.spec.claimRef.name}}
+          </span>
+        </td>
+      </ng-container>
+
+    <ng-container matColumnDef="age">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="age">Age</th>
+      <td mat-cell *matCellDef="let element">{{element.info.data.metadata.creationTimestamp | relatimeTime}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="status">Status</th>
+      <td mat-cell *matCellDef="let element">
+        <span [className]="element.info.data.status.phase.toLowerCase()">{{element.info.data.status.phase || '-'}}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <PersistentVolumeMenu object={item}/>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToElement(row)"></tr>
+  </table>
+</div>

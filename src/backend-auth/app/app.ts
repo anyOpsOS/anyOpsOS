@@ -127,8 +127,14 @@ export class App {
           const cert: PeerCertificate = action.request.socket.getPeerCertificate();
 
           if (cert.subject.CN !== AOO_FILESYSTEM_HOST && cert.subject.CN !== AOO_CORE_HOST) return false;
+
+          // Impersonate userUuid
+          if (action.request.headers['anyopsos-impersonate']) {
+            action.request.session.userUuid = action.request.headers['anyopsos-impersonate'];
+          } else {
+            action.request.session.userUuid = 'internal';
+          }
           
-          action.request.session.userUuid = 'internal';
           return true;
         }
 

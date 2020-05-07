@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnyopsosModalKubernetesShellComponent } from './anyopsos-modal-kubernetes-shell.component';
+import { AnyOpsOSModalKubernetesShellComponent } from './anyopsos-modal-kubernetes-shell.component';
 
-describe('AnyopsosModalKubernetesShellComponent', () => {
-  let component: AnyopsosModalKubernetesShellComponent;
-  let fixture: ComponentFixture<AnyopsosModalKubernetesShellComponent>;
+describe('AnyOpsOSModalKubernetesShellComponent', () => {
+  let component: AnyOpsOSModalKubernetesShellComponent;
+  let fixture: ComponentFixture<AnyOpsOSModalKubernetesShellComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AnyopsosModalKubernetesShellComponent ]
+      declarations: [ AnyOpsOSModalKubernetesShellComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AnyopsosModalKubernetesShellComponent);
+    fixture = TestBed.createComponent(AnyOpsOSModalKubernetesShellComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

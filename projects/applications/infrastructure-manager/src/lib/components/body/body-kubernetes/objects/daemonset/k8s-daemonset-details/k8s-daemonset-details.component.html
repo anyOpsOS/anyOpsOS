@@ -1,0 +1,43 @@
+<div class="DaemonSetDetails">
+
+  <mat-spinner center *ngIf="!isLoaded; else metrics"></mat-spinner>
+
+  <ng-template #metrics>
+    <aaim-k8s-object-resource-metrics
+      [loader]="daemonSetStore.loadMetrics(daemonSet)"
+      [tabs]="podMetricTabs" [object]="daemonSet" [params]="metrics">
+
+      <aaim-k8s-pod-details-charts></aaim-k8s-pod-details-charts>
+    </aaim-k8s-object-resource-metrics>
+  </ng-template>
+
+  <aaim-k8s-object-metadata [k8sObject]="k8sObject"></aaim-k8s-object-metadata>
+
+  <aaim-k8s-object-item [name]="'Selector'" [labelsOnly]="true" *ngIf="LibNodeKubernetesObjectHelpers.getSelectors(k8sObject).length > 0">
+    <aaim-k8s-object-badge *ngFor="let selector of LibNodeKubernetesObjectHelpers.getSelectors(k8sObject)" [label]="selector"></aaim-k8s-object-badge>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Node Selector'" [labelsOnly]="true" *ngIf="LibNodeKubernetesObjectHelpers.getNodeSelectors(k8sObject).length > 0">
+    <aaim-k8s-object-badge *ngFor="let selector of k8sObject.info.data.spec.template.spec.nodeSelector" [label]="selector"></aaim-k8s-object-badge>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Images'" *ngIf="LibNodeKubernetesObjectHelpers.getImages(k8sObject).length > 0">
+    <p *ngFor="let image of LibNodeKubernetesObjectHelpers.getImages(k8sObject)">{{image}}</p>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Strategy Type'">
+    {{k8sObject.info.data.spec.updateStrategy.type}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-pod-details-tolerations [k8sObject]="k8sObject"></aaim-k8s-pod-details-tolerations>
+  <aaim-k8s-pod-details-affinities [k8sObject]="k8sObject"></aaim-k8s-pod-details-affinities>
+
+  <aaim-k8s-object-item [name]="'Pod Status'" class="pod-status">
+    <aaim-k8s-pod-details-statuses [pods]="childPods"></aaim-k8s-pod-details-statuses>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-resource-metrics-text [metrics]="metrics"></aaim-k8s-object-resource-metrics-text>
+  <aaim-k8s-pod-details-list [pods]="childPods" [owner]="k8sObject"></aaim-k8s-pod-details-list>
+
+  <aaim-k8s-object-events [k8sObject]="k8sObject"></aaim-k8s-object-events>
+</div>

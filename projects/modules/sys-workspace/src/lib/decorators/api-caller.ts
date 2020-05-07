@@ -15,9 +15,9 @@ export function ApiCaller() {
       const ApiCallerModule: AnyOpsOSSysApiCallerModule = new AnyOpsOSSysApiCallerModule();
 
       // Rewrite the method to call the anyopsos-filesystem API
-      if (propertyKey === 'getWorkspacesDetails') return ApiCallerModule.call('auth', 'GET', `/api/workspace/`);
-      if (propertyKey === 'getWorkspaceByUuid') return ApiCallerModule.call('auth', 'GET', `/api/workspace/${args[0]}/`);
-      if (propertyKey === 'getDefaultWorkspaceUuid') return ApiCallerModule.call('auth', 'GET', `/api/workspace/?onlyDefault=true`);
+      if (propertyKey === 'getWorkspacesDetails') return ApiCallerModule.call('auth', 'GET', `/api/workspace/`, null, (this as any).userUuid);
+      if (propertyKey === 'getWorkspaceByUuid') return ApiCallerModule.call('auth', 'GET', `/api/workspace/${args[0]}/`, null, (this as any).userUuid);
+      if (propertyKey === 'getDefaultWorkspace') return ApiCallerModule.call('auth', 'GET', `/api/workspace/?onlyDefault=true`, null, (this as any).userUuid);
     };
   };
 }

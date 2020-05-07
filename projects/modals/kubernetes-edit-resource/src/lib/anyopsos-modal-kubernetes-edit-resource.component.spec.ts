@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnyopsosModalKubernetesEditResourceComponent } from './anyopsos-modal-kubernetes-edit-resource.component';
+import { AnyOpsOSModalKubernetesEditResourceComponent } from './anyopsos-modal-kubernetes-edit-resource.component';
 
-describe('AnyopsosModalKubernetesEditResourceComponent', () => {
-  let component: AnyopsosModalKubernetesEditResourceComponent;
-  let fixture: ComponentFixture<AnyopsosModalKubernetesEditResourceComponent>;
+describe('AnyOpsOSModalKubernetesEditResourceComponent', () => {
+  let component: AnyOpsOSModalKubernetesEditResourceComponent;
+  let fixture: ComponentFixture<AnyOpsOSModalKubernetesEditResourceComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AnyopsosModalKubernetesEditResourceComponent ]
+      declarations: [ AnyOpsOSModalKubernetesEditResourceComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AnyopsosModalKubernetesEditResourceComponent);
+    fixture = TestBed.createComponent(AnyOpsOSModalKubernetesEditResourceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

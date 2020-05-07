@@ -14,18 +14,16 @@ export class AnyOpsOSSysApiCallerModule {
    * - Auth API -> Filesystem API: To create user workspaces
    * - Core API -> Auth API: To access a workspace credentials and connect agains a node
    * ...
+   * 
+   * If userUuid is passed, it will impersonate this user
    */
-  call(api: 'filesystem' | 'auth', method: 'GET' | 'PUT' | 'POST' | 'PATCH' | 'DELETE', url: string, bodyData?: any): Promise<BackendResponse> {
+  call(api: 'filesystem' | 'auth', method: 'GET' | 'PUT' | 'POST' | 'PATCH' | 'DELETE', url: string, bodyData?: any, userUuid?: string): Promise<BackendResponse> {
     const options = {
       hostname: api === 'filesystem' ? AOO_FILESYSTEM_HOST : AOO_AUTH_HOST,
       port: api === 'filesystem' ? AOO_FILESYSTEM_PORT : AOO_AUTH_PORT,
       path: url,
       method,
-      headers: bodyData ? {
-        'User-Agent': 'Node.js/https',
-        'Content-Type': 'application/json',
-        'Content-Length': JSON.stringify(bodyData).length
-      } : undefined,
+      headers: {},
       key: SSL_AUTH_CERT_KEY,
       cert: SSL_AUTH_CERT,
       // Disable session caching
@@ -35,6 +33,16 @@ export class AnyOpsOSSysApiCallerModule {
       // Certificate validation
       strictSSL: true
     }
+
+    if (bodyData) {
+      options.headers = {
+        'User-Agent': 'Node.js/https',
+        'Content-Type': 'application/json',
+        'Content-Length': JSON.stringify(bodyData).length
+      }
+    }
+
+    if (userUuid) options.headers = {...options.headers, 'anyopsos-impersonate': userUuid}
 
     return new Promise((resolve, reject) => {
       const requestCall = request(options, (res) => {

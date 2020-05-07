@@ -1,0 +1,12 @@
+<div class="DrawerParamToggler">
+  <div class="flex gaps align-center">
+    <div class="param-label">{{label}}</div>
+    <div class="param-link" (click)="toggleOpen()">
+      <span class="param-link-text">{{link()}}</span>
+      <Icon material={icon}/>
+    </div>
+  </div>
+  <div class="param-content" [class.open]="open">
+    <ng-content></ng-content>
+  </div>
+</div>

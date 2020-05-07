@@ -1,0 +1,76 @@
+<div class="NodeDetails">
+
+  <mat-spinner center *ngIf="!isLoaded; else metrics"></mat-spinner>
+
+  <ng-template #metrics>
+    <aaim-k8s-object-resource-metrics
+      [loader]="nodesStore.loadMetrics(deployment)"
+      [tabs]="metricTabs" [object]="node" [params]="metrics">
+
+      <aaim-k8s-pod-details-charts></aaim-k8s-pod-details-charts>
+    </aaim-k8s-object-resource-metrics>
+  </ng-template>
+
+  <aaim-k8s-object-metadata [k8sObject]="k8sObject"></aaim-k8s-object-metadata>
+
+  <aaim-k8s-object-item [name]="'Capacity'">
+    CPU: {{k8sObject.info.data.status.capacity.cpu}},&nbsp;
+    Memory: {{Math.floor(parseInt(k8sObject.info.data.status.capacity.memory) / 1024)}}Mi,&nbsp;
+    Pods: {{k8sObject.info.data.status.capacity.pods}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Allocatable'">
+    CPU: {{k8sObject.info.data.status.allocatable.cpu}},&nbsp;
+    Memory: {{Math.floor(parseInt(k8sObject.info.data.status.allocatable.memory) / 1024)}}Mi,&nbsp;
+    Pods: {{k8sObject.info.data.status.allocatable.pods}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Addresses'" *ngIf="k8sObject.info.data.status.addresses">
+    <p *ngFor="let address of k8sObject.info.data.status.addresses">{{address.type}}: {{address.address}}</p>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'OS'">
+    {{k8sObject.info.data.status.nodeInfo.operatingSystem}} ({{k8sObject.info.data.status.nodeInfo.architecture}})
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'OS Image'">
+    {{k8sObject.info.data.status.nodeInfo.osImage}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Kernel version'">
+    {{k8sObject.info.data.status.nodeInfo.kernelVersion}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Container runtime'">
+    {{k8sObject.info.data.status.nodeInfo.containerRuntimeVersion}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Kubelet version'">
+    {{k8sObject.info.data.status.nodeInfo.kubeletVersion}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item-labels [name]="'Labels'" [labels]="k8sObject.info.data.metadata.labels"></aaim-k8s-object-item-labels>
+  <aaim-k8s-object-item-labels [name]="'Annotations'" [labels]="k8sObject.info.data.metadata.annotations"></aaim-k8s-object-item-labels>
+
+  <aaim-k8s-object-item [name]="'Taints'" [labelsOnly]="true" *ngIf="k8sObject.info.data.spec.taints.spec.taints">
+    <aaim-k8s-object-badge *ngFor="let taint of k8sObject.info.data.spec.taints" [label]="taint.key + ': ' + taint.effect" [matTooltip]="taint.value"></aaim-k8s-object-badge>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Conditions'" [labelsOnly]="true" class="conditions">
+    <ng-container *ngFor="let condition of getActiveConditions()">
+      <aaim-k8s-object-badge [label]="condition.type" [matTooltip]="condition.tooltip" [class]="condition.type.toLowerCase()"></aaim-k8s-object-badge>
+      <!-- TODO
+      <TooltipContent tableView>
+          {Object.entries(condition).map(([key, value]) =>
+            <div key={key} className="flex gaps align-center">
+              <div className="name">{upperFirst(key)}</div>
+              <div className="value">{value}</div>
+            </div>
+          )}
+        </TooltipContent>
+      -->
+    </ng-container>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-pod-details-list [pods]="childPods" [owner]="k8sObject" [maxCpu]="node.getCpuCapacity()" [maxMemory]="node.getMemoryCapacity()"></aaim-k8s-pod-details-list>
+</div>

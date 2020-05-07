@@ -1,0 +1,22 @@
+<aaim-k8s-object-item [name]="'Created'">
+  {{k8sObject.info.data.metadata.creationTimestamp | relatimeTime}} ago ({{k8sObject.info.data.metadata.creationTimestamp | date:'medium'}})
+</aaim-k8s-object-item>
+<aaim-k8s-object-item [name]="'Name'">
+  {{k8sObject.name}}
+</aaim-k8s-object-item>
+<aaim-k8s-object-item [name]="'Namespace'">
+  {{k8sObject.info.data.metadata.namespace}}
+</aaim-k8s-object-item>
+<aaim-k8s-object-item [name]="'UID'">
+  {{k8sObject.info.data.metadata.uid}}
+</aaim-k8s-object-item>
+<aaim-k8s-object-item [name]="'Link'">
+  {{k8sObject.info.data.metadata.selfLink}}
+</aaim-k8s-object-item>
+<aaim-k8s-object-item [name]="'Resource Version'">
+  {{k8sObject.info.data.metadata.resourceVersion}}
+</aaim-k8s-object-item>
+
+<aaim-k8s-object-item-labels [name]="'Labels'" [labels]="k8sObject.info.data.metadata.labels"></aaim-k8s-object-item-labels>
+<aaim-k8s-object-item-labels [name]="'Annotations'" [labels]="k8sObject.info.data.metadata.annotations"></aaim-k8s-object-item-labels>
+<aaim-k8s-object-item-labels [name]="'Finalizers'" [labels]="k8sObject.info.data.metadata.finalizers"></aaim-k8s-object-item-labels>

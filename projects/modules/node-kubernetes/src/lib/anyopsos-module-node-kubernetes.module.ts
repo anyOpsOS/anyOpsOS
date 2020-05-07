@@ -40,6 +40,7 @@ export class AnyOpsOSNodeKubernetesModule {
    * Creates a new connection
    */
   newConnection(): Promise<BackendResponse> {
+    logger.trace(`[Module Kubernetes] -> newConnection -> userUuid [${this.userUuid}], workspaceUuid [${this.workspaceUuid}], connectionUuid [${this.connectionUuid}]`);
 
     // https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.16
     const apiUrls = [
@@ -111,7 +112,8 @@ export class AnyOpsOSNodeKubernetesModule {
             this.KubernetesDataRefresherModule.parseObject(phase, obj);
           },
           (e: Error) => {
-            logger.error(`[Module Kubernetes] -> Watch error apiUrl [${url}] -> ${e}`);
+            logger.error(`[Module Kubernetes] -> newConnection -> Watch error apiUrl [${url}] -> ${e}`);
+            throw e;
           });
 
       });
@@ -119,6 +121,7 @@ export class AnyOpsOSNodeKubernetesModule {
       return {status: 'ok', data: 'connected'} as BackendResponse;
 
     }).catch((e: Error) => {
+      logger.error(`[Module Kubernetes] -> newConnection -> ${e}`);
       throw e;
     });
   }
@@ -127,12 +130,14 @@ export class AnyOpsOSNodeKubernetesModule {
    * Disconnects a connection
    */
   disconnectConnection(): Promise<BackendResponse> {
+    logger.trace(`[Module Kubernetes] -> disconnectConnection -> userUuid [${this.userUuid}], workspaceUuid [${this.workspaceUuid}], connectionUuid [${this.connectionUuid}]`);
 
     return this.KubernetesSessionStateModule.disconnectSession().then(() => {
 
       return {status: 'ok', data: 'disconnected'} as BackendResponse;
 
     }).catch((e: Error) => {
+      logger.error(`[Module Kubernetes] -> disconnectConnection -> ${e}`);
       throw e;
     });
   }

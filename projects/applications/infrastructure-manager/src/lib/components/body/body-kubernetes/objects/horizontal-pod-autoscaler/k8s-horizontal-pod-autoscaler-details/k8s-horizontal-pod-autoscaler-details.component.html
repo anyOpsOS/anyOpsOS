@@ -1,0 +1,36 @@
+<div className="HpaDetails">
+
+  <aaim-k8s-object-metadata [k8sObject]="k8sObject"></aaim-k8s-object-metadata>
+
+  <aaim-k8s-object-item [name]="'Reference'">
+    <span *ngIf="element.targetRef" (click)="goToElement(element)">
+      {{k8sObject.info.data.spec.scaleTargetRef.kind}}/{{k8sObject.info.data.spec.scaleTargetRef.name}}
+    </span>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Min Pods'">
+    {{k8sObject.info.data.spec.minReplicas || 0}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Max Pods'">
+    {{k8sObject.info.data.spec.maxReplicas || 0}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Replicas'">
+    {{k8sObject.info.data.status.currentReplicas}}
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Status'" [labelsOnly]="true">
+    <ng-container *ngFor="let condition of getConditions()">
+      <aaim-k8s-object-badge *ngIf="condition.isReady" [label]="condition.type" [matTooltip]="condition.tooltip" [class]="condition.type.toLowerCase()"></aaim-k8s-object-badge>
+    </ng-container>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-item [name]="'Metrics'">
+    <div class="metrics">
+      <!-- {{this.renderMetrics()}} -->
+    </div>
+  </aaim-k8s-object-item>
+
+  <aaim-k8s-object-events [k8sObject]="k8sObject"></aaim-k8s-object-events>
+</div>

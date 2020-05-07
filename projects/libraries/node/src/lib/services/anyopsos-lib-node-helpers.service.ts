@@ -269,7 +269,7 @@ export class AnyOpsOSLibNodeHelpersService {
   /**
    * Returns object by by custom filter
    */
-  getObjectByCustomFilter(connectionUuid: string, connectionType: string = null, customFilter: (imObj) => boolean): DataObject[] {
+  getObjectByCustomFilter(connectionUuid: string, connectionType: string = null, customFilter: (imObj: DataObject) => boolean): DataObject[] {
 
     const connectionData: DataObject[] = this.getConnectionData(connectionUuid, connectionType);
     return connectionData.filter(customFilter);

@@ -1,7 +1,7 @@
 /*
  * Public API Surface of anyopsos-lib-node-kubernetes
  */
-
+export * from './lib/services/anyopsos-lib-node-kubernetes-object-helpers.service';
 export * from './lib/services/anyopsos-lib-node-kubernetes-api.service';
 
 export * from './lib/services/anyopsos-lib-node-kubernetes.service';
