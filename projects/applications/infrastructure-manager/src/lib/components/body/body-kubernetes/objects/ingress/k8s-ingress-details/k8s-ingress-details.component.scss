@@ -1,20 +1,22 @@
+@import "../../../body-kubernetes.mixins.scss";
+
 .IngressDetails {
   --titles-color: #{$textColorSecondary};
 
   .rules {
-    margin-bottom: $margin * 2
+    margin-bottom: 8px * 2
   }
 
   .host-title {
     color: var(--titles-color);
     font-weight: bold;
-    margin-top: $margin * 2;
-    margin-bottom: $margin;
+    margin-top: 8px * 2;
+    margin-bottom: 8px;
   }
 
   .Table {
-    margin-left: -$margin;
-    margin-right: -$margin;
+    margin-left: -8px;
+    margin-right: -8px;
 
     .TableHead {
       color: var(--titles-color);

@@ -1,8 +1,10 @@
+@import "../../../body-kubernetes.mixins.scss";
+
 .CronJobDetails {
   .job {
     .title {
-      margin-top: $margin * 2;
-      margin-bottom: $margin;
+      margin-top: 8px * 2;
+      margin-bottom: 8px;
 
       a {
         color: $colorInfo;

@@ -1,12 +1,12 @@
 <div className="PersistentVolumeClaimDetails">
 
   <ng-template #metrics>
-    <aaim-k8s-object-resource-metrics
-      [loader]="daemonSetStore.loadMetrics(volumeClaim)"
-      [tabs]="metricTabs" [object]="volumeClaim" [params]="metrics">
+    <!-- TODO <aaim-k8s-object-resource-metrics
+      [loader]="k8sObject"
+      [tabs]="metricTabs" [object]="k8sObject" [params]="metrics">
 
       <aaim-k8s-persistent-volume-claim-disk-chart></aaim-k8s-persistent-volume-claim-disk-chart>
-    </aaim-k8s-object-resource-metrics>
+    </aaim-k8s-object-resource-metrics> -->
   </ng-template>
 
 
@@ -23,36 +23,32 @@
   </aaim-k8s-object-item>
 
   <aaim-k8s-object-item [name]="'Pods'" class="pods">
-    <span *ngFor="let pod of pods" (click)="goToElement(pod)">{{pod.name}}</span>
+    <span *ngFor="let pod of childPods" (click)="goToElement(pod)">{{pod.name}}</span>
   </aaim-k8s-object-item>
 
+  <aaim-k8s-object-item [name]="'Status'">
+    {{k8sObject.info.data.status.phase || '-'}}
+  </aaim-k8s-object-item>
 
-  <DrawerItem name={<Trans>Pods</Trans>} className="pods">
-    {pods.map(pod => (
-      <Link key={pod.getId()} to={getDetailsUrl(pod.selfLink)}>
-        {pod.getName()}
-      </Link>
-    ))}
-  </DrawerItem>
-  <DrawerItem name={<Trans>Status</Trans>}>
-    {volumeClaim.getStatus()}
-  </DrawerItem>
+  <aaim-k8s-object-title [title]="'Selector'"></aaim-k8s-object-title>
 
-  <DrawerTitle title={_i18n._(t`Selector`)}/>
+  <aaim-k8s-object-item [name]="'Match Labels'" [labelsOnly]="true">
+    <aaim-k8s-object-badge *ngFor="let label of getMatchLabels()" [label]="label"></aaim-k8s-object-badge>
+  </aaim-k8s-object-item>
 
-  <DrawerItem name={<Trans>Match Labels</Trans>} labelsOnly>
-    {volumeClaim.getMatchLabels().map(label => <Badge key={label} label={label}/>)}
-  </DrawerItem>
+  <aaim-k8s-object-item [name]="'Match Expressions'">
+    <ng-container *ngFor="let expression of getMatchExpressions()">
+      <aaim-k8s-object-item [name]="'Key'">
+        {{expression.key}}
+      </aaim-k8s-object-item>
+      <aaim-k8s-object-item [name]="'Operator'">
+        {{expression.operator}}
+      </aaim-k8s-object-item>
+      <aaim-k8s-object-item [name]="'Values'">
+        {{expression.values.join(', ')}}
+      </aaim-k8s-object-item>
+    </ng-container>
+  </aaim-k8s-object-item>
 
-  <DrawerItem name={<Trans>Match Expressions</Trans>}>
-    {volumeClaim.getMatchExpressions().map(({ key, operator, values }, i) => (
-      <Fragment key={i}>
-        <DrawerItem name={<Trans>Key</Trans>}>{key}</DrawerItem>
-        <DrawerItem name={<Trans>Operator</Trans>}>{operator}</DrawerItem>
-        <DrawerItem name={<Trans>Values</Trans>}>{values.join(", ")}</DrawerItem>
-      </Fragment>
-    ))}
-  </DrawerItem>
-
-  <KubeEventDetails object={volumeClaim}/>
+  <aaim-k8s-object-events [k8sObject]="k8sObject"></aaim-k8s-object-events>
 </div>

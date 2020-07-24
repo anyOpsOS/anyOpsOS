@@ -1,11 +1,11 @@
 .SubTitle {
-  --sub-title-spacing: #{$margin * 2};
+  --sub-title-spacing: #{8px * 2};
 
   text-transform: uppercase;
   font-weight: bold;
 
   &:not(.compact) {
-    padding-bottom: $margin;
+    padding-bottom: 8px;
   }
 
   &:not(:first-child) {

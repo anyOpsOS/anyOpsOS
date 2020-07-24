@@ -1,18 +1,20 @@
+@import "../../../body-kubernetes.mixins.scss";
+
 .ReplicaSets {
   position: relative;
   min-height: 80px;
 
   .Table {
-    margin: 0 (-$margin * 3);
+    margin: 0 (-8px * 3);
   }
 
   .TableCell {
     &:first-child {
-      margin-left: $margin;
+      margin-left: 8px;
     }
 
     &:last-child {
-      margin-right: $margin;
+      margin-right: 8px;
     }
 
     &.name {

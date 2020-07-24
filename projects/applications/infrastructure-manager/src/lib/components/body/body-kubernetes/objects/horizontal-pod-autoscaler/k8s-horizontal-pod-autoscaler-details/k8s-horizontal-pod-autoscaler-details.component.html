@@ -3,7 +3,7 @@
   <aaim-k8s-object-metadata [k8sObject]="k8sObject"></aaim-k8s-object-metadata>
 
   <aaim-k8s-object-item [name]="'Reference'">
-    <span *ngIf="element.targetRef" (click)="goToElement(element)">
+    <span *ngIf="k8sObject.info.data.spec.scaleTargetRef" (click)="goToElement(k8sObject)">
       {{k8sObject.info.data.spec.scaleTargetRef.kind}}/{{k8sObject.info.data.spec.scaleTargetRef.name}}
     </span>
   </aaim-k8s-object-item>
@@ -26,11 +26,11 @@
     </ng-container>
   </aaim-k8s-object-item>
 
-  <aaim-k8s-object-item [name]="'Metrics'">
-    <div class="metrics">
-      <!-- {{this.renderMetrics()}} -->
-    </div>
-  </aaim-k8s-object-item>
+  <aaim-k8s-object-title [title]="'Metrics'"></aaim-k8s-object-title>
+
+  <div class="metrics">
+    <!-- TODO {{this.renderMetrics()}} -->
+  </div>
 
   <aaim-k8s-object-events [k8sObject]="k8sObject"></aaim-k8s-object-events>
 </div>

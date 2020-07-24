@@ -1,5 +1,7 @@
+@import "../../variables.scss";
+
 .DrawerTitle {
-  padding: $padding * 1.5 $padding * 3;
-  margin: $margin * 3 (-$margin * 3);
+  padding: 8px * 1.5 8px * 3;
+  margin: 8px * 3 (-8px * 3);
   background: $drawerSubtitleBackground;
 }

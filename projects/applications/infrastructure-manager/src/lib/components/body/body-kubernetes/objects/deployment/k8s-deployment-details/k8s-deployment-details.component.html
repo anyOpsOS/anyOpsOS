@@ -3,12 +3,12 @@
   <mat-spinner center *ngIf="!isLoaded; else metrics"></mat-spinner>
 
   <ng-template #metrics>
-    <aaim-k8s-object-resource-metrics
+    <!-- TODO <aaim-k8s-object-resource-metrics
       [loader]="deploymentStore.loadMetrics(deployment)"
       [tabs]="podMetricTabs" [object]="deployment" [params]="metrics">
 
       <aaim-k8s-pod-details-charts></aaim-k8s-pod-details-charts>
-    </aaim-k8s-object-resource-metrics>
+    </aaim-k8s-object-resource-metrics> -->
   </ng-template>
 
   <aaim-k8s-object-metadata [k8sObject]="k8sObject"></aaim-k8s-object-metadata>

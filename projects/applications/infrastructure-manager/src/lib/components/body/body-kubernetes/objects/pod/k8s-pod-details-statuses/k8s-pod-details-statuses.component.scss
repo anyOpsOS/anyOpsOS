@@ -1,6 +1,8 @@
+@import "../../../body-kubernetes.mixins.scss";
+
 .PodDetailsStatuses {
   span {
-    padding-right: $margin;
+    padding-right: 8px;
 
     &.running {
       color: $pod-status-running-color;

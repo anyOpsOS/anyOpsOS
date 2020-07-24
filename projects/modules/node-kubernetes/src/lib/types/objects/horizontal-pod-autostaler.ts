@@ -12,7 +12,7 @@ export interface HorizontalPodAutoscaler extends KubeObject {
     minReplicas: number;
     maxReplicas: number;
     metrics: HpaMetric[];
-  }
+  };
   status: {
     currentReplicas: number;
     desiredReplicas: number;
@@ -24,4 +24,5 @@ export interface HorizontalPodAutoscaler extends KubeObject {
       status: string;
       type: string;
     }[];
-  }
+  };
+}

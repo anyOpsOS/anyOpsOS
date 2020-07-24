@@ -20,4 +20,9 @@ export class K8sPersistentVolumeDetailsComponent implements OnInit {
     this.isLoaded = true;
   }
 
+  // TODO
+  goToElement() {
+    return null;
+  }
+
 }

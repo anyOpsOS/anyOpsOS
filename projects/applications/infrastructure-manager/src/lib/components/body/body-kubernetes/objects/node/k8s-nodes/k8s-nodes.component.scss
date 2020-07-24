@@ -1,4 +1,4 @@
-@import "./nodes-mixins";
+@import "../../../body-kubernetes.mixins.scss";
 
 .Nodes {
   .TableCell {
@@ -44,7 +44,7 @@
 
       .condition {
         display: inline-block;
-        margin-right: $margin;
+        margin-right: 8px;
 
         @include node-status-colors;
       }

@@ -1,15 +1,17 @@
+@import "../../../body-kubernetes.mixins.scss";
+
 .ConfigMapDetails {
   .data {
-    margin-bottom: $margin * 2;
+    margin-bottom: 8px * 2;
 
     .name {
       color: $textColorSecondary;
-      font-weight: $font-weight-bold;
-      padding-bottom: $padding / 2;
+      font-weight: 500;
+      padding-bottom: 8px / 2;
     }
   }
 
   .save-btn {
-    margin-top: $margin;
+    margin-top: 8px;
   }
 }

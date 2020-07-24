@@ -1,3 +1,5 @@
+@import "../../variables.scss";
+
 .KubeEventIcon {
   &.warning {
     color: $golden;
@@ -8,10 +10,10 @@
   white-space: normal;
 
   .age {
-    margin-top: $margin;
+    margin-top: 8px;
 
     .Icon {
-      margin-right: $margin;
+      margin-right: 8px;
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'aaim-k8s-object-resource-metrics-text',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./k8s-object-resource-metrics-text.component.scss']
 })
 export class K8sObjectResourceMetricsTextComponent implements OnInit {
+  @Input() readonly metrics: unknown;
 
   constructor() { }
 

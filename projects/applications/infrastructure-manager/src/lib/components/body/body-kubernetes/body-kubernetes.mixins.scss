@@ -1,0 +1,215 @@
+@import "variables.scss";
+
+// Pods
+$pod-status-running-color: $colorOk;
+$pod-status-pending-color: $colorWarning;
+$pod-status-evicted-color: $colorError;
+$pod-status-succeeded-color: $colorSuccess;
+$pod-status-failed-color: $colorError;
+$pod-status-terminated-color: $colorTerminated;
+$pod-status-unknown-color: $colorVague;
+$pod-status-complete-color: $colorSuccess;
+$pod-status-crash-loop-color: $colorError;
+$pod-scheduled: $colorOk;
+$pod-ready: $colorOk;
+$pod-initialized: $colorOk;
+$pod-unschedulable: $colorError;
+$pod-containers-ready: $colorInfo;
+$pod-error: $colorError;
+$pod-container-creating: $colorInfo;
+
+// Deployments
+$deployment-available: $colorOk;
+$deployment-progressing: $colorInfo;
+$deployment-replicafailure: $colorError;
+
+// Jobs
+$job-complete: $colorSuccess;
+$job-failed: $colorError;
+
+// Pod Statuses
+$pod-status-color-list: (
+  running: $pod-status-running-color,
+  pending: $pod-status-pending-color,
+  evicted: $pod-status-evicted-color,
+  waiting: $pod-status-pending-color,
+  succeeded: $pod-status-succeeded-color,
+  failed: $pod-status-failed-color,
+  terminated: $pod-status-terminated-color,
+  completed: $pod-status-complete-color,
+  crash-loop-back-off: $pod-status-crash-loop-color,
+  error: $pod-error,
+  container-creating: $pod-container-creating,
+);
+
+// Job Conditions
+$job-condition-color-list: (
+  complete: $job-complete,
+  failed: $job-failed,
+);
+
+@mixin pod-status-bgs {
+  @each $status, $color in $pod-status-color-list {
+    &.#{$status} {
+      color: white;
+      background: $color;
+    }
+  }
+}
+
+@mixin pod-status-colors {
+  @each $status, $color in $pod-status-color-list {
+    &.#{$status} {
+      color: $color;
+    }
+  }
+}
+
+@mixin job-condition-bgs {
+  @each $condition, $color in $job-condition-color-list {
+    &.#{$condition} {
+      color: white;
+      background: $color;
+    }
+  }
+}
+
+@mixin job-condition-colors {
+  @each $condition, $color in $job-condition-color-list {
+    &.#{$condition} {
+      color: $color;
+    }
+  }
+}
+
+$node-status-color-list: (
+  out-of-disk: #ce3933,
+  network-unavailable: #812727,
+  memory-pressure: #901995,
+  disk-pressure: #CC8D00,
+  pid-pressure: #068DBF,
+  ready: #4caf50,
+  scheduling-disabled: #ff9800,
+  invalid-license: #ce3933,
+  cordoned: $colorWarning
+);
+
+@mixin node-status-bgs {
+  @each $status, $color in $node-status-color-list {
+    &.#{$status} {
+      background: $color;
+      color: white;
+    }
+  }
+}
+
+@mixin node-status-colors {
+  @each $status, $color in $node-status-color-list {
+    &.#{$status} {
+      color: $color;
+    }
+  }
+}
+
+// PersistentVolumes
+$pv-bound: $colorOk;
+$pv-available: $colorSuccess;
+$pv-released: $colorWarning;
+$pv-failed: $colorError;
+
+// PersistentVolumeClaims
+$pvc-bound: $colorOk;
+$pvc-pending: $colorWarning;
+$pvc-lost: $colorError;
+
+// PersistentVolume Statuses
+$pv-status-color-list: (
+  bound: $pv-bound,
+  available: $pv-available,
+  released: $pv-released,
+  failed: $pv-failed
+);
+
+$pvc-status-color-list: (
+  bound: $pvc-bound,
+  pending: $pvc-pending,
+  lost: $pvc-lost
+);
+
+@mixin pv-status-colors {
+  @each $condition, $color in $pv-status-color-list {
+    &.#{$condition} {
+      color: $color;
+    }
+  }
+}
+
+@mixin pvc-status-colors {
+  @each $condition, $color in $pvc-status-color-list {
+    &.#{$condition} {
+      color: $color;
+    }
+  }
+}
+
+
+$hpa-status-colors: (
+  abletoscale: $colorOk,
+  scalingactive: $colorInfo,
+  scalinglimited: $colorSoftError,
+);
+
+@mixin hpa-status-bgc {
+  @each $status, $color in $hpa-status-colors {
+    &.#{$status} {
+      background: $color;
+      color: white;
+    }
+  }
+}
+
+
+@mixin namespaceStatus {
+  &.active {
+    color: $colorOk;
+  }
+  &.terminating {
+    color: $colorError;
+  }
+}
+
+@mixin table-cell-action {
+  display: flex;
+  padding: 0 !important;
+  flex: 0 0 55px !important;
+
+  > * {
+    margin: floor(8px / 1.3) auto;
+  }
+}
+
+@mixin table-cell-warning {
+  display: flex;
+  align-items: center;
+  flex-grow: 0.3;
+  padding: 0;
+}
+
+@mixin table-cell-labels {
+  .TableRow {
+    .TableCell {
+      &.labels {
+        @include table-cell-labels-offsets;
+      }
+    }
+  }
+}
+
+@mixin table-cell-labels-offsets {
+  padding-top: 8px / 2;
+  padding-bottom: 0;
+
+  .Badge + .Badge {
+    margin-left: 8px / 2;
+  }
+}

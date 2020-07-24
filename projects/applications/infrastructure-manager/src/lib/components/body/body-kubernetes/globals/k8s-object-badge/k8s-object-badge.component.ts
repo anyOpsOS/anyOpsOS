@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 
 @Component({
   selector: 'aaim-k8s-object-badge',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./k8s-object-badge.component.scss']
 })
 export class K8sObjectBadgeComponent implements OnInit {
+  @Input() readonly label: string;
 
   constructor() { }
 

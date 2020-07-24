@@ -15,6 +15,8 @@ import {PodContainerStatus} from '@anyopsos/module-node-kubernetes/src/lib/types
 export class K8sPodDetailsListComponent implements OnInit {
   @Input() readonly owner: DataObject & { info: { data: WorkloadKubeObject } };
   @Input() readonly pods: (DataObject & { info: { data: Pod } })[];
+  @Input() readonly maxCpu: number;
+  @Input() readonly maxMemory: number;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];

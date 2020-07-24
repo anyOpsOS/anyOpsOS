@@ -1,11 +1,13 @@
+@import "../../variables.scss";
+
 .DrawerItem {
   display: grid;
   grid-template-columns: minmax(30%, min-content) auto;
   border-bottom: 1px solid $borderFaintColor;
-  padding: $padding 0;
+  padding: 8px 0;
 
   > .name {
-    padding-right: $padding;
+    padding-right: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
     color: $drawerItemNameColor;
@@ -22,7 +24,7 @@
     }
 
     p {
-      margin-bottom: $margin;
+      margin-bottom: 8px;
 
       &:last-child {
         margin-bottom: 0;
@@ -35,7 +37,7 @@
   }
 
   &.labelsOnly {
-    $spacing: $margin / 2;
+    $spacing: 8px / 2;
 
     > .value {
       margin: -$spacing;
@@ -62,7 +64,7 @@
     }
 
     > .name {
-      font-weight: $font-weight-bold;
+      font-weight: 500;
     }
   }
 }

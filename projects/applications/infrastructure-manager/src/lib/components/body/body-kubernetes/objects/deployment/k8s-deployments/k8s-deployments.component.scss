@@ -1,4 +1,4 @@
-@import "../+workloads/workloads-mixins";
+@import "../../../body-kubernetes.mixins.scss";
 
 .Deployments {
   .TableCell {
@@ -22,7 +22,7 @@
       flex-grow: 1.5;
 
       .condition {
-        margin-right: $margin;
+        margin-right: 8px;
 
         &.available {
           color: $deployment-available;

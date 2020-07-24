@@ -1,3 +1,5 @@
+@import "../../../body-kubernetes.mixins.scss";
+
 .NamespaceDetails {
   .status {
     @include namespaceStatus;
@@ -5,7 +7,7 @@
 
   .quotas {
     .value a {
-      margin-right: $margin;
+      margin-right: 8px;
     }
   }
 }

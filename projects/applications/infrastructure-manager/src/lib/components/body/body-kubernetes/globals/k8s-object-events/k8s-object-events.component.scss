@@ -1,14 +1,16 @@
+@import "../../variables.scss";
+
 .KubeEventDetails {
   .event {
-    margin-bottom: $margin * 4;
+    margin-bottom: 8px * 4;
 
     &:last-child {
       margin-bottom: 0;
     }
 
     .title {
-      margin-top: $margin * 2;
-      margin-bottom: $margin;
+      margin-top: 8px * 2;
+      margin-bottom: 8px;
       font-weight: bold;
       word-break: break-word;
 

@@ -17,6 +17,10 @@ export class K8sPersistentVolumeClaimDetailsComponent implements OnInit {
   isLoaded: boolean = false;
   childPods: (DataObject & { info: { data: Pod } })[];
 
+  metricTabs: string[] = [
+    'Disk'
+  ];
+
   constructor(private readonly LibNodeHelpers: AnyOpsOSLibNodeHelpersService) { }
 
   ngOnInit(): void {
@@ -24,6 +28,23 @@ export class K8sPersistentVolumeClaimDetailsComponent implements OnInit {
     this.isLoaded = true;
 
     this.childPods = this.LibNodeHelpers.getChildObjectsByType(this.k8sObject.info.mainUuid, 'kubernetes', 'Pod', this.k8sObject.info.obj);
+  }
+
+  getMatchLabels(): string[] {
+    if (!this.k8sObject.info.data.spec.selector || !this.k8sObject.info.data.spec.selector.matchLabels) return [];
+    return Object
+      .entries(this.k8sObject.info.data.spec.selector.matchLabels)
+      .map(([name, val]) => `${name}:${val}`);
+  }
+
+  getMatchExpressions(): [] {
+    if (!this.k8sObject.info.data.spec.selector || !this.k8sObject.info.data.spec.selector.matchExpressions) return [];
+    return this.k8sObject.info.data.spec.selector.matchExpressions;
+  }
+
+  // TODO
+  goToElement() {
+    return null;
   }
 
 }
