@@ -140,7 +140,10 @@ export class anyOpsOS {
               console.log(red(`[anyOpsOS Cli.] SSH key file [ssh.key] generated. Use this key to manage the container files from your IDE.`));
             }
             if (args.action === 'attach') return runInDocker('bash');
-            if (args.action === 'download') return runInDocker('git clone https://github.com/anyOpsOS/anyOpsOS .');
+            if (args.action === 'download') {
+              runInDocker('rm -rf .');
+              return runInDocker('git clone https://github.com/anyOpsOS/anyOpsOS .');
+            }
             if (args.action === 'install') return runInDocker('yarn install --link-duplicates --ignore-engines');
             if (args.action === 'build') {
 
