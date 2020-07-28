@@ -4,9 +4,11 @@
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/anyOpsOS/anyOpsOS.git"
+    "url": "git+https://github.com/anyOpsOS/anyOpsOS.git"
   },
-  "bugs": "https://github.com/anyOpsOS/anyOpsOS/issues",
+  "bugs": {
+    "url": "https://github.com/anyOpsOS/anyOpsOS/issues"
+  },
   "keywords": [],
   "description": "anyOpsOS CLI.",
   "author": "Isart Navarro <contact@isartnavarro.io> (https://isartnavarro.io)",
@@ -14,12 +16,12 @@
   "type": "module",
   "private": true,
   "bin": {
-    "anyopsos": "./bin/anyopsos"
+    "anyopsos": "bin/anyopsos.js"
   },
-  "main": "./bin/anyopsos",
+  "main": "./bin/anyopsos.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "postbuild": "copyfiles package.json ../.dist/cli",
+    "postbuild": "copyfiles package.json LICENSE ../.dist/cli && copyfiles -f ../README.md ../.dist/cli && copyfiles -f ../docs/* ../.dist/cli/docs && copyfiles -f ../docker/* ../.dist/cli/docker",
     "watch": "yarn build -w",
     "test": "echo 'skip'"
   },
@@ -38,7 +40,6 @@
     "globby": "^11.0.0",
     "module-alias": "^2.2.2",
     "nexe": "^3.3.2",
-    "pkg": "^4.4.4",
     "read-last-lines": "^1.7.1",
     "reflect-metadata": "^0.1.13",
     "replace-in-file": "^5.0.2",
