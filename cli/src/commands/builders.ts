@@ -307,6 +307,8 @@ export class Builders {
     const currentNodeEnv: string | undefined = process.env.NODE_OPTIONS;
     process.env.NODE_OPTIONS = undefined;
 
+    await runInDocker('export NODE_OPTIONS="" && cd cli/ && yarn build');
+
     console.log(blueBright(`
 ------------------------------------------------------------------------------
 [anyOpsOS Cli.] Building Cli for Windows.
