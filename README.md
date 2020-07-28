@@ -1,8 +1,7 @@
-![GitHub package.json version](https://img.shields.io/github/package-json/v/infnada/sysos)
-![GitHub](https://img.shields.io/github/license/infnada/sysos)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a1b007a1ce974bc590480ac0e943e8a2)](https://www.codacy.com/manual/inf.nada/SysOS?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=infnada/SysOS&amp;utm_campaign=Badge_Grade)
-![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/infnada/sysos)
-![GitHub issues](https://img.shields.io/github/issues/infnada/sysos)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/anyopsos/anyopsos)
+![GitHub](https://img.shields.io/github/license/anyopsos/anyopsos)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/3379512d71dc479fb65a839b6c409592)](https://www.codacy.com/gh/anyOpsOS/anyOpsOS?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anyOpsOS/anyOpsOS&amp;utm_campaign=Badge_Grade)
+![GitHub issues](https://img.shields.io/github/issues/anyopsos/anyopsos)
 
 ![App State](https://img.shields.io/badge/state-alpha-red?style=for-the-badge)
 
@@ -104,62 +103,7 @@ Don't hesitate to provide a Logo and Backgrounds :)
 
 ![alt text](https://isartnavarro.io/img/anyOpsOS/sftp_app.png "SFTP app")
 
-## Built in libraries
 
-- Libraries to manage files
-
-`@anyopsos/lib-file`
-
-`@anyopsos/lib-file-system`
-
-`@anyopsos/lib-file-system-ui`
-
-`@anyopsos/lib-folder`
-
-`@anyopsos/lib-selectable`
-
-- Libraries to manage infrastructure
-
-`@anyopsos/lib-node-netapp`
-
-`@anyopsos/lib-node-vmware`
-
-- Internal libraries
-
-`@anyopsos/lib-logger`
-
-`@anyopsos/lib-service-injector`
-
-`@anyopsos/lib-user`
-
-`@anyopsos/lib-modal`
-
-- Others
-
-`@anyopsos/lib-scroll-spy` => Directive
-
-`@anyopsos/lib-pipes` => Pipes
-
-
-- External libraries ready to use in anyOpsOS
-
-`@anyopsos/lib-ext-dygraphs`
-
-`@anyopsos/lib-ext-easypiechart`
-
-`@anyopsos/lib-ext-gaugejs`
-
-`@anyopsos/lib-ext-jquery`
-
-`@anyopsos/lib-ext-lz-string`
-
-`@anyopsos/lib-ext-mxgraph`
-
-`@anyopsos/lib-ext-pako`
-
-`@anyopsos/lib-ext-perfectscrollbar`
-
-`@anyopsos/lib-ext-underscore`
 
 
 ## Acknowledgments
