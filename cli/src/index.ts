@@ -127,7 +127,7 @@ export class anyOpsOS {
                 // '--rm',
                 '-d',
                 '-p', '2222:22',
-                '-e', 'NODE_OPTIONS="--experimental-modules --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node"',
+                '-e', 'NODE_OPTIONS=--experimental-modules --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node',
                 '--mount', `src=anyopsos-data,target=${INTERNAL_PATH_CWD},type=volume`,
                 // '--mount', `src=${MAIN_PATH_CWD}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
                 '--name', 'anyopsos-devel',
@@ -140,11 +140,8 @@ export class anyOpsOS {
               console.log(red(`[anyOpsOS Cli.] SSH key file [ssh.key] generated. Use this key to manage the container files from your IDE.`));
             }
             if (args.action === 'attach') return runInDocker('bash');
-            if (args.action === 'download') {
-              runInDocker('rm -rf .');
-              return runInDocker('git clone https://github.com/anyOpsOS/anyOpsOS .');
-            }
-            if (args.action === 'install') return runInDocker('yarn install --link-duplicates --ignore-engines');
+            if (args.action === 'download') return runInDocker('find . -delete && git clone https://github.com/anyOpsOS/anyOpsOS .')
+            if (args.action === 'install') return runInDocker('export NODE_OPTIONS="" && yarn install --link-duplicates --ignore-engines');
             if (args.action === 'build') {
 
               console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker Auth Image.`));
@@ -286,7 +283,7 @@ export class anyOpsOS {
             if (argv.type === 'external-library') return new Builders().buildFrontendTypes(argv);
             if (argv.type === 'application') return new Builders().buildFrontendTypes(argv);
             if (argv.type === 'modal') return new Builders().buildFrontendTypes(argv);
-            if (argv.type === 'cli') return runInDocker('cd cli/ && yarn build').then(() => new Builders().buildCli());
+            if (argv.type === 'cli') return new Builders().buildCli();
           } catch (err) {
             console.trace(err);
             process.exit(1);

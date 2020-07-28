@@ -314,10 +314,9 @@ export class Builders {
 `));
 
     await compile({
-      input: `${INTERNAL_PATH_CWD}/.dist/cli/bin/anyopsos.js`,
-      targets: ['windows-x64-12.16.1'],
-      output: `${INTERNAL_PATH_CWD}/bin/anyopsos`,
-      flags: ['--build']
+      input: `${MAIN_PATH_CWD}/.dist/cli/bin/anyopsos.js`,
+      targets: ['windows-x64-12.16.3'],
+      output: `${MAIN_PATH_CWD}/bin/anyopsos.exe`,
     }).then(() => {
       console.log(greenBright(`\n[anyOpsOS Cli.] Successfully built Cli for Windows.\n`));
     });
@@ -329,10 +328,11 @@ export class Builders {
 `));
 
     await compile({
-      input: `${INTERNAL_PATH_CWD}/.dist/cli/bin/anyopsos.js`,
-      targets: ['linux-x64-12.16.1'],
-      output: `${INTERNAL_PATH_CWD}/bin/anyopsos`,
-      flags: ['--build']
+      input: `${MAIN_PATH_CWD}/.dist/cli/bin/anyopsos.js`,
+      targets: ['linux-x64-14.5.0'],
+      output: `${MAIN_PATH_CWD}/bin/anyopsos`,
+      build: true,
+      enableNodeCli: true
     }).then(() => {
       console.log(greenBright(`\n[anyOpsOS Cli.] Successfully built Cli for Linux.\n`));
     });
@@ -344,10 +344,9 @@ export class Builders {
 `));
 
     await compile({
-      input: `${INTERNAL_PATH_CWD}/.dist/cli/bin/anyopsos.js`,
+      input: `${MAIN_PATH_CWD}/.dist/cli/bin/anyopsos.js`,
       targets: ['mac-x64-12.15.0'],
-      output: `${INTERNAL_PATH_CWD}/bin/anyopsos.mac`,
-      flags: ['--build']
+      output: `${MAIN_PATH_CWD}/bin/anyopsos.mac`,
     }).then(() => {
       console.log(greenBright(`\n[anyOpsOS Cli.] Successfully built Cli for MacOS.\n`));
     });
@@ -359,10 +358,9 @@ export class Builders {
 `));
 
     await compile({
-      input: `${INTERNAL_PATH_CWD}/.dist/cli/bin/anyopsos.js`,
+      input: `${MAIN_PATH_CWD}/.dist/cli/bin/anyopsos.js`,
       targets: ['alpine-x64-12.9.1'],
-      output: `${INTERNAL_PATH_CWD}/bin/anyopsos.alpine`,
-      flags: ['--build']
+      output: `${MAIN_PATH_CWD}/bin/anyopsos.alpine`,
     }).then(() => {
       console.log(greenBright(`\n[anyOpsOS Cli.] Successfully built Cli for Alpine.\n`));
     });
