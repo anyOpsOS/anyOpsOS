@@ -1,7 +1,7 @@
 
 export interface MetricsResult {
   metric: {
-    [name: string]: string;
+    // TODO [name: string]: string;
     instance: string;
     node?: string;
     pod?: string;

@@ -1069,6 +1069,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
       filter: {
         entity: {
           entity: {
+            // @ts-ignore TODO
             $type: 'VirtualMachine',
             _value: vm
           },

@@ -10,7 +10,7 @@ const {getLogger} = log4js;
 
 import {AnyOpsOSApiGlobalsModule} from '@anyopsos/module-api-globals';
 import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
-import { Workspace } from '@anyopsos/module-sys-workspace/src/lib/types/workspace';
+import {Workspace} from '@anyopsos/module-sys-workspace/src/lib/types/workspace';
 
 
 const logger: Logger = getLogger('mainLog');

@@ -30,6 +30,10 @@
 
 `$ anyopsos docker install`
 
+- Compile all sources
+
+`$ anyopsos build all`
+
 -  Create all required certificates used to comunicate between Pods
 
 `$ anyopsos docker certificates`

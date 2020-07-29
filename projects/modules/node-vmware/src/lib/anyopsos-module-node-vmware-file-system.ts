@@ -158,6 +158,7 @@ export class AnyOpsOSNodeVmwareFileSystemModule {
         destinationName: `[${dstDatastoreName}] ${dstPath}`,
         destinationDatacenter: {
           $type: 'Datacenter',
+          // @ts-ignore TODO
           _value: dstDatacenterName
         }
       });
@@ -177,6 +178,7 @@ export class AnyOpsOSNodeVmwareFileSystemModule {
         destinationName: `[${dstDatastoreName}] ${dstPath}`,
         destinationDatacenter: {
           $type: 'Datacenter',
+          // @ts-ignore TODO
           _value: dstDatacenterName
         }
       });

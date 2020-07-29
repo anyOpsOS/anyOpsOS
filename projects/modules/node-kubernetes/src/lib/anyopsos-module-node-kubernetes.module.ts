@@ -196,7 +196,7 @@ export class AnyOpsOSNodeKubernetesModule {
     const kc: IKubeConfig = this.KubernetesSessionStateModule.getSession();
     const log: ILog = new Log(kc);
 
-    const logRequest: Request = log.log(namespace, pod, container, stdout, (e: any) => {
+    const logRequest: Request = await log.log(namespace, pod, container, stdout, (e: any) => {
       console.log(e);
     }, {
       follow: true
