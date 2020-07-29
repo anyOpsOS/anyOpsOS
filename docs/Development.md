@@ -12,27 +12,35 @@
 
 `$ npm install -g @anyopsos/cli`
 
+- Set node env
+
+`$ NODE_OPTIONS="--experimental-specifier-resolution=node"`
+
 - Prepare the development container
 
-`$ NODE_OPTIONS="--experimental-specifier-resolution=node" anyopsos docker prepare`
+`$ anyopsos docker prepare`
 
 > NOTE: This will create a file called `ssh.key`. You can use it to connect with the docker container using SSH/SFTP
 
 - Clone `anyOpsOS` repository inside the container
 
-`$ NODE_OPTIONS="--experimental-specifier-resolution=node" anyopsos docker download`
+`$ anyopsos docker download`
 
 - Install all required dependencies
 
-`$ NODE_OPTIONS="--experimental-specifier-resolution=node" anyopsos docker install`
+`$ anyopsos docker install`
 
 -  Create all required certificates used to comunicate between Pods
 
-`$ NODE_OPTIONS="--experimental-specifier-resolution=node" anyopsos docker certificates`
+`$ anyopsos docker certificates`
+
+-  Build required Dockerfiles to be used in K8s
+
+`$ anyopsos docker build`
 
 -  Deploy all required Kubernetes yaml configurations
 
-`$ NODE_OPTIONS="--experimental-specifier-resolution=node" anyopsos docker k8s`
+`$ anyopsos docker k8s`
 
 
 # Manage anyOpsOS development files

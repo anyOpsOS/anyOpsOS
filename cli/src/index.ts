@@ -241,6 +241,9 @@ export class anyOpsOS {
         },
         handler: async (argv: & { type: Types; moduleName?: string }) => {
           try {
+            // Run lint commands inside container
+            if (process.env.RUNINDOCKER !== 'true') return runInDocker(`node .dist/cli/bin/anyopsos.js lint ${argv.type}`);
+
             if (argv.type === 'all') return await new Linters().lintAll();
             if (argv.type === 'module') return await new Linters().lintBackendTypes(argv);
             if (argv.type === 'api-middleware') return await new Linters().lintBackendTypes(argv);
@@ -272,6 +275,9 @@ export class anyOpsOS {
         },
         handler: async (argv: & { type: Types; moduleName?: string }) => {
           try {
+            // Run build commands inside container
+            if (process.env.RUNINDOCKER !== 'true' && argv.type !== 'cli') return runInDocker(`node .dist/cli/bin/anyopsos.js build ${argv.type}`);
+
             if (argv.type === 'all') return new Builders().buildAll();
             if (argv.type === 'module') return new Builders().buildBackendTypes(argv);
             if (argv.type === 'api-middleware') return new Builders().buildBackendTypes(argv);
