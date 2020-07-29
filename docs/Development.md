@@ -1,34 +1,43 @@
 # Requirements
 
-## Windows
+- Yor IDE must support Project sources from `SSH server`, `SFTP`, `WSL` or `Docker container/volume`.
 
-- Docker for Windows with Kubernetes enabled. Or any Kubernetes instance (like Minikube)
-- Yor IDE must support Project sources from SSH server or WSL.
+- Have `npm` or `yarn` installed.
+- Have `docker` installed.
+- Have a Kubernetes environment ready and `kubectl`. 
 
-###Prepare the environment:
-```
-# Create a docker container with all the tools.
-#
-# NOTE: This will create a file called ssh.key.
-# You can use it to connect to the docker container using SSH/SFTP
-$ anyopsos.exe docker prepare
+# Preparation
 
-# Clone the development repository
-$ anyopsos.exe docker download
+- Install the management client
 
-# Install all required dependencies
-$ anyopsos.exe docker install
+`$ npm install -g @anyopsos/cli`
 
-# Create all required certificated used to comunicate the Pods
-$ anyopsos.exe docker certificates
+- Prepare the development container
 
-# Deploy all required Kubernetes yaml conofigurations
-$ anyopsos.exe docker k8s
-```
+`$ NODE_OPTIONS="--experimental-specifier-resolution=node" anyopsos docker prepare`
 
-### Manage anyOpsOS development files
+> NOTE: This will create a file called `ssh.key`. You can use it to connect with the docker container using SSH/SFTP
 
-Open your IDE project from `\\wsl$\docker-desktop-data\mnt\wsl\docker-desktop-data\data\docker\volumes\anyopsos-data\_data` or through an SSH connection to `root@localhost:2222/var/www` using the `ssh.key` file created.
+- Clone `anyOpsOS` repository inside the container
+
+`$ NODE_OPTIONS="--experimental-specifier-resolution=node" anyopsos docker download`
+
+- Install all required dependencies
+
+`$ NODE_OPTIONS="--experimental-specifier-resolution=node" anyopsos docker install`
+
+-  Create all required certificates used to comunicate between Pods
+
+`$ NODE_OPTIONS="--experimental-specifier-resolution=node" anyopsos docker certificates`
+
+-  Deploy all required Kubernetes yaml configurations
+
+`$ NODE_OPTIONS="--experimental-specifier-resolution=node" anyopsos docker k8s`
+
+
+# Manage anyOpsOS development files
+
+Open your IDE project from `\\wsl$\docker-desktop-data\mnt\wsl\docker-desktop-data\data\docker\volumes\anyopsos-data\_data`, through an SSH/SFTP connection to `root@localhost:2222/var/www` using the `ssh.key` file created, or directly attaching the workspace to the container `anyopsos-devel`.
 
 ```
 kubectl create namespace anyopsos
