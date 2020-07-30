@@ -8,9 +8,9 @@ const {replaceInFile} = rif;
 const {blue, blueBright, red} = chalk;
 const {copy, ensureDir, move, outputFile, outputJson, pathExistsSync, unlink} = fs;
 
-import {runInDocker} from '../utils';
-import {MAIN_PATH_CWD} from '../constants';
-import {Types} from '../types/types';
+import {runInDocker} from '../utils.js';
+import {MAIN_PATH_CWD} from '../constants.js';
+import {Types} from '../types/types.js';
 
 export class Generators {
 

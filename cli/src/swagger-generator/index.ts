@@ -14,8 +14,8 @@ const {blueBright, green} = chalk;
 const {convert} = apiSpecConverter;
 const {writeJson} = fs;
 
-import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants';
-import {runInDocker} from '../utils';
+import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants.js';
+import {runInDocker} from '../utils.js';
 
 export class swagger {
   

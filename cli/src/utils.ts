@@ -1,6 +1,6 @@
 import awaitSpawn from 'await-spawn';
 
-import {MAIN_PATH_CWD, INTERNAL_PATH_CWD} from './constants';
+import {MAIN_PATH_CWD, INTERNAL_PATH_CWD} from './constants.js';
 
 export async function runInDocker(command: string): Promise<any> {
   if (process.env.RUNINDOCKER) {

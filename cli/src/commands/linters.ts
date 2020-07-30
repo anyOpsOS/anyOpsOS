@@ -5,9 +5,9 @@ import fs from 'fs-extra';
 const {blue} = chalk;
 const {readdir, statSync} = fs;
 
-import {runInDocker} from '../utils';
-import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants';
-import {Types} from '../types/types';
+import {runInDocker} from '../utils.js';
+import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants.js';
+import {Types} from '../types/types.js';
 
 export class Linters {
 

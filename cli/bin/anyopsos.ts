@@ -9,7 +9,7 @@ if (process.env.RUNINDOCKER) {
   ];
 }
 
-import {anyOpsOS} from '../src';
+import {anyOpsOS} from '../src/index.js';
 
 import chalk from 'chalk';
 import clear from 'clear';

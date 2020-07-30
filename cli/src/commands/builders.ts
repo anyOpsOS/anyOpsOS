@@ -10,14 +10,14 @@ const {compile} = nexe;
 const {blue, blueBright, red, greenBright} = chalk;
 const {pathExistsSync, readdir, stat, truncate, statSync} = fs;
 
-import {BuildModals} from '../scripts/build-modals';
-import {BuildExtLibs} from '../scripts/build-ext-libs';
-import {BuildLibs} from '../scripts/build-libs';
-import {BuildApps} from '../scripts/build-apps';
+import {BuildModals} from '../scripts/build-modals.js';
+import {BuildExtLibs} from '../scripts/build-ext-libs.js';
+import {BuildLibs} from '../scripts/build-libs.js';
+import {BuildApps} from '../scripts/build-apps.js';
 
-import {runInDocker} from '../utils';
-import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants';
-import {Types} from '../types/types';
+import {runInDocker} from '../utils.js';
+import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants.js';
+import {Types} from '../types/types.js';
 
 export class Builders {
 

@@ -7,13 +7,13 @@ import yargs from 'yargs';
 const {blue, blueBright, green, red, yellow} = chalk
 const {ensureFile} = fs;
 
-import {Builders} from './commands/builders';
-import {Linters} from './commands/linters';
-import {Generators} from './commands/generators';
-import {swagger} from './swagger-generator/index';
-import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from './constants';
-import {Types} from './types/types';
-import {runInDocker} from './utils';
+import {Builders} from './commands/builders.js';
+import {Linters} from './commands/linters.js';
+import {Generators} from './commands/generators.js';
+import {swagger} from './swagger-generator/index.js';
+import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from './constants.js';
+import {Types} from './types/types.js';
+import {runInDocker} from './utils.js';
 
 export class anyOpsOS {
 
