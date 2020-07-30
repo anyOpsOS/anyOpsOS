@@ -6,7 +6,7 @@ describe('AnyOpsOSLibAngularMaterialService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibAngularMaterialService = TestBed.get(AnyOpsOSLibAngularMaterialService);
+    const service: AnyOpsOSLibAngularMaterialService = TestBed.inject(AnyOpsOSLibAngularMaterialService);
     expect(service).toBeTruthy();
   });
 });

@@ -6,7 +6,7 @@ describe('AnyOpsOSLibDesktopService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibDesktopService = TestBed.get(AnyOpsOSLibDesktopService);
+    const service: AnyOpsOSLibDesktopService = TestBed.inject(AnyOpsOSLibDesktopService);
     expect(service).toBeTruthy();
   });
 });

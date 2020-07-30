@@ -2,15 +2,15 @@
   "name": "@anyopsos/lib-terminal",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14",
-    "tslib": "^1.10.0"
+    "@angular/common": "~10.0.6",
+    "@angular/core": "~10.0.6",
+    "tslib": "^2.0.0"
   },
   "dependencies": {
     "ngx-socket-io": "^3.0.1",
     "xterm": "^4.3.0",
-    "xterm-addon-fit": "^0.3.0",
-    "xterm-addon-web-links": "^0.2.1"
+    "xterm-addon-fit": "^0.4.0",
+    "xterm-addon-web-links": "^0.4.0"
   },
   "devDependencies": {
     "@anyopsos/backend-core": "~0.0.1",

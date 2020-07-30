@@ -2,13 +2,13 @@
   "name": "@anyopsos/lib-angular-material",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14",
-    "tslib": "^1.10.0"
+    "@angular/common": "~10.0.6",
+    "@angular/core": "~10.0.6",
+    "tslib": "^2.0.0"
   },
   "dependencies": {
-    "@angular/cdk": "^8.2.3",
-    "@angular/material": "^8.2.3",
+    "@angular/cdk": "^10.1.1",
+    "@angular/material": "^10.1.1",
     "ngx-material-file-input": "^2.1.0"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",

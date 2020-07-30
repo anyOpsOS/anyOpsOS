@@ -6,7 +6,7 @@ describe('AnyOpsOSExtLibJqueryService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSExtLibJqueryService = TestBed.get(AnyOpsOSExtLibJqueryService);
+    const service: AnyOpsOSExtLibJqueryService = TestBed.inject(AnyOpsOSExtLibJqueryService);
     expect(service).toBeTruthy();
   });
 });

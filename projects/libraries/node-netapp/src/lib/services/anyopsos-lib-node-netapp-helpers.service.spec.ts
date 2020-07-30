@@ -6,7 +6,7 @@ describe('AnyOpsOSLibNodeNetappHelpersService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibNodeNetappHelpersService = TestBed.get(AnyOpsOSLibNodeNetappHelpersService);
+    const service: AnyOpsOSLibNodeNetappHelpersService = TestBed.inject(AnyOpsOSLibNodeNetappHelpersService);
     expect(service).toBeTruthy();
   });
 });

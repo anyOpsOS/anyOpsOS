@@ -6,7 +6,7 @@ describe('AnyOpsOSExtLibPerfectscrollbarService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSExtLibPerfectscrollbarService = TestBed.get(AnyOpsOSExtLibPerfectscrollbarService);
+    const service: AnyOpsOSExtLibPerfectscrollbarService = TestBed.inject(AnyOpsOSExtLibPerfectscrollbarService);
     expect(service).toBeTruthy();
   });
 });

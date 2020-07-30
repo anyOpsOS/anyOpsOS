@@ -6,7 +6,7 @@ describe('AnyOpsOSAppInfrastructureManagerNodeLinkService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppInfrastructureManagerNodeLinkService = TestBed.get(AnyOpsOSAppInfrastructureManagerNodeLinkService);
+    const service: AnyOpsOSAppInfrastructureManagerNodeLinkService = TestBed.inject(AnyOpsOSAppInfrastructureManagerNodeLinkService);
     expect(service).toBeTruthy();
   });
 });

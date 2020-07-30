@@ -6,7 +6,7 @@ describe('AnyOpsOSLibFolderExplorerService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibFolderExplorerService = TestBed.get(AnyOpsOSLibFolderExplorerService);
+    const service: AnyOpsOSLibFolderExplorerService = TestBed.inject(AnyOpsOSLibFolderExplorerService);
     expect(service).toBeTruthy();
   });
 });

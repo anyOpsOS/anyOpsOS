@@ -6,7 +6,7 @@ describe('SystemJsLoaderService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: SystemJsLoaderService = TestBed.get(SystemJsLoaderService);
+    const service: SystemJsLoaderService = TestBed.inject(SystemJsLoaderService);
     expect(service).toBeTruthy();
   });
 });

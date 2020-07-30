@@ -6,7 +6,7 @@ describe('AnyOpsOSAppInfrastructureAsCodeService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppInfrastructureAsCodeService = TestBed.get(AnyOpsOSAppInfrastructureAsCodeService);
+    const service: AnyOpsOSAppInfrastructureAsCodeService = TestBed.inject(AnyOpsOSAppInfrastructureAsCodeService);
     expect(service).toBeTruthy();
   });
 });

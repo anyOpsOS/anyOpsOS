@@ -6,7 +6,7 @@ describe('AnyOpsOSExtLibTheiaService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSExtLibTheiaService = TestBed.get(AnyOpsOSExtLibTheiaService);
+    const service: AnyOpsOSExtLibTheiaService = TestBed.inject(AnyOpsOSExtLibTheiaService);
     expect(service).toBeTruthy();
   });
 });

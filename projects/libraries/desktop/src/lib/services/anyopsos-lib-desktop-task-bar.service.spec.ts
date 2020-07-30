@@ -6,7 +6,7 @@ describe('AnyOpsOSLibDesktopTaskBarService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibDesktopTaskBarService = TestBed.get(AnyOpsOSLibDesktopTaskBarService);
+    const service: AnyOpsOSLibDesktopTaskBarService = TestBed.inject(AnyOpsOSLibDesktopTaskBarService);
     expect(service).toBeTruthy();
   });
 });

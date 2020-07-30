@@ -6,7 +6,7 @@ describe('AnyOpsOSLibNodeVmwareFileSystemHandlersService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibNodeVmwareFileSystemHandlersService = TestBed.get(AnyOpsOSLibNodeVmwareFileSystemHandlersService);
+    const service: AnyOpsOSLibNodeVmwareFileSystemHandlersService = TestBed.inject(AnyOpsOSLibNodeVmwareFileSystemHandlersService);
     expect(service).toBeTruthy();
   });
 });

@@ -6,7 +6,7 @@ describe('AnyOpsOSLibNodeKubernetesService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibNodeKubernetesService = TestBed.get(AnyOpsOSLibNodeKubernetesService);
+    const service: AnyOpsOSLibNodeKubernetesService = TestBed.inject(AnyOpsOSLibNodeKubernetesService);
     expect(service).toBeTruthy();
   });
 });

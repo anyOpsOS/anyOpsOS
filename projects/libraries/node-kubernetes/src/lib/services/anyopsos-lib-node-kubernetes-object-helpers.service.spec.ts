@@ -6,7 +6,7 @@ describe('AnyOpsOSLibNodeKubernetesObjectHelpersService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibNodeKubernetesObjectHelpersService = TestBed.get(AnyOpsOSLibNodeKubernetesObjectHelpersService);
+    const service: AnyOpsOSLibNodeKubernetesObjectHelpersService = TestBed.inject(AnyOpsOSLibNodeKubernetesObjectHelpersService);
     expect(service).toBeTruthy();
   });
 });

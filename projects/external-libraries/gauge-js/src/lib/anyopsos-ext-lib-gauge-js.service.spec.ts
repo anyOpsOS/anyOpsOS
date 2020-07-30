@@ -6,7 +6,7 @@ describe('AnyOpsOSExtLibGaugejsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSExtLibGaugejsService = TestBed.get(AnyOpsOSExtLibGaugejsService);
+    const service: AnyOpsOSExtLibGaugejsService = TestBed.inject(AnyOpsOSExtLibGaugejsService);
     expect(service).toBeTruthy();
   });
 });

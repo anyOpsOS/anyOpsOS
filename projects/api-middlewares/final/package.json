@@ -12,7 +12,7 @@
   "devDependencies": {
     "express": "^4.17.1",
     "routing-controllers": "https://github.com/anyOpsOS/routing-controllers.git#build",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.7"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

@@ -1,5 +1,5 @@
 ---
 exclude_paths:
-  - src/backend/app/filesystem/**
+  - src/backend-filesystem/app/filesystem/**
   - projects/**/karma.conf.js
   - src/**/karma.conf.js

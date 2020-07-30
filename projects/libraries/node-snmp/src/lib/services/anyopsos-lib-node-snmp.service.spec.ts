@@ -6,7 +6,7 @@ describe('AnyOpsOSLibNodeSnmpService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibNodeSnmpService = TestBed.get(AnyOpsOSLibNodeSnmpService);
+    const service: AnyOpsOSLibNodeSnmpService = TestBed.inject(AnyOpsOSLibNodeSnmpService);
     expect(service).toBeTruthy();
   });
 });

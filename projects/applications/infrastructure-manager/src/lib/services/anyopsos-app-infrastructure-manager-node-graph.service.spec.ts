@@ -6,7 +6,7 @@ describe('AnyOpsOSAppInfrastructureManagerNodeGraphService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppInfrastructureManagerNodeGraphService = TestBed.get(AnyOpsOSAppInfrastructureManagerNodeGraphService);
+    const service: AnyOpsOSAppInfrastructureManagerNodeGraphService = TestBed.inject(AnyOpsOSAppInfrastructureManagerNodeGraphService);
     expect(service).toBeTruthy();
   });
 });

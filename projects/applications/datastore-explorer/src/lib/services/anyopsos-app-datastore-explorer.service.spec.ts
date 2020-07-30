@@ -6,7 +6,7 @@ describe('AnyOpsOSAppDatastoreExplorerService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppDatastoreExplorerService = TestBed.get(AnyOpsOSAppDatastoreExplorerService);
+    const service: AnyOpsOSAppDatastoreExplorerService = TestBed.inject(AnyOpsOSAppDatastoreExplorerService);
     expect(service).toBeTruthy();
   });
 });

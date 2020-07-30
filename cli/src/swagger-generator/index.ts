@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import classValidator from 'class-validator';
 import classValidatorJsonschema from 'class-validator-jsonschema';
 import routingControllers from 'routing-controllers';
 import routingControllersOpenapi from 'routing-controllers-openapi';
@@ -8,7 +7,6 @@ import apiSpecConverter from 'api-spec-converter';
 import fs from 'fs-extra';
 
 // TODO ESM
-const {getFromContainer, MetadataStorage} = classValidator;
 const {validationMetadatasToSchemas} = classValidatorJsonschema;
 const {createExpressServer, getMetadataArgsStorage} = routingControllers;
 const {routingControllersToSpec} = routingControllersOpenapi;
@@ -31,10 +29,7 @@ export class swagger {
     await createExpressServer(routingControllersOptions);
     
     // Parse class-validator classes into JSON Schema:
-    const metadatas = (getFromContainer(MetadataStorage) as any).validationMetadatas;
-    const schemas = validationMetadatasToSchemas(metadatas, {
-      refPointerPrefix: '#/components/schemas/'
-    });
+    const schemas = validationMetadatasToSchemas();
     
     // Parse routing-controllers classes into OpenAPI spec:
     const storage = getMetadataArgsStorage();

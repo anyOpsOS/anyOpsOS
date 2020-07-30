@@ -6,7 +6,7 @@ describe('AnyOpsOSAppInfrastructureAsCodeProjectTreeService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppInfrastructureAsCodeProjectTreeService = TestBed.get(AnyOpsOSAppInfrastructureAsCodeProjectTreeService);
+    const service: AnyOpsOSAppInfrastructureAsCodeProjectTreeService = TestBed.inject(AnyOpsOSAppInfrastructureAsCodeProjectTreeService);
     expect(service).toBeTruthy();
   });
 });

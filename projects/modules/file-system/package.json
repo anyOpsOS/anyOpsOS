@@ -3,20 +3,20 @@
   "version": "0.0.1",
   "main": "src/index.ts",
   "dependencies": {
-    "fs-extra": "^8.1.0",
+    "fs-extra": "^9.0.1",
     "log4js": "^6.1.0"
   },
   "peerDependencies": {
-    "@anyopsos/module-sys-get-path": "~0.0.1",
+    "@anyopsos/module-credential": "~0.0.1",
     "@anyopsos/module-ssh": "~0.0.1",
-    "@anyopsos/module-credential": "~0.0.1"
+    "@anyopsos/module-sys-get-path": "~0.0.1"
   },
   "devDependencies": {
     "@anyopsos/backend-core": "~0.0.1",
-    "@types/node": "^12.12.21",
-    "@types/fs-extra": "^8.0.1",
+    "@types/fs-extra": "^9.0.1",
     "@types/multer": "^1.3.6",
-    "typescript": "^3.8.3"
+    "@types/node": "^14.0.27",
+    "typescript": "^3.9.7"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

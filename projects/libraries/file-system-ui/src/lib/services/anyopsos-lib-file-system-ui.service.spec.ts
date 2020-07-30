@@ -6,7 +6,7 @@ describe('AnyOpsOSLibFileSystemUiService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibFileSystemUiService = TestBed.get(AnyOpsOSLibFileSystemUiService);
+    const service: AnyOpsOSLibFileSystemUiService = TestBed.inject(AnyOpsOSLibFileSystemUiService);
     expect(service).toBeTruthy();
   });
 });

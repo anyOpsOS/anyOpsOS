@@ -6,7 +6,7 @@ describe('AnyOpsOSAppInfrastructureManagerUtilsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppInfrastructureManagerUtilsService = TestBed.get(AnyOpsOSAppInfrastructureManagerUtilsService);
+    const service: AnyOpsOSAppInfrastructureManagerUtilsService = TestBed.inject(AnyOpsOSAppInfrastructureManagerUtilsService);
     expect(service).toBeTruthy();
   });
 });

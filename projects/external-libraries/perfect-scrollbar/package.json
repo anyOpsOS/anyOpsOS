@@ -2,8 +2,8 @@
   "name": "@anyopsos/ext-lib-perfect-scrollbar",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14"
+    "@angular/common": "~10.0.6",
+    "@angular/core": "~10.0.6"
   },
   "dependencies": {
     "perfect-scrollbar": "^0.6.15"

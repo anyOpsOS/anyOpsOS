@@ -10,11 +10,11 @@
     "@anyopsos/module-vault": "~0.0.1"
   },
   "devDependencies": {
-    "@types/node": "^12.12.21",
-    "class-validator": "^0.11.0",
+    "@types/node": "^14.0.27",
+    "class-validator": "^0.12.2",
     "express": "^4.17.1",
     "routing-controllers": "https://github.com/anyOpsOS/routing-controllers.git#build",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.7"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

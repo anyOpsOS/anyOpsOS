@@ -6,7 +6,7 @@ describe('AnyOpsOSAppInfrastructureVmwareNodeActionsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppInfrastructureVmwareNodeActionsService = TestBed.get(AnyOpsOSAppInfrastructureVmwareNodeActionsService);
+    const service: AnyOpsOSAppInfrastructureVmwareNodeActionsService = TestBed.inject(AnyOpsOSAppInfrastructureVmwareNodeActionsService);
     expect(service).toBeTruthy();
   });
 });

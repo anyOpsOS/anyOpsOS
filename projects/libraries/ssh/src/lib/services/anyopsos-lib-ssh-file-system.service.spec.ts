@@ -6,7 +6,7 @@ describe('AnyOpsOSLibSshFileSystemService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibSshFileSystemService = TestBed.get(AnyOpsOSLibSshFileSystemService);
+    const service: AnyOpsOSLibSshFileSystemService = TestBed.inject(AnyOpsOSLibSshFileSystemService);
     expect(service).toBeTruthy();
   });
 });

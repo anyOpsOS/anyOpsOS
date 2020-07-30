@@ -6,7 +6,7 @@ describe('AnyOpsOSLibNodeDockerHelpersService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibNodeDockerHelpersService = TestBed.get(AnyOpsOSLibNodeDockerHelpersService);
+    const service: AnyOpsOSLibNodeDockerHelpersService = TestBed.inject(AnyOpsOSLibNodeDockerHelpersService);
     expect(service).toBeTruthy();
   });
 });

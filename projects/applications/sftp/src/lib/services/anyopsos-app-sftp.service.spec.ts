@@ -6,7 +6,7 @@ describe('AnyOpsOSAppSftpService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppSftpService = TestBed.get(AnyOpsOSAppSftpService);
+    const service: AnyOpsOSAppSftpService = TestBed.inject(AnyOpsOSAppSftpService);
     expect(service).toBeTruthy();
   });
 });

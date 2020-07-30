@@ -6,7 +6,7 @@ describe('AnyOpsOSExtLibEasypiechartService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSExtLibEasypiechartService = TestBed.get(AnyOpsOSExtLibEasypiechartService);
+    const service: AnyOpsOSExtLibEasypiechartService = TestBed.inject(AnyOpsOSExtLibEasypiechartService);
     expect(service).toBeTruthy();
   });
 });

@@ -6,7 +6,7 @@ describe('AnyOpsOSLibCredentialService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibCredentialService = TestBed.get(AnyOpsOSLibCredentialService);
+    const service: AnyOpsOSLibCredentialService = TestBed.inject(AnyOpsOSLibCredentialService);
     expect(service).toBeTruthy();
   });
 });

@@ -3,18 +3,19 @@
   "version": "0.0.1",
   "main": "src/index.ts",
   "dependencies": {
-    "uuid": "^3.3.3",
+    "uuid": "^8.3.0",
     "socket-controllers": "https://github.com/anyOpsOS/socket-controllers.git#build"
   },
   "peerDependencies": {
     "@anyopsos/module-node-kubernetes": "~0.0.1"
   },
   "devDependencies": {
-    "@types/node": "^12.12.21",
+    "@types/node": "^14.0.27",
     "@types/ssh2": "^0.5.39",
+    "@types/uuid": "^8.0.0",
     "ssh2": "^0.8.7",
     "socket.io": "^2.3.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.7"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

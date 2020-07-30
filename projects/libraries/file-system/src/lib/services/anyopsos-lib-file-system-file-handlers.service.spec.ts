@@ -6,7 +6,7 @@ describe('AnyOpsOSLibFileSystemFileHandlersService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibFileSystemFileHandlersService = TestBed.get(AnyOpsOSLibFileSystemFileHandlersService);
+    const service: AnyOpsOSLibFileSystemFileHandlersService = TestBed.inject(AnyOpsOSLibFileSystemFileHandlersService);
     expect(service).toBeTruthy();
   });
 });

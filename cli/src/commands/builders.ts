@@ -85,7 +85,8 @@ export class Builders {
 
     // Move Netdata to Deps
     console.log(blueBright(`[anyOpsOS Cli. Internals] Moving fileSystem dependencies.\n`));
-    if (pathExistsSync(`${process.cwd()}/.dist/anyOpsOS/fileSystem/filesystem/bin/external-libraries/anyopsos-ext-lib-netdata.umd.js`)) {
+    if (pathExistsSync(`${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/external-libraries/anyopsos-ext-lib-netdata.umd.js`)) {
+      await runInDocker(`mkdir -p ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/external-libraries/deps`);
       await runInDocker(`mv -f \
         ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/external-libraries/anyopsos-ext-lib-netdata.umd.js \
         ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/external-libraries/deps/anyopsos-ext-lib-netdata.umd.js`

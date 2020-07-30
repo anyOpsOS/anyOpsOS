@@ -6,7 +6,7 @@ describe('AnyOpsOSAppMonitorService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppMonitorService = TestBed.get(AnyOpsOSAppMonitorService);
+    const service: AnyOpsOSAppMonitorService = TestBed.inject(AnyOpsOSAppMonitorService);
     expect(service).toBeTruthy();
   });
 });

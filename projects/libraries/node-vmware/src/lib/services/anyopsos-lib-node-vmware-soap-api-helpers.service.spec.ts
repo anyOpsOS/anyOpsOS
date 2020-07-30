@@ -6,7 +6,7 @@ describe('AnyOpsOSLibNodeVmwareSoapApiHelpersService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibNodeVmwareSoapApiHelpersService = TestBed.get(AnyOpsOSLibNodeVmwareSoapApiHelpersService);
+    const service: AnyOpsOSLibNodeVmwareSoapApiHelpersService = TestBed.inject(AnyOpsOSLibNodeVmwareSoapApiHelpersService);
     expect(service).toBeTruthy();
   });
 });

@@ -17,7 +17,7 @@
     "@anyopsos/backend-core": "~0.0.1",
     "socket.io": "^2.3.0",
     "socket-controllers": "https://github.com/anyOpsOS/socket-controllers.git#build",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.7"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

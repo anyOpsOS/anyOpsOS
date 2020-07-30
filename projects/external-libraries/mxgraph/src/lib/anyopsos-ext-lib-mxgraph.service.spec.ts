@@ -6,7 +6,7 @@ describe('AnyOpsOSExtLibMxgraphService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSExtLibMxgraphService = TestBed.get(AnyOpsOSExtLibMxgraphService);
+    const service: AnyOpsOSExtLibMxgraphService = TestBed.inject(AnyOpsOSExtLibMxgraphService);
     expect(service).toBeTruthy();
   });
 });

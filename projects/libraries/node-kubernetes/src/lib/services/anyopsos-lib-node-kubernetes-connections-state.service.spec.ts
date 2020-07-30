@@ -6,7 +6,7 @@ describe('AnyOpsOSLibNodeKubernetesConnectionsStateService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibNodeKubernetesConnectionsStateService = TestBed.get(AnyOpsOSLibNodeKubernetesConnectionsStateService);
+    const service: AnyOpsOSLibNodeKubernetesConnectionsStateService = TestBed.inject(AnyOpsOSLibNodeKubernetesConnectionsStateService);
     expect(service).toBeTruthy();
   });
 });

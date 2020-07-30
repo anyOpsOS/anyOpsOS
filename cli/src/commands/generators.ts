@@ -1,9 +1,10 @@
 import chalk from 'chalk';
 import fs from 'fs-extra';
-import replaceInFile from 'replace-in-file';
+import rif from 'replace-in-file';
 import editJsonFile from 'edit-json-file';
 
 // TODO ESM
+const {replaceInFile} = rif;
 const {blue, blueBright, red} = chalk;
 const {copy, ensureDir, move, outputFile, outputJson, pathExistsSync, unlink} = fs;
 
@@ -393,11 +394,11 @@ export class ${fulldynamicComponent} implements OnInit {
         '@anyopsos/module-api-globals': '~0.0.1'
       },
       devDependencies: {
-        '@types/node': '^12.12.21',
+        '@types/node': '^14.0.27',
         'class-validator': '^0.11.0',
         express: '^4.17.1',
         'routing-controllers': '^0.8.0',
-        typescript: '^3.7.4'
+        typescript: '^3.9.7'
       },
       homepage: 'https://github.com/anyOpsOS/anyOpsOS#readme',
       repository: {
@@ -454,8 +455,8 @@ export class ${fulldynamicModule} {
       version: '0.0.1',
       main: 'src/index.ts',
       devDependencies: {
-        '@types/node': '^12.12.21',
-        typescript: '^3.7.4'
+        '@types/node': '^14.0.27',
+        typescript: '^3.9.7'
       },
       homepage: 'https://github.com/anyOpsOS/anyOpsOS#readme',
       repository: {
@@ -504,10 +505,10 @@ export class ${fulldynamicModule} {
       peerDependencies: {
       },
       devDependencies: {
-        '@types/node': '^12.12.21',
+        '@types/node': '^14.0.27',
         'socket.io': '^2.3.0',
         'socket-controllers': '^0.0.5',
-        typescript: '^3.7.4'
+        typescript: '^3.9.7'
       },
       homepage: 'https://github.com/anyOpsOS/anyOpsOS#readme',
       repository: {

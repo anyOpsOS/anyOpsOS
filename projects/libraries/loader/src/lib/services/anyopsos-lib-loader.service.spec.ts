@@ -6,7 +6,7 @@ describe('AnyOpsOSLibLoaderService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibLoaderService = TestBed.get(AnyOpsOSLibLoaderService);
+    const service: AnyOpsOSLibLoaderService = TestBed.inject(AnyOpsOSLibLoaderService);
     expect(service).toBeTruthy();
   });
 });

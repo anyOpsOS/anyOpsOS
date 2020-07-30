@@ -6,7 +6,7 @@ describe('AnyOpsOSLibDiagramZoomUtilsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibDiagramZoomUtilsService = TestBed.get(AnyOpsOSLibDiagramZoomUtilsService);
+    const service: AnyOpsOSLibDiagramZoomUtilsService = TestBed.inject(AnyOpsOSLibDiagramZoomUtilsService);
     expect(service).toBeTruthy();
   });
 });

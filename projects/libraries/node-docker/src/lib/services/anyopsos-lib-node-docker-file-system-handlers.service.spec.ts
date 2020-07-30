@@ -6,7 +6,7 @@ describe('AnyOpsOSLibNodeDockerFileSystemHandlersService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibNodeDockerFileSystemHandlersService = TestBed.get(AnyOpsOSLibNodeDockerFileSystemHandlersService);
+    const service: AnyOpsOSLibNodeDockerFileSystemHandlersService = TestBed.inject(AnyOpsOSLibNodeDockerFileSystemHandlersService);
     expect(service).toBeTruthy();
   });
 });

@@ -6,7 +6,7 @@ describe('AnyOpsOSAppSshService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppSshService = TestBed.get(AnyOpsOSAppSshService);
+    const service: AnyOpsOSAppSshService = TestBed.inject(AnyOpsOSAppSshService);
     expect(service).toBeTruthy();
   });
 });

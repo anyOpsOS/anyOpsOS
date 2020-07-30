@@ -2,10 +2,10 @@
   "name": "@anyopsos/lib-logger",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14",
-    "tslib": "^1.10.0",
-    "rxjs": "~6.5.3"
+    "@angular/common": "~10.0.6",
+    "@angular/core": "~10.0.6",
+    "tslib": "^2.0.0",
+    "rxjs": "~6.6.0"
   },
   "dependencies": {
     "ngx-logger": "^4.1.2",

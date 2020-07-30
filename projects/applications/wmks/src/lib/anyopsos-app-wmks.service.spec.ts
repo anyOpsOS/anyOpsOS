@@ -6,7 +6,7 @@ describe('AnyOpsOSAppWmksService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppWmksService = TestBed.get(AnyOpsOSAppWmksService);
+    const service: AnyOpsOSAppWmksService = TestBed.inject(AnyOpsOSAppWmksService);
     expect(service).toBeTruthy();
   });
 });

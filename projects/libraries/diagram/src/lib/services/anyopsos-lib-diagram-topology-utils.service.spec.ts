@@ -6,7 +6,7 @@ describe('AnyOpsOSLibDiagramTopologyUtilsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibDiagramTopologyUtilsService = TestBed.get(AnyOpsOSLibDiagramTopologyUtilsService);
+    const service: AnyOpsOSLibDiagramTopologyUtilsService = TestBed.inject(AnyOpsOSLibDiagramTopologyUtilsService);
     expect(service).toBeTruthy();
   });
 });

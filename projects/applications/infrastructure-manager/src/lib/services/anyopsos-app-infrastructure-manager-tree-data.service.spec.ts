@@ -6,7 +6,7 @@ describe('AnyOpsOSAppInfrastructureManagerTreeDataService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppInfrastructureManagerTreeDataService = TestBed.get(AnyOpsOSAppInfrastructureManagerTreeDataService);
+    const service: AnyOpsOSAppInfrastructureManagerTreeDataService = TestBed.inject(AnyOpsOSAppInfrastructureManagerTreeDataService);
     expect(service).toBeTruthy();
   });
 });

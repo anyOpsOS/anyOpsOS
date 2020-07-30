@@ -4,23 +4,23 @@
   "main": "src/index.ts",
   "dependencies": {
     "bluebird": "^3.7.2",
+    "fs-extra": "^9.0.1",
     "log4js": "^6.1.0",
-    "fs-extra": "^8.1.0",
     "ssh2": "^0.8.7",
-    "validator": "^12.2.0"
+    "validator": "^13.1.1"
   },
   "peerDependencies": {
+    "@anyopsos/module-socket": "~0.0.1",
     "@anyopsos/module-sys-get-path": "~0.0.1",
-    "@anyopsos/module-terminal": "~0.0.1",
-    "@anyopsos/module-socket": "~0.0.1"
+    "@anyopsos/module-terminal": "~0.0.1"
   },
   "devDependencies": {
-    "@types/node": "^12.12.21",
     "@types/bluebird": "^3.5.29",
-    "@types/fs-extra": "^8.0.1",
+    "@types/fs-extra": "^9.0.1",
+    "@types/node": "^14.0.27",
     "@types/ssh2": "^0.5.39",
     "socket.io": "^2.3.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.7"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

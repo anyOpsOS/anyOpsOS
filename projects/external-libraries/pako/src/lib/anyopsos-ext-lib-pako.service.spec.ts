@@ -6,7 +6,7 @@ describe('AnyOpsOSExtLibPakoService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSExtLibPakoService = TestBed.get(AnyOpsOSExtLibPakoService);
+    const service: AnyOpsOSExtLibPakoService = TestBed.inject(AnyOpsOSExtLibPakoService);
     expect(service).toBeTruthy();
   });
 });

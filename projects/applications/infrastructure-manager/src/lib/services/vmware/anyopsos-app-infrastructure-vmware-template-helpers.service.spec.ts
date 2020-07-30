@@ -6,7 +6,7 @@ describe('AnyOpsOSAppInfrastructureVmwareTemplateHelpersService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppInfrastructureVmwareTemplateHelpersService = TestBed.get(AnyOpsOSAppInfrastructureVmwareTemplateHelpersService);
+    const service: AnyOpsOSAppInfrastructureVmwareTemplateHelpersService = TestBed.inject(AnyOpsOSAppInfrastructureVmwareTemplateHelpersService);
     expect(service).toBeTruthy();
   });
 });

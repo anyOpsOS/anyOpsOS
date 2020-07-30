@@ -6,7 +6,7 @@ describe('AnyOpsOSAppBackupsManagerHelpersService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppBackupsManagerHelpersService = TestBed.get(AnyOpsOSAppBackupsManagerHelpersService);
+    const service: AnyOpsOSAppBackupsManagerHelpersService = TestBed.inject(AnyOpsOSAppBackupsManagerHelpersService);
     expect(service).toBeTruthy();
   });
 });

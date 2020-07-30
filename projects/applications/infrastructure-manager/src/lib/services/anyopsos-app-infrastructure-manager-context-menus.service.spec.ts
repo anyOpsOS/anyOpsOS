@@ -6,7 +6,7 @@ describe('AnyOpsOSAppInfrastructureManagerContextMenusService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppInfrastructureManagerContextMenusService = TestBed.get(AnyOpsOSAppInfrastructureManagerContextMenusService);
+    const service: AnyOpsOSAppInfrastructureManagerContextMenusService = TestBed.inject(AnyOpsOSAppInfrastructureManagerContextMenusService);
     expect(service).toBeTruthy();
   });
 });

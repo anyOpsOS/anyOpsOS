@@ -2,10 +2,10 @@
   "name": "@anyopsos/lib-folder",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14",
-    "rxjs": "~6.5.3",
-    "tslib": "^1.10.0"
+    "@angular/common": "~10.0.6",
+    "@angular/core": "~10.0.6",
+    "rxjs": "~6.6.0",
+    "tslib": "^2.0.0"
   },
   "dependencies": {
     "@anyopsos/lib-angular-material": "~0.0.1",
@@ -17,7 +17,7 @@
     "@anyopsos/lib-pipes": "~0.0.1",
     "@anyopsos/lib-selectable": "~0.0.1",
     "@anyopsos/lib-types": "~0.0.1",
-    "angular-file": "^2.0.0"
+    "angular-file": "^3.1.2"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

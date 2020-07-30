@@ -6,7 +6,7 @@ describe('AnyOpsOSLibTerminalService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSLibTerminalService = TestBed.get(AnyOpsOSLibTerminalService);
+    const service: AnyOpsOSLibTerminalService = TestBed.inject(AnyOpsOSLibTerminalService);
     expect(service).toBeTruthy();
   });
 });

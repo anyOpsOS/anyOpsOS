@@ -6,7 +6,7 @@ describe('AnyOpsOSAppCredentialsManagerService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppCredentialsManagerService = TestBed.get(AnyOpsOSAppCredentialsManagerService);
+    const service: AnyOpsOSAppCredentialsManagerService = TestBed.inject(AnyOpsOSAppCredentialsManagerService);
     expect(service).toBeTruthy();
   });
 });

@@ -3,13 +3,14 @@
   "version": "0.0.1",
   "main": "src/index.ts",
   "dependencies": {
-    "uuid": "^3.3.3",
-    "fs-extra": "^8.1.0"
+    "fs-extra": "^9.0.1",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
-    "@types/node": "^12.12.21",
-    "@types/fs-extra": "^8.0.1",
-    "typescript": "^3.8.3"
+    "@types/fs-extra": "^9.0.1",
+    "@types/node": "^14.0.27",
+    "@types/uuid": "^8.0.0",
+    "typescript": "^3.9.7"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

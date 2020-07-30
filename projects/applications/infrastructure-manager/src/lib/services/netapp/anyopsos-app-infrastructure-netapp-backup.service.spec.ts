@@ -6,7 +6,7 @@ describe('AnyOpsOSAppInfrastructureNetappBackupService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnyOpsOSAppInfrastructureNetappBackupService = TestBed.get(AnyOpsOSAppInfrastructureNetappBackupService);
+    const service: AnyOpsOSAppInfrastructureNetappBackupService = TestBed.inject(AnyOpsOSAppInfrastructureNetappBackupService);
     expect(service).toBeTruthy();
   });
 });
