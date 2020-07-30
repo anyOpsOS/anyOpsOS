@@ -139,7 +139,7 @@ export class anyOpsOS {
                 '-p', '2222:22',
                 '-e', 'NODE_OPTIONS=--experimental-modules --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node',
                 '--mount', `src=anyopsos-data,target=${INTERNAL_PATH_CWD},type=volume`,
-                // '--mount', `src=${MAIN_PATH_CWD}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
+                '--mount', `src=${MAIN_PATH_CWD}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
                 '--name', 'anyopsos-devel',
                 'anyopsos-devel'
               ], {
