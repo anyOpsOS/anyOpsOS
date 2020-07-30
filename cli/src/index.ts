@@ -1,18 +1,14 @@
 import chalk from 'chalk';
-import fs from 'fs-extra';
-import awaitSpawn from 'await-spawn';
 import yargs from 'yargs';
-import {join} from 'path';
 
 // TODO ESM
-const {blue, blueBright, green, red, yellow} = chalk
-const {ensureFile, pathExistsSync, ensureSymlink} = fs;
+const {blueBright, green} = chalk
 
 import {Builders} from './commands/builders.js';
 import {Linters} from './commands/linters.js';
 import {Generators} from './commands/generators.js';
+import {Docker} from './commands/docker.js';
 import {swagger} from './swagger-generator/index.js';
-import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from './constants.js';
 import {Types} from './types/types.js';
 import {runInDocker} from './utils.js';
 
@@ -25,6 +21,27 @@ export class anyOpsOS {
     // tslint:disable-next-line:no-unused-expression
     yargs
       .usage(green('Usage: $0 <command> [options]'))
+      .command({
+        command: 'init',
+        describe: `Initialize development environment automatically`,
+        handler: async () => {
+          try {
+
+            await new Docker().prepare({force: true});
+            await new Docker().download();
+            await new Docker().install();
+            await new Docker().build();
+            await new Docker().certificate();
+            await new Docker().k8s();
+
+            return new Builders().buildAll();
+
+          } catch (err) {
+            console.error(err);
+            process.exit(1);
+          }
+        }
+      })
       .command({
         command: 'docker <action> [force]',
         describe: `Interacts with the Development Docker container
@@ -56,125 +73,16 @@ export class anyOpsOS {
             choices: ['prepare', 'attach', 'download', 'install', 'build', 'certificate', 'k8s']
           }
         },
-        handler: async (args) => {
+        handler: async (args: { force: any; action: string; }) => {
           try {
 
-            if (args.action === 'prepare') {
-              if (args.force) console.log(red(`[anyOpsOS Cli. Internals] Force recreation of Docker Development Image and Container.`));
-
-              // Check if devel container is already created
-              const dockerContainers: string = await awaitSpawn('docker', ['ps', '-a', '--format=\'{{json .Names}}\''], {
-                cwd: MAIN_PATH_CWD
-              });
-
-              const containerExists = dockerContainers.toString().includes('"anyopsos-devel"');
-
-              if (containerExists) {
-
-                // Stop here
-                if (!args.force) return console.log(yellow(`[anyOpsOS Cli. Internals] Docker Development container already exists.`));
-
-                await awaitSpawn('docker', ['rm', '--force', 'anyopsos-devel'], {
-                  cwd: MAIN_PATH_CWD
-                });
-
-              }
-
-              // Check if devel image is already created
-              const dockerImages: string = await awaitSpawn('docker', ['images', '--format=\'{{json .Repository}}\''], {
-                cwd: MAIN_PATH_CWD
-              });
-
-              const imageExists = dockerImages.toString().includes('"anyopsos-devel"');
-
-              // Create image
-              if (!imageExists || args.force) {
-
-                console.log(blueBright(`[anyOpsOS Cli.] Creating Docker Development Image.`));
-
-                // Build devel image
-                await awaitSpawn('docker', ['build', '-f', 'docker/Dockerfile.devel', '-t', 'anyopsos-devel', './docker'], {
-                  cwd: MAIN_PATH_CWD,
-                  stdio: 'inherit'
-                });
-              }
-
-              // Check if volume is already created
-              const dockerVolumes: string = await awaitSpawn('docker', ['volume', 'ls', '--format=\'{{json .Name}}\''], {
-                cwd: MAIN_PATH_CWD
-              });
-
-              const volumeExists: boolean = dockerVolumes.toString().includes('"anyopsos-data"');
-
-              // Create image
-              if (!volumeExists || args.force) {
-
-                console.log(blueBright(`[anyOpsOS Cli.] Creating Docker Development Volume.`));
-
-                // Create data volume
-                await awaitSpawn('docker', ['volume', 'create', 'anyopsos-data'], {
-                  cwd: MAIN_PATH_CWD,
-                  stdio: 'inherit'
-                });
-              }
-
-              // Check if code folder exists
-              if (!pathExistsSync(join(MAIN_PATH_CWD, 'code'))) {
-                const dockerVolumePath: string = await awaitSpawn('docker', ['volume', 'inspect', 'anyopsos-data', '--format=\'{{json .Mountpoint}}\''], {
-                  cwd: MAIN_PATH_CWD
-                });
-
-                await ensureSymlink(dockerVolumePath.toString().slice(2, -3), join(MAIN_PATH_CWD, 'code'));
-              }
-
-              console.log(blueBright(`[anyOpsOS Cli.] Creating Docker Development container.`));
-
-              await ensureFile('ssh.key');
-
-              // Run container
-              await awaitSpawn('docker', [
-                'run',
-                // '--rm',
-                '-d',
-                '-p', '2222:22',
-                '-e', 'NODE_OPTIONS=--experimental-modules --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node',
-                '--mount', `src=anyopsos-data,target=${INTERNAL_PATH_CWD},type=volume`,
-                '--mount', `src=${MAIN_PATH_CWD}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
-                '--name', 'anyopsos-devel',
-                'anyopsos-devel'
-              ], {
-                cwd: MAIN_PATH_CWD,
-                stdio: 'inherit'
-              });
-
-              console.log(red(`[anyOpsOS Cli.] SSH key file [ssh.key] generated. Use this key to manage the container files from your IDE.`));
-            }
-            if (args.action === 'attach') return runInDocker('bash');
-            if (args.action === 'download') return runInDocker('find . -delete && git clone https://github.com/anyOpsOS/anyOpsOS .')
-            if (args.action === 'install') return runInDocker('export NODE_OPTIONS="" && yarn install --link-duplicates --ignore-engines');
-            if (args.action === 'build') {
-
-              console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker Auth Image.`));
-              await awaitSpawn('docker', ['build', '-f', 'docker/Dockerfile.auth', '-t', 'anyopsos-auth', './docker'], {
-                cwd: MAIN_PATH_CWD,
-                stdio: 'inherit'
-              });
-
-              console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker Core Image.`));
-              await awaitSpawn('docker', ['build', '-f', 'docker/Dockerfile.core', '-t', 'anyopsos-core', './docker'], {
-                cwd: MAIN_PATH_CWD,
-                stdio: 'inherit'
-              });
-
-              console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker FileSystem Image.`));
-              await awaitSpawn('docker', ['build', '-f', 'docker/Dockerfile.fileSystem', '-t', 'anyopsos-filesystem', './docker'], {
-                cwd: MAIN_PATH_CWD,
-                stdio: 'inherit'
-              });
-
-            }
-            if (args.action === 'certificate') return runInDocker('./docker/crt.sh')
-            if (args.action === 'k8s') return; // TODO
+            if (args.action === 'prepare') return await new Docker().prepare(args);
+            if (args.action === 'attach') return await new Docker().attach();
+            if (args.action === 'download') return await new Docker().download();
+            if (args.action === 'install') return await new Docker().install();
+            if (args.action === 'build') return await new Docker().build();
+            if (args.action === 'certificate') return await new Docker().certificate();
+            if (args.action === 'k8s') return await new Docker().k8s();
 
           } catch (err) {
             console.error(err);
