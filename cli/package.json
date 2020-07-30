@@ -21,7 +21,7 @@
   "main": "./bin/anyopsos.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "postbuild": "copyfiles package.json LICENSE ../.dist/cli && copyfiles -f ../README.md ../.dist/cli && copyfiles -f ../docs/* ../.dist/cli/docs && copyfiles -f ../docker/* ../.dist/cli/docker",
+    "postbuild": "copyfiles package.json LICENSE ../.dist/cli && copyfiles -f ../README.md ../.dist/cli && copyfiles -f ../docs/* ../.dist/cli/docs && copyfiles -a ../docker/*  ../docker/**/* ../.dist/cli/docker",
     "watch": "yarn build -w",
     "test": "echo 'skip'"
   },

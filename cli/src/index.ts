@@ -163,6 +163,8 @@ export class anyOpsOS {
               });
 
             }
+            if (args.action === 'certificate') return runInDocker('./docker/crt.sh')
+            if (args.action === 'k8s') return; // TODO
 
           } catch (err) {
             console.error(err);
