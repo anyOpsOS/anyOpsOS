@@ -62,7 +62,7 @@ spec:
             secretName: anyopsos-certificates
         - name: anyopsos-code
           hostPath:
-            path: /run/desktop/mnt/host/wsl/docker-desktop-data/data/docker/volumes/anyopsos-data/_data
+            path: /var/www
             type: Directory
       containers:
         - name: core
