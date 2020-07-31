@@ -20,6 +20,18 @@ export class Docker {
     await runInDocker('kubectl create namespace anyopsos');
     await runInDocker('kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml');
     await runInDocker('kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml');
+    await runInDocker('kubectl create secret generic anyopsos-certificates -n anyopsos \
+    --from-file=./docker/certificates/ca/ca.cert \
+    --from-file=./docker/certificates/vault/vault.cert \
+    --from-file=./docker/certificates/vault/vault.key \
+    --from-file=./docker/certificates/auth/auth.cert \
+    --from-file=./docker/certificates/auth/auth.key \
+    --from-file=./docker/certificates/core/core.cert \
+    --from-file=./docker/certificates/core/core.key \
+    --from-file=./docker/certificates/filesystem/filesystem.cert \
+    --from-file=./docker/certificates/filesystem/filesystem.key \
+    --from-file=./docker/certificates/dhparam.pem');
+    await runInDocker('kubectl create configmap vault-config -n anyopsos --from-file=docker/assets/vault.json');
     await runInDocker('kubectl apply -f docker/yaml/');
   }
 

@@ -4,7 +4,6 @@
 
 - Have `npm` or `yarn` installed.
 - Have `docker` installed.
-- Have a Kubernetes environment ready and `kubectl`. 
 
 # Preparation
 
@@ -12,9 +11,7 @@
 
 `$ npm install -g @anyopsos/cli`
 
-- Set node env
-
-`$ NODE_OPTIONS="--experimental-specifier-resolution=node"`
+> TL;DR `$ anyopsos init` and stop here
 
 - Prepare the development container
 
@@ -49,27 +46,8 @@
 
 # Manage anyOpsOS development files
 
-Open your IDE project from `\\wsl$\docker-desktop-data\mnt\wsl\docker-desktop-data\data\docker\volumes\anyopsos-data\_data`, through an SSH/SFTP connection to `root@localhost:2222/var/www` using the `ssh.key` file created, or directly attaching the workspace to the container `anyopsos-devel`.
-
-```
-kubectl create namespace anyopsos
-
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml
-
-kubectl create secret generic anyopsos-certificates -n anyopsos \
---from-file=./docker/certificates/ca/ca.cert \
---from-file=./docker/certificates/vault/vault.cert \
---from-file=./docker/certificates/vault/vault.key \
---from-file=./docker/certificates/auth/auth.cert \
---from-file=./docker/certificates/auth/auth.key \
---from-file=./docker/certificates/core/core.cert \
---from-file=./docker/certificates/core/core.key \
---from-file=./docker/certificates/filesystem/filesystem.cert \
---from-file=./docker/certificates/filesystem/filesystem.key \
---from-file=./docker/certificates/dhparam.pem
-
-kubectl create configmap vault-config -n anyopsos --from-file=docker/assets/vault.json
-
-kubectl apply -f docker/yaml/
-```
+Open your IDE project from one of this options: 
+- `\\wsl$\docker-desktop-data\mnt\wsl\docker-desktop-data\data\docker\volumes\anyopsos-data\_data`
+- `/var/lib/docker/volumes/anyopsos-data/_data`
+- Through an SSH/SFTP connection to `root@localhost:46332/var/www` using the `ssh.key` file created
+- Directly attaching the workspace to the container `anyopsos-devel`.
