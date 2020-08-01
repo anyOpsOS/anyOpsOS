@@ -5,7 +5,7 @@ MAINTAINER anyOpsOS
 WORKDIR /var/www
 
 RUN yum -y update && \
-curl -sL https://rpm.nodesource.com/setup_13.x | bash - && \
+curl -sL https://rpm.nodesource.com/setup_14.x | bash - && \
 yum -y install nodejs && \
 npm install -g yarn nodemon
 

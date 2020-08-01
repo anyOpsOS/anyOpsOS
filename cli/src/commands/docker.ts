@@ -19,9 +19,10 @@ export class Docker {
   async k8s() {
     // Prepare Kubernetes environment
     await runInDocker('/usr/local/bin/kind create cluster --config /kindconfig.yaml');
+    await runInDocker('sed -i.bak \'s/127.0.0.1:46443/kind-control-plane:6443/g\' /root/.kube/config');
 
     // Prepare image registry
-    await runInDocker('docker run -d --restart=always --name "anyopsos-registry" registry:2');
+    await runInDocker('docker run -d --restart=always -p "5000:5000" --name "anyopsos-registry" registry:2');
     await runInDocker('docker network connect "kind" "anyopsos-registry"');
     await runInDocker('docker network connect "kind" "anyopsos-devel"');
     await runInDocker('kubectl annotate node "kind-control-plane" "kind.x-k8s.io/registry=localhost:5000";');
@@ -64,18 +65,18 @@ export class Docker {
   async build() {
     console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker Auth Image.`));
     await runInDocker('docker build -f docker/Dockerfile.auth -t anyopsos-auth ./docker');
-    await runInDocker('docker tag anyopsos-auth:latest localhost:46444/anyopsos-auth:latest');
-    await runInDocker('docker push localhost:46444/anyopsos-auth:latest');
+    await runInDocker('docker tag anyopsos-auth:latest localhost:5000/anyopsos-auth:latest');
+    await runInDocker('docker push localhost:5000/anyopsos-auth:latest');
 
     console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker Core Image.`));
     await runInDocker('docker build -f docker/Dockerfile.core -t anyopsos-core ./docker');
-    await runInDocker('docker tag anyopsos-core:latest localhost:46444/anyopsos-core:latest');
-    await runInDocker('docker push localhost:46444/anyopsos-core:latest');
+    await runInDocker('docker tag anyopsos-core:latest localhost:5000/anyopsos-core:latest');
+    await runInDocker('docker push localhost:5000/anyopsos-core:latest');
 
     console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker FileSystem Image.`));
     await runInDocker('docker build -f docker/Dockerfile.fileSystem -t anyopsos-filesystem ./docker');
-    await runInDocker('docker tag anyopsos-filesystem:latest localhost:46444/anyopsos-filesystem:latest');
-    await runInDocker('docker push localhost:46444/anyopsos-filesystem:latest');
+    await runInDocker('docker tag anyopsos-filesystem:latest localhost:5000/anyopsos-filesystem:latest');
+    await runInDocker('docker push localhost:5000/anyopsos-filesystem:latest');
   }
 
   async prepare(args: { force: any }) {
@@ -155,7 +156,7 @@ export class Docker {
       'run',
       // '--rm',
       '-d',
-      '--network', 'host',
+      '-p', '2222:22',
       '-e', 'NODE_OPTIONS=--experimental-modules --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node',
       '--mount', `src=anyopsos-data,target=${INTERNAL_PATH_CWD},type=volume`,
       '--mount', `src=${MAIN_PATH_CWD}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
