@@ -1,18 +1,4 @@
 #!/bin/bash
-cat > /var/www/kindconfig.yaml <<EOF
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-networking:
-  # WARNING: It is _strongly_ recommended that you keep this the default
-  # (127.0.0.1) for security reasons. However it is possible to change this.
-  apiServerAddress: "127.0.0.1"
-  # By default the API server listens on a random open port.
-  # You may choose a specific port but probably don't need to in most cases.
-  # Using a random port makes it easier to spin up multiple clusters.
-  apiServerPort: 46443
-EOF
-
-kind create cluster --config kindconfig.yaml
 
 # Making all required files if they are not existing. (This means
 # you may add a Docker volume on /etc/ssh or /root to insert your

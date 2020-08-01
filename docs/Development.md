@@ -23,6 +23,18 @@
 
 `$ anyopsos docker download`
 
+-  Create all required certificates used to comunicate between Pods
+
+`$ anyopsos docker certificates`
+
+-  Deploy all required Kubernetes yaml configurations
+
+`$ anyopsos docker k8s`
+
+-  Build required Dockerfiles to be used in K8s
+
+`$ anyopsos docker build`
+
 - Install all required dependencies
 
 `$ anyopsos docker install`
@@ -30,18 +42,6 @@
 - Compile all sources
 
 `$ anyopsos build all`
-
--  Create all required certificates used to comunicate between Pods
-
-`$ anyopsos docker certificates`
-
--  Build required Dockerfiles to be used in K8s
-
-`$ anyopsos docker build`
-
--  Deploy all required Kubernetes yaml configurations
-
-`$ anyopsos docker k8s`
 
 
 # Manage anyOpsOS development files

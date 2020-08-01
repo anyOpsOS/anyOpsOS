@@ -67,7 +67,7 @@ spec:
             type: Directory
       containers:
       - name: auth
-        image: anyopsos-auth
+        image: localhost:46444/anyopsos-auth:latest
         args: ["-stack-trace-limit=50"]
         resources:
           requests:
@@ -90,7 +90,7 @@ spec:
           failureThreshold: 5
           periodSeconds: 5
         # Get image from local
-        imagePullPolicy: Never
+        imagePullPolicy: Always
         env:
           # Required to connect with Vault
           - name: POD_SA

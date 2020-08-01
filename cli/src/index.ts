@@ -29,11 +29,11 @@ export class anyOpsOS {
 
             await new Docker().prepare({force: true});
             await new Docker().download();
-            await new Docker().install();
-            await new Docker().build();
             await new Docker().certificate();
             await new Docker().k8s();
+            await new Docker().build();
 
+            await new Docker().install();
             return new Builders().buildAll();
 
           } catch (err) {

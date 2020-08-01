@@ -17,6 +17,15 @@ export class Docker {
 
   // TODO
   async k8s() {
+    // Prepare Kubernetes environment
+    await runInDocker('/usr/local/bin/kind create cluster --config /kindconfig.yaml');
+
+    // Prepare image registry
+    await runInDocker('docker run -d --restart=always -p "46444:5000" --name "anyopsos-registry" registry:2');
+    await runInDocker('docker network connect "kind" "anyopsos-registry"');
+    await runInDocker('kubectl annotate node "kind-control-plane" "kind.x-k8s.io/registry=localhost:46444";');
+
+    // Prepare anyopsos
     await runInDocker('kubectl create namespace anyopsos');
     await runInDocker('kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml');
     await runInDocker('kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml');
@@ -48,27 +57,24 @@ export class Docker {
   }
 
   async certificate() {
-    return runInDocker('./docker/crt.sh');
+    return runInDocker('cd docker && ./crt.sh');
   }
 
   async build() {
     console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker Auth Image.`));
-    await awaitSpawn('docker', ['build', '-f', 'docker/Dockerfile.auth', '-t', 'anyopsos-auth', './docker'], {
-      cwd: MAIN_PATH_CWD,
-      stdio: 'inherit'
-    });
+    await runInDocker('docker build -f docker/Dockerfile.auth -t anyopsos-auth ./docker');
+    await runInDocker('docker tag anyopsos-auth:latest localhost:46444/anyopsos-auth:latest');
+    await runInDocker('docker push localhost:46444/anyopsos-auth:latest');
 
     console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker Core Image.`));
-    await awaitSpawn('docker', ['build', '-f', 'docker/Dockerfile.core', '-t', 'anyopsos-core', './docker'], {
-      cwd: MAIN_PATH_CWD,
-      stdio: 'inherit'
-    });
+    await runInDocker('docker build -f docker/Dockerfile.core -t anyopsos-core ./docker');
+    await runInDocker('docker tag anyopsos-core:latest localhost:46444/anyopsos-core:latest');
+    await runInDocker('docker push localhost:46444/anyopsos-core:latest');
 
     console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker FileSystem Image.`));
-    await awaitSpawn('docker', ['build', '-f', 'docker/Dockerfile.fileSystem', '-t', 'anyopsos-filesystem', './docker'], {
-      cwd: MAIN_PATH_CWD,
-      stdio: 'inherit'
-    });
+    await runInDocker('docker build -f docker/Dockerfile.fileSystem -t anyopsos-filesystem ./docker');
+    await runInDocker('docker tag anyopsos-filesystem:latest localhost:46444/anyopsos-filesystem:latest');
+    await runInDocker('docker push localhost:46444/anyopsos-filesystem:latest');
   }
 
   async prepare(args: { force: any }) {
