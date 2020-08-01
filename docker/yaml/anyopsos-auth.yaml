@@ -67,7 +67,7 @@ spec:
             type: Directory
       containers:
       - name: auth
-        image: localhost:46444/anyopsos-auth:latest
+        image: localhost:5000/anyopsos-auth:latest
         args: ["-stack-trace-limit=50"]
         resources:
           requests:

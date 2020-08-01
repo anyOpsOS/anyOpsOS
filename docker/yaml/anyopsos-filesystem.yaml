@@ -66,7 +66,7 @@ spec:
             type: Directory
       containers:
         - name: filesystem
-          image: localhost:46444/anyopsos-filesystem:latest
+          image: localhost:5000/anyopsos-filesystem:latest
           args: ["-stack-trace-limit=50"]
           resources:
             requests:

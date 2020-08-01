@@ -21,9 +21,10 @@ export class Docker {
     await runInDocker('/usr/local/bin/kind create cluster --config /kindconfig.yaml');
 
     // Prepare image registry
-    await runInDocker('docker run -d --restart=always -p "46444:5000" --name "anyopsos-registry" registry:2');
+    await runInDocker('docker run -d --restart=always --name "anyopsos-registry" registry:2');
     await runInDocker('docker network connect "kind" "anyopsos-registry"');
-    await runInDocker('kubectl annotate node "kind-control-plane" "kind.x-k8s.io/registry=localhost:46444";');
+    await runInDocker('docker network connect "kind" "anyopsos-devel"');
+    await runInDocker('kubectl annotate node "kind-control-plane" "kind.x-k8s.io/registry=localhost:5000";');
 
     // Prepare anyopsos
     await runInDocker('kubectl create namespace anyopsos');
