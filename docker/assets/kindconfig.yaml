@@ -17,4 +17,4 @@ nodes:
 containerdConfigPatches:
 - |-
   [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:46444"]
-    endpoint = ["http://kind-registry:46444"]
+    endpoint = ["http://anyopsos-registry:46444"]
