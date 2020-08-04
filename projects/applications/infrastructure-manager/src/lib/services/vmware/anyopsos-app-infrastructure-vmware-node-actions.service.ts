@@ -23,13 +23,12 @@ export class AnyOpsOSAppInfrastructureVmwareNodeActionsService {
   async doWithVM(connectionUuid: string, vm: DataObject & { info: { data: VMWareVM; } }, action: 'powerOn' | 'powerOff' | 'suspend' | 'reset' | 'powerOffGuestOS' | 'restartGuestOS' | 'refresh'): Promise<void> {
 
     return this.LibNodeVmwareSoapApiHelpersService.getVMRuntime(connectionUuid, vm.info.obj.name).then((vmRuntimeResult: VmwareSdkFunctionsOutput<'RetrieveProperties'>) => {
-      if (vmRuntimeResult.status === 'error') throw {error: vmRuntimeResult.error, description: 'Failed to get VM runtime'};
+      if (vmRuntimeResult.status === 'error') throw {error: vmRuntimeResult.data, description: 'Failed to get VM runtime'};
 
       // powerOn
       if (action === 'powerOn') {
         if (vmRuntimeResult.data.propSet.runtime.powerState === 'poweredOn') return;
 
-        // @ts-ignore TODO
         return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'PowerOnVM_Task', {
           _this: {
             $type: 'VirtualMachine',
@@ -109,8 +108,8 @@ export class AnyOpsOSAppInfrastructureVmwareNodeActionsService {
 
       }
 
-    }).then((vmActionResult) => {
-      if (vmActionResult.status === 'error') throw {error: vmActionResult.error, description: `Failed to ${action} off VM`};
+    }).then((vmActionResult: VmwareSdkFunctionsOutput<'PowerOnVM_Task' | 'PowerOffVM_Task' | 'SuspendVM_Task' | 'ResetVM_Task' | 'ShutdownGuest' | 'RebootGuest'>) => {
+      if (vmActionResult.status === 'error') throw {error: vmActionResult.data, description: `Failed to ${action} off VM`};
     }).catch((e) => {
       this.logger.error((e.description ? e.description : e.message), `Error while ${action} on VMWare VM`);
 

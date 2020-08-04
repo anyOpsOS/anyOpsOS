@@ -9,8 +9,8 @@ const {getLogger} = log4js;
 const {spawn} = childProcessPromise;
 
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
-import {HostDatastoreBrowserSearchResults} from '@anyopsos/sdk-vmware/src/lib/types/data/host-datastore-browser-search-results';
 import {FileInfo} from '@anyopsos/sdk-vmware/src/lib/types/data/file-info';
+import {VmwareSdkFunctionsOutput} from '@anyopsos/sdk-vmware';
 import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
 
 import {AnyOpsOSNodeVmwareModule} from './anyopsos-module-node-vmware.module';
@@ -49,8 +49,8 @@ export class AnyOpsOSNodeVmwareFileSystemModule {
     if (srcPath.indexOf('\0') !== -1) throw new Error('param_security_stop');
 
     // TODO check if exists
-    // @ts-ignore TODO
-    const pathFiles: HostDatastoreBrowserSearchResults = await this.VmwareModule.callSoapApi('SearchDatastore_Task', {
+    // type HostDatastoreBrowserSearchResults
+    const pathFiles: VmwareSdkFunctionsOutput<'SearchDatastore_Task'> = await this.VmwareModule.callSoapApi('SearchDatastore_Task', {
       _this: {
         $type: 'HostDatastoreBrowser',
         _value: datastoreBrowserName
@@ -70,14 +70,13 @@ export class AnyOpsOSNodeVmwareFileSystemModule {
     }) as AnyOpsOSFile[];
   }
 
-  async putFolder(dstPath: string, datastoreName: string, datacenterName: string): Promise<void> {
+  async putFolder(dstPath: string, datastoreName: string, datacenterName: string): Promise<VmwareSdkFunctionsOutput<'MakeDirectory'>> {
     logger.debug(`[Module VmwareFileSystem] -> putFolder -> dstPath [${dstPath}], connectionUuid [${this.connectionUuid}]`);
 
     // Security check
     if (dstPath.indexOf('\0') !== -1) throw new Error('param_security_stop');
 
     // TODO check if already exists.
-    // @ts-ignore TODO
     return this.VmwareModule.callSoapApi('MakeDirectory', {
       _this: {
         $type: 'FileManager',
@@ -133,9 +132,9 @@ export class AnyOpsOSNodeVmwareFileSystemModule {
 
     return eventEmitter;
   }
-  async patchFile(type: 'rename', srcPath: string, srcDatastoreName: string, srcDatacenterName: string, dstPath: string): Promise<void>;
-  async patchFile(type: 'copy' | 'move', srcPath: string, srcDatastoreName: string, srcDatacenterName: string, dstPath: string, dstDatastoreName: string, dstDatacenterName: string): Promise<void>;
-  async patchFile(type: 'copy' | 'move' | 'rename', srcPath: string, srcDatastoreName: string, srcDatacenterName: string, dstPath: string, dstDatastoreName?: string, dstDatacenterName?: string): Promise<void> {
+  async patchFile(type: 'rename', srcPath: string, srcDatastoreName: string, srcDatacenterName: string, dstPath: string): Promise<VmwareSdkFunctionsOutput<'MoveDatastoreFile_Task'>>;
+  async patchFile(type: 'copy' | 'move', srcPath: string, srcDatastoreName: string, srcDatacenterName: string, dstPath: string, dstDatastoreName: string, dstDatacenterName: string): Promise<VmwareSdkFunctionsOutput<'MoveDatastoreFile_Task' | 'CopyDatastoreFile_Task'>>;
+  async patchFile(type: 'copy' | 'move' | 'rename', srcPath: string, srcDatastoreName: string, srcDatacenterName: string, dstPath: string, dstDatastoreName?: string, dstDatacenterName?: string): Promise<VmwareSdkFunctionsOutput<'MoveDatastoreFile_Task' | 'CopyDatastoreFile_Task'> | undefined> {
     logger.debug(`[Module VmwareFileSystem] -> patchFile -> type [${type}], srcPath [${srcPath}], dstPath [${dstPath}], connectionUuid [${this.connectionUuid}]`);
 
     // Security check
@@ -144,7 +143,6 @@ export class AnyOpsOSNodeVmwareFileSystemModule {
 
     // TODO check if file/path exists src & dst
     if (type === 'copy') {
-      // @ts-ignore TODO
       return this.VmwareModule.callSoapApi('CopyDatastoreFile_Task', {
         _this: {
           $type: 'FileManager',
@@ -163,8 +161,8 @@ export class AnyOpsOSNodeVmwareFileSystemModule {
         }
       });
     }
+
     if (type === 'move') {
-      // @ts-ignore TODO
       return this.VmwareModule.callSoapApi('MoveDatastoreFile_Task', {
         _this: {
           $type: 'FileManager',
@@ -183,8 +181,8 @@ export class AnyOpsOSNodeVmwareFileSystemModule {
         }
       });
     }
+
     if (type === 'rename') {
-      // @ts-ignore TODO
       return this.VmwareModule.callSoapApi('MoveDatastoreFile_Task', {
         _this: {
           $type: 'FileManager',
@@ -212,14 +210,13 @@ export class AnyOpsOSNodeVmwareFileSystemModule {
     if (type === 'chown') return;
   }
 
-  async deleteFile(srcPath: string, datastoreName: string, datacenterName: string): Promise<void> {
+  async deleteFile(srcPath: string, datastoreName: string, datacenterName: string): Promise<VmwareSdkFunctionsOutput<'DeleteDatastoreFile_Task'>> {
     logger.debug(`[Module VmwareFileSystem] -> deleteFile -> srcPath [${srcPath}], connectionUuid [${this.connectionUuid}]`);
 
     // Security check
     if (srcPath.indexOf('\0') !== -1) throw new Error('param_security_stop');
 
     // TODO check if file/path exists
-    // @ts-ignore TODO
     return this.VmwareModule.callSoapApi('DeleteDatastoreFile_Task', {
       _this: {
         $type: 'FileManager',

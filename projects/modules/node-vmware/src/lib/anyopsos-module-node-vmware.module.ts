@@ -125,7 +125,6 @@ export class AnyOpsOSNodeVmwareModule {
   private async getWaitForUpdatesEx(version?: string) {
     logger.debug(`[VmwareMod] -> Updating VMWare data -> workspaceUuid [${this.workspaceUuid}], connectionUuid [${this.connectionUuid}]`);
 
-    // @ts-ignore TODO
     const waitForUpdatesExResult: VmwareSdkFunctionsOutput<'WaitForUpdatesEx'> = await this.callSoapApi('WaitForUpdatesEx', {
       _this: {
         $type: 'PropertyCollector',
@@ -185,7 +184,6 @@ export class AnyOpsOSNodeVmwareModule {
   /**
    * Connects to the SOAP API and calls it
    */
-  // @ts-ignore TODO
   async callSoapApi<Action extends VmwareSdkFunctions>(action: Action, data: VmwareSdkFunctionsInput<Action>): Promise<VmwareSdkFunctionsOutput<Action>> {
     const xml: string = `<?xml version='1.0' encoding='utf-8'?>
     <soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 
+import {VmwareSdkFunctionsOutput} from '@anyopsos/sdk-vmware';
 import {TraversalSpec} from '@anyopsos/sdk-vmware/src/lib/types/data/traversal-spec';
 
 import {AnyOpsOSLibNodeVmwareSoapApiService} from './anyopsos-lib-node-vmware-soap-api.service';
@@ -16,7 +17,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
   /**
    * Tasks
    */
-  private getTaskResults(connectionUuid: string, taskId: string): Promise<any> {
+  private getTaskResults(connectionUuid: string, taskId: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     // @ts-ignore TODO
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
@@ -43,7 +44,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getTaskStatus(connectionUuid: string, taskId: string): Promise<any> {
+  getTaskStatus(connectionUuid: string, taskId: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -74,7 +75,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
   /**
    * Host
    */
-  getComputeResource(connectionUuid: string, computeResource: string): Promise<any> {
+  getComputeResource(connectionUuid: string, computeResource: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -98,7 +99,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getClusterComputeResource(connectionUuid: string, clusterComputeResource: string): Promise<any> {
+  getClusterComputeResource(connectionUuid: string, clusterComputeResource: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -122,7 +123,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getResourcePool(connectionUuid: string, resourcePool: string): Promise<any> {
+  getResourcePool(connectionUuid: string, resourcePool: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -146,7 +147,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getHosts(connectionUuid: string, datacenterFolder: string): Promise<any> {
+  getHosts(connectionUuid: string, datacenterFolder: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -312,7 +313,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getHost(connectionUuid: string, esxiHost: string): Promise<any> {
+  getHost(connectionUuid: string, esxiHost: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -478,7 +479,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getHostStorageSystem(connectionUuid: string, esxiHost: string): Promise<any> {
+  getHostStorageSystem(connectionUuid: string, esxiHost: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -504,7 +505,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getHostFirewallSystem(connectionUuid: string, esxiHost: string): Promise<any> {
+  getHostFirewallSystem(connectionUuid: string, esxiHost: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -530,7 +531,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getHostFirewallRules(connectionUuid: string, esxiHost: string): Promise<any> {
+  getHostFirewallRules(connectionUuid: string, esxiHost: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -556,7 +557,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getHostStorageSystemData(connectionUuid: string, storageSystem: string): Promise<any> {
+  getHostStorageSystemData(connectionUuid: string, storageSystem: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -584,7 +585,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getHostConnectionState(connectionUuid: string, esxiHost: string): Promise<any> {
+  getHostConnectionState(connectionUuid: string, esxiHost: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -610,7 +611,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getHostConfigManagerNetworkSystem(connectionUuid: string, esxiHost: string): Promise<any> {
+  getHostConfigManagerNetworkSystem(connectionUuid: string, esxiHost: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -636,7 +637,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getHostConfigManagerDatastoreSystem(connectionUuid: string, esxiHost: string): Promise<any> {
+  getHostConfigManagerDatastoreSystem(connectionUuid: string, esxiHost: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -662,7 +663,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getHostNetworkInfoVnic(connectionUuid: string, networkSystem: string): Promise<any> {
+  getHostNetworkInfoVnic(connectionUuid: string, networkSystem: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -688,7 +689,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getHostNetworkInfoConsoleVnic(connectionUuid: string, networkSystem: string): Promise<any> {
+  getHostNetworkInfoConsoleVnic(connectionUuid: string, networkSystem: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -717,7 +718,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
   /**
    * Datastore
    */
-  getDatastores(connectionUuid: string, datacenterFolder: string): Promise<any> {
+  getDatastores(connectionUuid: string, datacenterFolder: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -756,7 +757,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getDatastoreProps(connectionUuid: string, datastore: string): Promise<any> {
+  getDatastoreProps(connectionUuid: string, datastore: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -780,7 +781,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getDatastoresWithVMsData(connectionUuid: string, datacenterFolder: string): Promise<any> {
+  getDatastoresWithVMsData(connectionUuid: string, datacenterFolder: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -843,7 +844,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getVMFileDataFromDatastore(connectionUuid: string, datastore: string, datastoreName: string, path: string, vmxFile: string): Promise<any> {
+  getVMFileDataFromDatastore(connectionUuid: string, datastore: string, datastoreName: string, path: string, vmxFile: string): Promise<VmwareSdkFunctionsOutput<'SearchDatastore_Task'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'SearchDatastore_Task', {
       _this: {
@@ -864,7 +865,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getFilesDataFromDatastore(connectionUuid: string, datastore: string, datastoreName: string, path: string): Promise<any> {
+  getFilesDataFromDatastore(connectionUuid: string, datastore: string, datastoreName: string, path: string): Promise<VmwareSdkFunctionsOutput<'SearchDatastore_Task'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'SearchDatastore_Task', {
       _this: {
@@ -887,7 +888,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
   /**
    * VM
    */
-  getVMs(connectionUuid: string, datacenterFolder: string): Promise<any> {
+  getVMs(connectionUuid: string, datacenterFolder: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -944,7 +945,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getVM(connectionUuid: string, vm: string): Promise<any> {
+  getVM(connectionUuid: string, vm: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -968,7 +969,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getVMPath(connectionUuid: string, vm: string): Promise<any> {
+  getVMPath(connectionUuid: string, vm: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -993,7 +994,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getVMRuntime(connectionUuid: string, vm: string): Promise<any> {
+  getVMRuntime(connectionUuid: string, vm: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -1018,7 +1019,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  getVMSnapshots(connectionUuid: string, vm: string): Promise<any> {
+  getVMSnapshots(connectionUuid: string, vm: string): Promise<VmwareSdkFunctionsOutput<'RetrieveProperties'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'RetrieveProperties', {
       _this: {
@@ -1045,7 +1046,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  searchIndexVM(connectionUuid: string, vmUuid: string): Promise<any> {
+  searchIndexVM(connectionUuid: string, vmUuid: string): Promise<VmwareSdkFunctionsOutput<'FindByUuid'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'FindByUuid', {
       _this: {
@@ -1059,7 +1060,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
 
   }
 
-  queryVMEvents(connectionUuid: string, vm: string): Promise<any> {
+  queryVMEvents(connectionUuid: string, vm: string): Promise<VmwareSdkFunctionsOutput<'QueryEvents'>> {
 
     return this.LibNodeVmwareSoapApiService.callSoapApi(connectionUuid, 'QueryEvents', {
       _this: {
