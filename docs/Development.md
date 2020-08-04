@@ -39,6 +39,10 @@
 
 `$ anyopsos docker install`
 
+- Compile the CLI to be used inside the docker container
+
+`$ anyopsos build cli`
+
 - Compile all sources
 
 `$ anyopsos build all`

@@ -17,17 +17,31 @@ export class Docker {
 
   // TODO
   async k8s() {
+
+    console.log(blueBright(`[anyOpsOS Cli.] Preparing Kubernetes environment.\n`));
+    
     // Prepare Kubernetes environment
-    await runInDocker('/usr/local/bin/kind create cluster --config /kindconfig.yaml');
-    await runInDocker('sed -i.bak \'s/127.0.0.1:46443/kind-control-plane:6443/g\' /root/.kube/config');
+    console.log(blue(`[anyOpsOS Cli. Internals] Starting Kind cluster.\n`));
+    const kindContainerRunning: Buffer = await awaitSpawn('docker', ['inspect', 'anyopsos-control-plane', '--format={{.State.Running}}']);
+    if (kindContainerRunning.toString().slice(0, -1) === 'true') await runInDocker('/usr/local/bin/kind delete cluster --name anyopsos');
+
+    await runInDocker('/usr/local/bin/kind create cluster --config /kindconfig.yaml --name anyopsos');
+    await runInDocker('sed -i.bak \'s/127.0.0.1:46443/anyopsos-control-plane:6443/g\' /root/.kube/config');
 
     // Prepare image registry
-    await runInDocker('docker run -d --restart=always -p "5000:5000" --name "anyopsos-registry" registry:2');
-    await runInDocker('docker network connect "kind" "anyopsos-registry"');
-    await runInDocker('docker network connect "kind" "anyopsos-devel"');
-    await runInDocker('kubectl annotate node "kind-control-plane" "kind.x-k8s.io/registry=localhost:5000";');
+    console.log(blue(`[anyOpsOS Cli. Internals] Starting internal Container Registry.\n`));
+    const containerRunning: Buffer = await awaitSpawn('docker', ['inspect', 'anyopsos-registry', '--format={{.State.Running}}']);
+    if (containerRunning.toString().slice(0, -1) !== 'true') {
+      await runInDocker('docker run -d --restart=always -p "5000:5000" --name "anyopsos-registry" registry:2');
+      await runInDocker('docker network connect "kind" "anyopsos-registry"');
+    }
+
+    await runInDocker('docker network connect "kind" "anyopsos-devel"').catch((e) => console.log(e));
+
+    await runInDocker('kubectl annotate node "anyopsos-control-plane" "kind.x-k8s.io/registry=localhost:5000";');
 
     // Prepare anyopsos
+    console.log(blue(`[anyOpsOS Cli. Internals] Deploying configuration files.\n`));
     await runInDocker('kubectl create namespace anyopsos');
     await runInDocker('kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml');
     await runInDocker('kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml');
@@ -47,22 +61,28 @@ export class Docker {
   }
 
   async attach() {
+    console.log(blueBright(`[anyOpsOS Cli.] Attaching to Devel Container.\n`));
     return runInDocker('bash');
   }
 
   async download() {
+    console.log(blueBright(`[anyOpsOS Cli.] Download anyOpsOS files.\n`));
     return runInDocker('find . -delete && git clone https://github.com/anyOpsOS/anyOpsOS .');
   }
 
   async install() {
+    console.log(blueBright(`[anyOpsOS Cli.] Installing required dependencies.\n`));
     return runInDocker('export NODE_OPTIONS="" && yarn install --link-duplicates --ignore-engines');
   }
 
   async certificate() {
+    console.log(blueBright(`[anyOpsOS Cli.] Generating encryption keys and SSL certificates.\n`));
     return runInDocker('cd docker && ./crt.sh');
   }
 
   async build() {
+    console.log(blueBright(`[anyOpsOS Cli.] Building main anyOpsOS Docker images.\n`));
+
     console.log(blue(`[anyOpsOS Cli. Internals] Creating Docker Auth Image.`));
     await runInDocker('docker build -f docker/Dockerfile.auth -t anyopsos-auth ./docker');
     await runInDocker('docker tag anyopsos-auth:latest localhost:5000/anyopsos-auth:latest');
@@ -83,7 +103,7 @@ export class Docker {
     if (args.force) console.log(red(`[anyOpsOS Cli. Internals] Force recreation of Docker Development Image and Container.`));
 
     // Check if devel container is already created
-    const dockerContainers: string = await awaitSpawn('docker', ['ps', '-a', '--format=\'{{json .Names}}\''], {
+    const dockerContainers: Buffer = await awaitSpawn('docker', ['ps', '-a', '--format=\'{{json .Names}}\''], {
       cwd: MAIN_PATH_CWD
     });
 
@@ -157,7 +177,7 @@ export class Docker {
       // '--rm',
       '-d',
       '-p', '2222:22',
-      '-e', 'NODE_OPTIONS=--experimental-modules --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node',
+      '-e', 'NODE_OPTIONS=--no-warnings --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node',
       '--mount', `src=anyopsos-data,target=${INTERNAL_PATH_CWD},type=volume`,
       '--mount', `src=${MAIN_PATH_CWD}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
       '-v', '/var/run/docker.sock:/var/run/docker.sock',

@@ -284,7 +284,7 @@ export class Builders {
 
     await this.buildBackendTypes({type: 'module'});
     await this.buildBackendTypes({type: 'api-middleware'});
-    await this.buildBackendTypes({type: 'api'}).then(async () => await import('../swagger-generator/index'));
+    await this.buildBackendTypes({type: 'api'}).then(async () => await import('../swagger-generator/index.js'));
     await this.buildBackendTypes({type: 'websocket'});
 
     await this.buildBackend();
@@ -303,12 +303,14 @@ export class Builders {
   } 
   
   async buildCli(): Promise<void> {
+    await runInDocker('export NODE_OPTIONS="" && cd cli/ && yarn build');
 
+    // TODO once 'nexe', 'pkg' or others supports predefined cli flags (NODE_OPTIONS) or similar
+
+    /*
     // Unset node env
     const currentNodeEnv: string | undefined = process.env.NODE_OPTIONS;
     process.env.NODE_OPTIONS = undefined;
-
-    await runInDocker('export NODE_OPTIONS="" && cd cli/ && yarn build');
 
     console.log(blueBright(`
 ------------------------------------------------------------------------------
@@ -370,6 +372,8 @@ export class Builders {
 
     // Set node env
     process.env.NODE_OPTIONS = currentNodeEnv;
+
+    */
   
   }
 }
