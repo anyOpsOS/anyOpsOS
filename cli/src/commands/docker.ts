@@ -1,7 +1,6 @@
 import chalk from 'chalk';
 import fs from 'fs-extra';
 import awaitSpawn from 'await-spawn';
-import {join} from 'path';
 
 // TODO ESM
 const {blue, blueBright, red, yellow} = chalk
@@ -159,12 +158,12 @@ export class Docker {
     }
 
     // Check if code folder exists
-    if (!pathExistsSync(join(MAIN_PATH_CWD, 'code'))) {
+    if (!pathExistsSync(`${INTERNAL_PATH_CWD}/code`)) {
       const dockerVolumePath: string = await awaitSpawn('docker', ['volume', 'inspect', 'anyopsos-data', '--format=\'{{json .Mountpoint}}\''], {
         cwd: MAIN_PATH_CWD
       });
 
-      await ensureSymlink(dockerVolumePath.toString().slice(2, -3), join(MAIN_PATH_CWD, 'code'));
+      await ensureSymlink(dockerVolumePath.toString().slice(2, -3), `${INTERNAL_PATH_CWD}/code`);
     }
 
     console.log(blueBright(`[anyOpsOS Cli.] Creating Docker Development container.`));

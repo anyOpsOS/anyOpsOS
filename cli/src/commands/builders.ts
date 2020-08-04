@@ -117,7 +117,7 @@ export class Builders {
       // Run postbuild script if exists
       if (pathExistsSync(`${MAIN_PATH_CWD}${this.projectPath}/scripts/postbuild.js`)) {
 
-        console.log(blueBright(`[anyOpsOS Cli.] Running anyOpsOS Modal ${argv.moduleName} postbuild script.\n`));
+        console.log(blueBright(`[anyOpsOS Cli.] Running anyOpsOS ${this.packageType} ${argv.moduleName} postbuild script.\n`));
         const postModule = await import(`${MAIN_PATH_CWD}${this.projectPath}/scripts/postbuild.js`);
         await postModule.default;
       }
