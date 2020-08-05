@@ -38,4 +38,9 @@ export class K8sPersistentVolumesComponent implements OnInit {
     return 0;
   }
 
+  // TODO
+  goToElement(k8sObject?: DataObject): void {
+    return null;
+  }
+
 }

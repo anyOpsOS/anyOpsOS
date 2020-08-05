@@ -35,4 +35,13 @@ export class K8sDeploymentDetailsComponent implements OnInit {
     return `${condition.status === 'False' ? 'disabled' : ''} ${condition.type.toLowerCase()}`
   }
 
+  getConditions(activeOnly: boolean = false) {
+    const {conditions} = this.k8sObject.info.data.status;
+    if (!conditions) return []
+    if (activeOnly) {
+      return conditions.filter(c => c.status === 'True')
+    }
+    return conditions
+  }
+
 }

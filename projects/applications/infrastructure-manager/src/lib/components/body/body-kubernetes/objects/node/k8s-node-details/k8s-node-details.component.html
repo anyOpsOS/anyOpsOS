@@ -58,7 +58,7 @@
 
   <aaim-k8s-object-item [name]="'Conditions'" [labelsOnly]="true" class="conditions">
     <ng-container *ngFor="let condition of getActiveConditions()">
-      <aaim-k8s-object-badge [label]="condition.type" [matTooltip]="condition.tooltip" [class]="condition.type.toLowerCase()"></aaim-k8s-object-badge>
+      <aaim-k8s-object-badge [label]="condition.type" [class]="condition.type.toLowerCase()" [matTooltip]="condition.tooltip"></aaim-k8s-object-badge>
       <!-- TODO
       <TooltipContent tableView>
           {Object.entries(condition).map(([key, value]) =>

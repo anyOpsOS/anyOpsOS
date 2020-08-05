@@ -23,7 +23,7 @@
 
     <ng-container matColumnDef="capacity">
       <th mat-header-cell *matHeaderCellDef mat-sort-header class="capacity">Capacity</th>
-      <td mat-cell *matCellDef="let element">{{getCapacity()}}</td>
+      <td mat-cell *matCellDef="let element">{{getCapacity(element)}}</td>
     </ng-container>
 
     <ng-container matColumnDef="claim">

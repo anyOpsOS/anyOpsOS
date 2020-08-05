@@ -6,6 +6,7 @@ import {Application} from '@anyopsos/lib-application';
 import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
 import {AnyOpsOSLibNodeVmwareSoapApiService} from '@anyopsos/lib-node-vmware';
 import {ConnectionVmware} from '@anyopsos/module-node-vmware';
+import {VmwareSdkFunctionsOutput} from '@anyopsos/sdk-vmware';
 import {TaskInfo} from '@anyopsos/sdk-vmware/src/lib/types/data/task-info';
 
 import {AnyOpsOSAppInfrastructureManagerService} from '../../../services/anyopsos-app-infrastructure-manager.service';
@@ -38,7 +39,6 @@ export class VmwareRecentTasksComponent implements OnInit {
     const date = new Date();
     date.setHours(date.getHours() - 2);
 
-    // @ts-ignore TODO
     return this.LibNodeVmwareSoapApiService.callSoapApi(currentConnection.uuid, 'CreateCollectorForTasks', {
       _this: {
         $type: 'TaskManager',
@@ -50,7 +50,7 @@ export class VmwareRecentTasksComponent implements OnInit {
           beginTime: date.toISOString()
         }
       }
-    }).then(async (createCollectorResult) => {
+    }).then(async (createCollectorResult: VmwareSdkFunctionsOutput<'CreateCollectorForTasks'>) => {
       if (createCollectorResult.status === 'error') throw new Error('Failed to CreateCollectorForTasks to vCenter');
 
       const currentConnection: ConnectionVmware = this.InfrastructureManager.getActiveConnection() as ConnectionVmware;
@@ -63,7 +63,7 @@ export class VmwareRecentTasksComponent implements OnInit {
         maxCount: 100
       });
 
-    }).then((ReadNextTasksResult) => {
+    }).then((ReadNextTasksResult: VmwareSdkFunctionsOutput<'ReadNextTasks'>) => {
       if (ReadNextTasksResult.status === 'error') throw new Error('Failed to ReadNextTasks to vCenter');
 
       console.log(ReadNextTasksResult);

@@ -3,6 +3,7 @@ import {AfterViewInit, Component, Input} from '@angular/core';
 import {Application} from '@anyopsos/lib-application';
 import {AnyOpsOSLibNodeVmwareSoapApiService} from '@anyopsos/lib-node-vmware';
 import {VMWareVM} from '@anyopsos/module-node-vmware';
+import {VmwareSdkFunctionsOutput} from '@anyopsos/sdk-vmware';
 import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
 
 import {AnyOpsOSExtLibJqueryService} from '@anyopsos/ext-lib-jquery';
@@ -98,10 +99,10 @@ export class BodyComponent implements AfterViewInit {
           _value: this.application.initData.vm.info.obj.name
         },
         ticketType: 'webmks'
-      }).then((acquireTicketResult) => {
+      }).then((acquireTicketResult: VmwareSdkFunctionsOutput<'AcquireTicket'>) => {
         if (acquireTicketResult.status === 'error') {
           throw {
-            error: acquireTicketResult.error,
+            error: acquireTicketResult.data,
             description: 'Failed to acquire VM ticket'
           };
         }

@@ -54,3 +54,4 @@ bin/
 .dist/
 /internal_tests/
 /code
+docker/certificates/

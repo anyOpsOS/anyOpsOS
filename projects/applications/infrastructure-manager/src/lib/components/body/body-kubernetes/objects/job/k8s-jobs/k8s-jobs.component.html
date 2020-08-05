@@ -39,7 +39,7 @@
     <ng-container matColumnDef="conditions" class="conditions">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Conditions</th>
       <td mat-cell *matCellDef="let element">
-        <span *ngFor="let condition of getConditions(element) | keyvalue" class="condition" [className]="condition.key.toLowerCase()" title="{{condition.value}}">
+        <span *ngFor="let condition of getCondition(element) | keyvalue" class="condition" [className]="condition.key.toLowerCase()" title="{{condition.value}}">
           {{condition.key}}
         </span>
       </td>

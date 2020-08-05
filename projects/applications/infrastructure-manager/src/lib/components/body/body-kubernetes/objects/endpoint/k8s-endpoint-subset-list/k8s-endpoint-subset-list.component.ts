@@ -26,4 +26,9 @@ export class K8sEndpointSubsetListComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // TODO
+  goToElement(k8sObject?: DataObject): void {
+    return null;
+  }
+
 }

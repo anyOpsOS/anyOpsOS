@@ -21,7 +21,7 @@
 
     <ng-container matColumnDef="keys">
       <th mat-header-cell *matHeaderCellDef mat-sort-header class="keys">Keys</th>
-      <td mat-cell *matCellDef="let element">{{Object.keys(element.info.data.data)}}</td>
+      <td mat-cell *matCellDef="let element">{{element.info.data.data}}</td>
     </ng-container>
 
     <ng-container matColumnDef="age">

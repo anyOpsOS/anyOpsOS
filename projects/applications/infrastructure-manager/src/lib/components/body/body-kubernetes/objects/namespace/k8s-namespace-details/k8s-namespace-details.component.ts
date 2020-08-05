@@ -27,4 +27,9 @@ export class K8sNamespaceDetailsComponent implements OnInit {
     this.resourceQuotas = this.LibNodeHelpers.getChildObjectsByType(this.k8sObject.info.mainUuid, 'kubernetes', 'ResourceQuota', this.k8sObject.info.obj);
   }
 
+  // TODO
+  goToElement(k8sObject?: DataObject): void {
+    return null;
+  }
+
 }

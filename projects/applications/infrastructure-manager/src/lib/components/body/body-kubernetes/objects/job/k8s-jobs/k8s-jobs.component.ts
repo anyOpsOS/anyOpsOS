@@ -32,4 +32,17 @@ export class K8sJobsComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  // TODO
+  goToElement(k8sObject?: DataObject): void {
+    return null;
+  }
+
+  getCondition(element: DataObject & { info: { data: Job } }) {
+    // Type of Job condition could be only Complete or Failed
+    // https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.14/#jobcondition-v1-batch
+    const {conditions} = element.info.data.status;
+    if (!conditions) return;
+    return conditions.find(({ status }) => status === 'True');
+  }
+
 }
