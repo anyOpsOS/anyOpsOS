@@ -53,4 +53,9 @@ export class K8sIngressesComponent implements OnInit {
     return routes;
   }
 
+  // TODO
+  goToElement(k8sObject?: DataObject): void {
+    return null;
+  }
+
 }

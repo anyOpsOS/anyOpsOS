@@ -49,4 +49,9 @@ export class K8sCronJobDetailsComponent implements OnInit {
     return conditions.find(({ status }) => status === 'True');
   }
 
+  // TODO
+  goToElement(k8sObject?: DataObject): void {
+    return null;
+  }
+
 }

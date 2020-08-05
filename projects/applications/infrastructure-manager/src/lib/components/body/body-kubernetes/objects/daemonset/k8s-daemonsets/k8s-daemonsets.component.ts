@@ -37,4 +37,9 @@ export class K8sDaemonsetsComponent implements OnInit {
     return this.LibNodeHelpers.getChildObjectsByType(daemonSet.info.mainUuid, 'kubernetes', 'Pod', daemonSet.info.obj);
   }
 
+  // TODO
+  goToElement(k8sObject?: DataObject): void {
+    return null;
+  }
+
 }

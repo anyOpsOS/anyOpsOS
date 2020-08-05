@@ -27,6 +27,11 @@ export class K8sNodesComponent implements OnInit {
     this.nodes = this.LibNodeHelpers.getObjectByTypeInConnection(this.connection.uuid, this.connection.type, 'Node');
   }
 
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
   getRoleLabels(node: DataObject & { info: { data: Node } }): string {
     const roleLabels = Object.keys(node.info.data.metadata.labels).filter(key =>
       key.includes('node-role.kubernetes.io')
@@ -53,6 +58,11 @@ export class K8sNodesComponent implements OnInit {
 
   getActiveConditions(node: DataObject & { info: { data: Node } }): { [key: string]: string; }[] {
     return this.getConditions(node).filter(c => c.status === 'True');
+  }
+
+  // TODO
+  goToElement(k8sObject?: DataObject): void {
+    return null;
   }
 
 }

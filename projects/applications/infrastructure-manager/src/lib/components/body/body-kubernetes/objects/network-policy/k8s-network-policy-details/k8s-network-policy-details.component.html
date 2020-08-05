@@ -17,7 +17,7 @@
     <ng-container *ngFor="let ingress of k8sObject.info.data.spec.ingress">
 
       <aaim-k8s-object-item [name]="'Ports'">
-        <ng-container *ngFor="let port of ingress.ports; let isLast=last">
+        <ng-container *ngFor="let port of ingress.ports; last as isLast">
           {{port.protocol || ''}}:{{port.port || ''}}{{isLast ? '' : ', '}}
         </ng-container>
       </aaim-k8s-object-item>
@@ -32,8 +32,9 @@
 
           <aaim-k8s-object-item [name]="'namespaceSelector'">
             <ng-container *ngIf="from.podSelector.matchLabels.length > 0; else emptyFromNamespaceSelector">
-              <ng-container *ngFor="let label of from.podSelector.matchLabels  | keyvalue; let isLast=last"></ng-container>
-              {{label.key}}:{{label.value}}{{isLast ? '' : ', '}}
+              <ng-container *ngFor="let label of from.podSelector.matchLabels | keyvalue; last as isLast">
+                {{label.key}}:{{label.value}}{{isLast ? '' : ', '}}
+              </ng-container>
             </ng-container>
             <ng-template #emptyFromNamespaceSelector>(empty)</ng-template>
 
@@ -41,8 +42,9 @@
 
           <aaim-k8s-object-item [name]="'podSelector'">
             <ng-container *ngIf="from.podSelector.matchLabels.length > 0; else emptyFromPodSelector">
-              <ng-container *ngFor="let label of from.podSelector.matchLabels  | keyvalue; let isLast=last"></ng-container>
-              {{label.key}}:{{label.value}}{{isLast ? '' : ', '}}
+              <ng-container *ngFor="let label of from.podSelector.matchLabels | keyvalue; last as isLast">
+                {{label.key}}:{{label.value}}{{isLast ? '' : ', '}}
+              </ng-container>
             </ng-container>
             <ng-template #emptyFromPodSelector>(empty)</ng-template>
 
@@ -59,7 +61,7 @@
     <ng-container *ngFor="let egress of k8sObject.info.data.spec.egress">
 
       <aaim-k8s-object-item [name]="'Ports'">
-        <ng-container *ngFor="let port of egress.ports; let isLast=last">
+        <ng-container *ngFor="let port of egress.ports; last as isLast">
           {{port.protocol || ''}}:{{port.port || ''}}{{isLast ? '' : ', '}}
         </ng-container>
       </aaim-k8s-object-item>

@@ -22,7 +22,7 @@
 
   <aaim-k8s-object-item [name]="'Status'" [labelsOnly]="true">
     <ng-container *ngFor="let condition of getConditions()">
-      <aaim-k8s-object-badge *ngIf="condition.isReady" [label]="condition.type" [matTooltip]="condition.tooltip" [class]="condition.type.toLowerCase()"></aaim-k8s-object-badge>
+      <aaim-k8s-object-badge *ngIf="condition.isReady" [label]="condition.type" [class]="condition.type.toLowerCase()" [matTooltip]="condition.tooltip" ></aaim-k8s-object-badge>
     </ng-container>
   </aaim-k8s-object-item>
 

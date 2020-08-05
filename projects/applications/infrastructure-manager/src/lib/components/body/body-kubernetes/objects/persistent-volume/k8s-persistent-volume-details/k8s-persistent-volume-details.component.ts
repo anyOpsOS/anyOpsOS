@@ -21,7 +21,7 @@ export class K8sPersistentVolumeDetailsComponent implements OnInit {
   }
 
   // TODO
-  goToElement() {
+  goToElement(k8sObject?: DataObject): void {
     return null;
   }
 

@@ -43,7 +43,7 @@ export class K8sPersistentVolumeClaimDetailsComponent implements OnInit {
   }
 
   // TODO
-  goToElement() {
+  goToElement(k8sObject?: DataObject): void {
     return null;
   }
 

@@ -44,4 +44,9 @@ export class K8sHorizontalPodAutoscalersComponent implements OnInit {
     });
   }
 
+  // TODO
+  goToElement(k8sObject?: DataObject): void {
+    return null;
+  }
+
 }

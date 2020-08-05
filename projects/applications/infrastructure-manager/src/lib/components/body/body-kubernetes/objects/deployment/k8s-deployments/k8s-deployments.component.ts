@@ -41,4 +41,9 @@ export class K8sDeploymentsComponent implements OnInit {
     return (deployment.info.data.status.conditions || []).filter(c => c.status === 'True');
   }
 
+  // TODO
+  goToElement(k8sObject?: DataObject): void {
+    return null;
+  }
+
 }

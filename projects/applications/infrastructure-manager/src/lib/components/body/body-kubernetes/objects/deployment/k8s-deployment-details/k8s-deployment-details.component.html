@@ -34,7 +34,7 @@
   </aaim-k8s-object-item>
 
   <aaim-k8s-object-item [name]="'Conditions'" class="conditions" [labelsOnly]="true">
-    <aaim-k8s-object-badge *ngFor="let condition of getConditions()" [label]="condition.type" [class]="conditionClass(condition)" [matTooltip]="condition.message + '&#13;Last transition time:' +  condition.lastTransitionTime"></aaim-k8s-object-badge>
+    <aaim-k8s-object-badge *ngFor="let condition of getConditions()" [label]="condition.type.toLowerCase()" [class]="conditionClass(condition)" [matTooltip]="condition.message + '&#13;Last transition time:' +  condition.lastTransitionTime"></aaim-k8s-object-badge>
   </aaim-k8s-object-item>
 
   <aaim-k8s-pod-details-tolerations [k8sObject]="k8sObject"></aaim-k8s-pod-details-tolerations>

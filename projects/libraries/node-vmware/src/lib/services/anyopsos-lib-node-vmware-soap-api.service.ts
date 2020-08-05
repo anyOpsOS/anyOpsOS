@@ -18,7 +18,6 @@ export class AnyOpsOSLibNodeVmwareSoapApiService {
   // https://code.vmware.com/web/sdk/6.7/vsphere-management
   callSoapApi<Action extends VmwareSdkFunctions>(connectionUuid: string, action: Action, data: VmwareSdkFunctionsInput<Action>): Promise<VmwareSdkFunctionsOutput<Action>> {
 
-    // @ts-ignore TODO
     return this.http.post(`/api/vmware/soap/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}`, {action, data}).toPromise() as Promise<VmwareSdkFunctionsOutput<Action>>;
   }
 

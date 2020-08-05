@@ -63,7 +63,7 @@ export class VmwareRecentTasksComponent implements OnInit {
         maxCount: 100
       });
 
-    }).then((ReadNextTasksResult) => {
+    }).then((ReadNextTasksResult: VmwareSdkFunctionsOutput<'ReadNextTasks'>) => {
       if (ReadNextTasksResult.status === 'error') throw new Error('Failed to ReadNextTasks to vCenter');
 
       console.log(ReadNextTasksResult);

@@ -32,13 +32,13 @@
       <th mat-header-cell *matHeaderCellDef class="schedule">Schedule</th>
       <td mat-cell *matCellDef="let element">
         <ng-container *ngIf="isNeverRun(element); else schedule">never</ng-container>
-        <ng-template #schedule>{{k8sObject.info.data.spec.schedule}}</ng-template>
+        <ng-template #schedule>{{element.info.data.spec.schedule}}</ng-template>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="suspend">
       <th mat-header-cell *matHeaderCellDef mat-sort-header class="suspend">Suspend</th>
-      <td mat-cell *matCellDef="let element">{{k8sObject.info.data.spec.suspend}}</td>
+      <td mat-cell *matCellDef="let element">{{element.info.data.spec.suspend}}</td>
     </ng-container>
 
     <ng-container matColumnDef="active">
@@ -48,7 +48,7 @@
 
     <ng-container matColumnDef="last-schedule">
       <th mat-header-cell *matHeaderCellDef mat-sort-header class="schedule">Last schedule</th>
-      <td mat-cell *matCellDef="let element">{{k8sObject.info.data.lastScheduleTime | relatimeTime}} ago</td>
+      <td mat-cell *matCellDef="let element">{{element.info.data.lastScheduleTime | relatimeTime}} ago</td>
     </ng-container>
 
     <ng-container matColumnDef="age">
