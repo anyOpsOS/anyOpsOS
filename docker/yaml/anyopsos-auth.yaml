@@ -68,7 +68,7 @@ spec:
       containers:
       - name: auth
         image: localhost:5000/anyopsos-auth:latest
-        args: ["-stack-trace-limit=50"]
+        args: ["--stack-trace-limit=50"]
         resources:
           requests:
             cpu: 100m

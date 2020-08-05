@@ -14,4 +14,4 @@ ENV AOO_ANYOPSOS_TYPE core
 
 EXPOSE 443
 
-ENTRYPOINT ["nodemon", "-e", "js", "--experimental-modules", "--experimental-loader", "./https-loader.js", "--experimental-specifier-resolution=node", "index.js"]
+ENTRYPOINT ["nodemon", "-e", "js", "--experimental-loader", "./https-loader.js", "--experimental-specifier-resolution=node", "index.js"]

@@ -67,7 +67,7 @@ spec:
       containers:
         - name: filesystem
           image: localhost:5000/anyopsos-filesystem:latest
-          args: ["-stack-trace-limit=50"]
+          args: ["--stack-trace-limit=50"]
           resources:
             requests:
               cpu: 100m

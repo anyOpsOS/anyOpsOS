@@ -21,16 +21,32 @@ export class Docker {
     
     // Prepare Kubernetes environment
     console.log(blue(`[anyOpsOS Cli. Internals] Starting Kind cluster.\n`));
-    const kindContainerRunning: Buffer = await awaitSpawn('docker', ['inspect', 'anyopsos-control-plane', '--format={{.State.Running}}']);
-    if (kindContainerRunning.toString().slice(0, -1) === 'true') await runInDocker('/usr/local/bin/kind delete cluster --name anyopsos');
+    const kindContainerRunning: Buffer = await awaitSpawn('docker', ['inspect', 'anyopsos-control-plane', '--format={{.State.Running}}']).catch((e: any) => {
+      if (e.stderr) {
+        if (e.stderr.toString().slice(0, -1) === 'Error: No such object: anyopsos-control-plane') return;
+        throw e.stderr.toString();
+      }
+       
+      throw e;
+    });
+
+    if (kindContainerRunning?.toString().slice(0, -1) === 'true') await runInDocker('/usr/local/bin/kind delete cluster --name anyopsos');
 
     await runInDocker('/usr/local/bin/kind create cluster --config /kindconfig.yaml --name anyopsos');
     await runInDocker('sed -i.bak \'s/127.0.0.1:46443/anyopsos-control-plane:6443/g\' /root/.kube/config');
 
     // Prepare image registry
     console.log(blue(`[anyOpsOS Cli. Internals] Starting internal Container Registry.\n`));
-    const containerRunning: Buffer = await awaitSpawn('docker', ['inspect', 'anyopsos-registry', '--format={{.State.Running}}']);
-    if (containerRunning.toString().slice(0, -1) !== 'true') {
+    const registryContainerRunning: Buffer = await awaitSpawn('docker', ['inspect', 'anyopsos-registry', '--format={{.State.Running}}']).catch((e: any) => {
+      if (e.stderr) {
+        if (e.stderr.toString().slice(0, -1) === 'Error: No such object: anyopsos-registry') return;
+        throw e.stderr.toString();
+      }
+
+      throw e;
+    });
+
+    if (!registryContainerRunning || registryContainerRunning?.toString().slice(0, -1) !== 'true') {
       await runInDocker('docker run -d --restart=always -p "5000:5000" --name "anyopsos-registry" registry:2');
       await runInDocker('docker network connect "kind" "anyopsos-registry"');
     }
@@ -102,8 +118,9 @@ export class Docker {
     if (args.force) console.log(red(`[anyOpsOS Cli. Internals] Force recreation of Docker Development Image and Container.`));
 
     // Check if devel container is already created
-    const dockerContainers: Buffer = await awaitSpawn('docker', ['ps', '-a', '--format=\'{{json .Names}}\''], {
-      cwd: MAIN_PATH_CWD
+    const dockerContainers: Buffer = await awaitSpawn('docker', ['ps', '-a', '--format=\'{{json .Names}}\'']).catch((e: any) => {
+      if (e.stderr) throw e.stderr.toString();
+      throw e;
     });
 
     const containerExists = dockerContainers.toString().includes('"anyopsos-devel"');
@@ -113,15 +130,17 @@ export class Docker {
       // Stop here
       if (!args.force) return console.log(yellow(`[anyOpsOS Cli. Internals] Docker Development container already exists.`));
 
-      await awaitSpawn('docker', ['rm', '--force', 'anyopsos-devel'], {
-        cwd: MAIN_PATH_CWD
+      await awaitSpawn('docker', ['rm', '--force', 'anyopsos-devel']).catch((e: any) => {
+        if (e.stderr) throw e.stderr.toString();
+      throw e;
       });
 
     }
 
     // Check if devel image is already created
-    const dockerImages: string = await awaitSpawn('docker', ['images', '--format=\'{{json .Repository}}\''], {
-      cwd: MAIN_PATH_CWD
+    const dockerImages: string = await awaitSpawn('docker', ['images', '--format=\'{{json .Repository}}\'']).catch((e: any) => {
+      if (e.stderr) throw e.stderr.toString();
+      throw e;
     });
 
     const imageExists = dockerImages.toString().includes('"anyopsos-devel"');
@@ -135,12 +154,16 @@ export class Docker {
       await awaitSpawn('docker', ['build', '-f', 'docker/Dockerfile.devel', '-t', 'anyopsos-devel', './docker'], {
         cwd: MAIN_PATH_CWD,
         stdio: 'inherit'
+      }).catch((e: any) => {
+        if (e.stderr) throw e.stderr.toString();
+      throw e;
       });
     }
 
     // Check if volume is already created
-    const dockerVolumes: string = await awaitSpawn('docker', ['volume', 'ls', '--format=\'{{json .Name}}\''], {
-      cwd: MAIN_PATH_CWD
+    const dockerVolumes: string = await awaitSpawn('docker', ['volume', 'ls', '--format=\'{{json .Name}}\'']).catch((e: any) => {
+      if (e.stderr) throw e.stderr.toString();
+      throw e;
     });
 
     const volumeExists: boolean = dockerVolumes.toString().includes('"anyopsos-data"');
@@ -151,16 +174,17 @@ export class Docker {
       console.log(blueBright(`[anyOpsOS Cli.] Creating Docker Development Volume.`));
 
       // Create data volume
-      await awaitSpawn('docker', ['volume', 'create', 'anyopsos-data'], {
-        cwd: MAIN_PATH_CWD,
-        stdio: 'inherit'
+      await awaitSpawn('docker', ['volume', 'create', 'anyopsos-data']).catch((e: any) => {
+        if (e.stderr) throw e.stderr.toString();
+      throw e;
       });
     }
 
     // Check if code folder exists
     if (!pathExistsSync(`${INTERNAL_PATH_CWD}/code`)) {
-      const dockerVolumePath: string = await awaitSpawn('docker', ['volume', 'inspect', 'anyopsos-data', '--format=\'{{json .Mountpoint}}\''], {
-        cwd: MAIN_PATH_CWD
+      const dockerVolumePath: string = await awaitSpawn('docker', ['volume', 'inspect', 'anyopsos-data', '--format=\'{{json .Mountpoint}}\'']).catch((e: any) => {
+        if (e.stderr) throw e.stderr.toString();
+        throw e;
       });
 
       await ensureSymlink(dockerVolumePath.toString().slice(2, -3), `${INTERNAL_PATH_CWD}/code`);
@@ -176,7 +200,7 @@ export class Docker {
       // '--rm',
       '-d',
       '-p', '2222:22',
-      '-e', 'NODE_OPTIONS=--no-warnings --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node',
+      //'-e', 'NODE_OPTIONS=--no-warnings --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node',
       '--mount', `src=anyopsos-data,target=${INTERNAL_PATH_CWD},type=volume`,
       '--mount', `src=${MAIN_PATH_CWD}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
       '-v', '/var/run/docker.sock:/var/run/docker.sock',
@@ -185,6 +209,9 @@ export class Docker {
     ], {
       cwd: MAIN_PATH_CWD,
       stdio: 'inherit'
+    }).catch((e: any) => {
+      if (e.stderr) throw e.stderr.toString();
+      throw e;
     });
 
     console.log(red(`[anyOpsOS Cli.] SSH key file [ssh.key] generated. Use this key to manage the container files from your IDE.`));
