@@ -20,5 +20,5 @@ export async function runInDocker(command: string): Promise<any> {
       throw e;
     });
   }
-  
+
 }
