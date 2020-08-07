@@ -52,6 +52,7 @@ export class anyOpsOS {
     Basic operations:
     * <prepare>: Launches a Docker container with anyOpsOS files mounted on /var/www
     * <attach>: Attach to the container Shell
+    * <logs>: Stream all anyopsos k8s container logs
 
     Code Development:
     * <download>: Performs a 'git clone' of anyOpsOS repository
@@ -71,7 +72,7 @@ export class anyOpsOS {
             demand: false,
             describe: 'specify module type',
             hidden: true,
-            choices: ['prepare', 'attach', 'download', 'install', 'build', 'certificate', 'k8s']
+            choices: ['prepare', 'attach', 'download', 'install', 'build', 'certificate', 'k8s', 'logs']
           }
         },
         handler: async (args: { force: any; action: string; }) => {
@@ -84,6 +85,7 @@ export class anyOpsOS {
             if (args.action === 'build') return await new Docker().build();
             if (args.action === 'certificate') return await new Docker().certificate();
             if (args.action === 'k8s') return await new Docker().k8s();
+            if (args.action === 'logs') return await new Docker().logs();
 
           } catch (err) {
             console.error(err);

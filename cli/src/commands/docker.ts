@@ -18,7 +18,7 @@ export class Docker {
   async k8s() {
 
     console.log(blueBright(`[anyOpsOS Cli.] Preparing Kubernetes environment.\n`));
-    
+
     // Prepare Kubernetes environment
     console.log(blue(`[anyOpsOS Cli. Internals] Starting Kind cluster.\n`));
     const kindContainerRunning: Buffer = await awaitSpawn('docker', ['inspect', 'anyopsos-control-plane', '--format={{.State.Running}}']).catch((e: any) => {
@@ -26,7 +26,7 @@ export class Docker {
         if (e.stderr.toString().slice(0, -1) === 'Error: No such object: anyopsos-control-plane') return;
         throw e.stderr.toString();
       }
-       
+
       throw e;
     });
 
@@ -73,6 +73,11 @@ export class Docker {
     --from-file=./docker/certificates/dhparam.pem');
     await runInDocker('kubectl create configmap vault-config -n anyopsos --from-file=docker/assets/vault.json');
     await runInDocker('kubectl apply -f docker/yaml/');
+  }
+
+  async logs() {
+    console.log(blueBright(`[anyOpsOS Cli.] K8s logs.\n`));
+    return runInDocker('stern anyopsos -n anyopsos -t');
   }
 
   async attach() {

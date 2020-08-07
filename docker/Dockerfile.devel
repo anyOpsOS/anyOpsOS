@@ -23,6 +23,11 @@ RUN curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -
 chmod +x ./kubectl && \
 mv ./kubectl /usr/local/bin/kubectl
 
+RUN curl -L https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64 --output stern && \
+chmod +x ./stern && \
+mv ./stern /usr/local/bin/stern
+
+
 ADD assets/kindconfig.yaml /kindconfig.yaml
 ADD assets/start.sh /start.sh
 RUN chmod +x /start.sh
