@@ -1,10 +1,9 @@
 import log4js, {Logger} from 'log4js';
-import uuid from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import {client} from 'node-vault';
 
 // TODO ESM
 const {getLogger} = log4js;
-const {v4} = uuid;
 
 import {AnyOpsOSVaultModule} from '@anyopsos/module-vault';
 import {AnyOpsOSFileSystemModule} from '@anyopsos/module-file-system';
@@ -126,7 +125,7 @@ export class AnyOpsOSAuthModule {
 
     // Generate new random password & uuid
     const password: string = Math.random().toString(32);
-    const userUuid: string = v4();
+    const userUuid: string = uuidv4();
 
     const userData = { uuid: userUuid, home: `/home/${username}` };
 

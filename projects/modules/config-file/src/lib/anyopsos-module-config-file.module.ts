@@ -1,13 +1,12 @@
 import {join} from 'path';
 import fs from 'fs-extra';
 import log4js from 'log4js';
-import uuid from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import properLockfile from 'proper-lockfile';
 
 // TODO ESM
 const {pathExistsSync, readJSON, unlink, writeJson} = fs;
 const {getLogger} = log4js;
-const {v4} = uuid;
 const {lock} = properLockfile;
 
 import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
@@ -147,7 +146,7 @@ export class AnyOpsOSConfigFileModule {
 
       // Make sure all configs in configData contains an uuid
       fileData.map((data: ConfigFileData) => {
-        if (!data.uuid) data.uuid = v4();
+        if (!data.uuid) data.uuid = uuidv4();
       });
 
       await this.writeJsonAndRelease(configPath, fileData, () => void 0);
@@ -272,7 +271,7 @@ export class AnyOpsOSConfigFileModule {
 
         // Make sure all configs in configData contains an uuid
         fileData.map(async (data: ConfigFileData) => {
-          if (!data.uuid) data.uuid = v4();
+          if (!data.uuid) data.uuid = uuidv4();
         });
 
         await this.writeJsonAndRelease(configPath, fileData, releaseLock);
@@ -300,7 +299,7 @@ export class AnyOpsOSConfigFileModule {
         fileData = fileData as ConfigFileData;
 
         // Make sure fileData contains an uuid
-        if (!fileData.uuid) fileData.uuid = v4();
+        if (!fileData.uuid) fileData.uuid = uuidv4();
 
         configFile[itemIndex] = fileData;
         await this.writeJsonAndRelease(configPath, configFile, releaseLock);

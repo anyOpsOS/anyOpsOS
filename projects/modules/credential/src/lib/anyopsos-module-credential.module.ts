@@ -1,11 +1,9 @@
 import {client} from 'node-vault';
-import uuid from 'uuid';
-
+import {v4 as uuidv4} from 'uuid';
 import log4js, {Logger} from 'log4js';
 
 // TODO ESM
 const {getLogger} = log4js;
-const {v4} = uuid;
 
 import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
 import {AnyOpsOSVaultModule} from '@anyopsos/module-vault';
@@ -96,7 +94,7 @@ export class AnyOpsOSCredentialModule {
   async putCredential(credential: Omit<Credential, 'uuid'>): Promise<string> {
     logger.trace(`[Module Credentials] -> putCredential -> userUuid [${this.userUuid}], workspaceUuid [${this.workspaceUuid}]`);
 
-    const credentialUuid: string = v4();
+    const credentialUuid: string = uuidv4();
 
     await this.vaultClient.write(`secret/workspaces/${this.workspaceUuid}/${credentialUuid}`, credential);
 

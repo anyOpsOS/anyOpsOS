@@ -1,11 +1,10 @@
 import {join} from 'path';
 import {client} from 'node-vault';
 import log4js, {Logger} from 'log4js';
-import uuid from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 // TODO ESM
 const {getLogger} = log4js;
-const {v4} = uuid;
 
 import {AnyOpsOSVaultModule} from '@anyopsos/module-vault';
 import {AnyOpsOSFileSystemModule} from '@anyopsos/module-file-system';
@@ -37,7 +36,7 @@ export class AnyOpsOSSysWorkspaceModule {
   async createWorkspace(name: string, path: string, isDefault: boolean = false): Promise<void> {
     logger.trace(`[Module Workspace] -> createWorkspace name [${name}], path [${path}], isDefault [${isDefault}]`);
 
-    const workspaceUuid: string = v4();
+    const workspaceUuid: string = uuidv4();
 
     const FileSystemModule: AnyOpsOSFileSystemModule = new AnyOpsOSFileSystemModule(this.userUuid);
     const ConfigFileModule: AnyOpsOSConfigFileModule = new AnyOpsOSConfigFileModule(this.userUuid, workspaceUuid);
