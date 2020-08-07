@@ -27,7 +27,7 @@
     "@anyopsos/module-sys-get-path": "~0.0.1",
     "@anyopsos/module-sys-redis-session": "~0.0.1",
     "body-parser": "^1.19.0",
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "compression": "^1.7.4",
     "connect-redis": "^5.0.0",
