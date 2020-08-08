@@ -1,10 +1,11 @@
 import bluebird from 'bluebird';
-import ssh2, {Client as SshClient, ClientChannel, ExecOptions, SFTPWrapper} from 'ssh2';
+import {Client as ClientSsh, ClientChannel, ExecOptions, SFTPWrapper} from 'ssh2';
+import * as ssh2 from 'ssh2';
 import validator from 'validator';
 
 // TODO ESM
-const {promisifyAll} = bluebird;
 const {Client} = ssh2;
+const {promisifyAll} = bluebird;
 
 import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
 import {AnyOpsOSCredentialModule} from '@anyopsos/module-credential';
@@ -37,7 +38,7 @@ export class AnyOpsOSSshSessionStateModule {
   /**
    * SSH Connections
    */
-  async createSession(): Promise<SshClient> {
+  async createSession(): Promise<ClientSsh> {
     if (!sshSessions[this.workspaceUuid]) sshSessions[this.workspaceUuid] = {};
     sshSessions[this.workspaceUuid][this.connectionUuid] = new Client();
 
@@ -83,7 +84,7 @@ export class AnyOpsOSSshSessionStateModule {
     if (sshSessions[this.workspaceUuid][this.connectionUuid]) sshSessions[this.workspaceUuid][this.connectionUuid].end();
   }
 
-  getSession(): SshClient {
+  getSession(): ClientSsh {
     if (!sshSessions[this.workspaceUuid]?.[this.connectionUuid]) throw new Error('resource_invalid');
 
     return sshSessions[this.workspaceUuid][this.connectionUuid];
@@ -140,8 +141,8 @@ export class AnyOpsOSSshSessionStateModule {
         if (!stream) return reject('no_stream');
 
         let streamedData: string = '';
-        stream.on('data', (data: string, e: Error) => {
-          if (e) return reject(e);
+        stream.on('data', (data: string, err: Error) => {
+          if (err) return reject(err);
 
           streamedData += data;
         }).stderr.on('data', (data: string) => {
