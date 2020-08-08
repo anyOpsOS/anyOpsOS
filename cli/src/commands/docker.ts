@@ -58,8 +58,10 @@ export class Docker {
     // Prepare anyopsos
     console.log(blue(`[anyOpsOS Cli. Internals] Deploying configuration files.\n`));
     await runInDocker('kubectl create namespace anyopsos');
-    await runInDocker('kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml');
-    await runInDocker('kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml');
+
+    await runInDocker('kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/ingress-nginx-2.11.2/deploy/static/provider/kind/deploy.yaml');
+    await runInDocker(`kubectl patch deployment ingress-nginx-controller -n ingress-nginx --patch "$(cat ${INTERNAL_PATH_CWD}/docker/yaml/nginx-ingress-controller-patch.yaml)"`);
+
     await runInDocker('kubectl create secret generic anyopsos-certificates -n anyopsos \
     --from-file=./docker/certificates/ca/ca.cert \
     --from-file=./docker/certificates/vault/vault.cert \
@@ -73,6 +75,8 @@ export class Docker {
     --from-file=./docker/certificates/dhparam.pem');
     await runInDocker('kubectl create configmap vault-config -n anyopsos --from-file=docker/assets/vault.json');
     await runInDocker('kubectl apply -f docker/yaml/');
+
+    await runInDocker('kubectl config set-context --current --namespace=anyopsos');
   }
 
   async logs() {
@@ -205,7 +209,7 @@ export class Docker {
       // '--rm',
       '-d',
       '-p', '2222:22',
-      //'-e', 'NODE_OPTIONS=--no-warnings --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node',
+      // '-e', 'NODE_OPTIONS=--no-warnings --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node',
       '--mount', `src=anyopsos-data,target=${INTERNAL_PATH_CWD},type=volume`,
       '--mount', `src=${MAIN_PATH_CWD}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
       '-v', '/var/run/docker.sock:/var/run/docker.sock',

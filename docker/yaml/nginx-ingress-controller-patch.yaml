@@ -1,0 +1,15 @@
+spec:
+  template:
+    spec:
+      containers:
+      - name: controller
+        args:
+        - /nginx-ingress-controller
+        - --election-id=ingress-controller-leader
+        - --ingress-class=nginx
+        - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
+        - --validating-webhook=:8443
+        - --validating-webhook-certificate=/usr/local/certificates/cert
+        - --validating-webhook-key=/usr/local/certificates/key
+        - --publish-status-address=localhost
+        - --enable-ssl-passthrough

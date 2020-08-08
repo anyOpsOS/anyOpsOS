@@ -12,7 +12,7 @@ RUN yum -y update
 RUN curl -sL https://rpm.nodesource.com/setup_14.x | bash - && \
 yum install -y yum-utils && \
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && \
-yum install -y nodejs git python3 make gcc gcc-c++ openssh-server docker-ce-3:18.09.1-3.el7 && \
+yum install -y nodejs git python3 make gcc gcc-c++ openssh-server docker-ce-3:18.09.1-3.el7 bash-completion && \
 npm install -g yarn nodemon
 
 RUN curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.8.1/kind-linux-amd64 && \
@@ -26,6 +26,11 @@ mv ./kubectl /usr/local/bin/kubectl
 RUN curl -L https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64 --output stern && \
 chmod +x ./stern && \
 mv ./stern /usr/local/bin/stern
+
+RUN source <(kubectl completion bash) && \
+echo "source <(kubectl completion bash)" >> ~/.bashrc && \
+alias k=kubectl && \
+complete -F __start_kubectl k
 
 
 ADD assets/kindconfig.yaml /kindconfig.yaml
