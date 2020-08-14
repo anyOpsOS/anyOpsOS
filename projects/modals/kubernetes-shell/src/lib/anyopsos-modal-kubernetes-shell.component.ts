@@ -48,8 +48,8 @@ export class AnyOpsOSModalKubernetesShellComponent implements OnInit {
         selectedData.pod.name,
         selectedData.container.name,
         '/bin/sh'
-      ).then(data => {
-        console.log(data);
+      ).then(res => {
+        console.log(res);
       });
 
     });

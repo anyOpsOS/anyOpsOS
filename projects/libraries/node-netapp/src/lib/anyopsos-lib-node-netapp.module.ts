@@ -12,12 +12,12 @@ import {AnyOpsOSLibNodeNetappFileSystemHandlersService} from './services/anyopso
 })
 export class AnyOpsOSLibNodeNetappModule {
 
-  constructor(private readonly MainService: MainService,
+  constructor(private readonly Main: MainService,
               private readonly LibNodeNetappConnectionsState: AnyOpsOSLibNodeNetappConnectionsStateService,
               private readonly LibNodeNetappFileSystemHandlers: AnyOpsOSLibNodeNetappFileSystemHandlersService) {
 
     // Initialize connections when user is loggedIn
-    this.MainService.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
+    this.Main.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
       if (data.appBootstrapped === true && !this.LibNodeNetappConnectionsState.getConnectionsInitialized()) {
 
         // Get Netapp connections

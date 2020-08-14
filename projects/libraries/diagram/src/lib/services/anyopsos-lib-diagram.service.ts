@@ -36,7 +36,7 @@ export class AnyOpsOSLibDiagramService {
   // We don't collapse edge pairs (A->B, B->A) here as we want to let the layout
   // engine decide how to handle bidirectional edges.
   initEdgesFromNodes(nodes: Node[]): LayoutEdge[] {
-    let edges = [];
+    const edges = [];
 
     nodes.forEach((node) => {
       (node.adjacency || []).forEach((adjacentId) => {
@@ -189,7 +189,7 @@ export class AnyOpsOSLibDiagramService {
           start: index,
           text,
           truncate,
-          keyPath: keyPath
+          keyPath
         });
 
       }
@@ -246,7 +246,7 @@ export class AnyOpsOSLibDiagramService {
         nodeMatches.push({
           label: fieldLabel,
           metric: true,
-          keyPath: keyPath
+          keyPath
         });
 
       }
@@ -600,10 +600,12 @@ export class AnyOpsOSLibDiagramService {
     const nodes: Node[] = this.LibDiagramState.$nodes.getValue();
     const visibleNodes: Node[] = nodes.filter(node => !node.filtered);
 
-    if (visibleNodes.length === 0) return {
-      edges: [],
-      nodes: []
-    };
+    if (visibleNodes.length === 0) {
+        return {
+        edges: [],
+        nodes: []
+      };
+    }
 
     const edges: LayoutEdge[] = this.initEdgesFromNodes(nodes);
 
@@ -650,9 +652,9 @@ export class AnyOpsOSLibDiagramService {
     const canvasWidth: number = this.canvasWidth();
 
     return {
-      forceRelayout: forceRelayout,
+      forceRelayout,
       topologyId: currentTopologyId,
-      topologyOptions: topologyOptions,
+      topologyOptions,
       height: canvasHeight,
       width: canvasWidth,
     }

@@ -164,7 +164,7 @@ export class AnyOpsOSNodeVmwareModule {
     const proto: string = (mainServer.port === 80 ? 'http' : 'https');
 
     const requestHeaders: { [key: string]: string } = {
-      'Accept': 'application/xml',
+      Accept: 'application/xml',
       'Content-Type': 'application/xml'
     };
 
@@ -204,10 +204,10 @@ export class AnyOpsOSNodeVmwareModule {
 
     const requestHeaders: { [key: string]: string } = {
       'Content-Type': 'text/xml',
-      'SOAPAction': 'urn:vim25/6.0',
+      SOAPAction: 'urn:vim25/6.0',
       'Content-Length': Buffer.byteLength(xml).toString(),
-      'Expect': '100-continue',
-      'Cookie': soapSessionCookie
+      Expect: '100-continue',
+      Cookie: soapSessionCookie
     };
 
     return fetch(`${proto}://${mainServer.host}:${mainServer.port}/sdk`, {
@@ -256,9 +256,9 @@ export class AnyOpsOSNodeVmwareModule {
     // https://code.vmware.com/apis/191/vsphere-automation
 
     const requestHeaders: { [key: string]: string } = {
-      'Accept': 'application/xml',
+      Accept: 'application/xml',
       'Content-Type': 'application/xml',
-      'Cookie': apiSessionCookie
+      Cookie: apiSessionCookie
     };
 
     return fetch(`${proto}://${mainServer.host}:${mainServer.port}${apiPath}`, {

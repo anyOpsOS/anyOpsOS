@@ -128,7 +128,7 @@ export class AnyOpsOSVaultModule {
 
     return vaultClient.unseal({
       secret_shares: 1,
-      key: key
+      key
     });
 
   }

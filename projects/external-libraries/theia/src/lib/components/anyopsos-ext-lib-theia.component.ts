@@ -10,7 +10,7 @@ export class AnyOpsOSExtLibTheiaComponent implements AfterViewInit {
   @ViewChild('theia', {static: false}) theiaRef: ElementRef;
 
   ngAfterViewInit() {
-    //this.runApplication(this.theiaRef.nativeElement);
+    // this.runApplication(this.theiaRef.nativeElement);
   }
 
 }

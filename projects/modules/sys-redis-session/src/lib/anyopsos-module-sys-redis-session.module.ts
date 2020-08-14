@@ -56,7 +56,7 @@ export class AnyOpsOSSysRedisSessionModule {
     retry_strategy: (options) => retryStrategy(options, 'sub')
   })
   .on('ready', () => {
-    //this.Sub.client('SETNAME', 'Sub-' + os.hostname());
+    // this.Sub.client('SETNAME', 'Sub-' + os.hostname());
   })
   .on('error', (e: Error) => {
     console.log('error from sub');

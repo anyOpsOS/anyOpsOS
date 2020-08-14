@@ -12,12 +12,12 @@ import {AnyOpsOSLibNodeLinuxFileSystemHandlersService} from './services/anyopsos
 })
 export class AnyOpsOSLibNodeLinuxModule {
 
-  constructor(private readonly MainService: MainService,
+  constructor(private readonly Main: MainService,
               private readonly LibNodeLinuxConnectionsState: AnyOpsOSLibNodeLinuxConnectionsStateService,
               private readonly LibNodeLinuxFileSystemHandlers: AnyOpsOSLibNodeLinuxFileSystemHandlersService) {
 
     // Initialize connections when user is loggedIn
-    this.MainService.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
+    this.Main.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
       if (data.appBootstrapped === true && !this.LibNodeLinuxConnectionsState.getConnectionsInitialized()) {
 
         // Get Linux connections

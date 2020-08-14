@@ -114,9 +114,9 @@ export class AnyOpsOSNodeNetappSessionStateModule {
 
     const requestHeaders: { [key: string]: string } = {
       'Content-Type': 'text/xml',
-      'SOAPAction': 'urn:vim25/6.0',
+      SOAPAction: 'urn:vim25/6.0',
       'Content-Length': Buffer.byteLength(xml).toString(),
-      'Expect': '100-continue'
+      Expect: '100-continue'
     };
 
     return fetch(`${proto}://${mainServer.host}:${mainServer.port}/sdk`, {

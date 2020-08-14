@@ -30,11 +30,6 @@ export class AnyOpsOSAuthModule {
   private validPrivilegedUser: boolean = false;
 
   // With no parameters, means no authentication.
-  constructor();
-
-  // User authenticated
-  constructor(userUuid: string);
-
   constructor(private readonly userUuid?: string) {
 
     // TODO: VALIDATE PRIVILEGES

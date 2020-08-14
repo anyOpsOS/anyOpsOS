@@ -183,9 +183,9 @@ export class AnyOpsOSNodeNetappModule {
 
     const requestHeaders: { [key: string]: string } = {
       'Content-Type': 'text/xml',
-      'Authorization': 'Basic ' + Buffer.from(mainServer.credential.username + ':' + mainServer.credential.password).toString('base64'),
+      Authorization: 'Basic ' + Buffer.from(mainServer.credential.username + ':' + mainServer.credential.password).toString('base64'),
       'Content-Length': Buffer.byteLength(xml).toString(),
-      'Cookie': soapSessionCookie
+      Cookie: soapSessionCookie
     };
 
     return fetch(`${proto}://${mainServer.host}:${mainServer.port}/servlets/netapp.servlets.admin.XMLrequest_filer`, {

@@ -80,7 +80,7 @@ export class AnyOpsOSLibDiagramComponent implements OnInit, AfterViewInit, OnCha
         this.LibDiagramInitializer.init(nextProps.graphNodes.currentValue, nextProps.graphTopologies.currentValue);
       } else {
 
-        //if (!nextProps.graphNodes || (nextProps.graphNodes && isEqual(nextProps.graphNodes.previousValue, nextProps.graphNodes.currentValue))) return;
+        // if (!nextProps.graphNodes || (nextProps.graphNodes && isEqual(nextProps.graphNodes.previousValue, nextProps.graphNodes.currentValue))) return;
         this.LibDiagramState.setNodes(nextProps.graphNodes.currentValue);
         this.LibDiagramState.setForceRelayout(true);
 

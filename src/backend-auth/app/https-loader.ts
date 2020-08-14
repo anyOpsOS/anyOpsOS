@@ -48,7 +48,7 @@ export function resolve(specifier: string, context: { parentURL?: any }, default
     } else {
       context.parentURL = 'file:///var/www/app.js';
     }
-    
+
   }
 
   // Let Node.js handle all other specifiers.

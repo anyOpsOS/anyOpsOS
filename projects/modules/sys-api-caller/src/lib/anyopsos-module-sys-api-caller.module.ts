@@ -7,14 +7,14 @@ export class AnyOpsOSSysApiCallerModule {
 
   constructor() {
   }
-  
+
   /**
    * This method is used to contact with other anyOpsOS APIs.
    * Examples:
    * - Auth API -> Filesystem API: To create user workspaces
    * - Core API -> Auth API: To access a workspace credentials and connect agains a node
    * ...
-   * 
+   *
    * If userUuid is passed, it will impersonate this user
    */
   call(api: 'filesystem' | 'auth', method: 'GET' | 'PUT' | 'POST' | 'PATCH' | 'DELETE', url: string, bodyData?: any, userUuid?: string): Promise<BackendResponse> {

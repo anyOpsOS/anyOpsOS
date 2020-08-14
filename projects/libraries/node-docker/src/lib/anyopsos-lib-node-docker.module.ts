@@ -12,12 +12,12 @@ import {AnyOpsOSLibNodeDockerFileSystemHandlersService} from './services/anyopso
 })
 export class AnyOpsOSLibNodeDockerModule {
 
-  constructor(private readonly MainService: MainService,
+  constructor(private readonly Main: MainService,
               private readonly LibNodeDockerConnectionsState: AnyOpsOSLibNodeDockerConnectionsStateService,
               private readonly LibNodeDockerFileSystemHandlers: AnyOpsOSLibNodeDockerFileSystemHandlersService) {
 
     // Initialize connections when user is loggedIn
-    this.MainService.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
+    this.Main.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
       if (data.appBootstrapped === true && !this.LibNodeDockerConnectionsState.getConnectionsInitialized()) {
 
         // Get Docker connections

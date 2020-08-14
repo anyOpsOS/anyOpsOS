@@ -3,7 +3,7 @@ import routingControllersSessionParam from 'routing-controllers/decorator/Sessio
 import log4js, {Logger} from 'log4js';
 import {Request, Response} from 'express';
 
-//TODO ESM
+// TODO ESM
 const {Controller, Param, Get, Authorized, Put, BodyParam, Req, Res, Delete, Patch} = routingControllers;
 const {getLogger} = log4js;
 const {SessionParam} = routingControllersSessionParam;

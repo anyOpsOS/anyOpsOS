@@ -19,7 +19,7 @@ const logger: Logger = getLogger('mainLog');
 @Controller('/api/workspace')
 export class AnyOpsOSWorkspaceApiController {
 
-  @Get("/:workspaceUuid?")
+  @Get('/:workspaceUuid?')
   async getWorkspace(@Req() request: Request,
                      @Res() response: Response,
                      @SessionParam('userUuid') userUuid: string,

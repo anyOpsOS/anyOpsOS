@@ -14,8 +14,8 @@ export class AnyOpsOSLibNodeNetappSoapApiService {
   }
 
   // netapp-manageability-sdk-ontap-9.3-api-documentation/doc/WebHelp/index.htm
-  // async callSoapApi<Action extends NetappSdkFunctions>(connectionUuid: string, action: Action, data: NetappSdkFunctionsInput<Action>): Promise<NetappSdkFunctionsOutput<Action>>
-  // async callSoapApi<Action extends NetappSdkVfilerFunctions>(connectionUuid: string, action: Action, data: NetappSdkVfilerFunctionsInput<Action>, vfiler: string): Promise<NetappSdkVfilerFunctionsOutput<Action>>
+  async callSoapApi<Action extends NetappSdkFunctions>(connectionUuid: string, action: Action, data: NetappSdkFunctionsInput<Action>): Promise<NetappSdkFunctionsOutput<Action>>
+  async callSoapApi<Action extends NetappSdkVfilerFunctions>(connectionUuid: string, action: Action, data: NetappSdkVfilerFunctionsInput<Action>, vfiler: string): Promise<NetappSdkVfilerFunctionsOutput<Action>>
   async callSoapApi<Action extends NetappSdkFunctions | NetappSdkVfilerFunctions>(
     connectionUuid: string,
     action: Action,

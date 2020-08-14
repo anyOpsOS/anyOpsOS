@@ -12,12 +12,12 @@ import {AnyOpsOSLibNodeKubernetesFileSystemHandlersService} from './services/any
 })
 export class AnyOpsOSLibNodeKubernetesModule {
 
-  constructor(private readonly MainService: MainService,
+  constructor(private readonly Main: MainService,
               private readonly LibNodeKubernetesConnectionsState: AnyOpsOSLibNodeKubernetesConnectionsStateService,
               private readonly LibNodeKubernetesFileSystemHandlers: AnyOpsOSLibNodeKubernetesFileSystemHandlersService) {
 
     // Initialize connections when user is loggedIn
-    this.MainService.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
+    this.Main.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
       if (data.appBootstrapped === true && !this.LibNodeKubernetesConnectionsState.getConnectionsInitialized()) {
 
         // Get Kubernetes connections

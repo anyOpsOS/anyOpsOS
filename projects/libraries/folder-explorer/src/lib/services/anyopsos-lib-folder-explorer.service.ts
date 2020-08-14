@@ -62,7 +62,7 @@ export class AnyOpsOSLibFolderExplorerService {
     this.LibFileSystemUi.UIgetFolder(
       (srcPath ? srcPath : this.dataStore.currentPath),
       (connection ? connection.type : null),
-      (connection ? { connection: connection } : undefined)
+      (connection ? { connection } : undefined)
     ).then((data: AnyOpsOSFile[]) => {
       this.dataStore.currentData = data;
 

@@ -12,12 +12,12 @@ import {AnyOpsOSLibCredentialStateService} from './services/anyopsos-lib-credent
 })
 export class AnyOpsOSLibCredentialModule {
 
-  constructor(private readonly MainService: MainService,
+  constructor(private readonly Main: MainService,
               private readonly LibCredential: AnyOpsOSLibCredentialService,
               private readonly LibCredentialState: AnyOpsOSLibCredentialStateService) {
 
     // Initialize credentials when user is loggedIn
-    this.MainService.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
+    this.Main.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
       if (data.appBootstrapped === true && !this.LibCredentialState.getCredentialsInitialized()) {
 
         // Get Credentials

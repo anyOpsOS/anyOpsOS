@@ -122,9 +122,9 @@ export class AnyOpsOSNodeVmwareSessionStateModule {
 
     const requestHeaders: { [key: string]: string } = {
       'Content-Type': 'text/xml',
-      'SOAPAction': 'urn:vim25/6.0',
+      SOAPAction: 'urn:vim25/6.0',
       'Content-Length': Buffer.byteLength(xml).toString(),
-      'Expect': '100-continue'
+      Expect: '100-continue'
     };
 
     return fetch(`${proto}://${mainServer.host}:${mainServer.port}/sdk`, {
@@ -144,8 +144,8 @@ export class AnyOpsOSNodeVmwareSessionStateModule {
 
     const requestHeaders: { [key: string]: string } = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': `Basic ${Buffer.from(mainServer.credential.username + ':' + mainServer.credential.password).toString('base64')}`
+      Accept: 'application/json',
+      Authorization: `Basic ${Buffer.from(mainServer.credential.username + ':' + mainServer.credential.password).toString('base64')}`
     };
 
     return fetch(`${proto}://${mainServer.host}:${mainServer.port}/rest/com/vmware/cis/session?~action=get`, {

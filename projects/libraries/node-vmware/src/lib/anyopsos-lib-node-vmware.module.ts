@@ -12,12 +12,12 @@ import {AnyOpsOSLibNodeVmwareFileSystemHandlersService} from './services/anyopso
 })
 export class AnyOpsOSLibNodeVmwareModule {
 
-  constructor(private readonly MainService: MainService,
+  constructor(private readonly Main: MainService,
               private readonly LibNodeVmwareConnectionsState: AnyOpsOSLibNodeVmwareConnectionsStateService,
               private readonly LibNodeVmwareFileSystemHandlers: AnyOpsOSLibNodeVmwareFileSystemHandlersService) {
 
     // Initialize connections when user is loggedIn
-    this.MainService.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
+    this.Main.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
       if (data.appBootstrapped === true && !this.LibNodeVmwareConnectionsState.getConnectionsInitialized()) {
 
         // Get Vmware connections

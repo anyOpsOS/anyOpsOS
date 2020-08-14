@@ -34,7 +34,7 @@ export function resolve(specifier: string, context: { parentURL?: any }, default
 }
 
 export function getFormat(url: string, context: { parentURL?: any }, defaultGetFormat: (...args: any) => any) {
-  
+
   // This loader assumes all anyOpsOS JavaScript is ES module code.
   if (url.startsWith(`file://${process.cwd()}/filesystem/bin/`)) {
 

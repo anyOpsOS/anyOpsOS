@@ -75,8 +75,8 @@ export class AnyOpsOSLibNodeHelpersService {
     if (!this.isObjectUuid(objectUuid)) throw new Error('resource_invalid');
 
     return objectUuid.substring(
-      objectUuid.lastIndexOf("#") + 1,
-      objectUuid.lastIndexOf(";")
+      objectUuid.lastIndexOf('#') + 1,
+      objectUuid.lastIndexOf(';')
     ) as ConnectionTypes['type'];
 
   }

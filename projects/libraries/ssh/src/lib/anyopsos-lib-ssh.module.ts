@@ -12,12 +12,12 @@ import {AnyOpsOSLibSshFileSystemHandlersService} from './services/anyopsos-lib-s
 })
 export class AnyOpsOSLibSshModule {
 
-  constructor(private readonly MainService: MainService,
+  constructor(private readonly Main: MainService,
               private readonly LibSshConnectionsState: AnyOpsOSLibSshConnectionsStateService,
               private readonly LibSshFileSystemHandlers: AnyOpsOSLibSshFileSystemHandlersService) {
 
     // Initialize connections when user is loggedIn
-    this.MainService.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
+    this.Main.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
       if (data.appBootstrapped === true && !this.LibSshConnectionsState.getConnectionsInitialized()) {
 
         // Get SSH & SFTP connections

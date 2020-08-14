@@ -195,7 +195,7 @@ export class AnyOpsOSFileSystemModule {
           file.close();
           return resolve();
         });
-      }).on('error', (e) => { 
+      }).on('error', (e) => {
         unlink(realDownloadPath);
         return reject(e);
       });

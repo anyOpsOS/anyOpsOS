@@ -134,7 +134,7 @@ export class App {
           } else {
             action.request.session.userUuid = 'internal';
           }
-          
+
           return true;
         }
 

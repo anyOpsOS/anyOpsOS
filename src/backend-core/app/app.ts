@@ -161,7 +161,7 @@ export class App {
               .filter((file: AnyOpsOSFile) => file.longName.startsWith('d') && !['auth', 'credential', 'vault', 'workspace', 'config-file', 'file', 'folder'].includes(file.fileName))
               .map((file: AnyOpsOSFile) => `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${ encodeURIComponent(`bin/apis/${file.fileName}/index.js`) }`)
           );
-        
+
         });
       }).on('error', (err) => reject(err));
     });
@@ -173,7 +173,7 @@ export class App {
           required: true
         }
       },
-      controllers: controllers,
+      controllers,
       middlewares: [
         `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/api-middlewares/final/index.js')}`,
         `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/api-middlewares/error-handler/index.js')}`
@@ -347,13 +347,13 @@ export class App {
               .filter((file: AnyOpsOSFile) => file.longName.startsWith('d'))
               .map((file: AnyOpsOSFile) => `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${ encodeURIComponent(`bin/websockets/${file.fileName}/index.js`) }`)
           );
-        
+
         });
       }).on('error', (err) => reject(err));
     });
 
     await useSocketServer(this.io, {
-      controllers: controllers,
+      controllers,
     });
   }
 
