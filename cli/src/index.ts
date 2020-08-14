@@ -35,7 +35,12 @@ export class anyOpsOS {
 
             await new Docker().install();
             await new Builders().buildCli();
-            return new Builders().buildAll();
+
+            if (process.env.RUNINDOCKER !== 'true') {
+              return runInDocker(`node .dist/cli/bin/anyopsos.js build all`);
+            } else {
+              return new Builders().buildAll();
+            }
 
           } catch (err) {
             console.error(err);
