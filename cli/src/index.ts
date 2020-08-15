@@ -8,6 +8,7 @@ import {Builders} from './commands/builders.js';
 import {Linters} from './commands/linters.js';
 import {Generators} from './commands/generators.js';
 import {Docker} from './commands/docker.js';
+import {Watcher} from './commands/watcher.js';
 import {swagger} from './swagger-generator/index.js';
 import {Types} from './types/types.js';
 import {runInDocker} from './utils.js';
@@ -41,6 +42,35 @@ export class anyOpsOS {
             } else {
               return new Builders().buildAll();
             }
+
+          } catch (err) {
+            console.error(err);
+            process.exit(1);
+          }
+        }
+      })
+      .command({
+        command: 'watch',
+        describe: `Watch for file changes and build a project when needed`,
+        handler: async () => {
+          try {
+
+            if (process.env.RUNINDOCKER !== 'true') return runInDocker(`node .dist/cli/bin/anyopsos.js watch`);
+            return new Watcher().watch();
+
+          } catch (err) {
+            console.error(err);
+            process.exit(1);
+          }
+        }
+      })
+      .command({
+        command: 'dashboard',
+        describe: `Displays useful information when developing`,
+        handler: async () => {
+          try {
+
+          
 
           } catch (err) {
             console.error(err);
