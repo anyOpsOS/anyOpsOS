@@ -70,7 +70,7 @@ export class anyOpsOS {
         handler: async () => {
           try {
 
-          
+            return runInDocker('stmux -w always -e ERROR -m beep,system -- [ [ "node .dist/cli/bin/anyopsos.js docker logs" .. "node .dist/cli/bin/anyopsos.js watch" ] : -s 1/3 -f "bash" ]');
 
           } catch (err) {
             console.error(err);
