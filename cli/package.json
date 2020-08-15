@@ -29,7 +29,7 @@
     "api-spec-converter": "^2.11.0",
     "await-spawn": "^3.0.0",
     "chalk": "^4.1.0",
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "class-validator-jsonschema": "^2.0.2",
     "clear": "^0.1.0",
