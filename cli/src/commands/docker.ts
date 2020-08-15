@@ -60,7 +60,8 @@ export class Docker {
     await runInDocker('kubectl create namespace anyopsos');
 
     await runInDocker('kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/ingress-nginx-2.11.2/deploy/static/provider/kind/deploy.yaml');
-    await runInDocker(`kubectl patch deployment ingress-nginx-controller -n ingress-nginx --patch "$(cat ${INTERNAL_PATH_CWD}/docker/yaml/nginx-ingress-controller-patch.yaml)"`);
+    await runInDocker('kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission');
+    await runInDocker(`kubectl patch deployment ingress-nginx-controller -n ingress-nginx --patch "$(cat ${INTERNAL_PATH_CWD}/docker/yaml/nginx-ingress/controller-patch.yaml)"`);
 
     await runInDocker('kubectl create secret generic anyopsos-certificates -n anyopsos \
     --from-file=./docker/certificates/ca/ca.cert \
@@ -74,7 +75,8 @@ export class Docker {
     --from-file=./docker/certificates/filesystem/filesystem.key \
     --from-file=./docker/certificates/dhparam.pem');
     await runInDocker('kubectl create configmap vault-config -n anyopsos --from-file=docker/assets/vault.json');
-    await runInDocker('kubectl apply -f docker/yaml/');
+    await runInDocker('kubectl apply -f docker/yaml/internal');
+    await runInDocker('kubectl apply -f docker/yaml/anyopsos');
 
     await runInDocker('kubectl config set-context --current --namespace=anyopsos');
   }

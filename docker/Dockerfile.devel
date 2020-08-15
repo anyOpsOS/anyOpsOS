@@ -27,8 +27,8 @@ RUN curl -L https://github.com/wercker/stern/releases/download/1.11.0/stern_linu
 chmod +x ./stern && \
 mv ./stern /usr/local/bin/stern
 
-RUN source <(kubectl completion bash) && \
-echo "source <(kubectl completion bash)" >> ~/.bashrc && \
+RUN echo "source <(kubectl completion bash)" >> ~/.bashrc && \
+kubectl completion bash >/etc/bash_completion.d/kubectl && \
 alias k=kubectl && \
 complete -F __start_kubectl k
 
