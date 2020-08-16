@@ -70,7 +70,7 @@ export class anyOpsOS {
         handler: async () => {
           try {
 
-            return runInDocker('stmux -w always -e ERROR -m beep,system -- [ [ "node .dist/cli/bin/anyopsos.js docker logs" .. "node .dist/cli/bin/anyopsos.js watch" ] : -s 1/3 -f "bash" ]');
+            return runInDocker('stmux -w always -e ERROR -m beep,system -- [ [ "node .dist/cli/bin/anyopsos.js docker logs" .. "node .dist/cli/bin/anyopsos.js watch" ] : -s 1/3 [ -s 6/10 -f "bash" .. [ "kubectl get pods -w" : "docker stats --all --format \'table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}\t{{.BlockIO}}\'" ] ] ]');
 
           } catch (err) {
             console.error(err);

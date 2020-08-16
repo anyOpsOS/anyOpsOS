@@ -83,7 +83,7 @@ export class Docker {
 
   async logs() {
     console.log(blueBright(`[anyOpsOS Cli.] K8s logs.\n`));
-    return runInDocker('stern anyopsos -n anyopsos -t');
+    return runInDocker('stern -t --template \'{{.Message}} {{color .ContainerColor .ContainerName}} \' anyopsos');
   }
 
   async attach() {
