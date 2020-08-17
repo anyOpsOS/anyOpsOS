@@ -9,7 +9,7 @@ const {blue, blueBright, red} = chalk;
 const {copy, ensureDir, move, outputFile, outputJson, pathExistsSync, unlink} = fs;
 
 import {runInDocker} from '../utils.js';
-import {MAIN_PATH_CWD} from '../constants.js';
+import {INTERNAL_PATH_CWD} from '../constants.js';
 import {Types} from '../types/types.js';
 
 export class Generators {
@@ -569,7 +569,7 @@ export class ${fulldynamicModule} {
         argv.type === 'application' ? 'aa' :
           argv.type === 'modal' ? 'am' :
             argv.type;
-    this.projectPath = `${MAIN_PATH_CWD}/projects/${this.packageLongType}/${argv.name ? argv.name : argv.moduleName}`;
+    this.projectPath = `${INTERNAL_PATH_CWD}/projects/${this.packageLongType}/${argv.name ? argv.name : argv.moduleName}`;
 
     if (!argv.prefix) argv.prefix = argv.name;
   }

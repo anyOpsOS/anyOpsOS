@@ -1,4 +1,4 @@
-import {MAIN_PATH_CWD} from './constants.js';
+import {INTERNAL_PATH_CWD} from './constants.js';
 
 export function resolve(specifier: string, context: { parentURL?: any }, defaultResolve: (...args: any) => any) {
   const { parentURL = null } = context;
@@ -9,19 +9,19 @@ export function resolve(specifier: string, context: { parentURL?: any }, default
   if (specifier.startsWith('@anyopsos/module-')) {
 
     return {
-      url: specifier.replace('@anyopsos/module-', `file://${MAIN_PATH_CWD}/.dist/modules/`) + '/index.js'
+      url: specifier.replace('@anyopsos/module-', `file://${INTERNAL_PATH_CWD}/.dist/modules/`) + '/index.js'
     };
 
   } else if (specifier.startsWith('@anyopsos/api-middleware-')) {
 
     return {
-      url: specifier.replace('@anyopsos/api-middleware-', `file://${MAIN_PATH_CWD}/.dist/api-middlewares/`) + '/index.js'
+      url: specifier.replace('@anyopsos/api-middleware-', `file://${INTERNAL_PATH_CWD}/.dist/api-middlewares/`) + '/index.js'
     };
 
   } else if (specifier.startsWith('@anyopsos/api-')) {
 
     return {
-      url: specifier.replace('@anyopsos/api-', `file://${MAIN_PATH_CWD}/.dist/apis/`) + '/index.js'
+      url: specifier.replace('@anyopsos/api-', `file://${INTERNAL_PATH_CWD}/.dist/apis/`) + '/index.js'
     };
 
   } else if (parentURL && parentURL.startsWith('@anyopsos/')) {
@@ -39,7 +39,7 @@ export function resolve(specifier: string, context: { parentURL?: any }, default
 
 export function getFormat(url: string, context: { parentURL?: any }, defaultGetFormat: (...args: any) => any) {
   // This loader assumes all anyOpsOS JavaScript is ES module code.
-  if (url.startsWith(`file://${MAIN_PATH_CWD}/.dist/`)) {
+  if (url.startsWith(`file://${INTERNAL_PATH_CWD}/.dist/`)) {
 
     return {
       format: 'module'

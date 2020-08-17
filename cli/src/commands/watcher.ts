@@ -8,7 +8,7 @@ const {readdir} = fs;
 const {blueBright, red, green} = chalk
 
 import {runInDocker} from '../utils.js';
-import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants.js';
+import {INTERNAL_PATH_CWD} from '../constants.js';
 
 export class Watcher {
 

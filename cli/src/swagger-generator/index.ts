@@ -14,7 +14,7 @@ const {blueBright, green} = chalk;
 const {convert} = apiSpecConverter;
 const {writeJson} = fs;
 
-import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants.js';
+import {INTERNAL_PATH_CWD} from '../constants.js';
 import {runInDocker} from '../utils.js';
 
 export class swagger {
@@ -24,7 +24,7 @@ export class swagger {
 
   async createSwaggerFiles() {
     const routingControllersOptions = {
-      controllers: [`${MAIN_PATH_CWD}/.dist/apis/*/index.js`]
+      controllers: [`${INTERNAL_PATH_CWD}/.dist/apis/*/index.js`]
     };
     await createExpressServer(routingControllersOptions);
     
@@ -97,7 +97,7 @@ export class swagger {
       for (const project of Object.keys(projects)) {
         console.log(blueBright(`[anyOpsOS Cli. Internals] Copying API ${projects[project].projectName} swagger.json file.`));
         await writeJson(
-          `${MAIN_PATH_CWD}/projects/apis/${projects[project].projectName}/swagger.json`,
+          `${INTERNAL_PATH_CWD}/projects/apis/${projects[project].projectName}/swagger.json`,
           projects[project],
           {spaces: 2}
         );

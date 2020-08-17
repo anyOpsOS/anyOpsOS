@@ -6,7 +6,7 @@ const {blue} = chalk;
 const {readdir, statSync} = fs;
 
 import {runInDocker} from '../utils.js';
-import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants.js';
+import {INTERNAL_PATH_CWD} from '../constants.js';
 import {Types} from '../types/types.js';
 
 export class Linters {
@@ -42,7 +42,7 @@ export class Linters {
         argv.type === 'application' ? 'aa' :
           argv.type === 'modal' ? 'am' :
             argv.type;
-    this.projectPath = `${MAIN_PATH_CWD}/projects/${this.packageLongType}/${argv.name ? argv.name : argv.moduleName}`;
+    this.projectPath = `${INTERNAL_PATH_CWD}/projects/${this.packageLongType}/${argv.name ? argv.name : argv.moduleName}`;
 
     if (!argv.prefix) argv.prefix = argv.name;
   }
@@ -80,10 +80,10 @@ export class Linters {
     }
 
     // Lint all modules of this type
-    const projectsFiles = await readdir(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/`);
+    const projectsFiles = await readdir(`${INTERNAL_PATH_CWD}/projects/${this.packageLongType}/`);
 
     for (const directory of projectsFiles) {
-      const isDirectory: boolean = statSync(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/${directory}`).isDirectory();
+      const isDirectory: boolean = statSync(`${INTERNAL_PATH_CWD}/projects/${this.packageLongType}/${directory}`).isDirectory();
       if (!isDirectory) continue;
 
       console.log(blue(`[anyOpsOS Cli.] Linting ${this.packageType} ${directory}.\n`));

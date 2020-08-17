@@ -112,13 +112,13 @@ export class Builders {
 
       await runInDocker(`ng build anyopsos-${this.packageType}-${argv.moduleName}`);
 
-      await this.removeSourceMaps(`${MAIN_PATH_CWD}/.dist/${this.packageLongType}/${argv.moduleName}/bundles/anyopsos-${this.packageType}-${argv.moduleName}.umd.js`);
+      await this.removeSourceMaps(`${INTERNAL_PATH_CWD}/.dist/${this.packageLongType}/${argv.moduleName}/bundles/anyopsos-${this.packageType}-${argv.moduleName}.umd.js`);
 
       // Run postbuild script if exists
-      if (pathExistsSync(`${MAIN_PATH_CWD}${this.projectPath}/scripts/postbuild.js`)) {
+      if (pathExistsSync(`${INTERNAL_PATH_CWD}${this.projectPath}/scripts/postbuild.js`)) {
 
         console.log(blueBright(`[anyOpsOS Cli.] Running anyOpsOS ${this.packageType} ${argv.moduleName} postbuild script.\n`));
-        const postModule = await import(`${MAIN_PATH_CWD}${this.projectPath}/scripts/postbuild.js`);
+        const postModule = await import(`${INTERNAL_PATH_CWD}${this.projectPath}/scripts/postbuild.js`);
         await postModule.default;
       }
 
@@ -140,21 +140,21 @@ export class Builders {
       if (this.packageType === 'app') await new BuildApps().build();
 
       // Run postbuild script if exists
-      const projectsFiles = await readdir(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/`);
+      const projectsFiles = await readdir(`${INTERNAL_PATH_CWD}/projects/${this.packageLongType}/`);
       await projectsFiles.map(async (directory: string): Promise<void> => {
 
-        if (pathExistsSync(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/${directory}/scripts/postbuild.js`)) {
+        if (pathExistsSync(`${INTERNAL_PATH_CWD}/projects/${this.packageLongType}/${directory}/scripts/postbuild.js`)) {
 
           console.log(blueBright(`[anyOpsOS Cli.] Running anyOpsOS ${this.packageType} ${directory} postbuild script.\n`));
-          await import(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/${directory}/scripts/postbuild.js`);
+          await import(`${INTERNAL_PATH_CWD}/projects/${this.packageLongType}/${directory}/scripts/postbuild.js`);
         }
 
       });
 
       // Copy to filesystem
-      const directoryFiles = await readdir(`${MAIN_PATH_CWD}/.dist/${this.packageLongType}/`);
+      const directoryFiles = await readdir(`${INTERNAL_PATH_CWD}/.dist/${this.packageLongType}/`);
       for (const directory of directoryFiles) {
-        await this.removeSourceMaps(`${MAIN_PATH_CWD}/.dist/${this.packageLongType}/${directory}/bundles/anyopsos-${this.packageType}-${directory}.umd.js`);
+        await this.removeSourceMaps(`${INTERNAL_PATH_CWD}/.dist/${this.packageLongType}/${directory}/bundles/anyopsos-${this.packageType}-${directory}.umd.js`);
 
         console.log(blue(`[anyOpsOS Cli. Internals] Copying ${this.packageType} ${directory} to anyOpsOS filesystem.`));
         await runInDocker(`cp -r \
@@ -204,11 +204,11 @@ export class Builders {
 
     // Build all modules of this type
     console.log(blueBright(`[anyOpsOS Cli.] Building anyOpsOS ${this.packageLongType}.\n`));
-    const projectsFiles = await readdir(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/`);
+    const projectsFiles = await readdir(`${INTERNAL_PATH_CWD}/projects/${this.packageLongType}/`);
 
     for (const directory of projectsFiles) {
 
-      const isDirectory: boolean = statSync(`${MAIN_PATH_CWD}/projects/${this.packageLongType}/${directory}`).isDirectory();
+      const isDirectory: boolean = statSync(`${INTERNAL_PATH_CWD}/projects/${this.packageLongType}/${directory}`).isDirectory();
       if (!isDirectory) continue;
 
       console.log(blueBright(`[anyOpsOS Cli.] Building ${this.packageLongType} ${directory}.\n`));
@@ -272,15 +272,15 @@ export class Builders {
     console.log(red(`[anyOpsOS Cli.] Erasing destination folder.\n`));
 
     // TODO delete this with glob (all but 'cli' folder)
-    await rimraf(`${MAIN_PATH_CWD}/.dist/anyOpsOS`, (e) => { if (e) throw e; });
-    await rimraf(`${MAIN_PATH_CWD}/.dist/api-middlewares`, (e) => { if (e) throw e; });
-    await rimraf(`${MAIN_PATH_CWD}/.dist/apis`, (e) => { if (e) throw e; });
-    await rimraf(`${MAIN_PATH_CWD}/.dist/applications`, (e) => { if (e) throw e; });
-    await rimraf(`${MAIN_PATH_CWD}/.dist/external-libraries`, (e) => { if (e) throw e; });
-    await rimraf(`${MAIN_PATH_CWD}/.dist/libraries`, (e) => { if (e) throw e; });
-    await rimraf(`${MAIN_PATH_CWD}/.dist/modals`, (e) => { if (e) throw e; });
-    await rimraf(`${MAIN_PATH_CWD}/.dist/modules`, (e) => { if (e) throw e; });
-    await rimraf(`${MAIN_PATH_CWD}/.dist/websockets`, (e) => { if (e) throw e; });
+    await rimraf(`${INTERNAL_PATH_CWD}/.dist/anyOpsOS`, (e) => { if (e) throw e; });
+    await rimraf(`${INTERNAL_PATH_CWD}/.dist/api-middlewares`, (e) => { if (e) throw e; });
+    await rimraf(`${INTERNAL_PATH_CWD}/.dist/apis`, (e) => { if (e) throw e; });
+    await rimraf(`${INTERNAL_PATH_CWD}/.dist/applications`, (e) => { if (e) throw e; });
+    await rimraf(`${INTERNAL_PATH_CWD}/.dist/external-libraries`, (e) => { if (e) throw e; });
+    await rimraf(`${INTERNAL_PATH_CWD}/.dist/libraries`, (e) => { if (e) throw e; });
+    await rimraf(`${INTERNAL_PATH_CWD}/.dist/modals`, (e) => { if (e) throw e; });
+    await rimraf(`${INTERNAL_PATH_CWD}/.dist/modules`, (e) => { if (e) throw e; });
+    await rimraf(`${INTERNAL_PATH_CWD}/.dist/websockets`, (e) => { if (e) throw e; });
 
     await this.buildBackendTypes({type: 'module'});
     await this.buildBackendTypes({type: 'api-middleware'});

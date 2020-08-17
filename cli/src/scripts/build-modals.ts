@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 const {readFile} = fs;
 
 import {runInDocker} from '../utils.js';
-import {MAIN_PATH_CWD} from '../constants.js';
+import {INTERNAL_PATH_CWD} from '../constants.js';
 
 export class BuildModals {
 
@@ -19,7 +19,7 @@ export class BuildModals {
   private async buildodals() {
 
     // Build others
-    const data = await readFile(`${MAIN_PATH_CWD}/angular.json`, 'utf8');
+    const data = await readFile(`${INTERNAL_PATH_CWD}/angular.json`, 'utf8');
     const ngCli = JSON.parse(data);
 
     for (const project of Object.keys(ngCli.projects)) {
