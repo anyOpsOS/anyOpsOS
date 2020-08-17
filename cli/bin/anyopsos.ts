@@ -1,14 +1,5 @@
 #!/usr/bin/env node
 
-if (process.env.RUNINDOCKER) {
-  process.env.NODE_OPTIONS = '--no-warnings --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node'
-  process.execArgv = [
-    '--no-warnings',
-    '--experimental-loader /var/www/.dist/cli/src/https-loader.js',
-    '--experimental-specifier-resolution=node'
-  ];
-}
-
 import {anyOpsOS} from '../src/index.js';
 
 import chalk from 'chalk';

@@ -213,7 +213,7 @@ export class Docker {
       '-p', '2222:22',
       // '-e', 'NODE_OPTIONS=--no-warnings --experimental-loader /var/www/.dist/cli/src/https-loader.js --experimental-specifier-resolution=node',
       '--mount', `src=anyopsos-data,target=${INTERNAL_PATH_CWD},type=volume`,
-      '--mount', `src=${MAIN_PATH_CWD}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
+      '--mount', `src=${process.cwd()}/ssh.key,target=/root/id_rsa,type=bind,consistency=delegated`,
       '-v', '/var/run/docker.sock:/var/run/docker.sock',
       '--name', 'anyopsos-devel',
       'anyopsos-devel'

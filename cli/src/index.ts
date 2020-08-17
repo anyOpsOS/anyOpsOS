@@ -234,7 +234,6 @@ export class anyOpsOS {
         handler: async (argv: & { type: Types; moduleName?: string }) => {
           try {
             // Run build commands inside container
-            console.log(`node .dist/cli/bin/anyopsos.js build ${argv.type} ${argv.moduleName || ''}`);
             if (process.env.RUNINDOCKER !== 'true' && argv.type !== 'cli') return runInDocker(`node .dist/cli/bin/anyopsos.js build ${argv.type} ${argv.moduleName || ''}`);
 
             if (argv.type === 'all') return new Builders().buildAll();
