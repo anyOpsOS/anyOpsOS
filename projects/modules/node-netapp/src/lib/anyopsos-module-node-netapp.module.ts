@@ -160,8 +160,9 @@ export class AnyOpsOSNodeNetappModule {
    * Connects to the SOAP API and calls it
    */
   // TODO next-tag
-  async callSoapApi<Action extends NetappSdkFunctions>(action: Action, data: NetappSdkFunctionsInput<Action>): Promise<NetappSdkFunctionsOutput<Action>>
-  async callSoapApi<Action extends NetappSdkVfilerFunctions>(action: Action, data: NetappSdkVfilerFunctionsInput<Action>, vfiler: string): Promise<NetappSdkVfilerFunctionsOutput<Action>>
+  // TODO FIX types
+  // async callSoapApi<Action extends NetappSdkFunctions>(action: Action, data: NetappSdkFunctionsInput<Action>): Promise<NetappSdkFunctionsOutput<Action>>
+  // async callSoapApi<Action extends NetappSdkVfilerFunctions>(action: Action, data: NetappSdkVfilerFunctionsInput<Action>, vfiler: string): Promise<NetappSdkVfilerFunctionsOutput<Action>>
   async callSoapApi<Action extends NetappSdkFunctions | NetappSdkVfilerFunctions>(
     action: Action,
     data: NetappSdkFunctionsInput<Action> | NetappSdkVfilerFunctionsInput<Action>,
