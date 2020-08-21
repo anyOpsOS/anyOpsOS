@@ -17,22 +17,21 @@
   },
   "private": true,
   "scripts": {
-    "postinstall": "node scripts/postinstall.js && ngcc"
+    "postinstall": "node scripts/postinstall.js"
   },
   "dependencies": {
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1000.4",
-    "@angular-devkit/build-ng-packagr": "~0.1000.4",
-    "@angular/compiler-cli": "~10.0.6",
-    "@anyopsos/cli": "~0.0.1",
+    "@angular-devkit/build-angular": "~0.1000.6",
+    "@angular-devkit/build-ng-packagr": "~0.1000.6",
+    "@angular/compiler-cli": "~10.0.9",
+    "@angular/cli": "~10.0.6",
     "@commitlint/cli": "^9.1.1",
     "@commitlint/config-conventional": "^9.1.1",
     "download-git-repo": "^3.0.2",
     "husky": "^4.2.5",
-    "ng-packagr": "^10.0.3",
-    "tsickle": "^0.39.1",
+    "ng-packagr": "^10.0.0",
     "tslint": "^6.0.0",
     "typescript": "^3.9.7",
     "yarn": "^1.21.1"

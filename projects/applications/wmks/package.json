@@ -2,8 +2,8 @@
   "name": "@anyopsos/app-wmks",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": "~10.0.6",
-    "@angular/core": "~10.0.6",
+    "@angular/common": "~10.0.11",
+    "@angular/core": "~10.0.11",
     "tslib": "^2.0.0"
   },
   "dependencies": {

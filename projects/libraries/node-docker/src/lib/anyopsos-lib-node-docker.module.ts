@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 
-import {MainService} from '@anyopsos/frontend/app/services/main.service';
+import {AnyopsosLibBootstrapService} from '@anyopsos/lib-bootstrap';
 
 import {AnyOpsOSLibNodeDockerConnectionsStateService} from './services/anyopsos-lib-node-docker-connections-state.service';
 import {AnyOpsOSLibNodeDockerFileSystemHandlersService} from './services/anyopsos-lib-node-docker-file-system-handlers.service';
@@ -12,12 +12,12 @@ import {AnyOpsOSLibNodeDockerFileSystemHandlersService} from './services/anyopso
 })
 export class AnyOpsOSLibNodeDockerModule {
 
-  constructor(private readonly Main: MainService,
+  constructor(private readonly LibBootstrap: AnyopsosLibBootstrapService,
               private readonly LibNodeDockerConnectionsState: AnyOpsOSLibNodeDockerConnectionsStateService,
               private readonly LibNodeDockerFileSystemHandlers: AnyOpsOSLibNodeDockerFileSystemHandlersService) {
 
     // Initialize connections when user is loggedIn
-    this.Main.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
+    this.LibBootstrap.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
       if (data.appBootstrapped === true && !this.LibNodeDockerConnectionsState.getConnectionsInitialized()) {
 
         // Get Docker connections

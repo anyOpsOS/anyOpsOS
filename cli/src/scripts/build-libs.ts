@@ -22,6 +22,8 @@ const projectInOrder = [
   'anyopsos-lib-file',
   'anyopsos-lib-folder',
   'anyopsos-lib-desktop',
+  'anyopsos-lib-utils',
+  'anyopsos-lib-bootstrap',
   'anyopsos-lib-ssh'
 ];
 

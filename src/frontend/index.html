@@ -6,8 +6,38 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="anyOpsOS/src/frontend/favicon.ico">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/6.5.0/system.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/6.5.0/extras/amd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/6.5.0/extras/dynamic-import-maps.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/6.5.0/extras/global.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/6.5.0/extras/module-types.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/6.5.0/extras/named-register.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/6.5.0/extras/use-default.min.js"></script>
+
+  <script type="systemjs-importmap">
+    {
+      "imports": {
+        "@angular/material": "https://anyopsos.local/api/file/%2Fbin%2Fdeps%2Fmaterial%2Fmaterial.umd.js",
+        "@angular/cdk": "https://anyopsos.local/api/file/%2Fbin%2Fdeps%2Fcdk%2Fcdk.umd.js",
+
+        "socket.io-client": "https://anyopsos.local/socket.io/socket.io.js",
+
+        "@angular/animations": "app:@angular/animations",
+        "@angular/common": "app:@angular/common",
+        "@angular/common/http": "app:@angular/common/http",
+        "@angular/core": "app:@angular/core",
+        "@angular/forms": "app:@angular/forms",
+        "@angular/platform-browser": "app:@angular/platform-browser",
+        "@angular/platform-browser/animations": "app:@angular/platform-browser/animations",
+        
+        "tslib": "app:tslib",
+        "rxjs": "app:rxjs",
+        "rxjs/operators": "app:rxjs/operators"
+      }
+    }
+  </script>
 </head>
 <body>
-  <app-root></app-root>
+  <albp-root></albp-root>
 </body>
 </html>

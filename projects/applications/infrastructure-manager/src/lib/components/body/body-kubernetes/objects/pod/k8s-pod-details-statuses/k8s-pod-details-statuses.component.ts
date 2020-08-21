@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Pod } from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod';
-import { PodStatus } from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod-status';
-import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
+import {Component, OnInit, Input} from '@angular/core';
+
+import {PodStatus} from '@anyopsos/module-node-kubernetes';
+
+import {Pod} from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod';
+import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
 
 @Component({
   selector: 'aaim-k8s-pod-details-statuses',

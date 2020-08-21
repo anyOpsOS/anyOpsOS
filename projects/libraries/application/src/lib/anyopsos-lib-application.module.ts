@@ -22,10 +22,12 @@ import {AnyOpsOSLibApplicationComponent} from './components/anyopsos-lib-applica
   ]
 })
 export class AnyOpsOSLibApplicationModule {
+
   constructor(@Optional() @SkipSelf() parentModule: AnyOpsOSLibApplicationModule) {
     if (parentModule) {
       throw new Error(
         'AnyOpsOSLibApplicationModule is already loaded. Import it in the root AppModule only');
     }
   }
+
 }

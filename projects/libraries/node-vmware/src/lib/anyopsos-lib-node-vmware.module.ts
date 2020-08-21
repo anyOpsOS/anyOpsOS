@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 
-import {MainService} from '@anyopsos/frontend/app/services/main.service';
+import {AnyopsosLibBootstrapService} from '@anyopsos/lib-bootstrap';
 
 import {AnyOpsOSLibNodeVmwareConnectionsStateService} from './services/anyopsos-lib-node-vmware-connections-state.service';
 import {AnyOpsOSLibNodeVmwareFileSystemHandlersService} from './services/anyopsos-lib-node-vmware-file-system-handlers.service';
@@ -12,12 +12,12 @@ import {AnyOpsOSLibNodeVmwareFileSystemHandlersService} from './services/anyopso
 })
 export class AnyOpsOSLibNodeVmwareModule {
 
-  constructor(private readonly Main: MainService,
+  constructor(private readonly LibBootstrap: AnyopsosLibBootstrapService,
               private readonly LibNodeVmwareConnectionsState: AnyOpsOSLibNodeVmwareConnectionsStateService,
               private readonly LibNodeVmwareFileSystemHandlers: AnyOpsOSLibNodeVmwareFileSystemHandlersService) {
 
     // Initialize connections when user is loggedIn
-    this.Main.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
+    this.LibBootstrap.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
       if (data.appBootstrapped === true && !this.LibNodeVmwareConnectionsState.getConnectionsInitialized()) {
 
         // Get Vmware connections

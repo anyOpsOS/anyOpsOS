@@ -1,32 +1,32 @@
-@import '~@phosphor/widgets/style/index.css';
-@import '~file-icons-js/css/style.css';
-@import '~@theia/core/src/browser/style/materialcolors.css';
-@import '~@theia/core/src/browser/style/variables-dark.useable.css';
-@import '~@theia/core/src/browser/style/index.css';
+@import '~@phosphor/widgets/style/index';
+@import '~file-icons-js/css/style';
+@import '~@theia/core/src/browser/style/materialcolors';
+@import '~@theia/core/src/browser/style/variables-dark.useable';
+@import '~@theia/core/src/browser/style/index';
 
-@import '~@theia/core/src/browser/style/dockpanel.css';
-@import '~@theia/core/src/browser/style/dialog.css';
-@import '~@theia/core/src/browser/style/menus.css';
-@import '~@theia/core/src/browser/style/sidepanel.css';
-@import '~@theia/core/src/browser/style/tabs.css';
+@import '~@theia/core/src/browser/style/dockpanel';
+@import '~@theia/core/src/browser/style/dialog';
+@import '~@theia/core/src/browser/style/menus';
+@import '~@theia/core/src/browser/style/sidepanel';
+@import '~@theia/core/src/browser/style/tabs';
 
-@import '~@theia/core/src/browser/style/scrollbars.css';
-@import '~@theia/core/src/browser/style/tree.css';
-@import '~@theia/core/src/browser/style/status-bar.css';
-@import '~@theia/core/src/browser/style/tree-decorators.css';
-@import '~@theia/core/src/browser/style/about.css';
-@import '~@theia/core/src/browser/style/search-box.css';
-@import '~@theia/core/src/browser/style/ansi.css';
-@import '~@theia/core/src/browser/style/view-container.css';
-@import '~@theia/core/src/browser/style/notification.css';
-@import '~@theia/core/src/browser/style/alert-messages.css';
-@import '~@theia/core/src/browser/style/icons.css';
-@import '~@theia/core/src/browser/style/widget.css';
-@import '~@theia/core/src/browser/style/quick-title-bar.css';
-@import '~@theia/core/src/browser/style/progress-bar.css';
+@import '~@theia/core/src/browser/style/scrollbars';
+@import '~@theia/core/src/browser/style/tree';
+@import '~@theia/core/src/browser/style/status-bar';
+@import '~@theia/core/src/browser/style/tree-decorators';
+@import '~@theia/core/src/browser/style/about';
+@import '~@theia/core/src/browser/style/search-box';
+@import '~@theia/core/src/browser/style/ansi';
+@import '~@theia/core/src/browser/style/view-container';
+@import '~@theia/core/src/browser/style/notification';
+@import '~@theia/core/src/browser/style/alert-messages';
+@import '~@theia/core/src/browser/style/icons';
+@import '~@theia/core/src/browser/style/widget';
+@import '~@theia/core/src/browser/style/quick-title-bar';
+@import '~@theia/core/src/browser/style/progress-bar';
 
 
-@import '~@theia/monaco/src/browser/style/index.css';
+@import '~@theia/monaco/src/browser/style/index';
 
 .theia {
   width: 100%;

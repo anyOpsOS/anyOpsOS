@@ -3,7 +3,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {AnyOpsOSLibApplicationService, Application} from '@anyopsos/lib-application';
+import {Application} from '@anyopsos/lib-application';
 
 import {ConnectionVmware} from '@anyopsos/module-node-vmware';
 import {ConnectionNetapp} from '@anyopsos/module-node-netapp';
@@ -22,8 +22,7 @@ export class BodyServerComponent implements OnDestroy, OnInit {
 
   activeConnectionObjectUuid: string | null;
 
-  constructor(private readonly LibApplication: AnyOpsOSLibApplicationService,
-              private readonly DatastoreExplorer: AnyOpsOSAppDatastoreExplorerService) {
+  constructor(private readonly DatastoreExplorer: AnyOpsOSAppDatastoreExplorerService) {
   }
 
   ngOnInit(): void {

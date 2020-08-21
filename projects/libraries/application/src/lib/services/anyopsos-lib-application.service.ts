@@ -57,7 +57,7 @@ export class AnyOpsOSLibApplicationService {
   patchApplication(applicationUuid: string, param: string, data: any): void {
     const applicationIndex: number = this.dataStore.applications.findIndex((application: Application) => application.uuid === applicationUuid);
     if (applicationIndex === -1) {
-      this.logger.error('LibApplication', 'patchModal -> Resource invalid', arguments);
+      this.logger.error('LibApplication', 'patchApplication -> Resource invalid', arguments);
       throw new Error('resource_invalid');
     }
 

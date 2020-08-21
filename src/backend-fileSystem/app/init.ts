@@ -38,8 +38,10 @@ export class Init {
     try {
       await Promise.all([
         ensureDir(join(GetPathModule.bin, 'applications')),
-        ensureDir(join(GetPathModule.bin, 'libs')),
+        ensureDir(join(GetPathModule.bin, 'libraries')),
+        ensureDir(join(GetPathModule.bin, 'external-libraries')),
         ensureDir(join(GetPathModule.bin, 'modals')),
+        ensureDir(join(GetPathModule.bin, 'deps')),
         ensureDir(join(GetPathModule.bin, 'apis')),
         ensureDir(join(GetPathModule.bin, 'api-middlewares')),
         ensureDir(join(GetPathModule.bin, 'modules')),

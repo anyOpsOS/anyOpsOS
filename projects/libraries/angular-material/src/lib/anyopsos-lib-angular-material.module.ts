@@ -57,6 +57,7 @@ export {MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA} from '@angula
 export {DragRefConfig, CdkDragStart, CdkDragRelease, CdkDragEnd, CdkDragEnter, CdkDragExit, CdkDragDrop, CdkDragMove, CdkDragSortEvent, moveItemInArray, transferArrayItem, copyArrayItem, DragDrop, DragRef, DropListRef} from '@angular/cdk/drag-drop';
 export {FlatTreeControl} from '@angular/cdk/tree';
 export {COMMA, ENTER} from '@angular/cdk/keycodes';
+export {HighContrastModeDetector} from '@angular/cdk/a11y';
 
 @NgModule({
   declarations: [],

@@ -2,9 +2,9 @@
   "name": "@anyopsos/modal-default-input",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": "~10.0.6",
-    "@angular/core": "~10.0.6",
-    "@angular/forms": "^8.2.14"
+    "@angular/common": "~10.0.11",
+    "@angular/core": "~10.0.11",
+    "@angular/forms": "~10.0.11"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

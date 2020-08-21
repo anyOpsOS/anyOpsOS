@@ -1,7 +1,6 @@
 import {Compiler, Injectable, Injector, ModuleWithComponentFactories, NgModuleFactory, NgModuleRef} from '@angular/core';
 
 import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {AnyOpsOSLibFileSystemUiHelpersService} from '@anyopsos/lib-file-system-ui';
 import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
 import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
 import {AnyOpsOSLibModalRegisteredStateService} from '@anyopsos/lib-modal';
@@ -9,7 +8,7 @@ import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response
 import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
 
 
-declare const SystemJS: any;
+declare const window: any;
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +19,6 @@ export class AnyOpsOSLibLoaderService {
               private readonly compiler: Compiler,
               private readonly logger: AnyOpsOSLibLoggerService,
               private readonly LibFileSystem: AnyOpsOSLibFileSystemService,
-              private readonly FileSystemUiHelpers: AnyOpsOSLibFileSystemUiHelpersService,
               private readonly LibApplication: AnyOpsOSLibApplicationService,
               private readonly ModalRegisteredState: AnyOpsOSLibModalRegisteredStateService) {
   }
@@ -55,7 +53,9 @@ export class AnyOpsOSLibLoaderService {
 
     return new Promise((resolve) => {
 
-      SystemJS.import(`/api/file/${encodeURIComponent('/bin/applications/' + application.fileName)}`).then((moduleToCompile) => {
+      const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
+
+      window.System.import(`${currentLocation}/api/file/${encodeURIComponent('/bin/applications/' + application.fileName)}`).then((moduleToCompile) => {
 
         // This will only work if the application exposes only one Module
         const applicationModule: string = Object.keys(moduleToCompile).find((entry: string) => entry.endsWith('Module'));
@@ -103,7 +103,9 @@ export class AnyOpsOSLibLoaderService {
   loadModal(modal: AnyOpsOSFile): void {
     const loggerArgs = arguments;
 
-    SystemJS.import(`/api/file/${encodeURIComponent('/bin/modals/' + modal.fileName)}`).then((moduleToCompile) => {
+    const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
+
+    window.System.import(`${currentLocation}/api/file/${encodeURIComponent('/bin/modals/' + modal.fileName)}`).then((moduleToCompile) => {
 
       // This will only work if the modal exposes only one Module
       const modalModule: string = Object.keys(moduleToCompile).find((entry: string) => entry.endsWith('Module'));
@@ -125,48 +127,6 @@ export class AnyOpsOSLibLoaderService {
       this.logger.error('LibLoader', 'Error while loading modal', loggerArgs, e.message);
     });
 
-  }
-
-  /**
-   * External libraries
-   */
-  loadExternalLibraries(srcPath?: string): Promise<void> {
-    const loggerArgs = arguments;
-
-    return new Promise((resolve) => {
-
-      // Get all external libraries files
-      this.LibFileSystem.getFolder('/bin/external-libraries/' + (srcPath ? srcPath : '')).subscribe(
-        async (res: BackendResponse & { data: AnyOpsOSFile[]; }) => {
-          if (res.status === 'error') return this.logger.fatal('anyOpsOS', `Error while getting installed libs on /bin/libs/${srcPath ? srcPath : ''}`, loggerArgs, res.data);
-
-          const libPromises = [];
-          const libFolders = [];
-
-          // If returned AnyOpsOSFile is a folder, get all files inside a folder. If its a .js file, load it as an external library
-          res.data.forEach((value) => {
-            if (this.FileSystemUiHelpers.getFileType(value.longName) === 'folder') return libFolders.push(value.fileName + '/');
-            if (value.fileName.endsWith('.umd.js')) return libPromises.push(this.loadLib(value, srcPath));
-          });
-
-          await Promise.all(libPromises);
-
-          // TODO system.js is not returning a real promise.
-          //  Hard waiting 1 second before loading next folder dependencies
-          await new Promise(r => setTimeout(r, 1000));
-          await Promise.all(libFolders.map((folder: string) => this.loadExternalLibraries(folder)));
-          return resolve();
-        },
-        error => {
-          this.logger.error('LibLoader', 'Error while getting installed libs', loggerArgs, error);
-        });
-
-    });
-
-  }
-
-  async loadLib(library: AnyOpsOSFile, srcPath: string): Promise<void> {
-    return SystemJS.import(`/api/file/${encodeURIComponent('/bin/external-libraries/' + (srcPath ? srcPath : '') + library.fileName)}`);
   }
 
 }

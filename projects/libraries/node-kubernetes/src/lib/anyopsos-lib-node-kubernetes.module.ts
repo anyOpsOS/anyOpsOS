@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 
-import {MainService} from '@anyopsos/frontend/app/services/main.service';
+import {AnyopsosLibBootstrapService} from '@anyopsos/lib-bootstrap';
 
 import {AnyOpsOSLibNodeKubernetesConnectionsStateService} from './services/anyopsos-lib-node-kubernetes-connections-state.service';
 import {AnyOpsOSLibNodeKubernetesFileSystemHandlersService} from './services/anyopsos-lib-node-kubernetes-file-system-handlers.service';
@@ -12,12 +12,12 @@ import {AnyOpsOSLibNodeKubernetesFileSystemHandlersService} from './services/any
 })
 export class AnyOpsOSLibNodeKubernetesModule {
 
-  constructor(private readonly Main: MainService,
+  constructor(private readonly LibBootstrap: AnyopsosLibBootstrapService,
               private readonly LibNodeKubernetesConnectionsState: AnyOpsOSLibNodeKubernetesConnectionsStateService,
               private readonly LibNodeKubernetesFileSystemHandlers: AnyOpsOSLibNodeKubernetesFileSystemHandlersService) {
 
     // Initialize connections when user is loggedIn
-    this.Main.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
+    this.LibBootstrap.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
       if (data.appBootstrapped === true && !this.LibNodeKubernetesConnectionsState.getConnectionsInitialized()) {
 
         // Get Kubernetes connections

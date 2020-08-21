@@ -29,6 +29,7 @@ import { DynamicInventoryComponent } from './components/body/body-new-project/pr
   imports: [
     CommonModule,
     ReactiveFormsModule,
+
     // Shared module import
     AnyOpsOSLibAngularMaterialModule,
     AnyOpsOSLibUtilsModule

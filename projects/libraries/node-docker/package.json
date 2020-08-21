@@ -1,14 +1,15 @@
 {
   "name": "@anyopsos/lib-node-docker",
   "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "~10.0.11",
+    "@angular/core": "~10.0.11"
+  },
   "dependencies": {
+    "tslib": "^2.0.0",
     "@anyopsos/lib-file-system": "~0.0.1",
     "@anyopsos/lib-logger": "~0.0.1",
     "@anyopsos/module-node-docker": "~0.0.1"
-  },
-  "peerDependencies": {
-    "@angular/common": "~10.0.6",
-    "@angular/core": "~10.0.6"
   },
   "devDependencies": {
     "@anyopsos/backend-core": "~0.0.1"

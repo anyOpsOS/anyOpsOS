@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 
-import {MainService} from '@anyopsos/frontend/app/services/main.service';
+import {AnyopsosLibBootstrapService} from '@anyopsos/lib-bootstrap';
 
 import {AnyOpsOSLibNodeSnmpConnectionsStateService} from './services/anyopsos-lib-node-snmp-connections-state.service';
 
@@ -11,11 +11,11 @@ import {AnyOpsOSLibNodeSnmpConnectionsStateService} from './services/anyopsos-li
 })
 export class AnyOpsOSLibNodeSnmpModule {
 
-  constructor(private readonly Main: MainService,
+  constructor(private readonly LibBootstrap: AnyopsosLibBootstrapService,
               private readonly LibNodeSnmpConnectionsState: AnyOpsOSLibNodeSnmpConnectionsStateService) {
 
     // Initialize connections when user is loggedIn
-    this.Main.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
+    this.LibBootstrap.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
       if (data.appBootstrapped === true && !this.LibNodeSnmpConnectionsState.getConnectionsInitialized()) {
 
         // Get Snmp connections

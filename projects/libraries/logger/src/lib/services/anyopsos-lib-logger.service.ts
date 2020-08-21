@@ -11,6 +11,7 @@ export class AnyOpsOSLibLoggerService {
 
   constructor(private readonly logger: NGXLogger,
               private readonly snackBar: MatSnackBar) {
+
   }
 
   trace(entry: string, message: string, args?: IArguments, ...anything: any[]): void {

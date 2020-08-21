@@ -44,8 +44,8 @@ const options = {
     'var NETDATA = window.NETDATA || {};',
 
     // Remove global and make it inside Dashboard function to call it from angular
-    '(function(window, document, $, undefined$1) {',
-    '})(window, document, (typeof jQuery === \'function\')?jQuery:undefined);',
+    '(function (window, document, $, undefined$1) {',
+    '})(window, document, (typeof jQuery === \'function\') ? jQuery : undefined);',
     '    var Dashboard = /*#__PURE__*/Object.freeze({\n        __proto__: null\n    });',
 
     // Make global vars as local

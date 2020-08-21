@@ -19,7 +19,7 @@ import {AnyOpsOSFileSystemModule} from '@anyopsos/module-file-system';
 
 const logger: Logger = getLogger('mainLog');
 
-@Authorized()
+// TODO @Authorized()
 @Controller('/api/file')
 export class AnyOpsOSFileApiController {
 

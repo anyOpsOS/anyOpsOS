@@ -2,8 +2,8 @@
   "name": "@anyopsos/ext-lib-easy-pie-chart",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": "~10.0.6",
-    "@angular/core": "~10.0.6"
+    "@angular/common": "~10.0.11",
+    "@angular/core": "~10.0.11"
   },
   "dependencies": {
     "easy-pie-chart": "git+https://github.com/rendro/easy-pie-chart.git"

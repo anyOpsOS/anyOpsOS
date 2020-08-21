@@ -46,8 +46,8 @@ export class AnyOpsOSLibApplicationComponent implements OnInit, AfterViewInit {
   fullHeight: string = window.innerHeight - 48 + 'px';
   fullWidth: string = window.innerWidth + 'px';
 
-  constructor(private compiler: Compiler,
-              private logger: AnyOpsOSLibLoggerService,
+  constructor(private readonly compiler: Compiler,
+              private readonly logger: AnyOpsOSLibLoggerService,
               private readonly LibApplication: AnyOpsOSLibApplicationService) {
 
     /**

@@ -2,12 +2,12 @@ import {Component, OnInit, ViewChild, Input} from '@angular/core';
 
 import {MatTableDataSource, MatSort} from '@anyopsos/lib-angular-material';
 
+import {PodStatus} from '@anyopsos/module-node-kubernetes';
+
 import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
 import {Pod} from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod';
-import {PodStatus} from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod-status';
 import {WorkloadKubeObject} from '@anyopsos/module-node-kubernetes/src/lib/types/objects/workload-kube-object';
 import {PodContainerStatus} from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod-container-status';
-
 
 @Component({
   selector: 'aaim-k8s-pod-details-list',

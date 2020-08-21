@@ -1,52 +1,20 @@
 import {Injectable} from '@angular/core';
 
-// Prepare output for SystemJS
-declare const SystemJS: any;
-
-import * as Tslib from 'tslib';
-
-import * as angularCore from '@angular/core';
-import * as angularPb from '@angular/platform-browser';
-import * as angularForms from '@angular/forms';
+import * as angularAnimations from '@angular/animations';
 import * as angularCommon from '@angular/common';
 import * as angularCommonHttp from '@angular/common/http';
+import * as angularCore from '@angular/core';
+import * as angularForms from '@angular/forms';
+import * as angularPb from '@angular/platform-browser';
+import * as angularPbAnimations from '@angular/platform-browser/animations';
 
+import * as Tslib from 'tslib';
 import * as rxjs from 'rxjs';
 import * as rxjsOperators from 'rxjs/operators';
 
-import * as ngxSocketIo from 'ngx-socket-io';
-import * as uuid from 'uuid';
-import * as jsYaml from 'js-yaml';
 
-import * as AnyOpsOSLibAngularMaterial from '@anyopsos/lib-angular-material';
-import * as AnyOpsOSLibApplication from '@anyopsos/lib-application';
-import * as AnyOpsOSLibCredential from '@anyopsos/lib-credential';
-import * as AnyOpsOSLibDiagram from '@anyopsos/lib-diagram';
-import * as AnyOpsOSLibFolder from '@anyopsos/lib-folder';
-import * as AnyOpsOSLibFolderExplorer from '@anyopsos/lib-folder-explorer';
-import * as AnyOpsOSLibFile from '@anyopsos/lib-file';
-import * as AnyOpsOSLibFileSystem from '@anyopsos/lib-file-system';
-import * as AnyOpsOSLibFileSystemUi from '@anyopsos/lib-file-system-ui';
-import * as AnyOpsOSLibNodeKubernetes from '@anyopsos/lib-node-kubernetes';
-import * as AnyOpsOSLibLogger from '@anyopsos/lib-logger';
-import * as AnyOpsOSLibModal from '@anyopsos/lib-modal';
-import * as AnyOpsOSLibNetApp from '@anyopsos/lib-node-netapp';
-import * as AnyOpsOSLibPipes from '@anyopsos/lib-pipes';
-import * as AnyOpsOSLibScrollSpy from '@anyopsos/lib-scroll-spy';
-import * as AnyOpsOSLibSelectable from '@anyopsos/lib-selectable';
-import * as AnyOpsOSLibServiceInjector from '@anyopsos/lib-service-injector';
-import * as AnyOpsOSLibSsh from '@anyopsos/lib-ssh';
-import * as AnyOpsOSLibTerminal from '@anyopsos/lib-terminal';
-import * as AnyOpsOSLibTypes from '@anyopsos/lib-types';
-import * as AnyOpsOSLibUser from '@anyopsos/lib-user';
-import * as AnyOpsOSLibUtils from '@anyopsos/lib-utils';
-import * as AnyOpsOSLibVMWare from '@anyopsos/lib-node-vmware';
-import * as AnyOpsOSLibNodeLinux from '@anyopsos/lib-node-linux';
-import * as AnyOpsOSLibNodeDocker from '@anyopsos/lib-node-docker';
-import * as AnyOpsOSLibNodeSnmp from '@anyopsos/lib-node-snmp';
-import * as AnyOpsOSLibNode from '@anyopsos/lib-node';
-
-import * as NgxMonacoEditor from 'ngx-monaco-editor';
+// Prepare output for SystemJS
+declare const window: any;
 
 @Injectable({
   providedIn: 'root'
@@ -54,58 +22,69 @@ import * as NgxMonacoEditor from 'ngx-monaco-editor';
 export class SystemJsLoaderService {
 
   constructor() {
-    SystemJS.set('tslib', SystemJS.newModule(Tslib));
-    SystemJS.set('@angular/core', SystemJS.newModule(angularCore));
-    SystemJS.set('@angular/forms', SystemJS.newModule(angularForms));
-    SystemJS.set('@angular/platform-browser', SystemJS.newModule(angularPb));
-    SystemJS.set('@angular/common', SystemJS.newModule(angularCommon));
-    SystemJS.set('@angular/common/http', SystemJS.newModule(angularCommonHttp));
 
-    SystemJS.set('rxjs', SystemJS.newModule(rxjs));
-    SystemJS.set('rxjs/operators', SystemJS.newModule(rxjsOperators));
+    const originalResolve = window.System.resolve;
+    window.System.resolve = function(name: string) {
 
-    SystemJS.set('ngx-socket-io', SystemJS.newModule(ngxSocketIo));
-    SystemJS.set('uuid', SystemJS.newModule(uuid));
-    SystemJS.set('js-yaml', SystemJS.newModule(jsYaml));
+      const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
 
-    // System
-    SystemJS.set('@anyopsos/lib-angular-material', SystemJS.newModule(AnyOpsOSLibAngularMaterial));
-    SystemJS.set('@anyopsos/lib-logger', SystemJS.newModule(AnyOpsOSLibLogger));
-    SystemJS.set('@anyopsos/lib-application', SystemJS.newModule(AnyOpsOSLibApplication));
-    SystemJS.set('@anyopsos/lib-modal', SystemJS.newModule(AnyOpsOSLibModal));
-    SystemJS.set('@anyopsos/lib-service-injector', SystemJS.newModule(AnyOpsOSLibServiceInjector));
-    SystemJS.set('@anyopsos/lib-user', SystemJS.newModule(AnyOpsOSLibUser));
-    SystemJS.set('@anyopsos/lib-credential', SystemJS.newModule(AnyOpsOSLibCredential));
+      // Load anyOpsOS libraries from filesystem
+      if (name.startsWith('@anyopsos/lib-')) {
+        return `${currentLocation}/api/file/${encodeURIComponent('/bin/libraries/' + name.replace('@anyopsos/', 'anyopsos-') + '.umd.js')}`;
 
-    // Folder & File
-    SystemJS.set('@anyopsos/lib-folder', SystemJS.newModule(AnyOpsOSLibFolder));
-    SystemJS.set('@anyopsos/lib-folder-explorer', SystemJS.newModule(AnyOpsOSLibFolderExplorer));
-    SystemJS.set('@anyopsos/lib-file', SystemJS.newModule(AnyOpsOSLibFile));
-    SystemJS.set('@anyopsos/lib-file-system', SystemJS.newModule(AnyOpsOSLibFileSystem));
-    SystemJS.set('@anyopsos/lib-file-system-ui', SystemJS.newModule(AnyOpsOSLibFileSystemUi));
-    SystemJS.set('@anyopsos/lib-selectable', SystemJS.newModule(AnyOpsOSLibSelectable));
+      // Load anyOpsOS external libraries from filesystem
+      } else if (name.startsWith('@anyopsos/ext-lib-')) {
+        return `${currentLocation}/api/file/${encodeURIComponent('/bin/external-libraries/' + name.replace('@anyopsos/', 'anyopsos-') + '.umd.js')}`;
 
-    // Utils
-    SystemJS.set('@anyopsos/lib-diagram', SystemJS.newModule(AnyOpsOSLibDiagram));
-    SystemJS.set('@anyopsos/lib-pipes', SystemJS.newModule(AnyOpsOSLibPipes));
-    SystemJS.set('@anyopsos/lib-scroll-spy', SystemJS.newModule(AnyOpsOSLibScrollSpy));
-    SystemJS.set('@anyopsos/lib-terminal', SystemJS.newModule(AnyOpsOSLibTerminal));
-    SystemJS.set('@anyopsos/lib-utils', SystemJS.newModule(AnyOpsOSLibUtils));
+      // Load anyOpsOS modules from filesystem
+      } else if (name.startsWith('@anyopsos/module-')) {
+        return `${currentLocation}/api/file/${encodeURIComponent('/bin/modules/' + name.replace('@anyopsos/', 'anyopsos-') + '.umd.js')}`;
 
-    // Others
-    SystemJS.set('@anyopsos/lib-types', SystemJS.newModule(AnyOpsOSLibTypes));
+      // Load @angular/cdk from filesystem
+      } else if (name.startsWith('@angular/cdk/')) {
+        return `${currentLocation}/api/file/${encodeURIComponent('/bin/deps/cdk/' + name.replace('@angular/cdk/', 'cdk-') + '.umd.js')}`;
 
-    // Nodes
-    SystemJS.set('@anyopsos/lib-ssh', SystemJS.newModule(AnyOpsOSLibSsh));
-    SystemJS.set('@anyopsos/lib-node', SystemJS.newModule(AnyOpsOSLibNode));
-    SystemJS.set('@anyopsos/lib-node-linux', SystemJS.newModule(AnyOpsOSLibNodeLinux));
-    SystemJS.set('@anyopsos/lib-node-kubernetes', SystemJS.newModule(AnyOpsOSLibNodeKubernetes));
-    SystemJS.set('@anyopsos/lib-node-docker', SystemJS.newModule(AnyOpsOSLibNodeDocker));
-    SystemJS.set('@anyopsos/lib-node-vmware', SystemJS.newModule(AnyOpsOSLibVMWare));
-    SystemJS.set('@anyopsos/lib-node-netapp', SystemJS.newModule(AnyOpsOSLibNetApp));
-    SystemJS.set('@anyopsos/lib-node-snmp', SystemJS.newModule(AnyOpsOSLibNodeSnmp));
+      // Load @angular/material from filesystem
+      } else if (name.startsWith('@angular/material/')) {
+        return `${currentLocation}/api/file/${encodeURIComponent('/bin/deps/material/' + name.replace('@angular/material/', 'material-') + '.umd.js')}`;
+
+      // The rest of @angular, rxjs and tslib libraries are preloaded
+      } else if (name.startsWith('@angular/') || name.startsWith('rxjs') || name === 'tslib' || name.startsWith('https://') || name.startsWith('socket.io') || name.startsWith('@anyopsos/frontend')) {
+        return originalResolve.apply(this, arguments);
+
+      // Load everything else from filesystem
+      } else {
+        return `${currentLocation}/api/file/${encodeURIComponent('/bin/deps/' + name + '.js')}`;
+      }
+    };
+
+    window.System.set('app:@angular/animations', angularAnimations);
+    window.System.set('app:@angular/common', angularCommon);
+    window.System.set('app:@angular/common/http', angularCommonHttp);
+    window.System.set('app:@angular/core', angularCore);
+    window.System.set('app:@angular/forms', angularForms);
+    window.System.set('app:@angular/platform-browser', angularPb);
+    window.System.set('app:@angular/platform-browser/animations', angularPbAnimations);
+
+    window.System.set('app:tslib', Tslib);
+    window.System.set('app:rxjs', rxjs);
+    window.System.set('app:rxjs/operators', rxjsOperators);
 
 
-    SystemJS.set('ngx-monaco-editor', SystemJS.newModule(NgxMonacoEditor));
+    window.System.import('@angular/material');
+    window.System.import('@angular/cdk');
+
+    window.System.import('@angular/animations');
+    window.System.import('@angular/common');
+    window.System.import('@angular/common/http');
+    window.System.import('@angular/core');
+    window.System.import('@angular/forms');
+    window.System.import('@angular/platform-browser');
+    window.System.import('@angular/platform-browser/animations');
+
+    window.System.import('tslib');
+    window.System.import('rxjs');
+    window.System.import('rxjs/operators');
   }
+
 }

@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 
-import {MainService} from '@anyopsos/frontend/app/services/main.service';
+import {AnyopsosLibBootstrapService} from '@anyopsos/lib-bootstrap';
 
 import {AnyOpsOSLibNodeLinuxConnectionsStateService} from './services/anyopsos-lib-node-linux-connections-state.service';
 import {AnyOpsOSLibNodeLinuxFileSystemHandlersService} from './services/anyopsos-lib-node-linux-file-system-handlers.service';
@@ -12,12 +12,12 @@ import {AnyOpsOSLibNodeLinuxFileSystemHandlersService} from './services/anyopsos
 })
 export class AnyOpsOSLibNodeLinuxModule {
 
-  constructor(private readonly Main: MainService,
+  constructor(private readonly LibBootstrap: AnyopsosLibBootstrapService,
               private readonly LibNodeLinuxConnectionsState: AnyOpsOSLibNodeLinuxConnectionsStateService,
               private readonly LibNodeLinuxFileSystemHandlers: AnyOpsOSLibNodeLinuxFileSystemHandlersService) {
 
     // Initialize connections when user is loggedIn
-    this.Main.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
+    this.LibBootstrap.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
       if (data.appBootstrapped === true && !this.LibNodeLinuxConnectionsState.getConnectionsInitialized()) {
 
         // Get Linux connections

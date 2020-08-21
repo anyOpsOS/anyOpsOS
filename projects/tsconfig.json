@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "paths": {
       "@anyopsos/app-backups-manager": [
@@ -409,6 +409,12 @@
       ],
       "@anyopsos/modal-monitor-xss/*": [
         ".dist/modals/monitor-xss/*"
+      ],
+      "@anyopsos/lib-bootstrap": [
+        ".dist/libraries/bootstrap"
+      ],
+      "@anyopsos/lib-bootstrap/*": [
+        ".dist/libraries/bootstrap/*"
       ]
     }
   }

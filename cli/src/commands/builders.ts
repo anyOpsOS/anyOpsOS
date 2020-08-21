@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 import rimraf from 'rimraf';
 import readLines from 'read-last-lines';
+import {parse} from 'path';
 
 // TODO ESM
 const {compile} = nexe;
@@ -167,7 +168,7 @@ export class Builders {
       console.log('\n');
     }
 
-    if (this.packageType === 'ext-lib') await this.moveExternalLibraryAsDep();
+    // TODO new systemjs -- if (this.packageType === 'ext-lib') await this.moveExternalLibraryAsDep();
   }
 
   /**
@@ -236,6 +237,69 @@ export class Builders {
     console.log(blueBright(`[anyOpsOS Cli.] Building anyOpsOS Frontend.\n`));
     await runInDocker('node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build');
     console.log(greenBright(`[anyOpsOS Cli.] Successfully built anyOpsOS Frontend.\n`));
+
+    await runInDocker(`mkdir -p ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/deps/material`);
+    await runInDocker(`mkdir -p ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/deps/cdk`);
+
+    // Copy dependencies
+    await runInDocker(`cp \
+      ${INTERNAL_PATH_CWD}/node_modules/@angular/cdk/bundles/*.umd.js* \
+      ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/deps/cdk`
+    );
+
+    await runInDocker(`cp \
+      ${INTERNAL_PATH_CWD}/node_modules/@angular/material/bundles/*.umd.js* \
+      ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/deps/material`
+    );
+
+    const dependenciesToCopy = [
+      `${INTERNAL_PATH_CWD}/node_modules/angular-file/bundles/angular-file.umd.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/angular-resizable-element/bundles/angular-resizable-element.umd.js`,
+
+      `${INTERNAL_PATH_CWD}/node_modules/ngx-cookie-service/bundles/ngx-cookie-service.umd.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/ngx-filter-pipe/bundles/ngx-filter-pipe.umd.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/ngx-logger/bundles/ngx-logger.umd.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/ngx-material-file-input/bundles/ngx-material-file-input.umd.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/ngx-monaco-editor/bundles/ngx-monaco-editor.umd.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/ngx-order-pipe/bundles/ngx-order-pipe.umd.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/ngx-socket-io/bundles/ngx-socket-io.umd.js`,
+
+      `${INTERNAL_PATH_CWD}/node_modules/dagre/dist/dagre.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/filesize/lib/filesize.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/js-yaml/dist/js-yaml.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/lodash/lodash.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/uuid/dist/umd/uuid.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/xterm/lib/xterm.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/xterm-addon-fit/lib/xterm-addon-fit.js`,
+
+      `${INTERNAL_PATH_CWD}/node_modules/d3-array/dist/d3-array.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/d3-color/dist/d3-color.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/d3-format/dist/d3-format.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/d3-interpolate/dist/d3-interpolate.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/d3-path/dist/d3-path.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/d3-scale/dist/d3-scale.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/d3-scale-chromatic/dist/d3-scale-chromatic.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/d3-shape/dist/d3-shape.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/d3-time/dist/d3-time.min.js`,
+      `${INTERNAL_PATH_CWD}/node_modules/d3-time-format/dist/d3-time-format.min.js`,
+
+      `${INTERNAL_PATH_CWD}/node_modules/vlq/dist/vlq.js`, // Dependency of ngx-logger
+    ];
+
+    for (const dependency of dependenciesToCopy) {
+
+      const filename = parse(dependency).base;
+
+      await runInDocker(`cp \
+        ${dependency} \
+        ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/deps/${filename.replace('.min', '').replace('.umd', '')}`
+      );
+    }
+
+    await runInDocker(`cp \
+      ${INTERNAL_PATH_CWD}/node_modules/fast-json-stable-stringify/index.js \
+      ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/deps/fast-json-stable-stringify.js`
+    );
   }
 
   async buildBackend(): Promise<void> {

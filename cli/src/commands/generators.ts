@@ -1,10 +1,9 @@
 import chalk from 'chalk';
 import fs from 'fs-extra';
-import rif from 'replace-in-file';
 import editJsonFile from 'edit-json-file';
+import replaceInFile from 'replace-in-file';
 
 // TODO ESM
-const {replaceInFile} = rif;
 const {blue, blueBright, red} = chalk;
 const {copy, ensureDir, move, outputFile, outputJson, pathExistsSync, unlink} = fs;
 
@@ -87,7 +86,7 @@ export class Generators {
     const tsConfigSpecFile = editJsonFile(`${this.projectPath}/tsconfig.spec.json`);
     const tsLintFile = editJsonFile(`${this.projectPath}/tslint.json`);
     const modulesTsConfigFile = editJsonFile(`${process.cwd()}/projects/tsconfig.json`);
-    const mainTsConfigFile = editJsonFile(`${process.cwd()}/tsconfig.json`);
+    const mainTsConfigFile = editJsonFile(`${process.cwd()}/tsconfig.base.json`);
     const mainAngularFile = editJsonFile(`${process.cwd()}/angular.json`);
 
     packageFile.set('name', `@anyopsos/${this.packageType}-${argv.name}`);
@@ -106,11 +105,11 @@ export class Generators {
     ngPackageFile.set('$schema', '../../../node_modules/ng-packagr/ng-package.schema.json');
     await ngPackageFile.save();
 
-    tsConfigLibFile.set('extends', '../../tsconfig.json');
+    tsConfigLibFile.set('extends', '../../tsconfig.base.json');
     tsConfigLibFile.set('compilerOptions.outDir', '../../../out-tsc/lib');
     await tsConfigLibFile.save();
 
-    tsConfigSpecFile.set('extends', '../../../tsconfig.json');
+    tsConfigSpecFile.set('extends', '../../../tsconfig.base.json');
     tsConfigSpecFile.set('compilerOptions.outDir', '../../../out-tsc/spec');
     await tsConfigSpecFile.save();
 
@@ -167,14 +166,14 @@ export class Generators {
   private async removeUnwantedCodeFromFiles(argv: { type: Types; name: string; prefix: string; }): Promise<void> {
     console.log(blueBright(`[anyOpsOS Cli. Internals] Removing unwanted code from module files.\n`));
 
-    // Remove unwanted exports from public-api
+    // @ts-ignore Remove unwanted exports from public-api
     await replaceInFile({
       files: `${this.projectPath}/src/public-api.ts`,
       from: [/.*\.(service|component)';*\n/gi, /any-ops-o-s-/gi],
       to: ['', 'anyopsos-'],
     });
 
-    // Remove unwanted imports/exports and declarations from module
+    // @ts-ignore Remove unwanted imports/exports and declarations from module
     await replaceInFile({
       files: `${this.projectPath}/src/lib/anyopsos-${this.packageType}-${argv.name}.module.ts`,
       from: [/.*'\.\/any-ops-o-s-.*\n/gi, /\[[a-zA-Z]*]/gi, /\n\n\n\n/g],

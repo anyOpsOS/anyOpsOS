@@ -30,16 +30,14 @@
             "styles": [
               "src/frontend/styles.scss"
             ],
-            "scripts": [
-              "node_modules/systemjs/dist/system.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "src/frontend/environments/environment.ts",
+                  "with": "src/frontend/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -47,7 +45,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -138,6 +135,11 @@
           "options": {
             "tsConfig": "projects/libraries/angular-material/tsconfig.lib.json",
             "project": "projects/libraries/angular-material/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/angular-material/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -178,6 +180,11 @@
           "options": {
             "tsConfig": "projects/libraries/application/tsconfig.lib.json",
             "project": "projects/libraries/application/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/application/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -218,6 +225,11 @@
           "options": {
             "tsConfig": "projects/libraries/file/tsconfig.lib.json",
             "project": "projects/libraries/file/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/file/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -258,6 +270,11 @@
           "options": {
             "tsConfig": "projects/libraries/file-system/tsconfig.lib.json",
             "project": "projects/libraries/file-system/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/file-system/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -298,6 +315,11 @@
           "options": {
             "tsConfig": "projects/libraries/file-system-ui/tsconfig.lib.json",
             "project": "projects/libraries/file-system-ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/file-system-ui/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -338,6 +360,11 @@
           "options": {
             "tsConfig": "projects/libraries/folder/tsconfig.lib.json",
             "project": "projects/libraries/folder/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/folder/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -378,6 +405,11 @@
           "options": {
             "tsConfig": "projects/libraries/node-kubernetes/tsconfig.lib.json",
             "project": "projects/libraries/node-kubernetes/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/node-kubernetes/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -418,6 +450,11 @@
           "options": {
             "tsConfig": "projects/libraries/logger/tsconfig.lib.json",
             "project": "projects/libraries/logger/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/logger/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -458,6 +495,11 @@
           "options": {
             "tsConfig": "projects/libraries/modal/tsconfig.lib.json",
             "project": "projects/libraries/modal/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/modal/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -498,6 +540,11 @@
           "options": {
             "tsConfig": "projects/libraries/node-netapp/tsconfig.lib.json",
             "project": "projects/libraries/node-netapp/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/node-netapp/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -538,6 +585,11 @@
           "options": {
             "tsConfig": "projects/libraries/pipes/tsconfig.lib.json",
             "project": "projects/libraries/pipes/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/pipes/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -578,6 +630,11 @@
           "options": {
             "tsConfig": "projects/libraries/scroll-spy/tsconfig.lib.json",
             "project": "projects/libraries/scroll-spy/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/scroll-spy/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -618,6 +675,11 @@
           "options": {
             "tsConfig": "projects/libraries/selectable/tsconfig.lib.json",
             "project": "projects/libraries/selectable/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/selectable/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -658,6 +720,11 @@
           "options": {
             "tsConfig": "projects/libraries/service-injector/tsconfig.lib.json",
             "project": "projects/libraries/service-injector/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/service-injector/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -698,6 +765,11 @@
           "options": {
             "tsConfig": "projects/libraries/terminal/tsconfig.lib.json",
             "project": "projects/libraries/terminal/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/terminal/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -738,6 +810,11 @@
           "options": {
             "tsConfig": "projects/external-libraries/theia/tsconfig.lib.json",
             "project": "projects/external-libraries/theia/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/theia/tsconfig.lib.prod.json"
+            }
           }
         },
         "build-webpack": {
@@ -784,6 +861,11 @@
           "options": {
             "tsConfig": "projects/libraries/types/tsconfig.lib.json",
             "project": "projects/libraries/types/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/types/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -824,6 +906,11 @@
           "options": {
             "tsConfig": "projects/libraries/user/tsconfig.lib.json",
             "project": "projects/libraries/user/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/user/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -864,6 +951,11 @@
           "options": {
             "tsConfig": "projects/libraries/utils/tsconfig.lib.json",
             "project": "projects/libraries/utils/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/utils/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -904,6 +996,11 @@
           "options": {
             "tsConfig": "projects/libraries/node-vmware/tsconfig.lib.json",
             "project": "projects/libraries/node-vmware/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/node-vmware/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -944,6 +1041,11 @@
           "options": {
             "tsConfig": "projects/external-libraries/dygraphs/tsconfig.lib.json",
             "project": "projects/external-libraries/dygraphs/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/external-libraries/dygraphs/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -984,6 +1086,11 @@
           "options": {
             "tsConfig": "projects/external-libraries/easy-pie-chart/tsconfig.lib.json",
             "project": "projects/external-libraries/easy-pie-chart/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/external-libraries/easy-pie-chart/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1024,6 +1131,11 @@
           "options": {
             "tsConfig": "projects/external-libraries/gauge-js/tsconfig.lib.json",
             "project": "projects/external-libraries/gauge-js/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/external-libraries/gauge-js/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1064,6 +1176,11 @@
           "options": {
             "tsConfig": "projects/external-libraries/jquery/tsconfig.lib.json",
             "project": "projects/external-libraries/jquery/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/external-libraries/jquery/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1104,6 +1221,11 @@
           "options": {
             "tsConfig": "projects/external-libraries/lz-string/tsconfig.lib.json",
             "project": "projects/external-libraries/lz-string/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/external-libraries/lz-string/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1144,6 +1266,11 @@
           "options": {
             "tsConfig": "projects/external-libraries/mxgraph/tsconfig.lib.json",
             "project": "projects/external-libraries/mxgraph/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/external-libraries/mxgraph/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1184,6 +1311,11 @@
           "options": {
             "tsConfig": "projects/external-libraries/netdata/tsconfig.lib.json",
             "project": "projects/external-libraries/netdata/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/external-libraries/netdata/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1224,6 +1356,11 @@
           "options": {
             "tsConfig": "projects/external-libraries/pako/tsconfig.lib.json",
             "project": "projects/external-libraries/pako/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/external-libraries/pako/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1264,6 +1401,11 @@
           "options": {
             "tsConfig": "projects/external-libraries/perfect-scrollbar/tsconfig.lib.json",
             "project": "projects/external-libraries/perfect-scrollbar/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/external-libraries/perfect-scrollbar/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1293,6 +1435,51 @@
         }
       }
     },
+    "anyopsos-ext-lib-spin-js": {
+      "projectType": "library",
+      "root": "projects/external-libraries/spin-js",
+      "sourceRoot": "projects/external-libraries/spin-js/src",
+      "prefix": "aelspinjs",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/external-libraries/spin-js/tsconfig.lib.json",
+            "project": "projects/external-libraries/spin-js/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/external-libraries/spin-js/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/external-libraries/spin-js/src/test.ts",
+            "tsConfig": "projects/external-libraries/spin-js/tsconfig.spec.json",
+            "karmaConfig": "projects/external-libraries/spin-js/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/external-libraries/spin-js/tsconfig.lib.json",
+              "projects/external-libraries/spin-js/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
     "anyopsos-app-backups-manager": {
       "projectType": "library",
       "root": "projects/applications/backups-manager",
@@ -1304,6 +1491,11 @@
           "options": {
             "tsConfig": "projects/applications/backups-manager/tsconfig.lib.json",
             "project": "projects/applications/backups-manager/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/applications/backups-manager/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1344,6 +1536,11 @@
           "options": {
             "tsConfig": "projects/applications/credentials-manager/tsconfig.lib.json",
             "project": "projects/applications/credentials-manager/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/applications/credentials-manager/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1384,6 +1581,11 @@
           "options": {
             "tsConfig": "projects/applications/datastore-explorer/tsconfig.lib.json",
             "project": "projects/applications/datastore-explorer/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/applications/datastore-explorer/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1424,6 +1626,11 @@
           "options": {
             "tsConfig": "projects/applications/drawer/tsconfig.lib.json",
             "project": "projects/applications/drawer/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/applications/drawer/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1464,6 +1671,11 @@
           "options": {
             "tsConfig": "projects/applications/file-explorer/tsconfig.lib.json",
             "project": "projects/applications/file-explorer/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/applications/file-explorer/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1504,6 +1716,11 @@
           "options": {
             "tsConfig": "projects/applications/infrastructure-as-code/tsconfig.lib.json",
             "project": "projects/applications/infrastructure-as-code/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/applications/infrastructure-as-code/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1544,6 +1761,11 @@
           "options": {
             "tsConfig": "projects/applications/infrastructure-manager/tsconfig.lib.json",
             "project": "projects/applications/infrastructure-manager/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/applications/infrastructure-manager/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1584,6 +1806,11 @@
           "options": {
             "tsConfig": "projects/applications/monitor/tsconfig.lib.json",
             "project": "projects/applications/monitor/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/applications/monitor/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1624,6 +1851,11 @@
           "options": {
             "tsConfig": "projects/applications/notepad/tsconfig.lib.json",
             "project": "projects/applications/notepad/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/applications/notepad/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1664,6 +1896,11 @@
           "options": {
             "tsConfig": "projects/applications/sftp/tsconfig.lib.json",
             "project": "projects/applications/sftp/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/applications/sftp/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1704,6 +1941,11 @@
           "options": {
             "tsConfig": "projects/applications/ssh/tsconfig.lib.json",
             "project": "projects/applications/ssh/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/applications/ssh/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1744,6 +1986,11 @@
           "options": {
             "tsConfig": "projects/applications/wmks/tsconfig.lib.json",
             "project": "projects/applications/wmks/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/applications/wmks/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1773,46 +2020,6 @@
         }
       }
     },
-    "anyopsos-ext-lib-spin-js": {
-      "projectType": "library",
-      "root": "projects/external-libraries/spin-js",
-      "sourceRoot": "projects/external-libraries/spin-js/src",
-      "prefix": "aelspinjs",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "projects/external-libraries/spin-js/tsconfig.lib.json",
-            "project": "projects/external-libraries/spin-js/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/external-libraries/spin-js/src/test.ts",
-            "tsConfig": "projects/external-libraries/spin-js/tsconfig.spec.json",
-            "karmaConfig": "projects/external-libraries/spin-js/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/external-libraries/spin-js/tsconfig.lib.json",
-              "projects/external-libraries/spin-js/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      },
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      }
-    },
     "anyopsos-modal-default-plain": {
       "projectType": "library",
       "root": "projects/modals/default-plain",
@@ -1824,6 +2031,11 @@
           "options": {
             "tsConfig": "projects/modals/default-plain/tsconfig.lib.json",
             "project": "projects/modals/default-plain/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/default-plain/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1864,6 +2076,11 @@
           "options": {
             "tsConfig": "projects/modals/default-input/tsconfig.lib.json",
             "project": "projects/modals/default-input/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/default-input/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1904,6 +2121,11 @@
           "options": {
             "tsConfig": "projects/modals/default-question/tsconfig.lib.json",
             "project": "projects/modals/default-question/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/default-question/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1944,6 +2166,11 @@
           "options": {
             "tsConfig": "projects/modals/default-json-textarea/tsconfig.lib.json",
             "project": "projects/modals/default-json-textarea/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/default-json-textarea/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -1984,6 +2211,11 @@
           "options": {
             "tsConfig": "projects/libraries/folder-explorer/tsconfig.lib.json",
             "project": "projects/libraries/folder-explorer/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/folder-explorer/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2024,6 +2256,11 @@
           "options": {
             "tsConfig": "projects/libraries/ssh/tsconfig.lib.json",
             "project": "projects/libraries/ssh/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/ssh/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2064,6 +2301,11 @@
           "options": {
             "tsConfig": "projects/libraries/loader/tsconfig.lib.json",
             "project": "projects/libraries/loader/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/loader/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2104,6 +2346,11 @@
           "options": {
             "tsConfig": "projects/libraries/credential/tsconfig.lib.json",
             "project": "projects/libraries/credential/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/credential/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2144,6 +2391,11 @@
           "options": {
             "tsConfig": "projects/libraries/node-docker/tsconfig.lib.json",
             "project": "projects/libraries/node-docker/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/node-docker/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2184,6 +2436,11 @@
           "options": {
             "tsConfig": "projects/libraries/node-snmp/tsconfig.lib.json",
             "project": "projects/libraries/node-snmp/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/node-snmp/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2224,6 +2481,11 @@
           "options": {
             "tsConfig": "projects/libraries/workspace/tsconfig.lib.json",
             "project": "projects/libraries/workspace/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/workspace/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2264,6 +2526,11 @@
           "options": {
             "tsConfig": "projects/libraries/node-linux/tsconfig.lib.json",
             "project": "projects/libraries/node-linux/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/node-linux/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2304,6 +2571,11 @@
           "options": {
             "tsConfig": "projects/libraries/node/tsconfig.lib.json",
             "project": "projects/libraries/node/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/node/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2344,6 +2616,11 @@
           "options": {
             "tsConfig": "projects/libraries/diagram/tsconfig.lib.json",
             "project": "projects/libraries/diagram/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/diagram/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2384,6 +2661,11 @@
           "options": {
             "tsConfig": "projects/modals/kubernetes-create-resource/tsconfig.lib.json",
             "project": "projects/modals/kubernetes-create-resource/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/kubernetes-create-resource/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2424,6 +2706,11 @@
           "options": {
             "tsConfig": "projects/modals/kubernetes-edit-resource/tsconfig.lib.json",
             "project": "projects/modals/kubernetes-edit-resource/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/kubernetes-edit-resource/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2464,6 +2751,11 @@
           "options": {
             "tsConfig": "projects/modals/kubernetes-logs/tsconfig.lib.json",
             "project": "projects/modals/kubernetes-logs/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/kubernetes-logs/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2504,6 +2796,11 @@
           "options": {
             "tsConfig": "projects/modals/kubernetes-scale-resource/tsconfig.lib.json",
             "project": "projects/modals/kubernetes-scale-resource/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/kubernetes-scale-resource/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2544,6 +2841,11 @@
           "options": {
             "tsConfig": "projects/modals/kubernetes-shell/tsconfig.lib.json",
             "project": "projects/modals/kubernetes-shell/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/kubernetes-shell/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2584,6 +2886,11 @@
           "options": {
             "tsConfig": "projects/modals/monitor-alarms/tsconfig.lib.json",
             "project": "projects/modals/monitor-alarms/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/monitor-alarms/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2624,6 +2931,11 @@
           "options": {
             "tsConfig": "projects/modals/monitor-export/tsconfig.lib.json",
             "project": "projects/modals/monitor-export/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/monitor-export/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2664,6 +2976,11 @@
           "options": {
             "tsConfig": "projects/modals/monitor-help/tsconfig.lib.json",
             "project": "projects/modals/monitor-help/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/monitor-help/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2704,6 +3021,11 @@
           "options": {
             "tsConfig": "projects/modals/monitor-import/tsconfig.lib.json",
             "project": "projects/modals/monitor-import/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/monitor-import/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2744,6 +3066,11 @@
           "options": {
             "tsConfig": "projects/modals/monitor-options/tsconfig.lib.json",
             "project": "projects/modals/monitor-options/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/monitor-options/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2784,6 +3111,11 @@
           "options": {
             "tsConfig": "projects/modals/monitor-xss/tsconfig.lib.json",
             "project": "projects/modals/monitor-xss/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/modals/monitor-xss/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2824,6 +3156,11 @@
           "options": {
             "tsConfig": "projects/libraries/desktop/tsconfig.lib.json",
             "project": "projects/libraries/desktop/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/desktop/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -2840,6 +3177,51 @@
             "tsConfig": [
               "projects/libraries/desktop/tsconfig.lib.json",
               "projects/libraries/desktop/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "anyopsos-lib-bootstrap": {
+      "projectType": "library",
+      "root": "projects/libraries/bootstrap",
+      "sourceRoot": "projects/libraries/bootstrap/src",
+      "prefix": "albp",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/libraries/bootstrap/tsconfig.lib.json",
+            "project": "projects/libraries/bootstrap/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libraries/bootstrap/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/libraries/bootstrap/src/test.ts",
+            "tsConfig": "projects/libraries/bootstrap/tsconfig.spec.json",
+            "karmaConfig": "projects/libraries/bootstrap/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/libraries/bootstrap/tsconfig.lib.json",
+              "projects/libraries/bootstrap/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

@@ -5,6 +5,8 @@
     "entryFile": "src/public-api.ts"
   },
   "whitelistedNonPeerDependencies": [
+    "@anyopsos/lib-angular-material",
+    "@anyopsos/lib-pipes",
     "d3-drag",
     "d3-format",
     "d3-shape",
@@ -13,7 +15,7 @@
     "d3-selection",
     "dagre",
     "filesize",
-    "json-stable-stringify",
+    "fast-json-stable-stringify",
     "lodash-es"
   ]
 }

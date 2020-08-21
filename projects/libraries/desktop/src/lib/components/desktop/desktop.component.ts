@@ -9,7 +9,7 @@ import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
 import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
 
 @Component({
-  selector: 'app-desktop',
+  selector: 'aldesktop-desktop',
   templateUrl: './desktop.component.html',
   styleUrls: ['./desktop.component.scss']
 })
@@ -26,7 +26,7 @@ export class DesktopComponent implements OnInit {
               private readonly LibFileSystem: AnyOpsOSLibFileSystemService,
               private readonly LibFileSystemUi: AnyOpsOSLibFileSystemUiService,
               private readonly LibApplication: AnyOpsOSLibApplicationService) {
-    
+
   }
 
   ngOnInit(): void {
