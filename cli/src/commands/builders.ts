@@ -267,7 +267,6 @@ export class Builders {
       `${INTERNAL_PATH_CWD}/node_modules/dagre/dist/dagre.min.js`,
       `${INTERNAL_PATH_CWD}/node_modules/filesize/lib/filesize.min.js`,
       `${INTERNAL_PATH_CWD}/node_modules/js-yaml/dist/js-yaml.min.js`,
-      `${INTERNAL_PATH_CWD}/node_modules/lodash/lodash.js`,
       `${INTERNAL_PATH_CWD}/node_modules/uuid/dist/umd/uuid.min.js`,
       `${INTERNAL_PATH_CWD}/node_modules/xterm/lib/xterm.js`,
       `${INTERNAL_PATH_CWD}/node_modules/xterm-addon-fit/lib/xterm-addon-fit.js`,
@@ -297,9 +296,10 @@ export class Builders {
     }
 
     await runInDocker(`cp \
-      ${INTERNAL_PATH_CWD}/node_modules/fast-json-stable-stringify/index.js \
-      ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/deps/fast-json-stable-stringify.js`
+      ${INTERNAL_PATH_CWD}/node_modules/lodash/lodash.js \
+      ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/deps/lodash-es.js`
     );
+
   }
 
   async buildBackend(): Promise<void> {
