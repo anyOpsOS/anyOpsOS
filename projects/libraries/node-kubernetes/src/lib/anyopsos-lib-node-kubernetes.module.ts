@@ -1,7 +1,11 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
 
-import {AnyopsosLibBootstrapService} from '@anyopsos/lib-bootstrap';
+import {AnyOpsOSLibBootstrapService} from '@anyopsos/lib-bootstrap';
 
+import {AnyOpsOSLibNodeKubernetesService} from './services/anyopsos-lib-node-kubernetes.service';
+import {AnyOpsOSLibNodeKubernetesApiService} from './services/anyopsos-lib-node-kubernetes-api.service';
+import {AnyOpsOSLibNodeKubernetesHelpersService} from './services/anyopsos-lib-node-kubernetes-helpers.service';
+import {AnyOpsOSLibNodeKubernetesObjectHelpersService} from './services/anyopsos-lib-node-kubernetes-object-helpers.service';
 import {AnyOpsOSLibNodeKubernetesConnectionsStateService} from './services/anyopsos-lib-node-kubernetes-connections-state.service';
 import {AnyOpsOSLibNodeKubernetesFileSystemHandlersService} from './services/anyopsos-lib-node-kubernetes-file-system-handlers.service';
 
@@ -12,9 +16,16 @@ import {AnyOpsOSLibNodeKubernetesFileSystemHandlersService} from './services/any
 })
 export class AnyOpsOSLibNodeKubernetesModule {
 
-  constructor(private readonly LibBootstrap: AnyopsosLibBootstrapService,
+  constructor(@Optional() @SkipSelf() parentModule: AnyOpsOSLibNodeKubernetesModule,
+              private readonly LibBootstrap: AnyOpsOSLibBootstrapService,
               private readonly LibNodeKubernetesConnectionsState: AnyOpsOSLibNodeKubernetesConnectionsStateService,
               private readonly LibNodeKubernetesFileSystemHandlers: AnyOpsOSLibNodeKubernetesFileSystemHandlersService) {
+    console.log('Loading AnyOpsOSLibNodeKubernetesModule');
+
+    if (parentModule) {
+      //throw new Error(
+        //'AnyOpsOSLibNodeKubernetesModule is already loaded. You should not import it manually.');
+    }
 
     // Initialize connections when user is loggedIn
     this.LibBootstrap.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
@@ -29,4 +40,19 @@ export class AnyOpsOSLibNodeKubernetesModule {
     });
 
   }
+
+  static forRoot(): ModuleWithProviders<AnyOpsOSLibNodeKubernetesModule> {
+    return {
+      ngModule: AnyOpsOSLibNodeKubernetesModule,
+      providers: [
+        AnyOpsOSLibNodeKubernetesService,
+        AnyOpsOSLibNodeKubernetesApiService,
+        AnyOpsOSLibNodeKubernetesHelpersService,
+        AnyOpsOSLibNodeKubernetesObjectHelpersService,
+        AnyOpsOSLibNodeKubernetesConnectionsStateService,
+        AnyOpsOSLibNodeKubernetesFileSystemHandlersService
+      ]
+    };
+  }
+
 }

@@ -1,7 +1,10 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
 
-import {AnyopsosLibBootstrapService} from '@anyopsos/lib-bootstrap';
+import {AnyOpsOSLibBootstrapService} from '@anyopsos/lib-bootstrap';
 
+import {AnyOpsOSLibSshService} from './services/anyopsos-lib-ssh.service';
+import {AnyOpsOSLibSshHelpersService} from './services/anyopsos-lib-ssh-helpers.service';
+import {AnyOpsOSLibSshFileSystemService} from './services/anyopsos-lib-ssh-file-system.service';
 import {AnyOpsOSLibSshConnectionsStateService} from './services/anyopsos-lib-ssh-connections-state.service';
 import {AnyOpsOSLibSshFileSystemHandlersService} from './services/anyopsos-lib-ssh-file-system-handlers.service';
 
@@ -12,9 +15,16 @@ import {AnyOpsOSLibSshFileSystemHandlersService} from './services/anyopsos-lib-s
 })
 export class AnyOpsOSLibSshModule {
 
-  constructor(private readonly LibBoostrap: AnyopsosLibBootstrapService,
+  constructor(@Optional() @SkipSelf() parentModule: AnyOpsOSLibSshModule,
+              private readonly LibBoostrap: AnyOpsOSLibBootstrapService,
               private readonly LibSshConnectionsState: AnyOpsOSLibSshConnectionsStateService,
               private readonly LibSshFileSystemHandlers: AnyOpsOSLibSshFileSystemHandlersService) {
+    console.log('Loading AnyOpsOSLibSshModule');
+
+    if (parentModule) {
+      //throw new Error(
+        //'AnyOpsOSLibSshModule is already loaded. You should not import it manually.');
+    }
 
     // Initialize connections when user is loggedIn
     this.LibBoostrap.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
@@ -28,6 +38,19 @@ export class AnyOpsOSLibSshModule {
       }
     });
 
+  }
+
+  static forRoot(): ModuleWithProviders<AnyOpsOSLibSshModule> {
+    return {
+      ngModule: AnyOpsOSLibSshModule,
+      providers: [
+        AnyOpsOSLibSshService,
+        AnyOpsOSLibSshHelpersService,
+        AnyOpsOSLibSshFileSystemService,
+        AnyOpsOSLibSshConnectionsStateService,
+        AnyOpsOSLibSshFileSystemHandlersService
+      ]
+    };
   }
 
 }

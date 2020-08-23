@@ -6,6 +6,7 @@ import {MonacoEditorModule} from 'ngx-monaco-editor';
 
 import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
 
+import {AnyOpsOSLibUtilsService} from './services/anyopsos-lib-utils.service';
 import {NgNoCheck} from './directives/no-check.directive';
 import {CapsLockDirective} from './directives/caps-lock.directive';
 import {TextInputComponent} from './components/text-input/text-input.component';
@@ -28,6 +29,9 @@ import {RelatimeTimePipe} from './pipes/relatime-time.pipe';
     // Shared module import
     AnyOpsOSLibAngularMaterialModule
   ],
+  providers: [
+    AnyOpsOSLibUtilsService
+  ],
   exports: [
     NgNoCheck,
     CapsLockDirective,
@@ -37,4 +41,9 @@ import {RelatimeTimePipe} from './pipes/relatime-time.pipe';
   ]
 })
 export class AnyOpsOSLibUtilsModule {
+
+  constructor() {
+    console.log('Loading AnyOpsOSLibUtilsModule');
+  }
+
 }

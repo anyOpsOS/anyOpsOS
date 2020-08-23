@@ -1,4 +1,4 @@
-import {Compiler, Injectable, Injector, ModuleWithComponentFactories, NgModuleFactory, NgModuleRef} from '@angular/core';
+import {ApplicationRef, ComponentFactoryResolver, ComponentFactory, Compiler, Injectable, Injector, ModuleWithComponentFactories, NgModuleFactory, NgModuleRef} from '@angular/core';
 
 import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
 import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
@@ -15,12 +15,17 @@ declare const window: any;
 })
 export class AnyOpsOSLibLoaderService {
 
-  constructor(private readonly injector: Injector,
+  private bootstrapModule: any;
+  private bootstrapModuleRef: NgModuleRef<any>;
+
+  constructor(private readonly appRef: ApplicationRef,
+              private readonly injector: Injector,
               private readonly compiler: Compiler,
               private readonly logger: AnyOpsOSLibLoggerService,
               private readonly LibFileSystem: AnyOpsOSLibFileSystemService,
               private readonly LibApplication: AnyOpsOSLibApplicationService,
               private readonly ModalRegisteredState: AnyOpsOSLibModalRegisteredStateService) {
+
   }
 
   /**
@@ -55,7 +60,7 @@ export class AnyOpsOSLibLoaderService {
 
       const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
 
-      window.System.import(`${currentLocation}/api/file/${encodeURIComponent('/bin/applications/' + application.fileName)}`).then((moduleToCompile) => {
+      window.System.import(`${currentLocation}/api/file/${encodeURIComponent('/bin/applications/' + application.fileName)}`).then((moduleToCompile: any) => {
 
         // This will only work if the application exposes only one Module
         const applicationModule: string = Object.keys(moduleToCompile).find((entry: string) => entry.endsWith('Module'));
@@ -105,9 +110,8 @@ export class AnyOpsOSLibLoaderService {
 
     const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
 
-    window.System.import(`${currentLocation}/api/file/${encodeURIComponent('/bin/modals/' + modal.fileName)}`).then((moduleToCompile) => {
+    window.System.import(`${currentLocation}/api/file/${encodeURIComponent('/bin/modals/' + modal.fileName)}`).then((moduleToCompile: any) => {
 
-      // This will only work if the modal exposes only one Module
       const modalModule: string = Object.keys(moduleToCompile).find((entry: string) => entry.endsWith('Module'));
       return this.compiler.compileModuleAsync<any>(moduleToCompile[modalModule]);
 
@@ -126,6 +130,66 @@ export class AnyOpsOSLibLoaderService {
     }).catch((e: Error) => {
       this.logger.error('LibLoader', 'Error while loading modal', loggerArgs, e.message);
     });
+
+  }
+
+  /**
+   * Libraries
+   */
+  loadLibraries(): Promise<void> {
+
+    return new Promise((resolve) => {
+
+      // Get all library files
+      this.LibFileSystem.getFolder('/bin/libraries').subscribe(
+        async (res: BackendResponse & { data: AnyOpsOSFile[]; }) => {
+          if (res.status === 'error') return this.logger.fatal('LibLoader', 'Error while getting Installed Libraries', null, res.data);
+
+          this.logger.info('LibLoader', 'Get Installed Libraries successfully');
+
+          for (const value of res.data) {
+            if (value.fileName === 'anyopsos-lib-application.umd.js') continue;
+            if (value.fileName.endsWith('.umd.js')) await this.loadLib(value);
+          }
+
+          return resolve();
+        },
+        error => {
+          this.logger.error('LibLoader', 'Error while getting installed Libraries', null, error);
+        });
+
+      });
+
+  }
+
+  async loadLib(library: AnyOpsOSFile): Promise<void> {
+    const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
+
+    return window.System.import(`${currentLocation}/api/file/${encodeURIComponent('/bin/libraries/' + library.fileName)}`).then(async (moduleToCompile: any) => {
+
+      const modalModule: string = Object.keys(moduleToCompile).find((entry: string) => entry.endsWith('Module'));
+
+      if ((this.injector as any)._def.modules.find((m) => m.name === modalModule) && modalModule !== 'AnyOpsOSLibBootstrapModule') return;
+
+      const modFac: NgModuleFactory<any> = await this.compiler.compileModuleAsync<any>(moduleToCompile[modalModule]);
+
+      console.log(modalModule);
+      if (modalModule === 'AnyOpsOSLibBootstrapModule') {
+        this.bootstrapModule = moduleToCompile;
+        return this.bootstrapModuleRef = modFac.create(this.injector);
+      }
+
+      return modFac.create(this.injector);
+
+    });
+  }
+
+  bootstrap() {
+
+    const resolver: ComponentFactoryResolver = this.bootstrapModuleRef.componentFactoryResolver;
+    const applicationComponentFactory: ComponentFactory<any> = resolver.resolveComponentFactory(this.bootstrapModule.AppComponent);
+
+    this.appRef.bootstrap(applicationComponentFactory);
 
   }
 

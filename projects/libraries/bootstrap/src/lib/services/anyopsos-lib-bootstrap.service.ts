@@ -4,14 +4,11 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {Socket} from 'ngx-socket-io';
 
 import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibLoaderService} from '@anyopsos/lib-loader';
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
-import {AnyOpsOSLibDesktopTaskBarService} from '@anyopsos/lib-desktop';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AnyopsosLibBootstrapService {
+export class AnyOpsOSLibBootstrapService {
 
   private bootstrapSource: BehaviorSubject<{ appBootstrapped: boolean; }> = new BehaviorSubject({
     appBootstrapped: false,
@@ -20,10 +17,7 @@ export class AnyopsosLibBootstrapService {
   readonly currentBootstrapState: Observable<{ appBootstrapped: boolean; }> = this.bootstrapSource.asObservable();
 
   constructor(private readonly socket: Socket,
-              private readonly logger: AnyOpsOSLibLoggerService,
-              private readonly LibLoader: AnyOpsOSLibLoaderService,
-              private readonly LibWorkspace: AnyOpsOSLibWorkspaceService,
-              private readonly LibDesktopTaskBar: AnyOpsOSLibDesktopTaskBarService) {
+              private readonly logger: AnyOpsOSLibLoggerService) {
   }
 
   private setBootstrapState(data: { appBootstrapped: boolean; }): void {
@@ -56,25 +50,10 @@ export class AnyopsosLibBootstrapService {
       this.logger.fatal('anyOpsOS', 'Socket.io error', null, err);
     });
 
-    // Load user workspaces first, since other libraries can require it to work
-    this.LibWorkspace.loadWorkspaces().then(() => {
 
-      // Load Application next
-      return this.LibLoader.loadApplications();
-    }).then(() => {
-
-      // Since some Modals have an Application as a dependency, load it after
-      return this.LibLoader.loadModals();
-    }).then(() => {
-
-      // Load Desktop TaskBar data
-      return this.LibDesktopTaskBar.getTaskBarApplications();
-    }).then(() => {
-
-      // Emit that the APP is fully loaded
-      this.setBootstrapState({
-        appBootstrapped: true
-      });
+    // Emit that the APP is fully loaded
+    this.setBootstrapState({
+      appBootstrapped: true
     });
 
   }

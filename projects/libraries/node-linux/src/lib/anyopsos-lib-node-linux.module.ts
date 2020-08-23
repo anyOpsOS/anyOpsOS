@@ -1,7 +1,10 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
 
-import {AnyopsosLibBootstrapService} from '@anyopsos/lib-bootstrap';
+import {AnyOpsOSLibBootstrapService} from '@anyopsos/lib-bootstrap';
 
+import {AnyOpsOSLibNodeLinuxService} from './services/anyopsos-lib-node-linux.service';
+import {AnyOpsOSLibNodeLinuxApiService} from './services/anyopsos-lib-node-linux-api.service';
+import {AnyOpsOSLibNodeLinuxHelpersService} from './services/anyopsos-lib-node-linux-helpers.service';
 import {AnyOpsOSLibNodeLinuxConnectionsStateService} from './services/anyopsos-lib-node-linux-connections-state.service';
 import {AnyOpsOSLibNodeLinuxFileSystemHandlersService} from './services/anyopsos-lib-node-linux-file-system-handlers.service';
 
@@ -12,9 +15,16 @@ import {AnyOpsOSLibNodeLinuxFileSystemHandlersService} from './services/anyopsos
 })
 export class AnyOpsOSLibNodeLinuxModule {
 
-  constructor(private readonly LibBootstrap: AnyopsosLibBootstrapService,
+  constructor(@Optional() @SkipSelf() parentModule: AnyOpsOSLibNodeLinuxModule,
+              private readonly LibBootstrap: AnyOpsOSLibBootstrapService,
               private readonly LibNodeLinuxConnectionsState: AnyOpsOSLibNodeLinuxConnectionsStateService,
               private readonly LibNodeLinuxFileSystemHandlers: AnyOpsOSLibNodeLinuxFileSystemHandlersService) {
+    console.log('Loading AnyOpsOSLibNodeLinuxModule');
+
+    if (parentModule) {
+      //throw new Error(
+        //'AnyOpsOSLibNodeLinuxModule is already loaded. You should not import it manually.');
+    }
 
     // Initialize connections when user is loggedIn
     this.LibBootstrap.currentBootstrapState.subscribe((data: { appBootstrapped: boolean; }) => {
@@ -29,4 +39,18 @@ export class AnyOpsOSLibNodeLinuxModule {
     });
 
   }
+
+  static forRoot(): ModuleWithProviders<AnyOpsOSLibNodeLinuxModule> {
+    return {
+      ngModule: AnyOpsOSLibNodeLinuxModule,
+      providers: [
+        AnyOpsOSLibNodeLinuxService,
+        AnyOpsOSLibNodeLinuxApiService,
+        AnyOpsOSLibNodeLinuxHelpersService,
+        AnyOpsOSLibNodeLinuxConnectionsStateService,
+        AnyOpsOSLibNodeLinuxFileSystemHandlersService
+      ]
+    };
+  }
+
 }

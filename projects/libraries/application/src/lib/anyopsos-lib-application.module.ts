@@ -1,10 +1,12 @@
+import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {NgModule, Optional, SkipSelf} from '@angular/core';
 
 import {ResizableModule} from 'angular-resizable-element';
 
 import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
 
+
+import {AnyOpsOSLibApplicationService} from './services/anyopsos-lib-application.service';
 import {AnyOpsOSLibApplicationComponent} from './components/anyopsos-lib-application.component';
 
 @NgModule({
@@ -14,6 +16,7 @@ import {AnyOpsOSLibApplicationComponent} from './components/anyopsos-lib-applica
   imports: [
     CommonModule,
     ResizableModule,
+
     // Shared module import
     AnyOpsOSLibAngularMaterialModule
   ],
@@ -24,10 +27,23 @@ import {AnyOpsOSLibApplicationComponent} from './components/anyopsos-lib-applica
 export class AnyOpsOSLibApplicationModule {
 
   constructor(@Optional() @SkipSelf() parentModule: AnyOpsOSLibApplicationModule) {
+    console.log('Loading AnyOpsOSLibApplicationModule');
+
     if (parentModule) {
-      throw new Error(
-        'AnyOpsOSLibApplicationModule is already loaded. Import it in the root AppModule only');
+      //throw new Error(
+        //'AnyOpsOSLibApplicationModule is already loaded. You should not import it manually.');
     }
+
+
+  }
+
+  static forRoot(): ModuleWithProviders<AnyOpsOSLibApplicationModule> {
+    return {
+      ngModule: AnyOpsOSLibApplicationModule,
+      providers: [
+        AnyOpsOSLibApplicationService
+      ]
+    };
   }
 
 }

@@ -1,7 +1,7 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 
-import {LoggerModule, NgxLoggerLevel, LoggerConfig, NGXLogger} from 'ngx-logger';
+import {LoggerModule} from 'ngx-logger';
 
 import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
 
@@ -16,19 +16,25 @@ import {AnyOpsOSLibLoggerService} from './services/anyopsos-lib-logger.service';
     // Shared module import
     AnyOpsOSLibAngularMaterialModule
   ],
-  providers: [
-    {
-      provide: LoggerConfig, useValue: {
-        level: NgxLoggerLevel.DEBUG,
-        // serverLoggingUrl: '/api/logs',
-        // serverLogLevel: NgxLoggerLevel.OFF,
-        // disableConsoleLogging" : true
-      }
-    },
-    NGXLogger,
-    AnyOpsOSLibLoggerService
-  ],
   exports: []
 })
 export class AnyOpsOSLibLoggerModule {
+
+  constructor(@Optional() @SkipSelf() parentModule: AnyOpsOSLibLoggerModule) {
+    console.log('Loading AnyOpsOSLibLoggerModule');
+
+    if (parentModule) {
+      //throw new Error(
+        //'AnyOpsOSLibLoggerModule is already loaded. You should not import it manually.');
+    }
+  }
+
+  static forRoot(): ModuleWithProviders<AnyOpsOSLibLoggerModule> {
+    return {
+      ngModule: AnyOpsOSLibLoggerModule,
+      providers: [
+        AnyOpsOSLibLoggerService
+      ]
+    };
+  }
 }
