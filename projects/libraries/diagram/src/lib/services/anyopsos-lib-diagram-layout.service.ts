@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 
-import stringify from 'fast-json-stable-stringify';
 import {graphlib, layout as dagreLayout} from 'dagre';
+
+import {AnyOpsOSLibUtilsService} from '@anyopsos/lib-utils';
 
 import {
   DEFAULT_MARGINS,
@@ -29,17 +30,17 @@ const topologyCaches: TopologyCache[] = [];
 })
 export class AnyOpsOSLibDiagramLayoutService {
 
-  constructor() {
+  constructor(private readonly LibUtils: AnyOpsOSLibUtilsService) {
     this.doLayout = this.doLayout.bind(this);
   }
 
-  private static buildTopologyCacheId(topologyId: string, topologyOptions: TopologyOption[]): string {
+  private buildTopologyCacheId(topologyId: string, topologyOptions: TopologyOption[]): string {
     let id: string = '';
 
     if (topologyId) {
       id = topologyId;
       if (topologyOptions) {
-        id += stringify(topologyOptions);
+        id += this.LibUtils.stringify(topologyOptions);
       }
     }
 
@@ -499,7 +500,7 @@ export class AnyOpsOSLibDiagramLayoutService {
   doLayout(immNodes: LayoutNode[], immEdges: LayoutEdge[], options?: LayoutOptions) {
 
     console.log('doLayout');
-    const cacheId: string = AnyOpsOSLibDiagramLayoutService.buildTopologyCacheId(options?.topologyId, options?.topologyOptions);
+    const cacheId: string = this.buildTopologyCacheId(options?.topologyId, options?.topologyOptions);
 
     // one engine and node and edge caches per topology, to keep renderings similar
     if (options?.noCache || !topologyCaches.find(c => c.cacheId === cacheId)) {
