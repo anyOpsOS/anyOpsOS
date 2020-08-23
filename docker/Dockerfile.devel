@@ -33,6 +33,7 @@ kubectl completion bash >/etc/bash_completion.d/kubectl && \
 alias k=kubectl && \
 complete -F __start_kubectl k
 
+RUN echo 'alias anyopsos="node /var/www/.dist/cli/bin/anyopsos.js"' >> ~/.bashrc
 
 ADD assets/kindconfig.yaml /kindconfig.yaml
 ADD assets/start.sh /start.sh
