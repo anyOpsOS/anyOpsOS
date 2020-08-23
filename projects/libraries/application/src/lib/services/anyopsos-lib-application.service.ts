@@ -31,7 +31,7 @@ export class AnyOpsOSLibApplicationService {
 
     this.dataStore = { openedApplications: [],
       applications: [
-        { uuid: 'start', ico: 'fab fa-windows', name: 'Start Menu', menu: true }
+        { uuid: 'start', ico: 'fab fa-angular', name: 'Start Menu', menu: true }
       ], activeApplication: null };
     this.$applications = new BehaviorSubject(this.dataStore.applications);
     this.$openedApplications = new BehaviorSubject(this.dataStore.openedApplications);

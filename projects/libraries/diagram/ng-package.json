@@ -15,7 +15,6 @@
     "d3-selection",
     "dagre",
     "filesize",
-    "es6-json-stable-stringify",
     "lodash-es"
   ]
 }

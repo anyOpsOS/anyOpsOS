@@ -41,9 +41,9 @@ export class BodyDashboardComponent implements AfterViewInit, OnDestroy, OnInit 
   // ScrollSpy
   currentSection: string = 'menu';
 
-  constructor(private logger: AnyOpsOSLibLoggerService,
-              private Monitor: AnyOpsOSAppMonitorService,
-              private Netdata: AnyOpsOSExtLibNetdataService) {
+  constructor(private readonly logger: AnyOpsOSLibLoggerService,
+              private readonly Monitor: AnyOpsOSAppMonitorService,
+              private readonly Netdata: AnyOpsOSExtLibNetdataService) {
 
   }
 

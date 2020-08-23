@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AnyopsosLibBootstrapService } from './anyopsos-lib-bootstrap.service';
+import { AnyOpsOSLibBootstrapService } from './anyopsos-lib-bootstrap.service';
 
-describe('AnyopsosLibBootstrapService', () => {
-  let service: AnyopsosLibBootstrapService;
+describe('AnyOpsOSLibBootstrapService', () => {
+  let service: AnyOpsOSLibBootstrapService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AnyopsosLibBootstrapService);
+    service = TestBed.inject(AnyOpsOSLibBootstrapService);
   });
 
   it('should be created', () => {

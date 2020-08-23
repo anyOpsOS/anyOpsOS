@@ -10,8 +10,8 @@ import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
 })
 export class AnyOpsOSLibNodeLinuxApiService {
 
-  constructor(private http: HttpClient,
-              private logger: AnyOpsOSLibLoggerService) {
+  constructor(private readonly http: HttpClient,
+              private readonly logger: AnyOpsOSLibLoggerService) {
   }
 
   /**

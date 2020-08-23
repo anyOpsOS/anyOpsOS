@@ -5,7 +5,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@anyopsos/lib-angular-material';
 import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
 import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
 import {AnyOpsOSLibNodeKubernetesApiService} from '@anyopsos/lib-node-kubernetes';
-import {KubernetesPod} from '@anyopsos/app-infrastructure-manager/src/lib/types/kubernetes-pod';
+import {Pod} from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod';
 import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
 
 @Component({
@@ -16,7 +16,7 @@ import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
 export class AnyOpsOSModalKubernetesLogsComponent implements OnInit {
   @ViewChild('modalBody', {static: true}) modalBody: BodyComponent;
 
-  object: DataObject & { info: { data: KubernetesPod } };
+  object: DataObject & { info: { data: Pod } };
 
   private logRequests: {
     pod: any;
@@ -25,7 +25,7 @@ export class AnyOpsOSModalKubernetesLogsComponent implements OnInit {
   }[] = [];
 
   terminalUuid: string = null;
-  foundPods: (DataObject & { info: { data: KubernetesPod } })[] = [];
+  foundPods: (DataObject & { info: { data: Pod } })[] = [];
 
   containerForm = new FormControl('');
   showContainersName: boolean = true;
@@ -35,7 +35,7 @@ export class AnyOpsOSModalKubernetesLogsComponent implements OnInit {
               private readonly LibNodeHelpers: AnyOpsOSLibNodeHelpersService,
               private readonly LibKubernetesApi: AnyOpsOSLibNodeKubernetesApiService) {
 
-    this.object = data.object as DataObject & { info: { data: KubernetesPod } };
+    this.object = data.object as DataObject & { info: { data: Pod } };
 
     this.containerForm.valueChanges.subscribe( selectedContainers => {
 

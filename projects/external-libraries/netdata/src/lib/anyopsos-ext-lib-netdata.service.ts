@@ -35,15 +35,15 @@ export class AnyOpsOSExtLibNetdataService {
     connections: {}
   };
 
-  constructor(private jQuery: AnyOpsOSExtLibJqueryService,
-              private Dygraphs: AnyOpsOSExtLibDygraphsService,
-              private gaugeJS: AnyOpsOSExtLibGaugejsService,
-              private Ps: AnyOpsOSExtLibPerfectscrollbarService,
-              private easyPieChart: AnyOpsOSExtLibEasypiechartService,
-              private pakoService: AnyOpsOSExtLibPakoService,
-              private LZStringService: AnyOpsOSExtLibLzStringService,
-              private http: HttpClient,
-              private logger: AnyOpsOSLibLoggerService,
+  constructor(private readonly jQuery: AnyOpsOSExtLibJqueryService,
+              private readonly Dygraphs: AnyOpsOSExtLibDygraphsService,
+              private readonly gaugeJS: AnyOpsOSExtLibGaugejsService,
+              private readonly Ps: AnyOpsOSExtLibPerfectscrollbarService,
+              private readonly easyPieChart: AnyOpsOSExtLibEasypiechartService,
+              private readonly pakoService: AnyOpsOSExtLibPakoService,
+              private readonly LZStringService: AnyOpsOSExtLibLzStringService,
+              private readonly http: HttpClient,
+              private readonly logger: AnyOpsOSLibLoggerService,
               private readonly LibModal: AnyOpsOSLibModalService) {
     const classThis = this;
     // Set easyPieChart

@@ -36,6 +36,8 @@ export class AnyOpsOSLibModalRegisteredStateService {
    * Called by {@link AnyOpsOSLibLoaderService#loadModal}
    */
   patchModal(modalUuid: string, param: string, data: any): void {
+    this.logger.trace('LibModal', 'patchModal', [modalUuid, param]);
+
     const modalIndex: number = this.registeredModals.findIndex((modal: Modal) => modal.uuid === modalUuid);
     if (modalIndex === -1) {
       this.logger.error('LibModal', 'patchModal -> Resource invalid', arguments);
@@ -44,6 +46,5 @@ export class AnyOpsOSLibModalRegisteredStateService {
 
     this.registeredModals[modalIndex][param] = data;
   }
-
 
 }

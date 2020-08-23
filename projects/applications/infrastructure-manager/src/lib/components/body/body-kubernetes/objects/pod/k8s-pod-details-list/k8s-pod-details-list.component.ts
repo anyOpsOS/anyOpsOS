@@ -90,7 +90,7 @@ export class K8sPodDetailsListComponent implements OnInit {
     if (message) return message;
     return this.getStatusPhase(pod);
   }
-  
+
   getReason(pod: DataObject & { info: { data: Pod } }) {
     return pod.info.data.status.reason || '';
   }

@@ -8,7 +8,7 @@ import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
 import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
 import {AnyOpsOSLibNodeKubernetesApiService} from '@anyopsos/lib-node-kubernetes';
 import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
-import {KubernetesPod} from '@anyopsos/app-infrastructure-manager/src/lib/types/kubernetes-pod';
+import {Pod} from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod';
 
 @Component({
   selector: 'amkubernetes-shell-anyopsos-modal-kubernetes-shell',
@@ -22,7 +22,7 @@ export class AnyOpsOSModalKubernetesShellComponent implements OnInit {
   shellType: 'exec' | 'attach';
 
   terminalUuid: string = null;
-  foundPods: (DataObject & { info: { data: KubernetesPod } })[] = [];
+  foundPods: (DataObject & { info: { data: Pod } })[] = [];
 
   containerForm = new FormControl('');
 

@@ -2,9 +2,8 @@ import {Component, OnDestroy} from '@angular/core';
 
 import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
 import {AnyOpsOSLibUserService} from '@anyopsos/lib-user';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyopsosLibBootstrapService} from '../../services/anyopsos-lib-bootstrap.service';
+import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
 
 @Component({
   selector: 'albp-login',
@@ -26,8 +25,7 @@ export class LoginComponent implements OnDestroy {
   }, 1000);
 
   constructor(private readonly logger: AnyOpsOSLibLoggerService,
-              private readonly LibUserState: AnyOpsOSLibUserService,
-              private readonly LibBootstrap: AnyopsosLibBootstrapService) {
+              private readonly LibUserState: AnyOpsOSLibUserService) {
 
   }
 
@@ -50,10 +48,6 @@ export class LoginComponent implements OnDestroy {
           username: this.username
         });
 
-        /**
-         * INIT
-         */
-        return this.LibBootstrap.init();
       },
       error => {
         this.logger.error('anyOpsOS', 'login -> Error while login user', null, error);
