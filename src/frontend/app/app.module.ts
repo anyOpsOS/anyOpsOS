@@ -31,7 +31,7 @@ export class AppModule {
 
     const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
 
-    return window.System.import(`${currentLocation}/api/file/${encodeURIComponent('/bin/libraries/anyopsos-lib-loader.umd.js')}`).then((moduleToCompile: any) => {
+    return window.System.import(`${currentLocation}/api/loader//bin/libraries/anyopsos-lib-loader.umd.js`).then((moduleToCompile: any) => {
 
       const loaderModule: string = Object.keys(moduleToCompile).find((entry: string) => entry.endsWith('Module'));
 

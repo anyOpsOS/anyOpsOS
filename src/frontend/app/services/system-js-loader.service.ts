@@ -30,23 +30,23 @@ export class SystemJsLoaderService {
 
       // Load anyOpsOS libraries from filesystem
       if (name.startsWith('@anyopsos/lib-')) {
-        return `${currentLocation}/api/file/${encodeURIComponent('/bin/libraries/' + name.replace('@anyopsos/', 'anyopsos-') + '.umd.js')}`;
+        return `${currentLocation}/api/loader//bin/libraries/${name.replace('@anyopsos/', 'anyopsos-')}.umd.js`;
 
       // Load anyOpsOS external libraries from filesystem
       } else if (name.startsWith('@anyopsos/ext-lib-')) {
-        return `${currentLocation}/api/file/${encodeURIComponent('/bin/external-libraries/' + name.replace('@anyopsos/', 'anyopsos-') + '.umd.js')}`;
+        return `${currentLocation}/api/loader//bin/external-libraries/${name.replace('@anyopsos/', 'anyopsos-')}.umd.js`;
 
       // Load anyOpsOS modules from filesystem
       } else if (name.startsWith('@anyopsos/module-')) {
-        return `${currentLocation}/api/file/${encodeURIComponent('/bin/modules/' + name.replace('@anyopsos/', 'anyopsos-') + '.umd.js')}`;
+        return `${currentLocation}/api/loader//bin/modules/${name.replace('@anyopsos/', 'anyopsos-')}.umd.js`;
 
       // Load @angular/cdk from filesystem
       } else if (name.startsWith('@angular/cdk/')) {
-        return `${currentLocation}/api/file/${encodeURIComponent('/bin/deps/cdk/' + name.replace('@angular/cdk/', 'cdk-') + '.umd.js')}`;
+        return `${currentLocation}/api/loader//bin/deps/cdk/${name.replace('@angular/cdk/', 'cdk-')}.umd.js`;
 
       // Load @angular/material from filesystem
       } else if (name.startsWith('@angular/material/')) {
-        return `${currentLocation}/api/file/${encodeURIComponent('/bin/deps/material/' + name.replace('@angular/material/', 'material-') + '.umd.js')}`;
+        return `${currentLocation}/api/loader//bin/deps/material/${name.replace('@angular/material/', 'material-')}.umd.js`;
 
       // The rest of @angular, rxjs and tslib libraries are preloaded
       } else if (name.startsWith('@angular/') || name.startsWith('rxjs') || name === 'tslib' || name.startsWith('https://') || name.startsWith('socket.io') || name.startsWith('@anyopsos/frontend')) {
@@ -54,7 +54,7 @@ export class SystemJsLoaderService {
 
       // Load everything else from filesystem
       } else {
-        return `${currentLocation}/api/file/${encodeURIComponent('/bin/deps/' + name + '.js')}`;
+        return `${currentLocation}/api/loader//bin/deps/${name}.js`;
       }
     };
 

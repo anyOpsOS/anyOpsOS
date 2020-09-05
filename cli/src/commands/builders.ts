@@ -58,30 +58,6 @@ export class Builders {
     if (!argv.prefix) argv.prefix = argv.name;
   }
 
-  // TODO: provably we can do this modifying the angular.json file
-  private async removeSourceMaps(filename: string): Promise<void> {
-    console.log(blue(`[anyOpsOS Cli. Internals] Removing sourcemap line from bundle.`));
-
-    const lines2nuke = 1;
-    // TODO readlines
-    return;
-
-    return new Promise((resolve, reject) => {
-      readLines(filename, lines2nuke).then((lines: string[]) => {
-        const toVanquish = lines.length;
-        stat(filename, (statsError: Error, stats: Stats) => {
-          if (statsError) return reject(statsError);
-
-          truncate(filename, stats.size - toVanquish, (truncateError: Error) => {
-            if (truncateError) return reject(truncateError);
-
-            return resolve();
-          });
-        });
-      });
-    });
-  };
-
   async moveExternalLibraryAsDep(): Promise<void> {
 
     // Move Netdata to Deps
@@ -113,8 +89,6 @@ export class Builders {
 
       await runInDocker(`ng build anyopsos-${this.packageType}-${argv.moduleName}`);
 
-      await this.removeSourceMaps(`${INTERNAL_PATH_CWD}/.dist/${this.packageLongType}/${argv.moduleName}/bundles/anyopsos-${this.packageType}-${argv.moduleName}.umd.js`);
-
       // Run postbuild script if exists
       if (pathExistsSync(`${INTERNAL_PATH_CWD}${this.projectPath}/scripts/postbuild.js`)) {
 
@@ -127,8 +101,8 @@ export class Builders {
       console.log(blue(`[anyOpsOS Cli. Internals] Copying ${this.packageType} ${argv.moduleName} to anyOpsOS filesystem.\n`));
 
       await runInDocker(`cp -r \
-        ${INTERNAL_PATH_CWD}/.dist/${this.packageLongType}/${argv.moduleName}/bundles/anyopsos-${this.packageType}-${argv.moduleName}.umd.js \
-        ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/${this.packageLongType}/anyopsos-${this.packageType}-${argv.moduleName}.umd.js`
+        ${INTERNAL_PATH_CWD}/.dist/${this.packageLongType}/${argv.moduleName}/bundles/anyopsos-${this.packageType}-${argv.moduleName}.umd.js* \
+        ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/${this.packageLongType}/`
       );
 
     } else {
@@ -155,12 +129,11 @@ export class Builders {
       // Copy to filesystem
       const directoryFiles = await readdir(`${INTERNAL_PATH_CWD}/.dist/${this.packageLongType}/`);
       for (const directory of directoryFiles) {
-        await this.removeSourceMaps(`${INTERNAL_PATH_CWD}/.dist/${this.packageLongType}/${directory}/bundles/anyopsos-${this.packageType}-${directory}.umd.js`);
 
         console.log(blue(`[anyOpsOS Cli. Internals] Copying ${this.packageType} ${directory} to anyOpsOS filesystem.`));
         await runInDocker(`cp -r \
-          ${INTERNAL_PATH_CWD}/.dist/${this.packageLongType}/${directory}/bundles/anyopsos-${this.packageType}-${directory}.umd.js \
-          ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/${this.packageLongType}/anyopsos-${this.packageType}-${directory}.umd.js`
+          ${INTERNAL_PATH_CWD}/.dist/${this.packageLongType}/${directory}/bundles/anyopsos-${this.packageType}-${directory}.umd.js* \
+          ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/bin/${this.packageLongType}/`
         );
 
       }

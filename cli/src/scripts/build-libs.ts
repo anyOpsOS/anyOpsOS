@@ -9,22 +9,30 @@ import {INTERNAL_PATH_CWD} from '../constants.js';
 const projectInOrder = [
   'anyopsos-lib-angular-material',
   'anyopsos-lib-pipes',
+  'anyopsos-lib-utils',
   'anyopsos-lib-logger',
   'anyopsos-lib-workspace',
   'anyopsos-lib-modal',
   'anyopsos-lib-application',
   'anyopsos-lib-file-system-ui',
   'anyopsos-lib-file-system',
-  'anyopsos-lib-loader',
   'anyopsos-lib-selectable',
   'anyopsos-lib-types',
   'anyopsos-lib-user',
   'anyopsos-lib-file',
   'anyopsos-lib-folder',
   'anyopsos-lib-desktop',
-  'anyopsos-lib-utils',
   'anyopsos-lib-bootstrap',
-  'anyopsos-lib-ssh'
+  'anyopsos-lib-ssh',
+  'anyopsos-lib-credential',
+  'anyopsos-lib-node-linux',
+  'anyopsos-lib-node-kubernetes',
+  'anyopsos-lib-node-docker',
+  'anyopsos-lib-node-vmware',
+  'anyopsos-lib-node-netapp',
+  'anyopsos-lib-node-snmp',
+  'anyopsos-lib-node',
+  'anyopsos-lib-loader',
 ];
 
 export class BuildLibs {

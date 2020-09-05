@@ -24,7 +24,7 @@ export class AnyOpsOSLibLoaderService {
               private readonly logger: AnyOpsOSLibLoggerService,
               private readonly LibFileSystem: AnyOpsOSLibFileSystemService,
               private readonly LibApplication: AnyOpsOSLibApplicationService,
-              private readonly ModalRegisteredState: AnyOpsOSLibModalRegisteredStateService) {
+              private readonly LibModalRegisteredState: AnyOpsOSLibModalRegisteredStateService) {
 
   }
 
@@ -60,7 +60,7 @@ export class AnyOpsOSLibLoaderService {
 
       const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
 
-      window.System.import(`${currentLocation}/api/file/${encodeURIComponent('/bin/applications/' + application.fileName)}`).then((moduleToCompile: any) => {
+      window.System.import(`${currentLocation}/api/loader//bin/applications/${application.fileName}`).then((moduleToCompile: any) => {
 
         // This will only work if the application exposes only one Module
         const applicationModule: string = Object.keys(moduleToCompile).find((entry: string) => entry.endsWith('Module'));
@@ -110,7 +110,7 @@ export class AnyOpsOSLibLoaderService {
 
     const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
 
-    window.System.import(`${currentLocation}/api/file/${encodeURIComponent('/bin/modals/' + modal.fileName)}`).then((moduleToCompile: any) => {
+    window.System.import(`${currentLocation}/api/loader//bin/modals/${modal.fileName}`).then((moduleToCompile: any) => {
 
       const modalModule: string = Object.keys(moduleToCompile).find((entry: string) => entry.endsWith('Module'));
       return this.compiler.compileModuleAsync<any>(moduleToCompile[modalModule]);
@@ -124,8 +124,8 @@ export class AnyOpsOSLibLoaderService {
       // Set factory to use in future
       // TODO make this more dynamic
       const moduleId: string = modal.fileName.replace(/^anyopsos-modal-(default-)?/, '').replace('.umd.js', '');
-      this.ModalRegisteredState.patchModal(moduleId, 'factory', factory);
-      this.ModalRegisteredState.patchModal(moduleId, 'modRef', modRef);
+      this.LibModalRegisteredState.patchModal(moduleId, 'factory', factory);
+      this.LibModalRegisteredState.patchModal(moduleId, 'modRef', modRef);
 
     }).catch((e: Error) => {
       this.logger.error('LibLoader', 'Error while loading modal', loggerArgs, e.message);
@@ -165,7 +165,7 @@ export class AnyOpsOSLibLoaderService {
   async loadLib(library: AnyOpsOSFile): Promise<void> {
     const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
 
-    return window.System.import(`${currentLocation}/api/file/${encodeURIComponent('/bin/libraries/' + library.fileName)}`).then(async (moduleToCompile: any) => {
+    return window.System.import(`${currentLocation}/api/loader//bin/libraries/${library.fileName}`).then(async (moduleToCompile: any) => {
 
       const modalModule: string = Object.keys(moduleToCompile).find((entry: string) => entry.endsWith('Module'));
 
