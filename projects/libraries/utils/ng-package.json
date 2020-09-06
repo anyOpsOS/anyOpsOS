@@ -5,6 +5,7 @@
     "entryFile": "src/public-api.ts"
   },
   "whitelistedNonPeerDependencies": [
+    "@anyopsos/lib-angular-material",
     "ngx-monaco-editor"
   ]
 }

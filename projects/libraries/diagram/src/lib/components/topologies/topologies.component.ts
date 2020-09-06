@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {combineLatest, Observable, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {AnyOpsOSLibDiagramStateService} from '../../services/anyopsos-lib-diagram-state.service';
-import {AnyOpsOSLibDiagramService} from '../../services/anyopsos-lib-diagram.service';
-import {Topology} from '../../types/topology';
-import {AnyOpsOSLibDiagramTopologyUtilsService} from '../../services/anyopsos-lib-diagram-topology-utils.service';
+import { AnyOpsOSLibDiagramStateService } from '../../services/anyopsos-lib-diagram-state.service';
+import { AnyOpsOSLibDiagramService } from '../../services/anyopsos-lib-diagram.service';
+import { Topology } from '../../types/topology';
+import { AnyOpsOSLibDiagramTopologyUtilsService } from '../../services/anyopsos-lib-diagram-topology-utils.service';
 
 @Component({
   selector: 'aldiagram-topologies',
@@ -16,7 +16,7 @@ import {AnyOpsOSLibDiagramTopologyUtilsService} from '../../services/anyopsos-li
 export class TopologiesComponent implements OnInit {
   private destroySubject$: Subject<void> = new Subject();
 
-  topologies$:  Observable<Topology[]>;
+  topologies$: Observable<Topology[]>;
   currentTopology: Topology;
   searchMatchesCount: number = 0;
 

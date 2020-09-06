@@ -1,14 +1,14 @@
-import {Injectable, ViewContainerRef} from '@angular/core';
+import { Injectable, ViewContainerRef } from '@angular/core';
 
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibFileSystemUiHelpersService, AnyOpsOSLibFileSystemUiService, CutCopyFile, SendFileExchange} from '@anyopsos/lib-file-system-ui';
-import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibFileSystemUiHelpersService, AnyOpsOSLibFileSystemUiService, CutCopyFile, SendFileExchange } from '@anyopsos/lib-file-system-ui';
+import { AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSLibFileSystemService} from './anyopsos-lib-file-system.service';
+import { AnyOpsOSLibFileSystemService } from './anyopsos-lib-file-system.service';
 
 
 @Injectable({
@@ -30,273 +30,273 @@ export class AnyOpsOSLibFileSystemFileHandlersService {
       'get_folder',
       null,
       (data: { srcPath: string; }
-    ): Promise<AnyOpsOSFile[]> => {
+      ): Promise<AnyOpsOSFile[]> => {
 
-      return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
 
-        this.LibFileSystem.getFolder(data.srcPath).subscribe(
-          (res: BackendResponse & { data: AnyOpsOSFile[]; }) => {
-            if (res.status === 'error') {
-              this.logger.error('LibFileSystemUi', 'UIgetFolder -> Error while getting folder', null, res.data);
-              return reject(res.data);
-            }
+          this.LibFileSystem.getFolder(data.srcPath).subscribe(
+            (res: BackendResponse & { data: AnyOpsOSFile[]; }) => {
+              if (res.status === 'error') {
+                this.logger.error('LibFileSystemUi', 'UIgetFolder -> Error while getting folder', null, res.data);
+                return reject(res.data);
+              }
 
-            return resolve(res.data);
-          },
-          (error: any) => {
-            this.logger.error('LibFileSystemUi', 'Error while getting fileSystemPath', null, error);
-          });
+              return resolve(res.data);
+            },
+            (error: any) => {
+              this.logger.error('LibFileSystemUi', 'Error while getting fileSystemPath', null, error);
+            });
+        });
       });
-    });
 
     this.LibFileSystemUi.createHandler(
       'put_folder',
       null,
       (data: { dstPath: string; viewContainerRef: ViewContainerRef; }
-    ): Promise<void> => {
+      ): Promise<void> => {
 
-      return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
-        const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('input', data.viewContainerRef,
-          {
-            title: 'Create new folder',
-            buttonText: 'Create',
-            inputPlaceholder: 'Folder name',
-            inputValue: 'NewFolder'
-          }
-        );
+          const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('input', data.viewContainerRef,
+                                                                                           {
+              title: 'Create new folder',
+              buttonText: 'Create',
+              inputPlaceholder: 'Folder name',
+              inputValue: 'NewFolder'
+            }
+          );
 
-        modalInstance.afterClosed().subscribe((folderName: string) => {
-          if (!folderName) return resolve();
+          modalInstance.afterClosed().subscribe((folderName: string) => {
+            if (!folderName) return resolve();
 
-          this.LibFileSystem.putFolder(data.dstPath, folderName).subscribe(
-            (res: BackendResponse) => {
-              if (res.status === 'error') {
-                this.logger.error('LibFileSystemUi', 'UIputFolder -> Error while creating folder', null, res.data);
-                return reject(res.data);
-              }
+            this.LibFileSystem.putFolder(data.dstPath, folderName).subscribe(
+              (res: BackendResponse) => {
+                if (res.status === 'error') {
+                  this.logger.error('LibFileSystemUi', 'UIputFolder -> Error while creating folder', null, res.data);
+                  return reject(res.data);
+                }
 
-              this.LibFileSystemUi.sendRefreshPath(data.dstPath);
-              return resolve();
-            },
-            (error: any) => {
-              this.logger.error('LibFileSystemUi', 'UIputFolder -> Error while creating folder', null, error);
-              return reject(error);
-            });
+                this.LibFileSystemUi.sendRefreshPath(data.dstPath);
+                return resolve();
+              },
+              (error: any) => {
+                this.logger.error('LibFileSystemUi', 'UIputFolder -> Error while creating folder', null, error);
+                return reject(error);
+              });
+          });
         });
       });
-    });
 
     this.LibFileSystemUi.createHandler(
       'rename',
       null,
       (data: { srcPath: string; file: AnyOpsOSFile; viewContainerRef: ViewContainerRef; }
-    ): Promise<void> => {
+      ): Promise<void> => {
 
-      return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
-        const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('input', data.viewContainerRef,
-          {
-            title: 'Rename file',
-            buttonText: 'Rename',
-            inputPlaceholder: 'File name',
-            inputValue: data.file.fileName
-          }
-        );
+          const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('input', data.viewContainerRef,
+                                                                                           {
+              title: 'Rename file',
+              buttonText: 'Rename',
+              inputPlaceholder: 'File name',
+              inputValue: data.file.fileName
+            }
+          );
 
-        modalInstance.afterClosed().subscribe((fileName: string) => {
-          if (!fileName) return resolve();
+          modalInstance.afterClosed().subscribe((fileName: string) => {
+            if (!fileName) return resolve();
 
-          this.LibFileSystem.renameFile(data.srcPath, data.file.fileName, fileName).subscribe(
-            (res: BackendResponse) => {
-              if (res.status === 'error') {
-                this.logger.error('LibFileSystemUi', 'UIrenameFile -> Error while renaming file', null, res.data);
-                return reject(res.data);
-              }
+            this.LibFileSystem.renameFile(data.srcPath, data.file.fileName, fileName).subscribe(
+              (res: BackendResponse) => {
+                if (res.status === 'error') {
+                  this.logger.error('LibFileSystemUi', 'UIrenameFile -> Error while renaming file', null, res.data);
+                  return reject(res.data);
+                }
 
-              this.LibFileSystemUi.sendRefreshPath(data.srcPath);
-              return resolve();
-            },
-            (error: any) => {
-              this.logger.error('LibFileSystemUi', 'UIrenameFile -> Error while renaming file', null, error);
-              return reject(error);
-            });
+                this.LibFileSystemUi.sendRefreshPath(data.srcPath);
+                return resolve();
+              },
+              (error: any) => {
+                this.logger.error('LibFileSystemUi', 'UIrenameFile -> Error while renaming file', null, error);
+                return reject(error);
+              });
+          });
         });
       });
-    });
 
     this.LibFileSystemUi.createHandler(
       'delete',
       null,
       (data: { srcPath: string; file: AnyOpsOSFile; viewContainerRef: ViewContainerRef; }
-    ): Promise<void> => {
+      ): Promise<void> => {
 
-      return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
-        const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', data.viewContainerRef,
-          {
-            title: `Delete file ${data.file.fileName}`,
-            text: `Delete ${data.file.fileName} from anyOpsOS?`,
-            yes: 'Delete',
-            yesClass: 'warn',
-            no: 'Cancel',
-            boxContent: 'This action is permanent.',
-            boxClass: 'text-danger',
-            boxIcon: 'fa-exclamation-triangle'
-          }
-        );
+          const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', data.viewContainerRef,
+                                                                                           {
+              title: `Delete file ${data.file.fileName}`,
+              text: `Delete ${data.file.fileName} from anyOpsOS?`,
+              yes: 'Delete',
+              yesClass: 'warn',
+              no: 'Cancel',
+              boxContent: 'This action is permanent.',
+              boxClass: 'text-danger',
+              boxIcon: 'fa-exclamation-triangle'
+            }
+          );
 
-        modalInstance.afterClosed().subscribe((result: string) => {
-          if (!result) return resolve();
+          modalInstance.afterClosed().subscribe((result: string) => {
+            if (!result) return resolve();
 
-          this.LibFileSystem.deleteFile(data.srcPath, data.file.fileName).subscribe(
-            (res: BackendResponse) => {
-              if (res.status === 'error') {
-                this.logger.error('LibFileSystemUi', 'UIdeleteFile -> Error while deleting file', null, res.data);
-                return reject(res.data);
-              }
+            this.LibFileSystem.deleteFile(data.srcPath, data.file.fileName).subscribe(
+              (res: BackendResponse) => {
+                if (res.status === 'error') {
+                  this.logger.error('LibFileSystemUi', 'UIdeleteFile -> Error while deleting file', null, res.data);
+                  return reject(res.data);
+                }
 
-              this.LibFileSystemUi.sendRefreshPath(data.srcPath);
-              return resolve();
-            },
-            (error: any) => {
-              this.logger.error('LibFileSystemUi', 'UIdeleteFile -> Error while deleting folder', null, error);
-              return reject(error);
-            });
+                this.LibFileSystemUi.sendRefreshPath(data.srcPath);
+                return resolve();
+              },
+              (error: any) => {
+                this.logger.error('LibFileSystemUi', 'UIdeleteFile -> Error while deleting folder', null, error);
+                return reject(error);
+              });
+          });
         });
       });
-    });
 
     this.LibFileSystemUi.createHandler(
       'move',
       null,
       (data: { srcPath: string; cutFile: CutCopyFile; }
-    ): Promise<void> => {
+      ): Promise<void> => {
 
-      return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
 
-        this.LibFileSystem.moveFile(
-          data.cutFile.fullPath,
-          data.srcPath + data.cutFile.fileName
-        ).subscribe(
-          (res: BackendResponse) => {
-            if (res.status === 'error') {
-              this.logger.error('LibFileSystemUi', 'UIpasteFile -> Error while moving file', null, res.data);
-              return reject(res.data);
-            }
+          this.LibFileSystem.moveFile(
+            data.cutFile.fullPath,
+            data.srcPath + data.cutFile.fileName
+          ).subscribe(
+            (res: BackendResponse) => {
+              if (res.status === 'error') {
+                this.logger.error('LibFileSystemUi', 'UIpasteFile -> Error while moving file', null, res.data);
+                return reject(res.data);
+              }
 
-            // Refresh origin and remote paths
-            this.LibFileSystemUi.sendRefreshPath(data.srcPath);
-            this.LibFileSystemUi.sendRefreshPath(data.cutFile.currentPath);
+              // Refresh origin and remote paths
+              this.LibFileSystemUi.sendRefreshPath(data.srcPath);
+              this.LibFileSystemUi.sendRefreshPath(data.cutFile.currentPath);
 
-            return resolve();
-          },
-          (error: any) => {
-            this.logger.error('LibFileSystemUi', 'UIpasteFile -> Error while moving file', null, error);
-            return reject(error);
-          });
+              return resolve();
+            },
+            (error: any) => {
+              this.logger.error('LibFileSystemUi', 'UIpasteFile -> Error while moving file', null, error);
+              return reject(error);
+            });
+        });
       });
-    });
 
     this.LibFileSystemUi.createHandler(
       'copy',
       null,
       (data: { srcPath: string; copyFile: CutCopyFile; }
-    ): Promise<void> => {
+      ): Promise<void> => {
 
-      return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
 
-        this.LibFileSystem.copyFile(
-          data.copyFile.fullPath,
-          data.srcPath + data.copyFile.fileName
-        ).subscribe(
-          (res: BackendResponse) => {
-            if (res.status === 'error') {
-              this.logger.error('LibFileSystemUi', 'UIpasteFile -> Error while copying file', null, res.data);
-              return reject(res.data);
-            }
+          this.LibFileSystem.copyFile(
+            data.copyFile.fullPath,
+            data.srcPath + data.copyFile.fileName
+          ).subscribe(
+            (res: BackendResponse) => {
+              if (res.status === 'error') {
+                this.logger.error('LibFileSystemUi', 'UIpasteFile -> Error while copying file', null, res.data);
+                return reject(res.data);
+              }
 
-            this.LibFileSystemUi.sendRefreshPath(data.srcPath);
+              this.LibFileSystemUi.sendRefreshPath(data.srcPath);
 
-            return resolve();
-          },
-          (error: any) => {
-            this.logger.error('LibFileSystemUi', 'UIpasteFile -> Error while copying file', null, error);
-            return reject(error);
-          });
+              return resolve();
+            },
+            (error: any) => {
+              this.logger.error('LibFileSystemUi', 'UIpasteFile -> Error while copying file', null, error);
+              return reject(error);
+            });
+        });
       });
-    });
 
     this.LibFileSystemUi.createHandler(
       'download',
       null,
       (data: { srcPath: string; }
-    ): Promise<void> => {
+      ): Promise<void> => {
 
-      return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
 
-        this.LibFileSystem.getFile(data.srcPath).subscribe(
-          (res: BackendResponse) => {
-            if (res.status === 'error') {
-              this.logger.error('LibFileSystemUi', 'UIpasteFile -> Error while downloading file', null, res.data);
-              return reject(res.data);
-            }
+          this.LibFileSystem.getFile(data.srcPath).subscribe(
+            (res: BackendResponse) => {
+              if (res.status === 'error') {
+                this.logger.error('LibFileSystemUi', 'UIpasteFile -> Error while downloading file', null, res.data);
+                return reject(res.data);
+              }
 
-            this.LibFileSystemUi.sendFileExchange({
-              type: 'download',
-              progress: 0,
-              srcPath: data.srcPath,
-              dstPath: 'local',
-              srcConnectionUuid: null,
-              dstConnectionUuid: null,
-              srcApplicationId: '',
-              dstApplicationId: null
-            } as SendFileExchange);
+              this.LibFileSystemUi.sendFileExchange({
+                type: 'download',
+                progress: 0,
+                srcPath: data.srcPath,
+                dstPath: 'local',
+                srcConnectionUuid: null,
+                dstConnectionUuid: null,
+                srcApplicationId: '',
+                dstApplicationId: null
+              } as SendFileExchange);
 
-            return resolve();
-          },
-          (error: any) => {
-            this.logger.error('LibFileSystemUi', 'UIpasteFile -> Error while downloading file', null, error);
-            return reject(error);
-          });
+              return resolve();
+            },
+            (error: any) => {
+              this.logger.error('LibFileSystemUi', 'UIpasteFile -> Error while downloading file', null, error);
+              return reject(error);
+            });
+        });
       });
-    });
 
     this.LibFileSystemUi.createHandler(
       'upload',
       null,
       (data: { dstPath: string; file: File; }
-    ): Promise<void> => {
+      ): Promise<void> => {
 
-      return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
 
-        this.LibFileSystem.putFile(data.dstPath, data.file).subscribe(
-          (event: { loaded: number, total: number }) => {
-            const percentage: number = parseInt(((event.loaded * 100) / event.total).toFixed(), 10);
+          this.LibFileSystem.putFile(data.dstPath, data.file).subscribe(
+            (event: { loaded: number, total: number }) => {
+              const percentage: number = parseInt(((event.loaded * 100) / event.total).toFixed(), 10);
 
-            this.LibFileSystemUi.sendFileExchange({
-              type: 'upload',
-              progress: percentage,
-              srcPath: 'local',
-              dstPath: data.dstPath,
-              srcConnectionUuid: null,
-              dstConnectionUuid: null,
-              srcApplicationId: null,
-              dstApplicationId: ''
-            } as SendFileExchange);
+              this.LibFileSystemUi.sendFileExchange({
+                type: 'upload',
+                progress: percentage,
+                srcPath: 'local',
+                dstPath: data.dstPath,
+                srcConnectionUuid: null,
+                dstConnectionUuid: null,
+                srcApplicationId: null,
+                dstApplicationId: ''
+              } as SendFileExchange);
 
-            if (percentage === 100) {
-              this.LibFileSystemUi.sendRefreshPath(data.dstPath);
-              return resolve();
-            }
+              if (percentage === 100) {
+                this.LibFileSystemUi.sendRefreshPath(data.dstPath);
+                return resolve();
+              }
 
-          },
-          (error: any) => {
-            this.logger.error('LibFileSystemUi', 'UIuploadFileToAnyOpsOS -> Error uploading file', null, error);
-            return reject(error);
-          });
+            },
+            (error: any) => {
+              this.logger.error('LibFileSystemUi', 'UIuploadFileToAnyOpsOS -> Error uploading file', null, error);
+              return reject(error);
+            });
+        });
       });
-    });
 
     this.LibFileSystemUi.createHandler('chmod', null, (data: unknown): Promise<void> => {
       return Promise.resolve();
@@ -310,50 +310,52 @@ export class AnyOpsOSLibFileSystemFileHandlersService {
       'download_from_url',
       null,
       (data: { dstPath: string; viewContainerRef: ViewContainerRef; }
-    ): Promise<void> => {
+      ): Promise<void> => {
 
-      return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
-        const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('input', data.viewContainerRef,
-          {
-            title: 'Download file from URL',
-            buttonText: 'Download',
-            inputPlaceholder: 'File URL',
-            inputValue: ''
-          }
-        );
+          const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+            'input',
+            data.viewContainerRef,
+            {
+              title: 'Download file from URL',
+              buttonText: 'Download',
+              inputPlaceholder: 'File URL',
+              inputValue: ''
+            }
+          );
 
-        modalInstance.afterClosed().subscribe((url: string) => {
-          if (!url) return resolve();
+          modalInstance.afterClosed().subscribe((url: string) => {
+            if (!url) return resolve();
 
-          this.LibFileSystem.downloadFileFromUrl(data.dstPath, url).subscribe(
-            (res: BackendResponse) => {
-              if (res.status === 'error') {
-                this.logger.error('LibFileSystemUi', 'UIdownloadFromURL -> Error while downloading file', null, res.data);
-                return reject(res.data);
-              }
+            this.LibFileSystem.downloadFileFromUrl(data.dstPath, url).subscribe(
+              (res: BackendResponse) => {
+                if (res.status === 'error') {
+                  this.logger.error('LibFileSystemUi', 'UIdownloadFromURL -> Error while downloading file', null, res.data);
+                  return reject(res.data);
+                }
 
-              this.LibFileSystemUi.sendFileExchange({
-                type: 'download_from_url',
-                progress: 0,
-                srcPath: url,
-                dstPath: data.dstPath,
-                srcConnectionUuid: null,
-                dstConnectionUuid: '',
-                srcApplicationId: null,
-                dstApplicationId: ''
-              } as SendFileExchange);
+                this.LibFileSystemUi.sendFileExchange({
+                  type: 'download_from_url',
+                  progress: 0,
+                  srcPath: url,
+                  dstPath: data.dstPath,
+                  srcConnectionUuid: null,
+                  dstConnectionUuid: '',
+                  srcApplicationId: null,
+                  dstApplicationId: ''
+                } as SendFileExchange);
 
-              this.LibFileSystemUi.sendRefreshPath(data.dstPath);
-              return resolve();
-            },
-            (error: any) => {
-              this.logger.error('LibFileSystemUi', 'UIdownloadFromURL -> Error while downloading file', null, error);
-              return reject(error);
-            });
+                this.LibFileSystemUi.sendRefreshPath(data.dstPath);
+                return resolve();
+              },
+              (error: any) => {
+                this.logger.error('LibFileSystemUi', 'UIdownloadFromURL -> Error while downloading file', null, error);
+                return reject(error);
+              });
+          });
         });
       });
-    });
 
     this.LibFileSystemUi.createHandler('do_with_file', null, (data: { srcPath: string; file: AnyOpsOSFile; applicationId: string; }): Promise<void> => {
       console.log(data);

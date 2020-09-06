@@ -1,6 +1,6 @@
-import {ConnectionNetapp, NetAppIface, NetAppSnapshot, NetAppVolume, NetAppVserver} from '@anyopsos/module-node-netapp';
-import {ConnectionVmware, VMWareHost} from '@anyopsos/module-node-vmware';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { ConnectionNetapp, NetAppIface, NetAppSnapshot, NetAppVolume, NetAppVserver } from '@anyopsos/module-node-netapp';
+import { ConnectionVmware, VMWareHost } from '@anyopsos/module-node-vmware';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
 export interface RestoreVolumeFiles {
   storage: ConnectionNetapp;

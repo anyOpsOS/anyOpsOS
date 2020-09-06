@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import {Socket} from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {ConnectionVmware} from '@anyopsos/module-node-vmware';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibFileSystemService } from '@anyopsos/lib-file-system';
+import { ConnectionVmware } from '@anyopsos/module-node-vmware';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 
 // TODO extract it from '@anyopsos/module-node-vmware'
@@ -76,25 +76,26 @@ export class AnyOpsOSLibNodeVmwareConnectionsStateService {
         // Update state
         connectionsData.data.forEach((connection: ConnectionVmware) => this.putConnection(connection, false));
       },
-      async (error) => {
+                 async (error) => {
 
-        // If config file not exist, create a new one and try again
-        if (error.data === 'resource_not_found') {
+          // If config file not exist, create a new one and try again
+          if (error.data === 'resource_not_found') {
 
-          await this.LibFileSystem.putConfigFile([], VMWARE_CONFIG_FILE).subscribe((res: BackendResponse) => {
-            if (res.status === 'error') throw res.data;
+            await this.LibFileSystem.putConfigFile([], VMWARE_CONFIG_FILE).subscribe(
+              (res: BackendResponse) => {
+                if (res.status === 'error') throw res.data;
 
-            return this.initConnections();
-          },
-          error => {
+                return this.initConnections();
+              },
+              err => {
+                this.logger.error('LibNodeVmware', 'Error while getting connections', null, err);
+                this.logger.error('LibNodeVmware', 'Error while creating configuration file', null, err);
+              });
+          } else {
             this.logger.error('LibNodeVmware', 'Error while getting connections', null, error);
-            this.logger.error('LibNodeVmware', 'Error while creating configuration file', null, error);
-          });
-        } else {
-          this.logger.error('LibNodeVmware', 'Error while getting connections', null, error);
-        }
+          }
 
-      });
+        });
 
   }
 
@@ -198,22 +199,22 @@ export class AnyOpsOSLibNodeVmwareConnectionsStateService {
 
     return new Promise(async (resolve, reject) => {
 
-      let fileSystemObservable: Observable<Object>;
+      let fileSystemObservable: Observable<{ [key: string]: any }>;
 
       if (type === 'put') fileSystemObservable = this.LibFileSystem.putConfigFile(currentConnection, VMWARE_CONFIG_FILE, currentConnection.uuid);
       if (type === 'patch') fileSystemObservable = this.LibFileSystem.patchConfigFile(currentConnection, VMWARE_CONFIG_FILE, currentConnection.uuid);
       if (type === 'delete') fileSystemObservable = this.LibFileSystem.deleteConfigFile(VMWARE_CONFIG_FILE, currentConnection.uuid);
 
       fileSystemObservable.subscribe((res: BackendResponse) => {
-          if (res.status === 'error') {
-            this.logger.error('LibNodeVmware', 'Error while saving connection', null, res.data);
-            return reject(res.data);
-          }
+        if (res.status === 'error') {
+          this.logger.error('LibNodeVmware', 'Error while saving connection', null, res.data);
+          return reject(res.data);
+        }
 
-          this.logger.debug('LibNodeVmware', 'Saved connection successfully', loggerArgs);
-          return resolve(res.data);
-        },
-        error => {
+        this.logger.debug('LibNodeVmware', 'Saved connection successfully', loggerArgs);
+        return resolve(res.data);
+      },
+                                     error => {
           this.logger.error('LibNodeVmware', 'Error while saving connection', loggerArgs, error);
           return reject(error);
         });

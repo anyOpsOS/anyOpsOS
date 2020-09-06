@@ -1,15 +1,15 @@
-import {Injectable, ViewContainerRef} from '@angular/core';
+import { Injectable, ViewContainerRef } from '@angular/core';
 
-import {BehaviorSubject, Observable} from 'rxjs';
-import {take} from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
-import {ConnectionVmware} from '@anyopsos/module-node-vmware';
-import {ConnectionNetapp} from '@anyopsos/module-node-netapp';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibNodeHelpersService } from '@anyopsos/lib-node';
+import { ConnectionVmware } from '@anyopsos/module-node-vmware';
+import { ConnectionNetapp } from '@anyopsos/module-node-netapp';
 
-import {DatastoreExplorerConnectionObject} from '../types/datastore-explorer-connection-object';
+import { DatastoreExplorerConnectionObject } from '../types/datastore-explorer-connection-object';
 
 @Injectable({
   providedIn: 'root'

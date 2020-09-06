@@ -1,12 +1,12 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
-import {Application} from '@anyopsos/lib-application';
+import { Application } from '@anyopsos/lib-application';
 
-import {AnyOpsOSAppInfrastructureAsCodeService} from '../../services/anyopsos-app-infrastructure-as-code.service';
-import {IaCProject} from '../../types/Ia-C-Project';
+import { AnyOpsOSAppInfrastructureAsCodeService } from '../../services/anyopsos-app-infrastructure-as-code.service';
+import { IaCProject } from '../../types/Ia-C-Project';
 
 @Component({
   selector: 'aaiac-body',

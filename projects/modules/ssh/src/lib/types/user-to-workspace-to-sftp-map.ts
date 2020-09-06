@@ -1,4 +1,4 @@
-import {AsyncSFTPWrapper} from './async-sftp-wrapper';
+import { AsyncSFTPWrapper } from './async-sftp-wrapper';
 
 export interface UserToWorkspaceToSftpMap {
   [key: string]: {

@@ -1,10 +1,10 @@
-import {Connection} from '@anyopsos/backend-core/app/types/connection';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { Connection } from '@anyopsos/backend-core/app/types/connection';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
-import {NetAppVserver} from './netapp-vserver';
-import {NetAppVolume} from './netapp-volume';
-import {NetAppSnapshot} from './netapp-snapshot';
-import {NetAppIface} from './netapp-iface';
+import { NetAppVserver } from './netapp-vserver';
+import { NetAppVolume } from './netapp-volume';
+import { NetAppSnapshot } from './netapp-snapshot';
+import { NetAppIface } from './netapp-iface';
 
 export interface ConnectionNetapp extends Connection {
   type: 'netapp';

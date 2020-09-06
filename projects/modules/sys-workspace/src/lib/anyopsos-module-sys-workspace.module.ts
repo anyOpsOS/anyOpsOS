@@ -1,18 +1,18 @@
-import {join} from 'path';
-import {client} from 'node-vault';
-import log4js, {Logger} from 'log4js';
-import {v4 as uuidv4} from 'uuid';
+import { join } from 'path';
+import { client } from 'node-vault';
+import log4js, { Logger } from 'log4js';
+import { v4 as uuidv4 } from 'uuid';
 
 // TODO ESM
-const {getLogger} = log4js;
+const { getLogger } = log4js;
 
-import {AnyOpsOSVaultModule} from '@anyopsos/module-vault';
-import {AnyOpsOSFileSystemModule} from '@anyopsos/module-file-system';
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
+import { AnyOpsOSVaultModule } from '@anyopsos/module-vault';
+import { AnyOpsOSFileSystemModule } from '@anyopsos/module-file-system';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
 
-import {ApiCaller} from './decorators/api-caller'
+import { ApiCaller } from './decorators/api-caller'
 
-import {Workspace} from './types/workspace';
+import { Workspace } from './types/workspace';
 
 
 const logger: Logger = getLogger('auth');

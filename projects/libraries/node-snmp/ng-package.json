@@ -3,5 +3,13 @@
   "dest": "../../../.dist/libraries/node-snmp",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "ngx-socket-io",
+    "@anyopsos/lib-bootstrap",
+    "@anyopsos/lib-file-system",
+    "@anyopsos/lib-logger",
+    "@anyopsos/lib-ssh",
+    "@anyopsos/lib-workspace"
+  ]
 }

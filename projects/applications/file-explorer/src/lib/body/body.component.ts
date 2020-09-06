@@ -1,11 +1,11 @@
-import {Component, Input, OnInit, OnDestroy} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
-import {AnyOpsOSLibUserService} from '@anyopsos/lib-user';
-import {AnyOpsOSLibFileSystemUiService} from '@anyopsos/lib-file-system-ui';
-import {Application} from '@anyopsos/lib-application';
+import { AnyOpsOSLibUserService } from '@anyopsos/lib-user';
+import { AnyOpsOSLibFileSystemUiService } from '@anyopsos/lib-file-system-ui';
+import { Application } from '@anyopsos/lib-application';
 
 @Component({
   selector: 'aafe-body',
@@ -27,7 +27,7 @@ export class BodyComponent implements OnInit, OnDestroy {
 
     // Get the current logged in username
     this.UserState.currentState
-    .pipe(takeUntil(this.destroySubject$)).subscribe(state => this.username = state.username);
+      .pipe(takeUntil(this.destroySubject$)).subscribe(state => this.username = state.username);
   }
 
   ngOnDestroy(): void {

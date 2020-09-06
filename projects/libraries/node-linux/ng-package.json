@@ -3,5 +3,12 @@
   "dest": "../../../.dist/libraries/node-linux",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "@anyopsos/lib-bootstrap",
+    "@anyopsos/lib-logger",
+    "@anyopsos/lib-ssh",
+    "@anyopsos/lib-workspace",
+    "ngx-socket-io"
+  ]
 }

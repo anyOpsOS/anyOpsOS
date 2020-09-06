@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import {Socket} from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {ConnectionNetapp} from '@anyopsos/module-node-netapp';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibFileSystemService } from '@anyopsos/lib-file-system';
+import { ConnectionNetapp } from '@anyopsos/module-node-netapp';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 // TODO extract it from '@anyopsos/module-node-netapp'
 const NETAPP_CONFIG_FILE = 'netapp.json';
@@ -75,25 +75,26 @@ export class AnyOpsOSLibNodeNetappConnectionsStateService {
         // Update state
         connectionsData.data.forEach((connection: ConnectionNetapp) => this.putConnection(connection, false));
       },
-      async (error) => {
+                 async (error) => {
 
-        // If config file not exist, create a new one and try again
-        if (error.data === 'resource_not_found') {
+          // If config file not exist, create a new one and try again
+          if (error.data === 'resource_not_found') {
 
-          await this.LibFileSystem.putConfigFile([], NETAPP_CONFIG_FILE).subscribe((res: BackendResponse) => {
-            if (res.status === 'error') throw res.data;
+            await this.LibFileSystem.putConfigFile([], NETAPP_CONFIG_FILE).subscribe(
+              (res: BackendResponse) => {
+                if (res.status === 'error') throw res.data;
 
-            return this.initConnections();
-          },
-          error => {
+                return this.initConnections();
+              },
+              err => {
+                this.logger.error('LibNodeNetapp', 'Error while getting connections', null, err);
+                this.logger.error('LibNodeNetapp', 'Error while creating configuration file', null, err);
+              });
+          } else {
             this.logger.error('LibNodeNetapp', 'Error while getting connections', null, error);
-            this.logger.error('LibNodeNetapp', 'Error while creating configuration file', null, error);
-          });
-        } else {
-          this.logger.error('LibNodeNetapp', 'Error while getting connections', null, error);
-        }
+          }
 
-      });
+        });
 
   }
 
@@ -186,22 +187,22 @@ export class AnyOpsOSLibNodeNetappConnectionsStateService {
 
     return new Promise(async (resolve, reject) => {
 
-      let fileSystemObservable: Observable<Object>;
+      let fileSystemObservable: Observable<{ [key: string]: any }>;
 
       if (type === 'put') fileSystemObservable = this.LibFileSystem.putConfigFile(currentConnection, NETAPP_CONFIG_FILE, currentConnection.uuid);
       if (type === 'patch') fileSystemObservable = this.LibFileSystem.patchConfigFile(currentConnection, NETAPP_CONFIG_FILE, currentConnection.uuid);
       if (type === 'delete') fileSystemObservable = this.LibFileSystem.deleteConfigFile(NETAPP_CONFIG_FILE, currentConnection.uuid);
 
       fileSystemObservable.subscribe((res: BackendResponse) => {
-          if (res.status === 'error') {
-            this.logger.error('LibNodeNetapp', 'Error while saving connection', null, res.data);
-            return reject(res.data);
-          }
+        if (res.status === 'error') {
+          this.logger.error('LibNodeNetapp', 'Error while saving connection', null, res.data);
+          return reject(res.data);
+        }
 
-          this.logger.debug('LibNodeNetapp', 'Saved connection successfully', loggerArgs);
-          return resolve(res.data);
-        },
-        error => {
+        this.logger.debug('LibNodeNetapp', 'Saved connection successfully', loggerArgs);
+        return resolve(res.data);
+      },
+                                     error => {
           this.logger.error('LibNodeNetapp', 'Error while saving connection', loggerArgs, error);
           return reject(error);
         });

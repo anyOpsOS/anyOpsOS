@@ -1,4 +1,4 @@
-import {Stats} from 'fs-extra';
+import { Stats } from 'fs-extra';
 
 export interface AnyOpsOSFile {
   fileName: string;

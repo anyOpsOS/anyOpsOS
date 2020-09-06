@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
 
-import {Modal} from '../types/modal';
+import { Modal } from '../types/modal';
 
 @Injectable({
   providedIn: 'root'

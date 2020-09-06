@@ -2,17 +2,17 @@ import socketControllers from 'socket-controllers';
 import * as Dockerode from 'dockerode';
 
 // TODO ESM
-const {getSocketIO} = socketControllers;
+const { getSocketIO } = socketControllers;
 
-import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {AnyOpsOSCredentialModule} from '@anyopsos/module-credential';
+import { AnyOpsOSSysWorkspaceModule } from '@anyopsos/module-sys-workspace';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { AnyOpsOSCredentialModule } from '@anyopsos/module-credential';
 
-import {ConnectionDocker} from './types/connection-docker';
-import {ConnectionDockerServer} from './types/connection-docker-server';
-import {WorkspaceToDockerMap} from './types/workspace-to-docker-map';
+import { ConnectionDocker } from './types/connection-docker';
+import { ConnectionDockerServer } from './types/connection-docker-server';
+import { WorkspaceToDockerMap } from './types/workspace-to-docker-map';
 
-import {DOCKER_CONFIG_FILE} from './anyopsos-module-node-docker.constants';
+import { DOCKER_CONFIG_FILE } from './anyopsos-module-node-docker.constants';
 
 
 const dockerSessions: WorkspaceToDockerMap = {};
@@ -32,13 +32,13 @@ export class AnyOpsOSNodeDockerSessionStateModule {
     this.CredentialModule = new AnyOpsOSCredentialModule(this.userUuid, this.workspaceUuid);
   }
 
-  async createSession(): Promise<Dockerode>  {
+  async createSession(): Promise<Dockerode> {
     if (!dockerSessions[this.workspaceUuid]) dockerSessions[this.workspaceUuid] = {};
 
     const mainServer: ConnectionDockerServer = await this.getConnectionMainServer();
 
     // @ts-ignore TODO
-    const dockerConfig: Dockerode = new Dockerode({host: 'http://192.168.99.100', port: 2376});
+    const dockerConfig: Dockerode = new Dockerode({ host: 'http://192.168.99.100', port: 2376 });
 
     // Set connection as ready
     const connectionData: ConnectionDocker = await this.getConnection();

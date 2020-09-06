@@ -1,4 +1,4 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 const i18n = {
   MSG_TIME_UNIT_SECOND_LABEL: 'a second',

@@ -1,5 +1,5 @@
-import {ResourceQuotaValues} from './resource-quota-values';
-import {KubeObject} from './kube-object';
+import { ResourceQuotaValues } from './resource-quota-values';
+import { KubeObject } from './kube-object';
 
 export interface ResourceQuota extends KubeObject {
   kind: 'ResourceQuota';

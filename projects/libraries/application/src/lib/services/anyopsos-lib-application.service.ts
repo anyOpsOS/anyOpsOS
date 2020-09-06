@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Observable, BehaviorSubject, Subject} from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
 
-import {Application} from '../types/application';
+import { Application } from '../types/application';
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +29,13 @@ export class AnyOpsOSLibApplicationService {
 
   constructor(private readonly logger: AnyOpsOSLibLoggerService) {
 
-    this.dataStore = { openedApplications: [],
+    this.dataStore = {
+      openedApplications: [],
       applications: [
         { uuid: 'start', ico: 'fab fa-angular', name: 'Start Menu', menu: true }
-      ], activeApplication: null };
+      ],
+      activeApplication: null
+    };
     this.$applications = new BehaviorSubject(this.dataStore.applications);
     this.$openedApplications = new BehaviorSubject(this.dataStore.openedApplications);
     this.$activeApplication = new BehaviorSubject(this.dataStore.activeApplication);

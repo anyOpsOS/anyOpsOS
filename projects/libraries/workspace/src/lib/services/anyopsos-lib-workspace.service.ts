@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
 
-import {Workspace} from '@anyopsos/module-sys-workspace/src/lib/types/workspace';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { Workspace } from '@anyopsos/module-sys-workspace/src/lib/types/workspace';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 @Injectable({
   providedIn: 'root'

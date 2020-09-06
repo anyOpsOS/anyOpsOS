@@ -1,4 +1,4 @@
-import {AnyOpsOSSshSessionStateModule} from '@anyopsos/module-ssh';
+import { AnyOpsOSSshSessionStateModule } from '@anyopsos/module-ssh';
 
 export class InitServiceManagementModule {
 

@@ -1,13 +1,13 @@
-import {Injectable, ViewContainerRef} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable, ViewContainerRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {BehaviorSubject, Observable} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibCredentialService, AnyOpsOSLibCredentialHelpersService, AnyOpsOSLibCredentialStateService} from '@anyopsos/lib-credential';
-import {Credential} from '@anyopsos/module-credential';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibCredentialService, AnyOpsOSLibCredentialHelpersService, AnyOpsOSLibCredentialStateService } from '@anyopsos/lib-credential';
+import { Credential } from '@anyopsos/module-credential';
 
 @Injectable({
   providedIn: 'root'
@@ -89,7 +89,7 @@ export class AnyOpsOSAppCredentialsManagerService {
     if (credential.uuid) {
       return this.LibCredentialState.patchCredential(credential.uuid, credential);
 
-    // New credential received
+      // New credential received
     } else {
       (credential as Omit<Credential, 'uuid'>) = {
         description: credential.description,
@@ -107,7 +107,9 @@ export class AnyOpsOSAppCredentialsManagerService {
     if (!credentialUuid) credentialUuid = this.dataStore.activeCredentialUuid;
 
     const currentCredential: Credential = this.LibCredentialHelpers.getCredentialByUuid(credentialUuid);
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.bodyContainer,
       {
         title: `Delete credential ${currentCredential.description}`,
         text: 'Remove the selected credential from the inventory?',
@@ -117,8 +119,7 @@ export class AnyOpsOSAppCredentialsManagerService {
         boxContent: 'This action is permanent. All resources using this credential will fail...',
         boxClass: 'text-danger',
         boxIcon: 'fa-exclamation-triangle'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (result: boolean): Promise<void> => {
       if (result !== true) return;

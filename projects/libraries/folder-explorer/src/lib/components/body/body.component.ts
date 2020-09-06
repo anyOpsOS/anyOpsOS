@@ -1,17 +1,16 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {AnyOpsOSLibSelectableService} from '@anyopsos/lib-selectable';
-import {Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {AnyOpsOSLibFileSystemUiService, SendFileExchange} from '@anyopsos/lib-file-system-ui';
-import {Connection} from '@anyopsos/backend-core/app/types/connection';
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { AnyOpsOSLibSelectableService } from '@anyopsos/lib-selectable';
+import { Application } from '@anyopsos/lib-application';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibFileSystemUiService, SendFileExchange } from '@anyopsos/lib-file-system-ui';
+import { Connection } from '@anyopsos/backend-core/app/types/connection';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
 
-import {AnyOpsOSLibFolderExplorerService} from '../../services/anyopsos-lib-folder-explorer.service';
+import { AnyOpsOSLibFolderExplorerService } from '../../services/anyopsos-lib-folder-explorer.service';
 
 @Component({
   selector: 'alfolder-explorer-body',
@@ -37,7 +36,6 @@ export class FolderExplorerBodyComponent implements OnDestroy, OnInit {
   files: File[] = [];
 
   constructor(private readonly logger: AnyOpsOSLibLoggerService,
-              private readonly LibFileSystem: AnyOpsOSLibFileSystemService,
               private readonly LibFileSystemUi: AnyOpsOSLibFileSystemUiService) {
   }
 
@@ -78,7 +76,7 @@ export class FolderExplorerBodyComponent implements OnDestroy, OnInit {
     setTimeout(() => {
       if (this.application.initData && this.application.initData.path) return this.goToPath(this.application.initData.path);
       this.goToPath('/');
-    }, 0);
+    },         0);
   }
 
   ngOnDestroy(): void {

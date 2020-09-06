@@ -1,5 +1,5 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {Application} from '@anyopsos/lib-application';
+import { Component, OnInit, Input } from '@angular/core';
+import { Application } from '@anyopsos/lib-application';
 
 @Component({
   selector: 'aafe-menu',

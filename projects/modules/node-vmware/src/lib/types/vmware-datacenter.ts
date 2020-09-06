@@ -1,3 +1,3 @@
-export interface VMWareDatacenter  {
+export interface VMWareDatacenter {
 
 }

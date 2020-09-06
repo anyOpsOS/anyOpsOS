@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {VmwareSdkFunctionsOutput} from '@anyopsos/sdk-vmware';
-import {TraversalSpec} from '@anyopsos/sdk-vmware/src/lib/types/data/traversal-spec';
+import { VmwareSdkFunctionsOutput } from '@anyopsos/sdk-vmware';
+import { TraversalSpec } from '@anyopsos/sdk-vmware/src/lib/types/data/traversal-spec';
 
-import {AnyOpsOSLibNodeVmwareSoapApiService} from './anyopsos-lib-node-vmware-soap-api.service';
+import { AnyOpsOSLibNodeVmwareSoapApiService } from './anyopsos-lib-node-vmware-soap-api.service';
 
 
 @Injectable({
@@ -271,7 +271,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiHelpersService {
                   name: 'resourcePoolVmTraversalSpec'
                 }
               ]
-            }as TraversalSpec),
+            } as TraversalSpec),
             ({
               '$xsi:type': 'TraversalSpec',
               name: 'resourcePoolTraversalSpec',

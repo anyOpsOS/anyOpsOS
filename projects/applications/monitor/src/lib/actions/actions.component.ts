@@ -1,16 +1,16 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibUtilsService} from '@anyopsos/lib-utils';
-import {Application} from '@anyopsos/lib-application';
-import {AnyOpsOSExtLibNetdataService} from '@anyopsos/ext-lib-netdata';
-import {ConnectionMonitor} from '@anyopsos/module-monitor';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibUtilsService } from '@anyopsos/lib-utils';
+import { Application } from '@anyopsos/lib-application';
+import { AnyOpsOSExtLibNetdataService } from '@anyopsos/ext-lib-netdata';
+import { ConnectionMonitor } from '@anyopsos/module-monitor';
 
-import {AnyOpsOSAppMonitorService} from '../services/anyopsos-app-monitor.service';
+import { AnyOpsOSAppMonitorService } from '../services/anyopsos-app-monitor.service';
 
 @Component({
   selector: 'aamon-actions',
@@ -100,7 +100,7 @@ export class ActionsComponent implements OnDestroy, OnInit {
     if (this.activeConnectionUuid === null) return;
 
     this.NETDATA = this.connection.NETDATA;
-    this.NETDATA.pause(() => {});
+    this.NETDATA.pause(() => { });
 
     const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('monitor-options', this.Monitor.getBodyContainerRef(), {
       connection: this.connection
@@ -115,7 +115,7 @@ export class ActionsComponent implements OnDestroy, OnInit {
     if (this.activeConnectionUuid === null || this.getActiveConnection().snapshotData) return;
 
     this.NETDATA = this.connection.NETDATA;
-    this.NETDATA.pause(() => {});
+    this.NETDATA.pause(() => { });
 
     const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('monitor-alarms', this.Monitor.getBodyContainerRef(), {
       connection: this.connection
@@ -129,9 +129,9 @@ export class ActionsComponent implements OnDestroy, OnInit {
   async openImportModal(): Promise<void> {
     if (this.connection) {
       this.NETDATA = this.connection.NETDATA;
-      this.NETDATA.pause(() => {});
+      this.NETDATA.pause(() => { });
     } else {
-      this.connection = this.Netdata.newDashboard({uuid: null});
+      this.connection = this.Netdata.newDashboard({ uuid: null });
     }
 
     const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('monitor-import', this.Monitor.getBodyContainerRef(), {
@@ -147,7 +147,7 @@ export class ActionsComponent implements OnDestroy, OnInit {
     if (this.activeConnectionUuid === null) return;
 
     this.NETDATA = this.connection.NETDATA;
-    this.NETDATA.pause(() => {});
+    this.NETDATA.pause(() => { });
 
     const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('monitor-export', this.Monitor.getBodyContainerRef(), {
       connection: this.connection
@@ -161,7 +161,7 @@ export class ActionsComponent implements OnDestroy, OnInit {
   async openHelpModal(): Promise<void> {
     if (this.connection) {
       this.NETDATA = this.connection.NETDATA;
-      this.NETDATA.pause(() => {});
+      this.NETDATA.pause(() => { });
     }
 
     const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('monitor-help', this.Monitor.getBodyContainerRef(), {});

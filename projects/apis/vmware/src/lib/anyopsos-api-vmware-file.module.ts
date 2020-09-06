@@ -1,16 +1,16 @@
-import {Request, Response} from 'express';
-import {EventEmitter} from 'events';
+import { Request, Response } from 'express';
+import { EventEmitter } from 'events';
 import routingControllers from 'routing-controllers';
 import routingControllersSessionParam from 'routing-controllers/decorator/SessionParam';
-import log4js, {Logger} from 'log4js';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {Controller, Authorized, Req, Res, Param, BodyParam, Patch, Delete, Put, Get} = routingControllers;
-const {SessionParam} = routingControllersSessionParam;
-const {getLogger} = log4js;
+const { Controller, Authorized, Req, Res, Param, BodyParam, Patch, Delete, Put, Get } = routingControllers;
+const { SessionParam } = routingControllersSessionParam;
+const { getLogger } = log4js;
 
-import {AnyOpsOSApiGlobalsModule} from '@anyopsos/module-api-globals';
-import {AnyOpsOSNodeVmwareFileSystemModule} from '@anyopsos/module-node-vmware';
+import { AnyOpsOSApiGlobalsModule } from '@anyopsos/module-api-globals';
+import { AnyOpsOSNodeVmwareFileSystemModule } from '@anyopsos/module-node-vmware';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -95,7 +95,9 @@ export class AnyOpsOSVmwareFileApiController {
     }
 
     if (type === 'rename' && dstPath) await VmwareFileSystemModule.patchFile(type, srcPath, srcDatastoreName, srcDatacenterName, dstPath);
-    if ((type === 'copy' || type === 'move') && dstPath && dstDatastoreName && dstDatacenterName) await VmwareFileSystemModule.patchFile(type, srcPath, srcDatastoreName, srcDatacenterName, dstPath, dstDatastoreName, dstDatacenterName);
+    if ((type === 'copy' || type === 'move') && dstPath && dstDatastoreName && dstDatacenterName) {
+      await VmwareFileSystemModule.patchFile(type, srcPath, srcDatastoreName, srcDatacenterName, dstPath, dstDatastoreName, dstDatacenterName);
+    }
 
     // TODO
     if ((type === 'chmod' || type === 'chown') && permissions) await VmwareFileSystemModule.patchFilePermissions(type, srcPath, permissions);

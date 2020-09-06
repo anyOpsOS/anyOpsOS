@@ -1,6 +1,6 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 
-import {AnyOpsOSLibWorkspaceService} from './services/anyopsos-lib-workspace.service';
+import { AnyOpsOSLibWorkspaceService } from './services/anyopsos-lib-workspace.service';
 
 @NgModule({
   declarations: [],
@@ -13,8 +13,8 @@ export class AnyOpsOSLibWorkspaceModule {
     console.log('Loading AnyOpsOSLibWorkspaceModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibWorkspaceModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibWorkspaceModule is already loaded. You should not import it manually.');
     }
   }
 

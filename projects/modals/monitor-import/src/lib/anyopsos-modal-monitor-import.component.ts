@@ -1,9 +1,9 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 
-import {MAT_DIALOG_DATA, MatDialogRef} from '@anyopsos/lib-angular-material';
-import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
-import {ConnectionMonitor} from '@anyopsos/module-monitor';
-import {AnyOpsOSLibServiceInjectorService} from '@anyopsos/lib-service-injector';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@anyopsos/lib-angular-material';
+import { BodyComponent, ModalData } from '@anyopsos/lib-modal';
+import { ConnectionMonitor } from '@anyopsos/module-monitor';
+import { AnyOpsOSLibServiceInjectorService } from '@anyopsos/lib-service-injector';
 
 @Component({
   selector: 'ammonitor-import-anyopsos-modal-monitor-import',
@@ -11,7 +11,7 @@ import {AnyOpsOSLibServiceInjectorService} from '@anyopsos/lib-service-injector'
   styleUrls: ['./anyopsos-modal-monitor-import.component.scss']
 })
 export class AnyOpsOSModalMonitorImportComponent implements OnInit {
-  @ViewChild('modalBody', {static: true}) modalBody: BodyComponent;
+  @ViewChild('modalBody', { static: true }) modalBody: BodyComponent;
 
   connection: ConnectionMonitor;
 

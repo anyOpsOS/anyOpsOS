@@ -1,10 +1,10 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
-import {Application} from '@anyopsos/lib-application';
+import { Application } from '@anyopsos/lib-application';
 
-import {AnyOpsOSAppCredentialsManagerService} from '../../services/anyopsos-app-credentials-manager.service';
+import { AnyOpsOSAppCredentialsManagerService } from '../../services/anyopsos-app-credentials-manager.service';
 
 @Component({
   selector: 'aacm-actions',

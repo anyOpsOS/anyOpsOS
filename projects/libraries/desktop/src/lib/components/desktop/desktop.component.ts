@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibUserService} from '@anyopsos/lib-user';
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {AnyOpsOSLibFileSystemUiService} from '@anyopsos/lib-file-system-ui';
-import {Application, AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibUserService } from '@anyopsos/lib-user';
+import { AnyOpsOSLibFileSystemService } from '@anyopsos/lib-file-system';
+import { AnyOpsOSLibFileSystemUiService } from '@anyopsos/lib-file-system-ui';
+import { Application, AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 @Component({
   selector: 'aldesktop-desktop',

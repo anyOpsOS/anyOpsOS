@@ -1,10 +1,10 @@
-import {ChangeDetectionStrategy, Component, ElementRef, Input, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
 
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
-import {AnyOpsOSLibDiagramStateService} from '../../../services/anyopsos-lib-diagram-state.service';
-import {LayoutNode} from '../../../types/layout-node';
+import { AnyOpsOSLibDiagramStateService } from '../../../services/anyopsos-lib-diagram-state.service';
+import { LayoutNode } from '../../../types/layout-node';
 
 @Component({
   selector: '[aldiagram-node-static]',
@@ -12,7 +12,7 @@ import {LayoutNode} from '../../../types/layout-node';
   styleUrls: ['./node-static.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NodeStaticComponent implements OnInit {
+export class NodeStaticComponent implements OnInit, OnDestroy {
   @Input() nodeElement: LayoutNode;
   @Input() graphNodeRef: ElementRef;
 
@@ -49,7 +49,7 @@ export class NodeStaticComponent implements OnInit {
 
       const matchedDetails: { label: string; text: string; }[] = this.nodeElement.matches.filter((m) => {
         return m.keyPath.includes('metadata') || m.keyPath.includes('parents');
-      }).map(m => ({label: m.label, text: m.text}));
+      }).map(m => ({ label: m.label, text: m.text }));
 
       if (matchedDetails.length > 2) {
 

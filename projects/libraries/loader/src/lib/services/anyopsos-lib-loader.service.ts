@@ -1,11 +1,11 @@
-import {ApplicationRef, ComponentFactoryResolver, ComponentFactory, Compiler, Injectable, Injector, ModuleWithComponentFactories, NgModuleFactory, NgModuleRef} from '@angular/core';
+import { ApplicationRef, ComponentFactoryResolver, ComponentFactory, Compiler, Injectable, Injector, ModuleWithComponentFactories, NgModuleFactory, NgModuleRef } from '@angular/core';
 
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSLibModalRegisteredStateService} from '@anyopsos/lib-modal';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { AnyOpsOSLibFileSystemService } from '@anyopsos/lib-file-system';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
+import { AnyOpsOSLibModalRegisteredStateService } from '@anyopsos/lib-modal';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
 
 
 declare const window: any;
@@ -58,7 +58,7 @@ export class AnyOpsOSLibLoaderService {
 
     return new Promise((resolve) => {
 
-      const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
+      const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port : '')}`;
 
       window.System.import(`${currentLocation}/api/loader//bin/applications/${application.fileName}`).then((moduleToCompile: any) => {
 
@@ -108,7 +108,7 @@ export class AnyOpsOSLibLoaderService {
   loadModal(modal: AnyOpsOSFile): void {
     const loggerArgs = arguments;
 
-    const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
+    const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port : '')}`;
 
     window.System.import(`${currentLocation}/api/loader//bin/modals/${modal.fileName}`).then((moduleToCompile: any) => {
 
@@ -158,12 +158,12 @@ export class AnyOpsOSLibLoaderService {
           this.logger.error('LibLoader', 'Error while getting installed Libraries', null, error);
         });
 
-      });
+    });
 
   }
 
   async loadLib(library: AnyOpsOSFile): Promise<void> {
-    const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
+    const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port : '')}`;
 
     return window.System.import(`${currentLocation}/api/loader//bin/libraries/${library.fileName}`).then(async (moduleToCompile: any) => {
 

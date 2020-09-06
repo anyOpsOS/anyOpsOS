@@ -3,14 +3,14 @@ import socketControllers from 'socket-controllers';
 import * as netSnmp from 'net-snmp';
 
 // TODO ESM
-const {getSocketIO} = socketControllers;
+const { getSocketIO } = socketControllers;
 
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {AnyOpsOSCredentialModule} from '@anyopsos/module-credential';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { AnyOpsOSCredentialModule } from '@anyopsos/module-credential';
 
-import {ConnectionSnmp} from './types/connection-snmp';
-import {WorkspaceToSnmpMap} from './types/workspace-to-snmp-map';
-import {SNMP_CONFIG_FILE} from './anyopsos-module-node-snmp.constants';
+import { ConnectionSnmp } from './types/connection-snmp';
+import { WorkspaceToSnmpMap } from './types/workspace-to-snmp-map';
+import { SNMP_CONFIG_FILE } from './anyopsos-module-node-snmp.constants';
 
 const snmpSessions: WorkspaceToSnmpMap = {};
 
@@ -63,7 +63,7 @@ export class AnyOpsOSNodeSnmpSessionStateModule {
       }
     });
 
-    return  snmpSessions[this.workspaceUuid][this.connectionUuid];
+    return snmpSessions[this.workspaceUuid][this.connectionUuid];
   }
 
   async disconnectSession(): Promise<void> {

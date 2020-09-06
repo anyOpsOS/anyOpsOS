@@ -12,15 +12,15 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import {Socket} from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
-import {TerminalTypes} from '@anyopsos/module-terminal';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibWorkspaceService } from '@anyopsos/lib-workspace';
+import { TerminalTypes } from '@anyopsos/module-terminal';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSLibTerminalService} from '../services/anyopsos-lib-terminal.service';
-import {Terminal as TerminalData} from '../types/terminal';
+import { AnyOpsOSLibTerminalService } from '../services/anyopsos-lib-terminal.service';
+import { Terminal as TerminalData } from '../types/terminal';
 
 
 @Component({
@@ -30,7 +30,7 @@ import {Terminal as TerminalData} from '../types/terminal';
   styleUrls: ['./terminal.component.scss']
 })
 export class TerminalComponent implements OnChanges, OnDestroy, AfterViewInit {
-  @ViewChild('terminalRef', {static: false}) terminalRef: ElementRef;
+  @ViewChild('terminalRef', { static: false }) terminalRef: ElementRef;
   @Input() private readonly connectionUuid: string;
   @Input() private readonly workspaceUuid: string = this.LibWorkspace.getCurrentWorkspaceUuid();
   @Input() private readonly terminalType: TerminalTypes = 'ssh';
@@ -95,7 +95,7 @@ export class TerminalComponent implements OnChanges, OnDestroy, AfterViewInit {
       connectionUuid: this.connectionUuid,
       workspaceUuid: this.workspaceUuid,
       terminalType: this.terminalType
-    }, (resultData: BackendResponse) => {
+    },               (resultData: BackendResponse) => {
       if (resultData.status === 'error') {
         this.logger.error('LibTerminal', 'Unable to create websocket terminal', null, resultData.data);
         return this.customTerminalMessage = resultData.data;

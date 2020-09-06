@@ -1,16 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
-import {CdkDragDrop, moveItemInArray} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
+import { CdkDragDrop, moveItemInArray } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
 
-import {AnyOpsOSLibDesktopTaskBarService} from '../../services/anyopsos-lib-desktop-task-bar.service';
-import {TaskbarApplication} from '../../types/taskbar-application';
+import { AnyOpsOSLibDesktopTaskBarService } from '../../services/anyopsos-lib-desktop-task-bar.service';
+import { TaskbarApplication } from '../../types/taskbar-application';
 
 @Component({
-  selector: 'app-task-bar',
+  selector: 'aldesktop-task-bar',
   templateUrl: './task-bar.component.html',
   styleUrls: ['./task-bar.component.scss']
 })
@@ -18,7 +18,7 @@ export class TaskBarComponent implements OnInit, OnDestroy {
   private readonly destroySubject$: Subject<void> = new Subject();
 
   taskBarApplications: TaskbarApplication[];
-  clock: string = new Date().toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: true});
+  clock: string = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 
   constructor(private readonly LibApplication: AnyOpsOSLibApplicationService,
               private readonly LibDesktopTaskBar: AnyOpsOSLibDesktopTaskBarService) {
@@ -27,9 +27,7 @@ export class TaskBarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.LibDesktopTaskBar.taskBarApplications.pipe(takeUntil(this.destroySubject$)).subscribe((applications: TaskbarApplication[]) => this.taskBarApplications = applications);
 
-    setInterval(() => {
-      this.clock = new Date().toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: true});
-    }, 1000);
+    setInterval(() => { this.clock = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }); }, 1000);
   }
 
   ngOnDestroy(): void {

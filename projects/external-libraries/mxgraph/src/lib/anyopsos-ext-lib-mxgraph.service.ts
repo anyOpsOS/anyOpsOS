@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {mxgraph, mx} from './types/mxgraph';
+import { mxgraph, mx } from './types/mxgraph';
 
 declare let mxgraphWrapper;
 

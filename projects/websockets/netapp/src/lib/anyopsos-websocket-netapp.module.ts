@@ -1,13 +1,13 @@
 import socketControllers from 'socket-controllers';
-import {Socket} from 'socket.io';
-import log4js, {Logger} from 'log4js';
+import { Socket } from 'socket.io';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getLogger} = log4js;
-const {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam} = socketControllers;
+const { getLogger } = log4js;
+const { SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam } = socketControllers;
 
-import {AnyOpsOSNodeNetappModule} from '@anyopsos/module-node-netapp';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSNodeNetappModule } from '@anyopsos/module-node-netapp';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 const logger: Logger = getLogger('mainLog');
 
@@ -34,7 +34,7 @@ export class AnyOpsOSNetappWebsocketController {
     return NetappModule.disconnectConnection().then((result: BackendResponse) => {
       return result;
     }).catch((e: Error) => {
-      return {status: 'error', data: e.toString()} as BackendResponse;
+      return { status: 'error', data: e.toString() } as BackendResponse;
     });
   }
 
@@ -52,7 +52,7 @@ export class AnyOpsOSNetappWebsocketController {
     return NetappModule.newConnection().then((result: BackendResponse) => {
       return result;
     }).catch((e: Error) => {
-      return {status: 'error', data: e.toString()} as BackendResponse;
+      return { status: 'error', data: e.toString() } as BackendResponse;
     });
   }
 

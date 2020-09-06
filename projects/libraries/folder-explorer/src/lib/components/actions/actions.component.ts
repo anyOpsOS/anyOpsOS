@@ -1,13 +1,13 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibFileSystemUiService} from '@anyopsos/lib-file-system-ui';
-import {Connection} from '@anyopsos/backend-core/app/types/connection';
+import { Application } from '@anyopsos/lib-application';
+import { AnyOpsOSLibFileSystemUiService } from '@anyopsos/lib-file-system-ui';
+import { Connection } from '@anyopsos/backend-core/app/types/connection';
 
-import {AnyOpsOSLibFolderExplorerService} from '../../services/anyopsos-lib-folder-explorer.service';
+import { AnyOpsOSLibFolderExplorerService } from '../../services/anyopsos-lib-folder-explorer.service';
 
 @Component({
   selector: 'alfolder-explorer-actions',

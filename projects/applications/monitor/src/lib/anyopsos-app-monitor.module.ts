@@ -1,21 +1,21 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import {AnyOpsOSLibUtilsModule} from '@anyopsos/lib-utils';
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSLibScrollSpyModule} from '@anyopsos/lib-scroll-spy';
-import {AnyOpsOSLibPipesModule} from '@anyopsos/lib-pipes';
-import {AnyOpsOSLibServiceInjectorService} from '@anyopsos/lib-service-injector';
-import {AnyOpsOSLibDiagramModule} from '@anyopsos/lib-diagram';
+import { AnyOpsOSLibUtilsModule } from '@anyopsos/lib-utils';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
+import { AnyOpsOSLibScrollSpyModule } from '@anyopsos/lib-scroll-spy';
+import { AnyOpsOSLibPipesModule } from '@anyopsos/lib-pipes';
+import { AnyOpsOSLibServiceInjectorService } from '@anyopsos/lib-service-injector';
+import { AnyOpsOSLibDiagramModule } from '@anyopsos/lib-diagram';
 
-import {ActionsComponent} from './actions/actions.component';
-import {BodyComponent} from './body/body.component';
-import {BodyNewConnectionComponent} from './body/body-new-connection/body-new-connection.component';
-import {BodyDashboardComponent} from './body/body-dashboard/body-dashboard.component';
-import {MenuComponent} from './menu/menu.component';
-import {AnyOpsOSAppMonitorService} from './services/anyopsos-app-monitor.service';
+import { ActionsComponent } from './actions/actions.component';
+import { BodyComponent } from './body/body.component';
+import { BodyNewConnectionComponent } from './body/body-new-connection/body-new-connection.component';
+import { BodyDashboardComponent } from './body/body-dashboard/body-dashboard.component';
+import { MenuComponent } from './menu/menu.component';
+import { AnyOpsOSAppMonitorService } from './services/anyopsos-app-monitor.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +52,7 @@ export class AnyOpsOSAppMonitorModule {
       menu: true,
       actions: true,
       status: false,
-      style: {width: '1370px', height: '700px', top: '9%', left: '9%'}
+      style: { width: '1370px', height: '700px', top: '9%', left: '9%' }
     });
 
     this.Monitor.initConnections();

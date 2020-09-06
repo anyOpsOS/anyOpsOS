@@ -1,11 +1,11 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 
-import {AnyOpsOSLibBootstrapService} from '@anyopsos/lib-bootstrap';
+import { AnyOpsOSLibBootstrapService } from '@anyopsos/lib-bootstrap';
 
-import {AnyOpsOSLibNodeSnmpService} from './services/anyopsos-lib-node-snmp.service';
-import {AnyOpsOSLibNodeSnmpApiService} from './services/anyopsos-lib-node-snmp-api.service';
-import {AnyOpsOSLibNodeSnmpHelpersService} from './services/anyopsos-lib-node-snmp-helpers.service';
-import {AnyOpsOSLibNodeSnmpConnectionsStateService} from './services/anyopsos-lib-node-snmp-connections-state.service';
+import { AnyOpsOSLibNodeSnmpService } from './services/anyopsos-lib-node-snmp.service';
+import { AnyOpsOSLibNodeSnmpApiService } from './services/anyopsos-lib-node-snmp-api.service';
+import { AnyOpsOSLibNodeSnmpHelpersService } from './services/anyopsos-lib-node-snmp-helpers.service';
+import { AnyOpsOSLibNodeSnmpConnectionsStateService } from './services/anyopsos-lib-node-snmp-connections-state.service';
 
 @NgModule({
   declarations: [],
@@ -20,8 +20,8 @@ export class AnyOpsOSLibNodeSnmpModule {
     console.log('Loading AnyOpsOSLibNodeSnmpModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibNodeSnmpModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibNodeSnmpModule is already loaded. You should not import it manually.');
     }
 
     // Initialize connections when user is loggedIn

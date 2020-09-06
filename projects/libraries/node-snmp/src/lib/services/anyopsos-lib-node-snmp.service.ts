@@ -1,16 +1,16 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Socket} from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
-import {AnyOpsOSLibSshHelpersService, AnyOpsOSLibSshService} from '@anyopsos/lib-ssh';
-import {ConnectionSnmp} from '@anyopsos/module-node-snmp';
-import {ConnectionSsh} from '@anyopsos/module-ssh';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibWorkspaceService } from '@anyopsos/lib-workspace';
+import { AnyOpsOSLibSshHelpersService, AnyOpsOSLibSshService } from '@anyopsos/lib-ssh';
+import { ConnectionSnmp } from '@anyopsos/module-node-snmp';
+import { ConnectionSsh } from '@anyopsos/module-ssh';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSLibNodeSnmpConnectionsStateService} from './anyopsos-lib-node-snmp-connections-state.service';
-import {AnyOpsOSLibNodeSnmpHelpersService} from './anyopsos-lib-node-snmp-helpers.service';
+import { AnyOpsOSLibNodeSnmpConnectionsStateService } from './anyopsos-lib-node-snmp-connections-state.service';
+import { AnyOpsOSLibNodeSnmpHelpersService } from './anyopsos-lib-node-snmp-helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -57,23 +57,24 @@ export class AnyOpsOSLibNodeSnmpService {
 
       // Create new Snmp session
       this.socket.emit('[snmp-session]', {
-        connectionUuid: connection.uuid,
-        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (data: BackendResponse) => {
+                        connectionUuid: connection.uuid,
+                        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
+                       },
+                       async (data: BackendResponse) => {
 
-        if (data.status === 'error') {
-          this.logger.error('LibNodeSnmp', 'Error while emitting [snmp-session]', loggerArgs, data.data);
-          await this.LibNodeSnmpConnectionsState.patchConnection(connection.uuid, 'error', data.data);
+                        if (data.status === 'error') {
+                          this.logger.error('LibNodeSnmp', 'Error while emitting [snmp-session]', loggerArgs, data.data);
+                          await this.LibNodeSnmpConnectionsState.patchConnection(connection.uuid, 'error', data.data);
 
-          return reject(data.data);
-        }
+                          return reject(data.data);
+                        }
 
-        // Set connection state as connected and remove any previous errors
-        await this.LibNodeSnmpConnectionsState.patchConnection(connection.uuid, 'state', 'connected');
-        await this.LibNodeSnmpConnectionsState.patchConnection(connection.uuid, 'error', null);
+                        // Set connection state as connected and remove any previous errors
+                        await this.LibNodeSnmpConnectionsState.patchConnection(connection.uuid, 'state', 'connected');
+                        await this.LibNodeSnmpConnectionsState.patchConnection(connection.uuid, 'error', null);
 
-        return resolve();
-      });
+                        return resolve();
+                       });
     });
   }
 
@@ -90,23 +91,24 @@ export class AnyOpsOSLibNodeSnmpService {
       if (currentConnection.state === 'disconnected') throw new Error('already_disconnected');
 
       this.socket.emit('[snmp-disconnect]', {
-        connectionUuid,
-        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (data: BackendResponse) => {
+                        connectionUuid,
+                        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
+                       },
+                       async (data: BackendResponse) => {
 
-        if (data.status === 'error') {
-          this.logger.error('LibNodeSnmp', 'Error while emitting [snmp-disconnect]', loggerArgs, data.data);
-          await this.LibNodeSnmpConnectionsState.patchConnection(connectionUuid, 'error', data.data);
+                        if (data.status === 'error') {
+                          this.logger.error('LibNodeSnmp', 'Error while emitting [snmp-disconnect]', loggerArgs, data.data);
+                          await this.LibNodeSnmpConnectionsState.patchConnection(connectionUuid, 'error', data.data);
 
-          return reject(data.data);
-        }
+                          return reject(data.data);
+                        }
 
-        // Set connection state as connected and remove any previous errors
-        await this.LibNodeSnmpConnectionsState.patchConnection(connectionUuid, 'state', 'disconnected');
-        await this.LibNodeSnmpConnectionsState.patchConnection(connectionUuid, 'error', null);
+                        // Set connection state as connected and remove any previous errors
+                        await this.LibNodeSnmpConnectionsState.patchConnection(connectionUuid, 'state', 'disconnected');
+                        await this.LibNodeSnmpConnectionsState.patchConnection(connectionUuid, 'error', null);
 
-        return resolve();
-      });
+                        return resolve();
+                       });
     });
   }
 

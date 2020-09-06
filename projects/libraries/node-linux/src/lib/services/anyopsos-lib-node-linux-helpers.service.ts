@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {ConnectionLinux} from '@anyopsos/module-node-linux';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { ConnectionLinux } from '@anyopsos/module-node-linux';
 
-import {AnyOpsOSLibNodeLinuxConnectionsStateService} from './anyopsos-lib-node-linux-connections-state.service';
+import { AnyOpsOSLibNodeLinuxConnectionsStateService } from './anyopsos-lib-node-linux-connections-state.service';
 
 @Injectable({
   providedIn: 'root'

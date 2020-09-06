@@ -1,6 +1,6 @@
-import {get, Agent} from 'https';
-import {dirname} from 'path';
-import {readFileSync} from 'fs';
+import { get, Agent } from 'https';
+import { dirname } from 'path';
+import { readFileSync } from 'fs';
 
 export function resolve(specifier: string, context: { parentURL?: any }, defaultResolve: (...args: any) => any) {
   const { parentURL = null } = context;
@@ -11,35 +11,35 @@ export function resolve(specifier: string, context: { parentURL?: any }, default
   if (specifier.startsWith('@anyopsos/module-')) {
 
     return {
-      url: `https://filesystem.anyopsos.local/api/file/${encodeURIComponent( `${specifier.replace('@anyopsos/module-', 'bin/modules/')}/index.js` )}`
+      url: `https://filesystem.anyopsos.local/api/file/${encodeURIComponent(`${specifier.replace('@anyopsos/module-', 'bin/modules/')}/index.js`)}`
     };
 
   } else if (specifier.startsWith('@anyopsos/api-middleware-')) {
 
     return {
-      url: `https://filesystem.anyopsos.local/api/file/${encodeURIComponent( `${specifier.replace('@anyopsos/api-middleware-', 'bin/api-middlewares/')}/index.js` )}`
+      url: `https://filesystem.anyopsos.local/api/file/${encodeURIComponent(`${specifier.replace('@anyopsos/api-middleware-', 'bin/api-middlewares/')}/index.js`)}`
     };
 
   } else if (specifier.startsWith('@anyopsos/api-')) {
 
     return {
-      url: `https://filesystem.anyopsos.local/api/file/${encodeURIComponent( `${specifier.replace('@anyopsos/api-', 'bin/apis/')}/index.js` )}`
+      url: `https://filesystem.anyopsos.local/api/file/${encodeURIComponent(`${specifier.replace('@anyopsos/api-', 'bin/apis/')}/index.js`)}`
     };
 
   } else if (specifier.startsWith('@anyopsos/websocket-')) {
 
     return {
-      url: `https://filesystem.anyopsos.local/api/file/${encodeURIComponent( `${specifier.replace('@anyopsos/websocket-', 'bin/websockets/')}/index.js` )}`
+      url: `https://filesystem.anyopsos.local/api/file/${encodeURIComponent(`${specifier.replace('@anyopsos/websocket-', 'bin/websockets/')}/index.js`)}`
     };
 
-  // Right now we don't use this case directly. Ex: import {xx} from 'https://filesystem.anyopsos.local/api/file/something.js'
+    // Right now we don't use this case directly. Ex: import {xx} from 'https://filesystem.anyopsos.local/api/file/something.js'
   } else if (specifier.startsWith('https://')) {
 
     return {
       url: specifier
     };
 
-  // Https loaded module that requires a child file
+    // Https loaded module that requires a child file
   } else if (parentURL && parentURL.startsWith('https://')) {
 
     if (specifier.startsWith('.')) {
@@ -48,7 +48,7 @@ export function resolve(specifier: string, context: { parentURL?: any }, default
       const previousPath: string = dirname(previousFile) + '/';
       const currentFile: string = previousPath + specifier + '.js'
       return {
-        url: new URL(`https://filesystem.anyopsos.local/api/file/${encodeURIComponent( currentFile )}`, parentURL).href
+        url: new URL(`https://filesystem.anyopsos.local/api/file/${encodeURIComponent(currentFile)}`, parentURL).href
       };
 
     } else {
@@ -98,14 +98,14 @@ export function getSource(url: string, context: { parentURL?: any }, defaultGetS
       strictSSL: true,
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise((pResolve, pReject) => {
       get(url, options, (res) => {
         let data = '';
         res.on('data', (chunk) => data += chunk);
         res.on('end', () => {
-          return resolve({ source: data })
+          return pResolve({ source: data })
         });
-      }).on('error', (err) => reject(err));
+      }).on('error', (err) => pReject(err));
     });
   }
 

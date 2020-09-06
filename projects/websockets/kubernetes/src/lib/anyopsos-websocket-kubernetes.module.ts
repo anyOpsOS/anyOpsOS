@@ -1,13 +1,13 @@
 import socketControllers from 'socket-controllers';
-import {Socket} from 'socket.io';
-import log4js, {Logger} from 'log4js';
+import { Socket } from 'socket.io';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getLogger} = log4js;
-const {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam} = socketControllers;
+const { getLogger } = log4js;
+const { SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam } = socketControllers;
 
-import {AnyOpsOSNodeKubernetesModule} from '@anyopsos/module-node-kubernetes';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSNodeKubernetesModule } from '@anyopsos/module-node-kubernetes';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -35,7 +35,7 @@ export class AnyOpsOSKubernetesWebsocketController {
     return KubernetesModule.disconnectConnection().then((result: BackendResponse) => {
       return result;
     }).catch((e: Error) => {
-      return {status: 'error', data: e.toString()} as BackendResponse;
+      return { status: 'error', data: e.toString() } as BackendResponse;
     });
   }
 
@@ -53,7 +53,7 @@ export class AnyOpsOSKubernetesWebsocketController {
     return KubernetesModule.newConnection().then((result: BackendResponse) => {
       return result;
     }).catch((e: Error) => {
-      return {status: 'error', data: e.toString()} as BackendResponse;
+      return { status: 'error', data: e.toString() } as BackendResponse;
     });
   }
 

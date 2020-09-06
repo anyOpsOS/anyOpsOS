@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {ConnectionSnmp} from '@anyopsos/module-node-snmp';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { ConnectionSnmp } from '@anyopsos/module-node-snmp';
 
-import {AnyOpsOSLibNodeSnmpConnectionsStateService} from './anyopsos-lib-node-snmp-connections-state.service';
+import { AnyOpsOSLibNodeSnmpConnectionsStateService } from './anyopsos-lib-node-snmp-connections-state.service';
 
 @Injectable({
   providedIn: 'root'

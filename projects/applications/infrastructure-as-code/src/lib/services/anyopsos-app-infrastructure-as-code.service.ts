@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {BehaviorSubject, Observable} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import {IaCProject} from '../types/Ia-C-Project';
+import { IaCProject } from '../types/Ia-C-Project';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class AnyOpsOSAppInfrastructureAsCodeService {
   activeProject: Observable<string>;
 
   constructor() {
-    this.dataStore = {projects: [], activeProject: null};
+    this.dataStore = { projects: [], activeProject: null };
     this.$projects = new BehaviorSubject(this.dataStore.projects);
     this.$activeProject = new BehaviorSubject(this.dataStore.activeProject);
     this.projects = this.$projects.asObservable();

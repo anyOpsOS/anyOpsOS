@@ -6,6 +6,7 @@
   },
   "whitelistedNonPeerDependencies": [
     "ngx-logger",
-    "@anyopsos/lib-angular-material"
+    "@anyopsos/lib-angular-material",
+    "@anyopsos/lib-utils"
   ]
 }

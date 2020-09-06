@@ -1,11 +1,11 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSExtLibTheiaModule} from '@anyopsos/ext-lib-theia';
+import { AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
+import { AnyOpsOSExtLibTheiaModule } from '@anyopsos/ext-lib-theia';
 
-import {BodyComponent} from './body/body.component';
-import {MenuComponent} from './menu/menu.component';
+import { BodyComponent } from './body/body.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,7 @@ export class AnyOpsOSAppNotepadModule {
       ico: 'fas fa-pencil-alt',
       name: 'Notepad',
       menu: true,
-      style: {width: '600px', height: '300px', top: '10%', left: '30%'}
+      style: { width: '600px', height: '300px', top: '10%', left: '30%' }
     });
 
   }

@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService} from '@anyopsos/lib-modal';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService } from '@anyopsos/lib-modal';
 
-import {EntryComponent} from './entry/entry.component';
-import {AnyOpsOSModalDefaultInputComponent} from './anyopsos-modal-default-input.component';
+import { EntryComponent } from './entry/entry.component';
+import { AnyOpsOSModalDefaultInputComponent } from './anyopsos-modal-default-input.component';
 
 @NgModule({
   declarations: [

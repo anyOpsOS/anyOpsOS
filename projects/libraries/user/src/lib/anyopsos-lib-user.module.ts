@@ -1,6 +1,6 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 
-import {AnyOpsOSLibUserService} from './services/anyopsos-lib-user.service';
+import { AnyOpsOSLibUserService } from './services/anyopsos-lib-user.service';
 
 @NgModule({
   declarations: [],

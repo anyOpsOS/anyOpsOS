@@ -1,9 +1,9 @@
-import {Component, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 
-import {Application} from '@anyopsos/lib-application';
-import {Connection} from '@anyopsos/backend-core/app/types/connection';
+import { Application } from '@anyopsos/lib-application';
+import { Connection } from '@anyopsos/backend-core/app/types/connection';
 
-import {AnyOpsOSLibFolderExplorerService} from '../services/anyopsos-lib-folder-explorer.service';
+import { AnyOpsOSLibFolderExplorerService } from '../services/anyopsos-lib-folder-explorer.service';
 
 @Component({
   selector: 'alfolder-explorer-main',
@@ -12,7 +12,7 @@ import {AnyOpsOSLibFolderExplorerService} from '../services/anyopsos-lib-folder-
   providers: [AnyOpsOSLibFolderExplorerService]
 })
 export class FolderExplorerMainComponent implements OnInit {
-  @ViewChild('bodyContainer', {static: true, read: ViewContainerRef}) private readonly bodyContainer: ViewContainerRef;
+  @ViewChild('bodyContainer', { static: true, read: ViewContainerRef }) private readonly bodyContainer: ViewContainerRef;
   @Input() readonly application: Application;
   @Input() readonly connection: Connection = null;
 

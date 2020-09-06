@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
-import {AnyOpsOSLibNodeNetappSoapApiService, AnyOpsOSLibNodeNetappSoapApiHelpersService} from '@anyopsos/lib-node-netapp';
-import {ConnectionNetapp, NetAppSnapshot, NetAppVolume, NetAppVserver} from '@anyopsos/module-node-netapp';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibNodeHelpersService } from '@anyopsos/lib-node';
+import { AnyOpsOSLibNodeNetappSoapApiService, AnyOpsOSLibNodeNetappSoapApiHelpersService } from '@anyopsos/lib-node-netapp';
+import { ConnectionNetapp, NetAppSnapshot, NetAppVolume, NetAppVserver } from '@anyopsos/module-node-netapp';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSAppInfrastructureManagerService} from '../anyopsos-app-infrastructure-manager.service';
+import { AnyOpsOSAppInfrastructureManagerService } from '../anyopsos-app-infrastructure-manager.service';
 
 
 @Injectable({

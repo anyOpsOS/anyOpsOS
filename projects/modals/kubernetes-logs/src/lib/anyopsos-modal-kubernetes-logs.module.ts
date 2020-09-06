@@ -1,13 +1,13 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibTerminalModule} from '@anyopsos/lib-terminal';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibTerminalModule } from '@anyopsos/lib-terminal';
 
-import {EntryComponent} from './entry/entry.component';
-import {AnyOpsOSModalKubernetesLogsComponent} from './anyopsos-modal-kubernetes-logs.component';
+import { EntryComponent } from './entry/entry.component';
+import { AnyOpsOSModalKubernetesLogsComponent } from './anyopsos-modal-kubernetes-logs.component';
 
 @NgModule({
   declarations: [

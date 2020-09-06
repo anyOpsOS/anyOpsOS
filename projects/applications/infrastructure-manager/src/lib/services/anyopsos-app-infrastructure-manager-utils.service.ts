@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 const base = 1024
 const suffixes = ['K', 'M', 'G', 'T', 'P', 'E'] // Equivalents: Ki, Mi, Gi, Ti, Pi, Ei
@@ -19,7 +19,9 @@ export class AnyOpsOSAppInfrastructureManagerUtilsService {
     const arrmask = mask.split('.');
 
     for (let i = 0; i < arr1.length; i++) {
+      // tslint:disable-next-line: no-bitwise
       res1.push(parseInt(arr1[i], 10) & parseInt(arrmask[i], 10));
+      // tslint:disable-next-line: no-bitwise
       res2.push(parseInt(arr2[i], 10) & parseInt(arrmask[i], 10));
     }
     return res1.join('.') === res2.join('.');

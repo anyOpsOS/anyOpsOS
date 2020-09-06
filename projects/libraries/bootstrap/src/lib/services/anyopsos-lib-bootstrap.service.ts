@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {BehaviorSubject, Observable} from 'rxjs';
-import {Socket} from 'ngx-socket-io';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
 
 @Injectable({
   providedIn: 'root'
@@ -25,15 +25,15 @@ export class AnyOpsOSLibBootstrapService {
   }
 
   init(): void {
-    window.addEventListener( 'dragover', (e) => {
+    window.addEventListener('dragover', (e) => {
       e.preventDefault();
     });
 
-    window.addEventListener( 'drop', (e) => {
+    window.addEventListener('drop', (e) => {
       e.preventDefault();
     });
 
-    window.addEventListener( 'contextmenu', (e) => {
+    window.addEventListener('contextmenu', (e) => {
       e.preventDefault();
     });
 

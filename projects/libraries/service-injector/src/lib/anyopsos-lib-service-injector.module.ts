@@ -1,6 +1,6 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 
-import {AnyOpsOSLibServiceInjectorService} from './services/anyopsos-lib-service-injector.service';
+import { AnyOpsOSLibServiceInjectorService } from './services/anyopsos-lib-service-injector.service';
 
 @NgModule({
   declarations: [],
@@ -13,8 +13,8 @@ export class AnyOpsOSLibServiceInjectorModule {
     console.log('Loading AnyOpsOSLibServiceInjectorModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibServiceInjectorModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibServiceInjectorModule is already loaded. You should not import it manually.');
     }
 
   }

@@ -5,6 +5,10 @@
     "@angular/common": "~10.0.11",
     "@angular/core": "~10.0.11"
   },
+  "devDependencies": {
+    "@angular/platform-browser-dynamic": "~10.0.11",
+    "zone.js": "~0.10.3"
+  },
   "dependencies": {
     "mxgraph": "^4.0.3"
   },

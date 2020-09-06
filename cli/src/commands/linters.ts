@@ -2,12 +2,12 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 
 // TODO ESM
-const {blue} = chalk;
-const {readdir, statSync} = fs;
+const { blue } = chalk;
+const { readdir, statSync } = fs;
 
-import {runInDocker} from '../utils.js';
-import {INTERNAL_PATH_CWD} from '../constants.js';
-import {Types} from '../types/types.js';
+import { runInDocker } from '../utils.js';
+import { INTERNAL_PATH_CWD } from '../constants.js';
+import { Types } from '../types/types.js';
 
 export class Linters {
 
@@ -104,16 +104,16 @@ export class Linters {
 
   async lintAll(): Promise<void> {
 
-    await this.lintBackendTypes({type: 'module'});
-    await this.lintBackendTypes({type: 'api-middleware'});
-    await this.lintBackendTypes({type: 'api'});
-    await this.lintBackendTypes({type: 'websocket'});
+    await this.lintBackendTypes({ type: 'module' });
+    await this.lintBackendTypes({ type: 'api-middleware' });
+    await this.lintBackendTypes({ type: 'api' });
+    await this.lintBackendTypes({ type: 'websocket' });
     await this.lintBackend();
 
-    await this.lintFrontendTypes({type: 'library'});
-    await this.lintFrontendTypes({type: 'external-library'});
-    await this.lintFrontendTypes({type: 'application'});
-    await this.lintFrontendTypes({type: 'modal'});
+    await this.lintFrontendTypes({ type: 'library' });
+    await this.lintFrontendTypes({ type: 'external-library' });
+    await this.lintFrontendTypes({ type: 'application' });
+    await this.lintFrontendTypes({ type: 'modal' });
     await this.lintFrontend();
   };
 }

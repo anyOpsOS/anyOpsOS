@@ -4,12 +4,12 @@ import editJsonFile from 'edit-json-file';
 import replaceInFile from 'replace-in-file';
 
 // TODO ESM
-const {blue, blueBright, red} = chalk;
-const {copy, ensureDir, move, outputFile, outputJson, pathExistsSync, unlink} = fs;
+const { blue, blueBright, red } = chalk;
+const { copy, ensureDir, move, outputFile, outputJson, pathExistsSync, unlink } = fs;
 
-import {runInDocker} from '../utils.js';
-import {INTERNAL_PATH_CWD} from '../constants.js';
-import {Types} from '../types/types.js';
+import { runInDocker } from '../utils.js';
+import { INTERNAL_PATH_CWD } from '../constants.js';
+import { Types } from '../types/types.js';
 
 export class Generators {
 
@@ -52,7 +52,7 @@ export class Generators {
         include: [
           'src/**/*'
         ]
-      }, {spaces: 2});
+      },               { spaces: 2 });
 
     } else {
 
@@ -410,7 +410,7 @@ export class ${fulldynamicComponent} implements OnInit {
       author: 'Isart Navarro <contact@isartnavarro.io> (https://isartnavarro.io)',
       license: 'GPL-3.0-or-later',
       private: true
-    }, {spaces: 2});
+    },               { spaces: 2 });
     await outputFile(`${this.projectPath}/src/index.ts`, `export * from './lib/anyopsos-api-${argv.name}.module';`);
     await outputFile(`${this.projectPath}/src/lib/anyopsos-api-${argv.name}.module.ts`, `import {Controller, Get, Authorized, Req, Res} from 'routing-controllers';
 import {Request, Response} from 'express';
@@ -468,7 +468,7 @@ export class ${fulldynamicModule} {
       author: 'Isart Navarro <contact@isartnavarro.io> (https://isartnavarro.io)',
       license: 'GPL-3.0-or-later',
       private: true
-    }, {spaces: 2});
+    },               { spaces: 2 });
     await outputFile(`${this.projectPath}/src/index.ts`, `export * from './lib/anyopsos-module-${argv.name}.module';`);
     await outputFile(`${this.projectPath}/src/lib/anyopsos-module-${argv.name}.module.ts`, `export class ${dynamicModule} {
 
@@ -520,7 +520,7 @@ export class ${fulldynamicModule} {
       author: 'Isart Navarro <contact@isartnavarro.io> (https://isartnavarro.io)',
       license: 'GPL-3.0-or-later',
       private: true
-    }, {spaces: 2});
+    },               { spaces: 2 });
     await outputFile(`${this.projectPath}/src/index.ts`, `export * from './lib/anyopsos-websocket-${argv.name}.module';`);
     await outputFile(`${this.projectPath}/src/lib/anyopsos-websocket-${argv.name}.module.ts`, `import {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage} from 'socket-controllers';
 import {getLogger} from 'log4js';

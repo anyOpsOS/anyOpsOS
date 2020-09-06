@@ -48,7 +48,7 @@ export class AnyOpsOSNodeNetappFileSystemModule {
     // <path>/vol/${volume}/.snapshot/${snapshot}${path}</path>
     const pathFiles: BackendResponse & { data: any[]; } = await this.NetappModule.callSoapApi('file-list-directory-iter', {
       path: srcPath
-    }, vfiler);
+    },                                                                                        vfiler);
 
     return pathFiles.data.map((file: any) => {
       if (file.name === '.' || file.name === '..') return;
@@ -72,7 +72,7 @@ export class AnyOpsOSNodeNetappFileSystemModule {
     // <path>/vol/${volume}/${path}</path>
     await this.NetappModule.callSoapApi('file-create-directory', {
       path: dstPath
-    }, vfiler);
+    },                                  vfiler);
   }
 
   /**
@@ -103,7 +103,7 @@ export class AnyOpsOSNodeNetappFileSystemModule {
     // <path>/vol/${volume}/${path}</path>
     const file: unknown = await this.NetappModule.callSoapApi('file-read-file', {
       path: srcPath
-    }, vfiler);
+    },                                                        vfiler);
 
     console.log(file);
 
@@ -132,7 +132,7 @@ export class AnyOpsOSNodeNetappFileSystemModule {
     this.NetappModule.callSoapApi('file-read-file', {
       data: await readFile(realSrcPath),
       path: dstPath
-    }, vfiler);
+    },                            vfiler);
 
     return eventEmitter;
   }
@@ -152,13 +152,13 @@ export class AnyOpsOSNodeNetappFileSystemModule {
       await this.NetappModule.callSoapApi('file-rename-file', {
         'from-path': srcPath,
         'to-path': dstPath
-      }, vfiler);
+      },                                  vfiler);
     }
     if (type === 'rename') {
       await this.NetappModule.callSoapApi('file-rename-file', {
         'from-path': srcPath,
         'to-path': dstPath
-      }, vfiler);
+      },                                  vfiler);
     }
   }
 
@@ -185,12 +185,12 @@ export class AnyOpsOSNodeNetappFileSystemModule {
     // <path>/vol/${volume}/${path}</path>
     await this.NetappModule.callSoapApi('file-delete-file', {
       path: srcPath
-    }, vfiler);
+    },                                  vfiler);
 
     // TODO: directory must be empty
     await this.NetappModule.callSoapApi('file-delete-directory', {
       path: srcPath
-    }, vfiler);
+    },                                  vfiler);
   }
 
 

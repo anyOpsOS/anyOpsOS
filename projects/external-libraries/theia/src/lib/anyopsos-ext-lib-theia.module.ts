@@ -1,6 +1,6 @@
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {AnyOpsOSExtLibTheiaComponent} from './components/anyopsos-ext-lib-theia.component';
+import { AnyOpsOSExtLibTheiaComponent } from './components/anyopsos-ext-lib-theia.component';
 
 
 @NgModule({

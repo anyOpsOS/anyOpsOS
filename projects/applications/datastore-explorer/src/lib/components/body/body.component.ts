@@ -1,20 +1,20 @@
-import {Component, OnInit, Input, OnDestroy, ViewChild, ViewContainerRef} from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 
-import {combineLatest, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibNodeHelpersService, AnyOpsOSLibNodeTemplateHelpersService} from '@anyopsos/lib-node';
-import {AnyOpsOSLibNodeVmwareHelpersService} from '@anyopsos/lib-node-vmware';
-import {AnyOpsOSLibNodeNetappHelpersService} from '@anyopsos/lib-node-netapp';
-import {ConnectionVmware} from '@anyopsos/module-node-vmware';
-import {ConnectionNetapp} from '@anyopsos/module-node-netapp';
+import { Application } from '@anyopsos/lib-application';
+import { AnyOpsOSLibNodeHelpersService, AnyOpsOSLibNodeTemplateHelpersService } from '@anyopsos/lib-node';
+import { AnyOpsOSLibNodeVmwareHelpersService } from '@anyopsos/lib-node-vmware';
+import { AnyOpsOSLibNodeNetappHelpersService } from '@anyopsos/lib-node-netapp';
+import { ConnectionVmware } from '@anyopsos/module-node-vmware';
+import { ConnectionNetapp } from '@anyopsos/module-node-netapp';
 
-import {AnyOpsOSAppDatastoreExplorerService} from '../../services/anyopsos-app-datastore-explorer.service';
-import {DatastoreExplorerConnectionObject} from '../../types/datastore-explorer-connection-object';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
-import {VMWareDatastore} from '@anyopsos/module-node-vmware';
-import {NetAppVolume} from '@anyopsos/module-node-netapp';
+import { AnyOpsOSAppDatastoreExplorerService } from '../../services/anyopsos-app-datastore-explorer.service';
+import { DatastoreExplorerConnectionObject } from '../../types/datastore-explorer-connection-object';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
+import { VMWareDatastore } from '@anyopsos/module-node-vmware';
+import { NetAppVolume } from '@anyopsos/module-node-netapp';
 
 
 @Component({
@@ -23,7 +23,7 @@ import {NetAppVolume} from '@anyopsos/module-node-netapp';
   styleUrls: ['./body.component.scss']
 })
 export class BodyComponent implements OnDestroy, OnInit {
-  @ViewChild('bodyContainer', {static: true, read: ViewContainerRef}) private readonly bodyContainer: ViewContainerRef;
+  @ViewChild('bodyContainer', { static: true, read: ViewContainerRef }) private readonly bodyContainer: ViewContainerRef;
   @Input() readonly application: Application;
 
   private readonly destroySubject$: Subject<void> = new Subject();

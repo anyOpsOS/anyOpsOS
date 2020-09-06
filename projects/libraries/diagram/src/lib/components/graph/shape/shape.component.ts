@@ -1,10 +1,10 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import {range, isEmpty, isNumber} from 'lodash-es';
-import {line, curveCardinalClosed} from 'd3-shape';
+import { range, isEmpty, isNumber } from 'lodash-es';
+import { line, curveCardinalClosed } from 'd3-shape';
 
-import {LayoutNode} from '../../../types/layout-node';
-import {AnyOpsOSLibDiagramDomUtilsService} from '../../../services/anyopsos-lib-diagram-dom-utils.service';
+import { LayoutNode } from '../../../types/layout-node';
+import { AnyOpsOSLibDiagramDomUtilsService } from '../../../services/anyopsos-lib-diagram-dom-utils.service';
 
 @Component({
   selector: '[aldiagram-shape]',
@@ -114,7 +114,7 @@ export class ShapeComponent {
         name: 'style',
         value: `fill: none; stroke: hsl(191, 100%, 50%); stroke-opacity: ${this.contrastMode ? 0.5 : 0.4}; stroke-width: ${this.contrastMode ? 1 : 0.8}`
       });
-      attrs.push({name: 'transform', value: 'scale(0.5)'});
+      attrs.push({ name: 'transform', value: 'scale(0.5)' });
     }
 
     if (type === 'shadowAttrs') {
@@ -122,18 +122,18 @@ export class ShapeComponent {
         name: 'style',
         value: `fill: none; stroke: hsl(0, 0%, 100%); stroke-opacity: ${this.contrastMode ? 0.4 : 0.5}; stroke-width: 0.7`
       });
-      attrs.push({name: 'transform', value: 'scale(0.5)'});
+      attrs.push({ name: 'transform', value: 'scale(0.5)' });
     }
 
     if (type === 'backgroundAttrs') {
-      attrs.push({name: 'style', value: 'fill: hsl(0, 0%, 100%); stroke: none'});
-      attrs.push({name: 'transform', value: 'scale(0.48)'});
+      attrs.push({ name: 'style', value: 'fill: hsl(0, 0%, 100%); stroke: none' });
+      attrs.push({ name: 'transform', value: 'scale(0.48)' });
     }
 
     if (type === 'metricFillAttrs') {
-      attrs.push({name: 'clip-path', value: `url(#${this.getClipId()})`});
-      attrs.push({name: 'style', value: `fill: ${this.metricColor}; fill-opacity: 0.7; stroke: none`});
-      attrs.push({name: 'transform', value: 'scale(0.48)'});
+      attrs.push({ name: 'clip-path', value: `url(#${this.getClipId()})` });
+      attrs.push({ name: 'style', value: `fill: ${this.metricColor}; fill-opacity: 0.7; stroke: none` });
+      attrs.push({ name: 'transform', value: 'scale(0.48)' });
     }
 
     if (type === 'nodeShadowAttrs') {
@@ -141,16 +141,16 @@ export class ShapeComponent {
         name: 'style',
         value: `fill: none; stroke: ${this.contrastMode ? 'hsl(0, 0%, 100%)' : 'hsl(0, 0%, 96%)'}; stroke-width: ${this.contrastMode ? 0.25 : 0.18}`
       });
-      attrs.push({name: 'transform', value: 'scale(0.49)'});
+      attrs.push({ name: 'transform', value: 'scale(0.49)' });
     }
 
     if (type === 'nodeBorderAttrs') {
-      attrs.push({name: 'stroke', value: this.color});
+      attrs.push({ name: 'stroke', value: this.color });
       attrs.push({
         name: 'style',
         value: `fill: none; stroke-opacity: ${this.hasMetric ? 0.5 : 1}; stroke-width: ${this.contrastMode ? 0.15 : 0.12}`
       });
-      attrs.push({name: 'transform', value: 'scale(0.5)'});
+      attrs.push({ name: 'transform', value: 'scale(0.5)' });
     }
 
     return attrs;

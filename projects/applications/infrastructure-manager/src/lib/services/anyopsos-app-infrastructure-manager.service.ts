@@ -1,25 +1,25 @@
-import {Injectable, ViewContainerRef} from '@angular/core';
+import { Injectable, ViewContainerRef } from '@angular/core';
 
-import {take} from 'rxjs/operators';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {Socket} from 'ngx-socket-io';
-import {v4 as uuidv4} from 'uuid';
+import { take } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
+import { v4 as uuidv4 } from 'uuid';
 
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
 
-import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
-import {AnyOpsOSLibNodeVmwareService, AnyOpsOSLibNodeVmwareConnectionsStateService} from '@anyopsos/lib-node-vmware';
-import {AnyOpsOSLibNodeNetappService, AnyOpsOSLibNodeNetappConnectionsStateService} from '@anyopsos/lib-node-netapp';
-import {AnyOpsOSLibNodeDockerService, AnyOpsOSLibNodeDockerConnectionsStateService} from '@anyopsos/lib-node-docker';
-import {AnyOpsOSLibNodeKubernetesService, AnyOpsOSLibNodeKubernetesConnectionsStateService} from '@anyopsos/lib-node-kubernetes';
-import {AnyOpsOSLibNodeLinuxService, AnyOpsOSLibNodeLinuxConnectionsStateService} from '@anyopsos/lib-node-linux';
-import {AnyOpsOSLibNodeSnmpService, AnyOpsOSLibNodeSnmpConnectionsStateService} from '@anyopsos/lib-node-snmp';
+import { AnyOpsOSLibNodeHelpersService } from '@anyopsos/lib-node';
+import { AnyOpsOSLibNodeVmwareService, AnyOpsOSLibNodeVmwareConnectionsStateService } from '@anyopsos/lib-node-vmware';
+import { AnyOpsOSLibNodeNetappService, AnyOpsOSLibNodeNetappConnectionsStateService } from '@anyopsos/lib-node-netapp';
+import { AnyOpsOSLibNodeDockerService, AnyOpsOSLibNodeDockerConnectionsStateService } from '@anyopsos/lib-node-docker';
+import { AnyOpsOSLibNodeKubernetesService, AnyOpsOSLibNodeKubernetesConnectionsStateService } from '@anyopsos/lib-node-kubernetes';
+import { AnyOpsOSLibNodeLinuxService, AnyOpsOSLibNodeLinuxConnectionsStateService } from '@anyopsos/lib-node-linux';
+import { AnyOpsOSLibNodeSnmpService, AnyOpsOSLibNodeSnmpConnectionsStateService } from '@anyopsos/lib-node-snmp';
 
-import {ConnectionTypes} from '@anyopsos/backend-core/app/types/connection-types';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { ConnectionTypes } from '@anyopsos/backend-core/app/types/connection-types';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
 @Injectable({
   providedIn: 'root'
@@ -157,7 +157,7 @@ export class AnyOpsOSAppInfrastructureManagerService {
     if (!this.dataStore.activeObjectUuid) {
       this.dataStore.activeObject = null;
     } else {
-     this.dataStore.activeObject = this.LibNodeHelpers.getObjectByUuid(this.dataStore.activeConnectionUuid, this.activeConnectionType, this.dataStore.activeObjectUuid);
+      this.dataStore.activeObject = this.LibNodeHelpers.getObjectByUuid(this.dataStore.activeConnectionUuid, this.activeConnectionType, this.dataStore.activeObjectUuid);
     }
 
     // broadcast data to subscribers
@@ -206,7 +206,7 @@ export class AnyOpsOSAppInfrastructureManagerService {
       if (connection.type === 'linux') await this.LibNodeLinuxConnectionsState.patchFullConnection(connection);
       if (connection.type === 'snmp') await this.LibNodeSnmpConnectionsState.patchFullConnection(connection);
 
-    // New connection received
+      // New connection received
     } else {
 
       connection.uuid = uuidv4();
@@ -258,7 +258,9 @@ export class AnyOpsOSAppInfrastructureManagerService {
     }
 
     const currentConnection: ConnectionTypes = this.LibNodeHelpers.getConnectionByUuid(connectionUuid, connectionType);
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.bodyContainer,
       {
         title: `Delete connection ${currentConnection.description}`,
         text: 'Remove the selected connection from the inventory?',
@@ -268,8 +270,7 @@ export class AnyOpsOSAppInfrastructureManagerService {
         boxContent: 'This action is permanent. Anything using this connection as a dependency will be deleted as well.',
         boxClass: 'text-danger',
         boxIcon: 'fa-exclamation-triangle'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (result: boolean): Promise<void> => {
       if (result !== true) return;
@@ -298,7 +299,9 @@ export class AnyOpsOSAppInfrastructureManagerService {
     const currentConnection: ConnectionTypes = this.LibNodeHelpers.getConnectionByUuid(connectionUuid, connectionType);
     if (currentConnection.state === 'disconnected') return this.setActiveConnectionUuid(connectionUuid, connectionType);
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.bodyContainer,
       {
         title: `Edit connection ${currentConnection.description}`,
         text: 'Your connection will be disconnected before editing it. Continue?',
@@ -308,8 +311,7 @@ export class AnyOpsOSAppInfrastructureManagerService {
         boxContent: 'Anything using this as a dependency will be disconnected.',
         boxClass: 'text-danger',
         boxIcon: 'fa-exclamation-triangle'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (result: boolean): Promise<void> => {
       if (result !== true) return;
@@ -337,11 +339,12 @@ export class AnyOpsOSAppInfrastructureManagerService {
   openBackupsManager(type: string, data: { [key: string]: DataObject }) {
     this.logger.debug('Infrastructure Manager', 'Opening Backups Manager APP');
 
-    this.LibApplication.openApplication('backups-manager',
-    {
-      type,
-      data
-    });
+    this.LibApplication.openApplication(
+      'backups-manager',
+      {
+        type,
+        data
+      });
   }
 
 }

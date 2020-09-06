@@ -1,25 +1,25 @@
-import {Injectable, ViewContainerRef} from '@angular/core';
+import { Injectable, ViewContainerRef } from '@angular/core';
 
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
-import {ConnectionNetapp, NetAppIface, NetAppSnapshot, NetAppVolume, NetAppVserver} from '@anyopsos/module-node-netapp';
-import {ConnectionVmware, VMWareHost, VMWareFolder, VMWareResourcePool, VMWareVM} from '@anyopsos/module-node-vmware';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibFileSystemService } from '@anyopsos/lib-file-system';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
+import { AnyOpsOSLibNodeHelpersService } from '@anyopsos/lib-node';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
+import { ConnectionNetapp, NetAppIface, NetAppSnapshot, NetAppVolume, NetAppVserver } from '@anyopsos/module-node-netapp';
+import { ConnectionVmware, VMWareHost, VMWareFolder, VMWareResourcePool, VMWareVM } from '@anyopsos/module-node-vmware';
 
-import {AnyOpsOSAppBackupsManagerHelpersService} from './anyopsos-app-backups-manager-helpers.service';
-import {RestoreVolumeFiles} from '../types/restore-volume-files';
-import {MountVolumeSnapshot} from '../types/mount-volume-snapshot';
-import {RestoreVmGuestFiles} from '../types/restore-vm-guest-files';
-import {VmInstantRecovery} from '../types/vm-instant-recovery';
-import {RestoreVm} from '../types/restore-vm';
-import {BackupVm} from '../types/backup-vm';
+import { AnyOpsOSAppBackupsManagerHelpersService } from './anyopsos-app-backups-manager-helpers.service';
+import { RestoreVolumeFiles } from '../types/restore-volume-files';
+import { MountVolumeSnapshot } from '../types/mount-volume-snapshot';
+import { RestoreVmGuestFiles } from '../types/restore-vm-guest-files';
+import { VmInstantRecovery } from '../types/vm-instant-recovery';
+import { RestoreVm } from '../types/restore-vm';
+import { BackupVm } from '../types/backup-vm';
 
 @Injectable({
   providedIn: 'root'
@@ -51,39 +51,40 @@ export class AnyOpsOSAppBackupsManagerService {
   initBackups(): void {
     this.LibFileSystem.getConfigFile('applications/backups-manager/backups.json').subscribe(
       // TODO data type
-    (res: BackendResponse & { data: unknown; }) => {
-      this.logger.info('Backups Manager', 'Got backups successfully');
+      (res: BackendResponse & { data: unknown; }) => {
+        this.logger.info('Backups Manager', 'Got backups successfully');
 
-      // TODO this.BackupManagerHelpers.setBackup();
-    },
-    error => {
-      this.logger.error('Backups Manager', 'Error while getting backups', null, error);
-    });
+        // TODO this.BackupManagerHelpers.setBackup();
+      },
+      error => {
+        this.logger.error('Backups Manager', 'Error while getting backups', null, error);
+      });
   }
 
   initRestores(): void {
     this.LibFileSystem.getConfigFile('applications/backups-manager/restores.json').subscribe(
       // TODO data type
-    (res: BackendResponse & { data: unknown; }) => {
-      this.logger.info('Backups Manager', 'Got restores successfully');
+      (res: BackendResponse & { data: unknown; }) => {
+        this.logger.info('Backups Manager', 'Got restores successfully');
 
-      // TODO this.BackupManagerHelpers.setRestore();
-    },
-    error => {
-      this.logger.error('Backups Manager', 'Error while getting restores', null, error);
-    });
+        // TODO this.BackupManagerHelpers.setRestore();
+      },
+      error => {
+        this.logger.error('Backups Manager', 'Error while getting restores', null, error);
+      });
   }
 
   async mountVolumeSnapshot(dataObj: { snapshot: DataObject & { info: { data: NetAppSnapshot } } }): Promise<void> {
     this.logger.debug('Backups Manager', 'Received event mountVolumeSnapshot -> Initializing mount of Volume');
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('backups-manager-recovery-wizard', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'backups-manager-recovery-wizard',
+      this.bodyContainer,
       {
         type: 'mount_volume_snapshot',
         title: `Select required data to Mount a Volume Snapshot`,
         data: dataObj
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (
       selectedData: {
@@ -133,8 +134,7 @@ export class AnyOpsOSAppBackupsManagerService {
       const littleModalRef: MatDialogRef<any> = await this.LibModal.openLittleModal(
         this.bodyContainer,
         'PLEASE WAIT',
-        `Mounting ${data.volume.name} from Snapshot...`
-      );
+        `Mounting ${data.volume.name} from Snapshot...`);
 
       return this.BackupManagerHelpers.mountRestoreSnapshotDatastore(data).then((res) => {
         if (res instanceof Error) throw new Error('Failed to mount Volume Snapshot');
@@ -151,15 +151,16 @@ export class AnyOpsOSAppBackupsManagerService {
     });
   }
 
-  async restoreVolumeFiles(dataObj: { snapshot?: DataObject & { info: { data: NetAppSnapshot } }, volume?: DataObject & { info: { data: NetAppVolume } }  }): Promise<void> {
+  async restoreVolumeFiles(dataObj: { snapshot?: DataObject & { info: { data: NetAppSnapshot } }, volume?: DataObject & { info: { data: NetAppVolume } } }): Promise<void> {
     this.logger.debug('Backups Manager', 'Received event RestoreVolumeFiles -> Initializing restore of datastore files');
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('backups-manager-recovery-wizard', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'backups-manager-recovery-wizard',
+      this.bodyContainer,
       {
         type: 'restore_volume_files',
         title: `Select required data to Restore Volume Files`,
         data: dataObj
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (
       selectedData: {
@@ -199,19 +200,20 @@ export class AnyOpsOSAppBackupsManagerService {
         esxiDatastoreName: 'anyOpsOS_' + volume['volume-id-attributes']['junction-path'].substr(1)
       };
 
-      this.BackupManagerHelpers.setRestore(data.uuid, {
-        name: `Datastore restore (${data.volume['volume-id-attributes'].name})`,
-        data,
-        state: ['init'],
-        log: []
-      });
+      this.BackupManagerHelpers.setRestore(
+        data.uuid,
+        {
+          name: `Datastore restore (${data.volume['volume-id-attributes'].name})`,
+          data,
+          state: ['init'],
+          log: []
+        });
       this.setActive(data.uuid);
 
       const littleModalRef: MatDialogRef<any> = await this.LibModal.openLittleModal(
         this.bodyContainer,
         'PLEASE WAIT',
-        `Restoring ${data.volume.name} files from Snapshot...`,
-      );
+        `Restoring ${data.volume.name} files from Snapshot...`);
 
       return this.BackupManagerHelpers.restoreSnapshotDatastoreFiles(data).then((res) => {
         if (res instanceof Error) throw new Error('Failed to restore snapshot into datastore files');
@@ -219,14 +221,16 @@ export class AnyOpsOSAppBackupsManagerService {
         this.logger.debug('Backups Manager', 'Restore finished successfully');
 
         // Open Datastore Brower application
-        this.LibApplication.openApplication('datastore-explorer', {
+        this.LibApplication.openApplication(
+          'datastore-explorer',
+          {
             credential: data.virtual.credential,
             host: data.virtual.host,
             port: data.virtual.port,
             type: 'vmware',
             data: {},
             original_datastore: data.volume.name
-        });
+          });
 
         this.LibModal.closeModal(littleModalRef.id);
         this.BackupManagerHelpers.setRestoreState(data.uuid, 'end');
@@ -241,13 +245,14 @@ export class AnyOpsOSAppBackupsManagerService {
   async restoreVmGuestFiles(dataObj: { vm: DataObject & { info: { data: VMWareVM } }, snapshot?: DataObject & { info: { data: NetAppSnapshot } } }): Promise<void> {
     this.logger.debug('Backups Manager', `Received event restoreVmGuestFiles -> Initializing restore of VM guest files [${dataObj.vm.name}]`);
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('backups-manager-recovery-wizard', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'backups-manager-recovery-wizard',
+      this.bodyContainer,
       {
         type: 'restore_vm_guest_files',
         title: `Select required data to Restore VM (${dataObj.vm.name}) Guest Files`,
         data: dataObj
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (
       selectedData: {
@@ -292,19 +297,20 @@ export class AnyOpsOSAppBackupsManagerService {
         resourcePool: selectedData.selectedResourcePool,
       };
 
-      this.BackupManagerHelpers.setRestore(data.uuid, {
-        name: `VM guest files (${data.vm.name})`,
-        data,
-        state: ['init'],
-        log: []
-      });
+      this.BackupManagerHelpers.setRestore(
+        data.uuid,
+        {
+          name: `VM guest files (${data.vm.name})`,
+          data,
+          state: ['init'],
+          log: []
+        });
       this.setActive(data.uuid);
 
       const littleModalRef: MatDialogRef<any> = await this.LibModal.openLittleModal(
         this.bodyContainer,
         'PLEASE WAIT',
-        `Restoring ${data.vm.name} guest files from Snapshot...`,
-      );
+        `Restoring ${data.vm.name} guest files from Snapshot...`);
 
       return this.BackupManagerHelpers.restoreSnapshotVMGuestFiles(data).then((res) => {
         if (res instanceof Error) throw new Error('Failed to restore snapshot into VM guest files');
@@ -324,13 +330,14 @@ export class AnyOpsOSAppBackupsManagerService {
   async vmInstantRecovery(dataObj: { vm: DataObject & { info: { data: VMWareVM } }, snapshot?: DataObject & { info: { data: NetAppSnapshot } } }): Promise<void> {
     this.logger.debug('Backups Manager', `Received event vmInstantRecovery -> Initializing restore of VM [${dataObj.vm.name}]`);
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('backups-manager-recovery-wizard', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'backups-manager-recovery-wizard',
+      this.bodyContainer,
       {
         type: 'vm_instant_recovery',
         title: `Select required data to perform an Instant VM (${dataObj.vm.name})`,
         data: dataObj
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (
       selectedData: {
@@ -389,8 +396,7 @@ export class AnyOpsOSAppBackupsManagerService {
       const littleModalRef: MatDialogRef<any> = await this.LibModal.openLittleModal(
         this.bodyContainer,
         'PLEASE WAIT',
-        `Restoring ${data.vm.name} from Snapshot...`,
-      );
+        `Restoring ${data.vm.name} from Snapshot...`);
 
       return this.BackupManagerHelpers.restoreSnapshotIntoInstantVM(data).then((res) => {
         if (res instanceof Error) throw new Error('Failed to restore snapshot into Instant VM');
@@ -410,13 +416,14 @@ export class AnyOpsOSAppBackupsManagerService {
   async restoreVm(dataObj: { vm: DataObject & { info: { data: VMWareVM } }, snapshot?: DataObject & { info: { data: NetAppSnapshot } } }): Promise<void> {
     this.logger.debug('Backups Manager', `Received event restoreVm -> Initializing restore of VM [${dataObj.vm.name}]`);
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('backups-manager-recovery-wizard', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'backups-manager-recovery-wizard',
+      this.bodyContainer,
       {
         type: 'restore_vm',
         title: `Select required data to Restore VM (${dataObj.vm.name})`,
         data: dataObj
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (
       selectedData: {
@@ -472,8 +479,7 @@ export class AnyOpsOSAppBackupsManagerService {
       const littleModalRef: MatDialogRef<any> = await this.LibModal.openLittleModal(
         this.bodyContainer,
         'PLEASE WAIT',
-        `Restoring ${data.vm.name} from Snapshot...`,
-      );
+        `Restoring ${data.vm.name} from Snapshot...`);
 
       return this.BackupManagerHelpers.restoreSnapshotIntoVM(data).then((res) => {
         if (res instanceof Error) throw new Error('Failed to restore snapshot into VM');
@@ -505,12 +511,13 @@ export class AnyOpsOSAppBackupsManagerService {
     });
     this.setActive(data.uuid);
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('backups-manager-backup-wizard', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'backups-manager-backup-wizard',
+      this.bodyContainer,
       {
         title: 'Backup Wizard',
         backupObject: data.vm
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (
       selectedData
@@ -524,8 +531,7 @@ export class AnyOpsOSAppBackupsManagerService {
       const littleModalRef: MatDialogRef<any> = await this.LibModal.openLittleModal(
         this.bodyContainer,
         'PLEASE WAIT',
-        `Backing up ${selectedData.backupName}...`,
-      );
+        `Backing up ${selectedData.backupName}...`);
 
       return this.BackupManagerHelpers.startVMBackup(data).then((res) => {
         if (res instanceof Error) throw new Error('Failed to backup VM');

@@ -8,6 +8,8 @@
     "ngx-socket-io",
     "xterm",
     "xterm-addon-fit",
-    "xterm-addon-web-links"
+    "xterm-addon-web-links",
+    "@anyopsos/lib-logger",
+    "@anyopsos/lib-workspace"
   ]
 }

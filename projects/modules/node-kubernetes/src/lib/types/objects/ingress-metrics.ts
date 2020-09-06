@@ -1,4 +1,4 @@
-import {Metrics} from './metrics';
+import { Metrics } from './metrics';
 
 export interface IngressMetrics<T = Metrics> {
   [metric: string]: T;

@@ -1,19 +1,19 @@
 import socketControllers from 'socket-controllers';
-import fetch, {Response} from 'node-fetch';
+import fetch, { Response } from 'node-fetch';
 import validator from 'validator';
 
 // TODO ESM
-const {getSocketIO} = socketControllers;
+const { getSocketIO } = socketControllers;
 
-import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {AnyOpsOSCredentialModule} from '@anyopsos/module-credential';
+import { AnyOpsOSSysWorkspaceModule } from '@anyopsos/module-sys-workspace';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { AnyOpsOSCredentialModule } from '@anyopsos/module-credential';
 
-import {ConnectionNetapp} from './types/connection-netapp';
-import {ConnectionNetappServer} from './types/connection-netapp-server';
-import {WorkspaceToNetappMap} from './types/workspace-to-netapp-map';
+import { ConnectionNetapp } from './types/connection-netapp';
+import { ConnectionNetappServer } from './types/connection-netapp-server';
+import { WorkspaceToNetappMap } from './types/workspace-to-netapp-map';
 
-import {NETAPP_CONFIG_FILE, NETAPP_PORT, NETAPP_SOAP_COOKIE} from './anyopsos-module-node-netapp.constants';
+import { NETAPP_CONFIG_FILE, NETAPP_PORT, NETAPP_SOAP_COOKIE } from './anyopsos-module-node-netapp.constants';
 
 
 const netappSessions: WorkspaceToNetappMap = {};
@@ -96,7 +96,7 @@ export class AnyOpsOSNodeNetappSessionStateModule {
 
     return {
       host: connectionData.host,
-      port: (validator.isInt(connectionData.port.toString(), {min: 1, max: 65535}) && connectionData.port) || NETAPP_PORT,
+      port: (validator.isInt(connectionData.port.toString(), { min: 1, max: 65535 }) && connectionData.port) || NETAPP_PORT,
       credential: await this.CredentialModule.getCredential(connectionData.credential)
     };
 

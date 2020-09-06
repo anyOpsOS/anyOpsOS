@@ -10,18 +10,17 @@ import {
   SimpleChanges
 } from '@angular/core';
 
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
-import {MatMenuTrigger, CdkDragStart} from '@anyopsos/lib-angular-material';
-import {Application, AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibSelectableService} from '@anyopsos/lib-selectable';
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {AnyOpsOSLibFileSystemUiService, CutCopyFile} from '@anyopsos/lib-file-system-ui';
-import {ContextMenuItem} from '@anyopsos/lib-types';
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
-import {Connection} from '@anyopsos/backend-core/app/types/connection';
+import { MatMenuTrigger, CdkDragStart } from '@anyopsos/lib-angular-material';
+import { Application, AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibSelectableService } from '@anyopsos/lib-selectable';
+import { AnyOpsOSLibFileSystemUiService, CutCopyFile } from '@anyopsos/lib-file-system-ui';
+import { ContextMenuItem } from '@anyopsos/lib-types';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { Connection } from '@anyopsos/backend-core/app/types/connection';
 
 @Component({
   selector: 'alfolder-anyopsos-lib-folder',
@@ -30,9 +29,9 @@ import {Connection} from '@anyopsos/backend-core/app/types/connection';
   providers: [AnyOpsOSLibSelectableService]
 })
 export class AnyOpsOSLibFolderComponent implements OnDestroy, OnInit, OnChanges {
-  @ViewChild(MatMenuTrigger, {static: false}) readonly contextMenuFolder: MatMenuTrigger;
-  @ViewChild('selectableContainer', {static: true}) private readonly selectableContainer: ElementRef;
-  @ViewChild('modalContainer', {static: false, read: ViewContainerRef}) readonly viewContainerRef: ViewContainerRef;
+  @ViewChild(MatMenuTrigger, { static: false }) readonly contextMenuFolder: MatMenuTrigger;
+  @ViewChild('selectableContainer', { static: true }) private readonly selectableContainer: ElementRef;
+  @ViewChild('modalContainer', { static: false, read: ViewContainerRef }) readonly viewContainerRef: ViewContainerRef;
 
   @Input() readonly application: Application;
   @Input() readonly connection: Connection = null;
@@ -54,7 +53,7 @@ export class AnyOpsOSLibFolderComponent implements OnDestroy, OnInit, OnChanges 
   private copyFile: CutCopyFile;
   private cutFile: CutCopyFile;
 
-  contextMenuPosition = {x: '0px', y: '0px'};
+  contextMenuPosition = { x: '0px', y: '0px' };
   readonly folderContextMenuItems: ContextMenuItem[] = [
     {
       id: 1, text: '<i class="fas fa-download"></i> Download from URL to current folder', action: () => {
@@ -66,21 +65,22 @@ export class AnyOpsOSLibFolderComponent implements OnDestroy, OnInit, OnChanges 
         this.UIputFolder();
       }
     },
-    {id: 3, text: 'divider'},
+    { id: 3, text: 'divider' },
     {
       id: 4, text: '<i class="fas fa-sync-alt"></i> Refresh', action: () => {
         this.reloadPath();
       }
     },
-    {id: 5, text: 'divider'},
+    { id: 5, text: 'divider' },
     {
       id: 6, text: '<i class="fas fa-paste"></i> Paste', action: () => {
         this.UIpasteFile();
-      }, disabled: () => {
+      },
+      disabled: () => {
         return this.copyFile === null && this.cutFile === null;
       }
     },
-    {id: 7, text: 'divider'},
+    { id: 7, text: 'divider' },
     {
       id: 8, text: '<i class="fas fa-lock"></i> Permissions', action: () => {
         // TODO
@@ -89,7 +89,6 @@ export class AnyOpsOSLibFolderComponent implements OnDestroy, OnInit, OnChanges 
   ];
 
   constructor(private readonly logger: AnyOpsOSLibLoggerService,
-              private readonly LibFileSystem: AnyOpsOSLibFileSystemService,
               private readonly LibFileSystemUi: AnyOpsOSLibFileSystemUiService,
               private readonly LibApplication: AnyOpsOSLibApplicationService,
               readonly Selectable: AnyOpsOSLibSelectableService) {

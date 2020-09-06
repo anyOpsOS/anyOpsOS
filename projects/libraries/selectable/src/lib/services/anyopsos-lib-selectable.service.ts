@@ -1,4 +1,4 @@
-import {ElementRef, Injectable, Renderer2, RendererFactory2} from '@angular/core';
+import { ElementRef, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 
 export interface Item {
   node: Element;
@@ -835,9 +835,11 @@ export class AnyOpsOSLibSelectableService {
     if (!wait) {
       fn.apply(this, arguments);
       wait = true;
-      return setTimeout(() => {
-        wait = false;
-      }, this.config.throttle);
+      return setTimeout(
+        () => {
+          wait = false;
+        },
+        this.config.throttle);
     }
   }
 

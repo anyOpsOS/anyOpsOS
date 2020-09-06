@@ -6,10 +6,10 @@
   },
   "whitelistedNonPeerDependencies": [
     "@anyopsos/lib-angular-material",
+    "@anyopsos/lib-application",
+    "@anyopsos/lib-file-system-ui",
     "@anyopsos/lib-logger",
     "@anyopsos/lib-modal",
-    "@anyopsos/lib-file-system-ui",
-    "@anyopsos/module-config-file",
-    "@anyopsos/backend-core"
+    "@anyopsos/lib-workspace"
   ]
 }

@@ -1,4 +1,4 @@
-export interface VMWareFirewallRule  {
+export interface VMWareFirewallRule {
   key: string;
   allowedHosts: {
     allIp: boolean;

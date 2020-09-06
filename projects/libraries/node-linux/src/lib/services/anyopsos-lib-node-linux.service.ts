@@ -1,16 +1,16 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Socket} from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
-import {AnyOpsOSLibSshHelpersService, AnyOpsOSLibSshService} from '@anyopsos/lib-ssh';
-import {ConnectionLinux} from '@anyopsos/module-node-linux';
-import {ConnectionSsh} from '@anyopsos/module-ssh';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibWorkspaceService } from '@anyopsos/lib-workspace';
+import { AnyOpsOSLibSshHelpersService, AnyOpsOSLibSshService } from '@anyopsos/lib-ssh';
+import { ConnectionLinux } from '@anyopsos/module-node-linux';
+import { ConnectionSsh } from '@anyopsos/module-ssh';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSLibNodeLinuxConnectionsStateService} from './anyopsos-lib-node-linux-connections-state.service';
-import {AnyOpsOSLibNodeLinuxHelpersService} from './anyopsos-lib-node-linux-helpers.service';
+import { AnyOpsOSLibNodeLinuxConnectionsStateService } from './anyopsos-lib-node-linux-connections-state.service';
+import { AnyOpsOSLibNodeLinuxHelpersService } from './anyopsos-lib-node-linux-helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -56,24 +56,26 @@ export class AnyOpsOSLibNodeLinuxService {
     return new Promise((resolve, reject) => {
 
       // Create new Linux session
-      this.socket.emit('[linux-session]', {
-        connectionUuid: connection.uuid,
-        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (data: BackendResponse) => {
+      this.socket.emit('[linux-session]',
+                       {
+                        connectionUuid: connection.uuid,
+                        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
+                       },
+                       async (data: BackendResponse) => {
 
-        if (data.status === 'error') {
-          this.logger.error('LibNodeLinux', 'Error while emitting [linux-session]', loggerArgs, data.data);
-          await this.LibNodeLinuxConnectionsState.patchConnection(connection.uuid, 'error', data.data);
+                        if (data.status === 'error') {
+                          this.logger.error('LibNodeLinux', 'Error while emitting [linux-session]', loggerArgs, data.data);
+                          await this.LibNodeLinuxConnectionsState.patchConnection(connection.uuid, 'error', data.data);
 
-          return reject(data.data);
-        }
+                          return reject(data.data);
+                        }
 
-        // Set connection state as connected and remove any previous errors
-        await this.LibNodeLinuxConnectionsState.patchConnection(connection.uuid, 'state', 'connected');
-        await this.LibNodeLinuxConnectionsState.patchConnection(connection.uuid, 'error', null);
+                        // Set connection state as connected and remove any previous errors
+                        await this.LibNodeLinuxConnectionsState.patchConnection(connection.uuid, 'state', 'connected');
+                        await this.LibNodeLinuxConnectionsState.patchConnection(connection.uuid, 'error', null);
 
-        return resolve();
-      });
+                        return resolve();
+                       });
     });
   }
 
@@ -89,24 +91,26 @@ export class AnyOpsOSLibNodeLinuxService {
       const currentConnection: ConnectionLinux = this.LibNodeLinuxhHelpers.getConnectionByUuid(connectionUuid);
       if (currentConnection.state === 'disconnected') throw new Error('already_disconnected');
 
-      this.socket.emit('[linux-disconnect]', {
-        connectionUuid,
-        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (data: BackendResponse) => {
+      this.socket.emit('[linux-disconnect]',
+                       {
+                        connectionUuid,
+                        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
+                       },
+                       async (data: BackendResponse) => {
 
-        if (data.status === 'error') {
-          this.logger.error('LibNodeLinux', 'Error while emitting [linux-disconnect]', loggerArgs, data.data);
-          await this.LibNodeLinuxConnectionsState.patchConnection(connectionUuid, 'error', data.data);
+                        if (data.status === 'error') {
+                          this.logger.error('LibNodeLinux', 'Error while emitting [linux-disconnect]', loggerArgs, data.data);
+                          await this.LibNodeLinuxConnectionsState.patchConnection(connectionUuid, 'error', data.data);
 
-          return reject(data.data);
-        }
+                          return reject(data.data);
+                        }
 
-        // Set connection state as connected and remove any previous errors
-        await this.LibNodeLinuxConnectionsState.patchConnection(connectionUuid, 'state', 'disconnected');
-        await this.LibNodeLinuxConnectionsState.patchConnection(connectionUuid, 'error', null);
+                        // Set connection state as connected and remove any previous errors
+                        await this.LibNodeLinuxConnectionsState.patchConnection(connectionUuid, 'state', 'disconnected');
+                        await this.LibNodeLinuxConnectionsState.patchConnection(connectionUuid, 'error', null);
 
-        return resolve();
-      });
+                        return resolve();
+                       });
     });
   }
 

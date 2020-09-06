@@ -1,4 +1,4 @@
-import {MetricsResult} from './metrics-result';
+import { MetricsResult } from './metrics-result';
 
 export interface Metrics {
   status: string;

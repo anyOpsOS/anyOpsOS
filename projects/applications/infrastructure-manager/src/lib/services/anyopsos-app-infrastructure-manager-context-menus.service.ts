@@ -1,20 +1,20 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
-import {ConnectionVmware, VMWareVM} from '@anyopsos/module-node-vmware';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibNodeHelpersService } from '@anyopsos/lib-node';
+import { ConnectionVmware, VMWareVM } from '@anyopsos/module-node-vmware';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
-import {AnyOpsOSAppInfrastructureManagerService} from './anyopsos-app-infrastructure-manager.service';
-import {AnyOpsOSAppInfrastructureNetappBackupService} from './netapp/anyopsos-app-infrastructure-netapp-backup.service';
-import {AnyOpsOSAppInfrastructureVmwareBackupService} from './vmware/anyopsos-app-infrastructure-vmware-backup.service';
-import {AnyOpsOSAppInfrastructureNetappNodeActionsService} from './netapp/anyopsos-app-infrastructure-netapp-node-actions.service';
-import {AnyOpsOSAppInfrastructureVmwareNodeActionsService} from './vmware/anyopsos-app-infrastructure-vmware-node-actions.service';
+import { AnyOpsOSAppInfrastructureManagerService } from './anyopsos-app-infrastructure-manager.service';
+import { AnyOpsOSAppInfrastructureNetappBackupService } from './netapp/anyopsos-app-infrastructure-netapp-backup.service';
+import { AnyOpsOSAppInfrastructureVmwareBackupService } from './vmware/anyopsos-app-infrastructure-vmware-backup.service';
+import { AnyOpsOSAppInfrastructureNetappNodeActionsService } from './netapp/anyopsos-app-infrastructure-netapp-node-actions.service';
+import { AnyOpsOSAppInfrastructureVmwareNodeActionsService } from './vmware/anyopsos-app-infrastructure-vmware-node-actions.service';
 
-import {ImTreeNode} from '../types/im-tree-node';
+import { ImTreeNode } from '../types/im-tree-node';
 
 
 @Injectable({
@@ -146,7 +146,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           this.InfrastructureManager.deleteConnection(node.info.uuid, 'vmware');
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 1, text: '<i class="vs-icon vsphere-icon-datacenter"></i> New Datacenter...',
         action: async (node: ImTreeNode) => {
@@ -176,7 +176,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 1, text: 'Export System Logs...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-export-system-logs', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -186,7 +186,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 1, text: '<i class="vs-icon vsphere-icon-assign_license"></i> Assign License...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-assign-license', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -196,7 +196,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Tags & Custom Attributes', subMenu: [
           {
@@ -221,7 +221,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Edit Custom Attributes...',
@@ -235,7 +235,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 1, text: 'Add Permission...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-add-permission', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -272,7 +272,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Update Manager', subMenu: [
           {
@@ -312,7 +312,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
         id: 0, text: '<i class="vs-icon vsphere-icon-folder"></i> New Folder', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Move To...', action: (node: ImTreeNode) => {
         }
@@ -345,7 +345,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Edit Custom Attributes...',
@@ -359,7 +359,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Alarms', subMenu: [
           {
@@ -387,12 +387,12 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Remove from Inventory', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Update Manager', subMenu: [
           {
@@ -441,7 +441,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
         id: 0, text: '<i class="vs-icon vsphere-icon-folder"></i> New Folder', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Move To...', action: (node: ImTreeNode) => {
         }
@@ -474,7 +474,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Edit Custom Attributes...',
@@ -488,7 +488,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Add Permission...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-add-permission', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -525,7 +525,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Remove from Inventory', action: (node: ImTreeNode) => {
         }
@@ -557,7 +557,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
         id: 0, text: '<i class="vs-icon vsphere-icon-folder"></i> New Folder', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Move To...', action: (node: ImTreeNode) => {
         }
@@ -590,7 +590,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Edit Custom Attributes...',
@@ -604,7 +604,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Add Permission...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-add-permission', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -641,12 +641,12 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Remove from Inventory', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Update Manager', subMenu: [
           {
@@ -690,7 +690,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
         id: 0, text: '<i class="vs-icon vsphere-icon-folder"></i> New Folder', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Move To...', action: (node: ImTreeNode) => {
         }
@@ -715,7 +715,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           {
             id: 0,
             text: '<i class="vs-icon vx-icon-tag_remove"></i> Remove Tag',
-            action:async  (node: ImTreeNode) => {
+            action: async (node: ImTreeNode) => {
               const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-remove-tag', this.InfrastructureManager.getBodyContainerRef(), {});
 
               modalInstance.afterClosed().subscribe(async (result: boolean): Promise<void> => {
@@ -723,7 +723,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Edit Custom Attributes...',
@@ -737,7 +737,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Add Permission...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-add-permission', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -774,7 +774,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Remove from Inventory', action: (node: ImTreeNode) => {
         }
@@ -886,7 +886,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0, text: '<i class="vs-icon vsphere-icon-rescan-storage"></i> Rescan Storage...', action: async (node: ImTreeNode) => {
               const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-rescan-storage', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -898,7 +898,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           },
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Edit Default VM Compatibility...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-edit-default-vm-compatibility', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -908,7 +908,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: '<i class="vs-icon network-lib-ui-icon-vmMigrate"></i> Migrate VMs to Another Network...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-migrate-vms-another-network', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -918,7 +918,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Move To...', action: (node: ImTreeNode) => {
         }
@@ -951,7 +951,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Edit Custom Attributes...',
@@ -965,7 +965,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Add Permission...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-add-permission', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -1002,12 +1002,12 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: '<i class="vs-icon vx-icon-removeIcon"></i> Delete', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Update Manager', subMenu: [
           {
@@ -1076,7 +1076,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               return node.info.data['runtime.powerState'] === 'poweredOff';
             }
           },
-          {id: 5, text: 'divider'},
+          { id: 5, text: 'divider' },
           {
             id: 6,
             text: '<i class="fas fa-stop text-danger"></i> Shut Down Guest OS',
@@ -1107,7 +1107,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
             action: (node: ImTreeNode) => {
             }
           },
-          {id: 5, text: 'divider'},
+          { id: 5, text: 'divider' },
           {
             id: 0,
             text: 'Install VMware Tools...',
@@ -1126,14 +1126,14 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
             action: (node: ImTreeNode) => {
             }
           },
-          {id: 5, text: 'divider'},
+          { id: 5, text: 'divider' },
           {
             id: 0,
             text: 'Customize Guest OS',
             action: (node: ImTreeNode) => {
             }
           },
-          {id: 5, text: 'divider'},
+          { id: 5, text: 'divider' },
           {
             id: 0,
             text: 'Guest User Mappings',
@@ -1181,7 +1181,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           this.openRemoteConsole(node);
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 1, text: 'Migrate...', action: (node: ImTreeNode) => {
         }
@@ -1194,7 +1194,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
             action: (node: ImTreeNode) => {
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Clone to Template',
@@ -1209,7 +1209,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Fault Tolerance', subMenu: [
           {
@@ -1224,7 +1224,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
             action: (node: ImTreeNode) => {
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Resume Fault Tolerance',
@@ -1237,14 +1237,14 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
             action: (node: ImTreeNode) => {
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Migrate Secondary...',
             action: (node: ImTreeNode) => {
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Test Failover',
@@ -1281,7 +1281,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Templates', subMenu: [
           {
@@ -1320,7 +1320,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 1, text: 'Export System Logs...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-export-system-logs', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -1330,12 +1330,12 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 1, text: 'Edit Settings...', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 1, text: 'Move to folder...', action: (node: ImTreeNode) => {
         }
@@ -1372,7 +1372,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Edit Custom Attributes...',
@@ -1386,7 +1386,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 1, text: 'Add Permission...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-add-permission', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -1423,7 +1423,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 1, text: 'Remove from Inventory', action: (node: ImTreeNode) => {
         }
@@ -1432,7 +1432,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
         id: 1, text: 'Delete from Disk', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Update Manager', subMenu: [
           {
@@ -1459,7 +1459,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 3, text: '<i class="fas fa-server text-primary"></i> Restore', subMenu: [
           {
@@ -1490,7 +1490,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           this.InfrastructureManagerVMWareBackup.backupVM(node);
         }
       },
-      {id: 5, text: 'divider'},
+      { id: 5, text: 'divider' },
       {
         id: 6, text: '<i class="fas fa-sync-alt text-primary"></i> Refresh', action: (node: ImTreeNode) => {
           this.InfrastructureManagerVMWareNodeActions.doWithVM(node.info.mainUuid, node, 'refresh');
@@ -1510,7 +1510,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: '<i class="fas fa-file"></i> Browse Files', action: (node: ImTreeNode) => {
           console.log(node);
@@ -1526,17 +1526,17 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Configure Storage I/O Control...', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Refresh Capacity Information', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Maintenance Mode', subMenu: [
           {
@@ -1553,7 +1553,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Move To...', action: (node: ImTreeNode) => {
         }
@@ -1562,7 +1562,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
         id: 0, text: 'Rename...', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Mount Datastore to Additional Hosts...', action: (node: ImTreeNode) => {
         }
@@ -1595,7 +1595,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Edit Custom Attributes...',
@@ -1609,7 +1609,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Add Permission...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-add-permission', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -1660,7 +1660,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: '<i class="fas fa-file"></i> Browse Files', action: (node: ImTreeNode) => {
           console.log(node);
@@ -1669,7 +1669,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Rename...', action: (node: ImTreeNode) => {
         }
@@ -1698,7 +1698,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Edit Custom Attributes...',
@@ -1712,7 +1712,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Add Permission...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-add-permission', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -1749,7 +1749,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: '<i class="vs-icon vx-icon-removeIcon"></i> Delete', action: (node: ImTreeNode) => {
         }
@@ -1776,7 +1776,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
         id: 0, text: '<i class="vs-icon vx-icon-rpNew"></i> New Resource Pool...', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: '<i class="vs-icon vsphere-icon-ovf-deploy"></i> Deploy OVF Template....', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-deploy-ovf-template', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -1786,12 +1786,12 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: '<i class="vs-icon vsphere-icon-vapp-add"></i> New vApp...', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Storage', subMenu: [
           {
@@ -1814,7 +1814,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           },
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Host Profiles', subMenu: [
           {
@@ -1847,7 +1847,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           },
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Edit Default VM Compatibility...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-edit-default-vm-compatibility', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -1857,7 +1857,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: '<i class="vs-icon vsphere-icon-assign_license"></i> Assign License...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-assign-license', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -1867,12 +1867,12 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Settings', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Move To...', action: (node: ImTreeNode) => {
         }
@@ -1905,7 +1905,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Edit Custom Attributes...',
@@ -1919,7 +1919,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Add Permission...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-add-permission', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -1956,12 +1956,12 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: '<i class="vs-icon vx-icon-removeIcon"></i> Delete', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Update Manager', subMenu: [
           {
@@ -2024,7 +2024,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
         id: 0, text: '<i class="vs-icon vsphere-icon-vapp-add"></i> New vApp...', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Maintenance Mode', subMenu: [
           {
@@ -2069,7 +2069,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           },
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Certificates', subMenu: [
           {
@@ -2082,7 +2082,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           },
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Storage', subMenu: [
           {
@@ -2105,12 +2105,12 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           },
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: '<i class="vs-icon network-lib-ui-icon-networkAdd"></i> Add Networking...', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Host Profiles', subMenu: [
           {
@@ -2151,7 +2151,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           },
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Export System Logs...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-export-system-logs', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -2161,7 +2161,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Reconfigure for vSphere HA', action: (node: ImTreeNode) => {
         }
@@ -2175,12 +2175,12 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           });
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Settings', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Move To...', action: (node: ImTreeNode) => {
         }
@@ -2209,7 +2209,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Edit Custom Attributes...',
@@ -2223,12 +2223,12 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Remove from Inventory', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Add Permission...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-add-permission', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -2265,7 +2265,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Update Manager', subMenu: [
           {
@@ -2318,12 +2318,12 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
         id: 0, text: '<i class="vs-icon vsphere-icon-vapp-add"></i> New vApp...', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Edit Resource Settings...', action: (node: ImTreeNode) => {
         }
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Move To...', action: (node: ImTreeNode) => {
         }
@@ -2356,7 +2356,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
               });
             }
           },
-          {id: 1, text: 'divider'},
+          { id: 1, text: 'divider' },
           {
             id: 0,
             text: 'Edit Custom Attributes...',
@@ -2370,7 +2370,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: 'Add Permission...', action: async (node: ImTreeNode) => {
           const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('infrastructure-manager-add-permission', this.InfrastructureManager.getBodyContainerRef(), {});
@@ -2407,7 +2407,7 @@ export class AnyOpsOSAppInfrastructureManagerContextMenusService {
           }
         ]
       },
-      {id: 1, text: 'divider'},
+      { id: 1, text: 'divider' },
       {
         id: 0, text: '<i class="vs-icon vx-icon-removeIcon"></i> Delete', action: (node: ImTreeNode) => {
         }

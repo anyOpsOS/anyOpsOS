@@ -1,13 +1,13 @@
 import socketControllers from 'socket-controllers';
-import {Socket} from 'socket.io';
-import log4js, {Logger} from 'log4js';
+import { Socket } from 'socket.io';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getLogger} = log4js;
-const {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam} = socketControllers;
+const { getLogger } = log4js;
+const { SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam } = socketControllers;
 
-import {AnyOpsOSTerminalModule, TerminalTypes} from '@anyopsos/module-terminal';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSTerminalModule, TerminalTypes } from '@anyopsos/module-terminal';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -33,9 +33,9 @@ export class AnyOpsOSTerminalWebsocketController {
     const TerminalsModule: AnyOpsOSTerminalModule = new AnyOpsOSTerminalModule(userUuid, terminalData.workspaceUuid, terminalData.connectionUuid);
 
     return TerminalsModule.createTerminal(socket, terminalData.terminalType).then((terminalUuid: string) => {
-      return {status: 'ok', data: terminalUuid} as BackendResponse;
+      return { status: 'ok', data: terminalUuid } as BackendResponse;
     }).catch((e: Error) => {
-      return {status: 'error', data: e.toString()} as BackendResponse;
+      return { status: 'error', data: e.toString() } as BackendResponse;
     });
   }
 
@@ -51,9 +51,9 @@ export class AnyOpsOSTerminalWebsocketController {
     const TerminalsModule: AnyOpsOSTerminalModule = new AnyOpsOSTerminalModule(userUuid, terminalData.workspaceUuid, terminalData.connectionUuid);
 
     return TerminalsModule.deleteTerminal(terminalData.terminalUuid).then(() => {
-      return {status: 'ok', data: terminalData.terminalUuid} as BackendResponse;
+      return { status: 'ok', data: terminalData.terminalUuid } as BackendResponse;
     }).catch((e: Error) => {
-      return {status: 'error', data: e.toString()} as BackendResponse;
+      return { status: 'error', data: e.toString() } as BackendResponse;
     });
   }
 
@@ -69,7 +69,7 @@ export class AnyOpsOSTerminalWebsocketController {
     const TerminalsModule: AnyOpsOSTerminalModule = new AnyOpsOSTerminalModule(userUuid, terminalData.workspaceUuid, terminalData.connectionUuid);
 
     TerminalsModule.setTerminalGeometry(terminalData.terminalUuid, terminalData.cols, terminalData.rows);
-    return {status: 'ok'} as BackendResponse;
+    return { status: 'ok' } as BackendResponse;
   }
 
   @OnMessage('[terminal-stdin]')
@@ -84,7 +84,7 @@ export class AnyOpsOSTerminalWebsocketController {
     const TerminalsModule: AnyOpsOSTerminalModule = new AnyOpsOSTerminalModule(userUuid, terminalData.workspaceUuid, terminalData.connectionUuid);
 
     TerminalsModule.terminalStdin(terminalData.terminalUuid, terminalData.data);
-    return {status: 'ok', data: terminalData.terminalUuid} as BackendResponse;
+    return { status: 'ok', data: terminalData.terminalUuid } as BackendResponse;
   }
 
 }

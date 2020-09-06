@@ -1,12 +1,12 @@
 import socketControllers from 'socket-controllers';
-import {Socket} from 'socket.io';
-import log4js, {Logger} from 'log4js';
+import { Socket } from 'socket.io';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getLogger} = log4js;
-const {SocketController, SocketId, OnConnect, OnDisconnect, ConnectedSocket} = socketControllers;
+const { getLogger } = log4js;
+const { SocketController, SocketId, OnConnect, OnDisconnect, ConnectedSocket } = socketControllers;
 
-import {AnyOpsOSSysWorkspaceModule, Workspace} from '@anyopsos/module-sys-workspace';
+import { AnyOpsOSSysWorkspaceModule, Workspace } from '@anyopsos/module-sys-workspace';
 
 
 const logger: Logger = getLogger('mainLog');

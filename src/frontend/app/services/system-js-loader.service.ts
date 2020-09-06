@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import * as angularAnimations from '@angular/animations';
 import * as angularCommon from '@angular/common';
@@ -24,35 +24,35 @@ export class SystemJsLoaderService {
   constructor() {
 
     const originalResolve = window.System.resolve;
-    window.System.resolve = function(name: string) {
+    window.System.resolve = function (name: string) {
 
-      const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
+      const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port : '')}`;
 
       // Load anyOpsOS libraries from filesystem
       if (name.startsWith('@anyopsos/lib-')) {
         return `${currentLocation}/api/loader//bin/libraries/${name.replace('@anyopsos/', 'anyopsos-')}.umd.js`;
 
-      // Load anyOpsOS external libraries from filesystem
+        // Load anyOpsOS external libraries from filesystem
       } else if (name.startsWith('@anyopsos/ext-lib-')) {
         return `${currentLocation}/api/loader//bin/external-libraries/${name.replace('@anyopsos/', 'anyopsos-')}.umd.js`;
 
-      // Load anyOpsOS modules from filesystem
+        // Load anyOpsOS modules from filesystem
       } else if (name.startsWith('@anyopsos/module-')) {
         return `${currentLocation}/api/loader//bin/modules/${name.replace('@anyopsos/', 'anyopsos-')}.umd.js`;
 
-      // Load @angular/cdk from filesystem
+        // Load @angular/cdk from filesystem
       } else if (name.startsWith('@angular/cdk/')) {
         return `${currentLocation}/api/loader//bin/deps/cdk/${name.replace('@angular/cdk/', 'cdk-')}.umd.js`;
 
-      // Load @angular/material from filesystem
+        // Load @angular/material from filesystem
       } else if (name.startsWith('@angular/material/')) {
         return `${currentLocation}/api/loader//bin/deps/material/${name.replace('@angular/material/', 'material-')}.umd.js`;
 
-      // The rest of @angular, rxjs and tslib libraries are preloaded
+        // The rest of @angular, rxjs and tslib libraries are preloaded
       } else if (name.startsWith('@angular/') || name.startsWith('rxjs') || name === 'tslib' || name.startsWith('https://') || name.startsWith('socket.io') || name.startsWith('@anyopsos/frontend')) {
         return originalResolve.apply(this, arguments);
 
-      // Load everything else from filesystem
+        // Load everything else from filesystem
       } else {
         return `${currentLocation}/api/loader//bin/deps/${name}.js`;
       }

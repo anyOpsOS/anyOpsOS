@@ -1,11 +1,11 @@
 import socketControllers from 'socket-controllers';
 
 // TODO ESM
-const {getSocketIO} = socketControllers;
+const { getSocketIO } = socketControllers;
 
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
-import {KUBERNETES_CONFIG_FILE} from './anyopsos-module-node-kubernetes.constants';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
+import { KUBERNETES_CONFIG_FILE } from './anyopsos-module-node-kubernetes.constants';
 
 export class AnyOpsOSNodeKubernetesDataRefresherModule {
 
@@ -154,14 +154,14 @@ export class AnyOpsOSNodeKubernetesDataRefresherModule {
       if (object.metadata.ownerReferences && object.metadata.ownerReferences.length !== 1) console.log('multiple', object.metadata.ownerReferences);
 
       const objectParent = (object.metadata.ownerReferences ? {
-          type: object.metadata.ownerReferences[0].kind,
-          name: object.metadata.ownerReferences[0].uid
-        } :
+        type: object.metadata.ownerReferences[0].kind,
+        name: object.metadata.ownerReferences[0].uid
+      } :
 
         object.kind === 'Event' ? {
-            type: object.involvedObject.kind,
-            name: object.involvedObject.uid,
-          } :
+          type: object.involvedObject.kind,
+          name: object.involvedObject.uid,
+        } :
 
           object.metadata.namespace ?
 
@@ -193,9 +193,9 @@ export class AnyOpsOSNodeKubernetesDataRefresherModule {
               type: 'Folder',
               name: object.metadata.namespace + '-Roles'
             } : {
-              type: 'Namespace',
-              name: object.metadata.namespace
-            } :
+                                type: 'Namespace',
+                                name: object.metadata.namespace
+                              } :
 
             object.kind === 'PersistentVolume' ? {
               type: 'Folder',

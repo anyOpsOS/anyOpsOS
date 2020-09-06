@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
-import {VmwareSdkFunctions, VmwareSdkFunctionsInput, VmwareSdkFunctionsOutput} from '@anyopsos/sdk-vmware';
+import { AnyOpsOSLibWorkspaceService } from '@anyopsos/lib-workspace';
+import { VmwareSdkFunctions, VmwareSdkFunctionsInput, VmwareSdkFunctionsOutput } from '@anyopsos/sdk-vmware';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class AnyOpsOSLibNodeVmwareSoapApiService {
   // https://code.vmware.com/web/sdk/6.7/vsphere-management
   callSoapApi<Action extends VmwareSdkFunctions>(connectionUuid: string, action: Action, data: VmwareSdkFunctionsInput<Action>): Promise<VmwareSdkFunctionsOutput<Action>> {
 
-    return this.http.post(`/api/vmware/soap/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}`, {action, data}).toPromise() as Promise<VmwareSdkFunctionsOutput<Action>>;
+    return this.http.post(`/api/vmware/soap/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}`, { action, data }).toPromise() as Promise<VmwareSdkFunctionsOutput<Action>>;
   }
 
 }

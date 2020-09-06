@@ -1,6 +1,6 @@
-import {PolicyEgress} from './policy-egress';
-import {PolicyIngress} from './policy-ingress';
-import {KubeObject} from './kube-object';
+import { PolicyEgress } from './policy-egress';
+import { PolicyIngress } from './policy-ingress';
+import { KubeObject } from './kube-object';
 
 export interface NetworkPolicy extends KubeObject {
   kind: 'NetworkPolicy';

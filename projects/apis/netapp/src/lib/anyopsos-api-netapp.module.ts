@@ -1,17 +1,17 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import routingControllers from 'routing-controllers';
 import routingControllersSessionParam from 'routing-controllers/decorator/SessionParam';
-import log4js, {Logger} from 'log4js';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {Controller, Authorized, Req, Res, BodyParam, Post, Param} = routingControllers;
-const {SessionParam} = routingControllersSessionParam;
-const {getLogger} = log4js;
+const { Controller, Authorized, Req, Res, BodyParam, Post, Param } = routingControllers;
+const { SessionParam } = routingControllersSessionParam;
+const { getLogger } = log4js;
 
-import {AnyOpsOSApiGlobalsModule} from '@anyopsos/module-api-globals';
-import {AnyOpsOSNodeNetappModule} from '@anyopsos/module-node-netapp';
-import {NetappSdkFunctions, NetappSdkVfilerFunctions, NetappSdkFunctionsInput, NetappSdkVfilerFunctionsInput} from '@anyopsos/sdk-netapp';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSApiGlobalsModule } from '@anyopsos/module-api-globals';
+import { AnyOpsOSNodeNetappModule } from '@anyopsos/module-node-netapp';
+import { NetappSdkFunctions, NetappSdkVfilerFunctions, NetappSdkFunctionsInput, NetappSdkVfilerFunctionsInput } from '@anyopsos/sdk-netapp';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 
 const logger: Logger = getLogger('mainLog');

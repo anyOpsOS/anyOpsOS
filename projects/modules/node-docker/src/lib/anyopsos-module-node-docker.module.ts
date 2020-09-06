@@ -2,11 +2,11 @@ import socketControllers from 'socket-controllers';
 import * as Dockerode from 'dockerode';
 
 // TODO ESM
-const {getSocketIO} = socketControllers;
+const { getSocketIO } = socketControllers;
 
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSNodeDockerSessionStateModule} from './anyopsos-module-node-docker-session-state';
+import { AnyOpsOSNodeDockerSessionStateModule } from './anyopsos-module-node-docker-session-state';
 
 export class AnyOpsOSNodeDockerModule {
 
@@ -54,7 +54,7 @@ export class AnyOpsOSNodeDockerModule {
         ]
       });
 
-      return {status: 'ok', data: 'connected'} as BackendResponse;
+      return { status: 'ok', data: 'connected' } as BackendResponse;
     }).catch((e: Error) => {
       throw e;
     });
@@ -67,7 +67,7 @@ export class AnyOpsOSNodeDockerModule {
 
     return this.DockerSessionStateModule.disconnectSession().then(() => {
 
-      return {status: 'ok', data: 'disconnected'} as BackendResponse;
+      return { status: 'ok', data: 'disconnected' } as BackendResponse;
 
     }).catch((e: Error) => {
       throw e;

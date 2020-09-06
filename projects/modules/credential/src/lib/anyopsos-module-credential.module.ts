@@ -1,16 +1,16 @@
-import {client} from 'node-vault';
-import {v4 as uuidv4} from 'uuid';
-import log4js, {Logger} from 'log4js';
+import { client } from 'node-vault';
+import { v4 as uuidv4 } from 'uuid';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getLogger} = log4js;
+const { getLogger } = log4js;
 
-import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
-import {AnyOpsOSVaultModule} from '@anyopsos/module-vault';
+import { AnyOpsOSSysWorkspaceModule } from '@anyopsos/module-sys-workspace';
+import { AnyOpsOSVaultModule } from '@anyopsos/module-vault';
 
-import {ApiCaller} from './decorators/api-caller'
+import { ApiCaller } from './decorators/api-caller'
 
-import {Credential} from './types/credential';
+import { Credential } from './types/credential';
 
 
 const logger: Logger = getLogger('credential');
@@ -28,7 +28,7 @@ export class AnyOpsOSCredentialModule {
               private readonly workspaceUuid: string) {
 
     // TODO: check if userUuid is allowed to access the data from workspaceUuid
-    // TODO: VALIDATE PRIVILEGES
+    // TODO FIXME: VALIDATE PRIVILEGES
     this.WorkspaceModule = new AnyOpsOSSysWorkspaceModule(this.userUuid);
 
     // this.WorkspaceModule.getUserPermissions();

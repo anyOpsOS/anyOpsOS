@@ -1,5 +1,5 @@
-import {Connection} from '@anyopsos/backend-core/app/types/connection';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { Connection } from '@anyopsos/backend-core/app/types/connection';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
 export interface ConnectionSnmp extends Connection {
   type: 'snmp';

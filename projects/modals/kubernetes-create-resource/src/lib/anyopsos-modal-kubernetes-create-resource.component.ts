@@ -1,7 +1,7 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 
-import {MAT_DIALOG_DATA, MatDialogRef} from '@anyopsos/lib-angular-material';
-import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@anyopsos/lib-angular-material';
+import { BodyComponent, ModalData } from '@anyopsos/lib-modal';
 
 @Component({
   selector: 'amkubernetes-create-resource-anyopsos-modal-kubernetes-create-resource',
@@ -9,7 +9,7 @@ import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
   styleUrls: ['./anyopsos-modal-kubernetes-create-resource.component.scss']
 })
 export class AnyOpsOSModalKubernetesCreateResourceComponent implements OnInit {
-  @ViewChild('modalBody', {static: true}) modalBody: BodyComponent;
+  @ViewChild('modalBody', { static: true }) modalBody: BodyComponent;
 
   inputData: string;
 

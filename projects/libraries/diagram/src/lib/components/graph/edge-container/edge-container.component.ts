@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, SimpleChanges } from '@angular/core';
 
-import {line, curveBasis, Line} from 'd3-shape';
+import { line, curveBasis, Line } from 'd3-shape';
 
-import {LayoutEdge} from '../../../types/layout-edge';
+import { LayoutEdge } from '../../../types/layout-edge';
 
 @Component({
   selector: '[aldiagram-edge-container]',
@@ -55,15 +55,15 @@ export class EdgeContainerComponent implements OnInit {
       damping: 26,
       precision: 0.01,
     };
-    return {...defaultConfig, ...config, val};
+    return { ...defaultConfig, ...config, val };
   }
 
   weakSpring(value: number): { [key: string]: number; } {
-    return this.spring(value, {damping: 18, precision: 1, stiffness: 100});
+    return this.spring(value, { damping: 18, precision: 1, stiffness: 100 });
   }
 
   getMotionStyle() {
-    return { interpolatedThickness: this.weakSpring(this.thickness), ...this.waypointsMap};
+    return { interpolatedThickness: this.weakSpring(this.thickness), ...this.waypointsMap };
   }
 
   getEdgePath(animated?: boolean): Line<[number, number]> {
@@ -73,9 +73,9 @@ export class EdgeContainerComponent implements OnInit {
     return this.spline(this.edgeElement.points);
   }
 
-  private waypointsMapToArray(waypointsMap: { [key: string]: number; }): { x: number; y:number; }[] {
+  private waypointsMapToArray(waypointsMap: { [key: string]: number; }): { x: number; y: number; }[] {
 
-    const waypointsArray: { x: number; y:number; }[] = [];
+    const waypointsArray: { x: number; y: number; }[] = [];
 
     Object.keys(waypointsMap).forEach((key: string) => {
       const [axis, index] = [key[0], key.slice(1)];
@@ -90,7 +90,7 @@ export class EdgeContainerComponent implements OnInit {
   // Converts a waypoints array of the input format [{ x: 11, y: 22 }, { x: 33, y: 44 }]
   // to an array of waypoints that is used by Motion in the format { x0: 11, y0: 22, x1: 33, y1: 44 }.
   private waypointsArrayToMap(waypointsArray: { x: number; y: number; }[]): { [key: string]: number; } {
-    let waypointsMap = {};
+    const waypointsMap = {};
 
     waypointsArray.forEach((point, index) => {
       waypointsMap[`x${index}`] = this.weakSpring(point.x);

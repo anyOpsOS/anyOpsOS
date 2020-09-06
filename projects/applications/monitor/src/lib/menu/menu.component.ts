@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
-import {Application} from '@anyopsos/lib-application';
+import { Application } from '@anyopsos/lib-application';
 
 @Component({
   selector: 'aamon-menu',

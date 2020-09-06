@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
-import {VMWareVM} from '@anyopsos/module-node-vmware';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
+import { VMWareVM } from '@anyopsos/module-node-vmware';
 
-import {AnyOpsOSAppInfrastructureManagerService} from '../anyopsos-app-infrastructure-manager.service';
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
+import { AnyOpsOSAppInfrastructureManagerService } from '../anyopsos-app-infrastructure-manager.service';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
 
 @Injectable({
   providedIn: 'root'
@@ -21,14 +21,15 @@ export class AnyOpsOSAppInfrastructureVmwareBackupService {
   async restoreGuestFiles(obj: DataObject & { info: { data: VMWareVM } }): Promise<void> {
     this.logger.debug('Infrastructure Manager', 'Ask for recovery VM Guest Files');
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.InfrastructureManager.getBodyContainerRef(),
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.InfrastructureManager.getBodyContainerRef(),
       {
         title: 'Restore guest files',
         text: `Do you want to perform a VM Guest Files recovery of ${obj.name}?`,
         yes: 'Restore',
         no: 'Cancel'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe((result: boolean): Promise<void> => {
       if (!result) return;
@@ -47,14 +48,15 @@ export class AnyOpsOSAppInfrastructureVmwareBackupService {
   async instantVM(obj: DataObject & { info: { data: VMWareVM } }): Promise<void> {
     this.logger.debug('Infrastructure Manager', 'Ask for Instant VM recovery');
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.InfrastructureManager.getBodyContainerRef(),
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.InfrastructureManager.getBodyContainerRef(),
       {
         title: 'Instant VM recovery',
         text: `Do you want to perform an Instant VM recovery of ${obj.name}?`,
         yes: 'Restore',
         no: 'Cancel'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe((result: boolean): Promise<void> => {
       if (!result) return;
@@ -73,14 +75,15 @@ export class AnyOpsOSAppInfrastructureVmwareBackupService {
   async restoreVM(obj: DataObject & { info: { data: VMWareVM } }): Promise<void> {
     this.logger.debug('Infrastructure Manager', 'Ask for restore entire VM');
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.InfrastructureManager.getBodyContainerRef(),
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.InfrastructureManager.getBodyContainerRef(),
       {
         title: 'Restore entire VM',
         text: `Do you want to perform a entire VM restore of ${obj.name}?`,
         yes: 'Restore',
         no: 'Cancel'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe((result: boolean): Promise<void> => {
       if (!result) return;

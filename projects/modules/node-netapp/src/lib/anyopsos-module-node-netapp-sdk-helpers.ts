@@ -63,13 +63,13 @@ export function setDynamicProperties(data: any): any {
 
         // If has a key that starts with '_' it's a single value
         (Object.keys(value).some((k) => k.charAt(0) === '_') ?
-            value[Object.keys(value).find((k) => {
-              return k.charAt(0) === '_';
-            })] :
-            this.setDynamicProperties(value)
+          value[Object.keys(value).find((k) => {
+            return k.charAt(0) === '_';
+          })] :
+          this.setDynamicProperties(value)
         )
 
-      }</${key}>`;
+        }</${key}>`;
     }
 
     console.log('err parsing setDynamicProperties');

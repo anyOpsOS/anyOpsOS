@@ -1,12 +1,12 @@
-import {join} from 'path';
-import log4js, {Logger} from 'log4js';
+import { join } from 'path';
+import log4js, { Logger } from 'log4js';
 import fs from 'fs-extra';
 
 // TODO ESM
-const {configure, getLogger} = log4js;
-const {ensureDir} = fs;
+const { configure, getLogger } = log4js;
+const { ensureDir } = fs;
 
-import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
+import { AnyOpsOSSysGetPathModule } from '@anyopsos/module-sys-get-path';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -17,14 +17,14 @@ export class Init {
   constructor() {
     configure({
       appenders: {
-        console: {type: 'console', level: 'trace'}
+        console: { type: 'console', level: 'trace' }
       },
       categories: {
-        default: {appenders: ['console'], level: 'trace'},
-        mainLog: {appenders: ['console'], level: 'trace'},
-        file: {appenders: ['console'], level: 'trace'},
-        folder: {appenders: ['console'], level: 'trace'},
-        configFile: {appenders: ['console'], level: 'trace'}
+        default: { appenders: ['console'], level: 'trace' },
+        mainLog: { appenders: ['console'], level: 'trace' },
+        file: { appenders: ['console'], level: 'trace' },
+        folder: { appenders: ['console'], level: 'trace' },
+        configFile: { appenders: ['console'], level: 'trace' }
       }
     });
   }
@@ -64,7 +64,7 @@ export class Init {
 
     return Promise.all([
       this.checkSystemFolders()
-    ]).then(() => {}).catch((e) => {
+    ]).then(() => { }).catch((e) => {
       console.log(e);
     });
   }

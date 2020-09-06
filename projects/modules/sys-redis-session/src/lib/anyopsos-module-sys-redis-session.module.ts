@@ -1,10 +1,10 @@
-import {hostname} from 'os';
-import redis, {RedisClient, RetryStrategyOptions} from 'redis';
+import { hostname } from 'os';
+import redis, { RedisClient, RetryStrategyOptions } from 'redis';
 
 // TODO ESM
-const {createClient} = redis;
+const { createClient } = redis;
 
-import {AOO_REDIS_HOST} from '@anyopsos/module-sys-constants';
+import { AOO_REDIS_HOST } from '@anyopsos/module-sys-constants';
 
 const retryStrategy = (options: RetryStrategyOptions, type: 'client' | 'pub' | 'sub') => {
   console.log(hostname(), type, options.error);
@@ -29,39 +29,39 @@ export class AnyOpsOSSysRedisSessionModule {
     host: AOO_REDIS_HOST,
     retry_strategy: (options) => retryStrategy(options, 'client')
   })
-  .on('ready', () => {
-    this.Client.client('SETNAME', 'Main-' + hostname());
-  })
-  .on('error', (e: Error) => {
-    console.log('error from main');
-    console.log(e);
-  });
+    .on('ready', () => {
+      this.Client.client('SETNAME', 'Main-' + hostname());
+    })
+    .on('error', (e: Error) => {
+      console.log('error from main');
+      console.log(e);
+    });
 
   // Socket.io publisher
   Pub: RedisClient = createClient({
     host: AOO_REDIS_HOST,
     retry_strategy: (options) => retryStrategy(options, 'pub')
   })
-  .on('ready', () => {
-    this.Pub.client('SETNAME', 'Pub-' + hostname());
-  })
-  .on('error', (e: Error) => {
-    console.log('error from pub');
-    console.log(e);
-  });
+    .on('ready', () => {
+      this.Pub.client('SETNAME', 'Pub-' + hostname());
+    })
+    .on('error', (e: Error) => {
+      console.log('error from pub');
+      console.log(e);
+    });
 
   // Socket.io subscriber
   Sub: RedisClient = createClient({
     host: AOO_REDIS_HOST,
     retry_strategy: (options) => retryStrategy(options, 'sub')
   })
-  .on('ready', () => {
-    // this.Sub.client('SETNAME', 'Sub-' + os.hostname());
-  })
-  .on('error', (e: Error) => {
-    console.log('error from sub');
-    console.log(e);
-  });
+    .on('ready', () => {
+      // this.Sub.client('SETNAME', 'Sub-' + os.hostname());
+    })
+    .on('error', (e: Error) => {
+      console.log('error from sub');
+      console.log(e);
+    });
 
   constructor() {
   }

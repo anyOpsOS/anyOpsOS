@@ -1,15 +1,19 @@
 {
   "name": "@anyopsos/lib-pipes",
   "version": "0.0.1",
+  "dependencies": {
+    "tslib": "^2.0.0",
+    "ngx-filter-pipe": "^2.1.2",
+    "ngx-order-pipe": "^2.0.4"
+  },
   "peerDependencies": {
     "@angular/common": "~10.0.11",
     "@angular/core": "~10.0.11",
     "@angular/platform-browser": "~10.0.6"
   },
-  "dependencies": {
-    "tslib": "^2.0.0",
-    "ngx-filter-pipe": "^2.1.2",
-    "ngx-order-pipe": "^2.0.4"
+  "devDependencies": {
+    "@angular/platform-browser-dynamic": "~10.0.11",
+    "zone.js": "~0.10.3"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

@@ -1,5 +1,5 @@
-import {HpaMetric} from './hpa-metric';
-import {KubeObject} from './kube-object';
+import { HpaMetric } from './hpa-metric';
+import { KubeObject } from './kube-object';
 
 export interface HorizontalPodAutoscaler extends KubeObject {
   kind: 'HorizontalPodAutoscaler';

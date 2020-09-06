@@ -1,16 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {Observable, of as observableOf, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Observable, of as observableOf, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {MatTreeFlatDataSource, MatTreeFlattener, FlatTreeControl, CdkDragDrop} from '@anyopsos/lib-angular-material';
+import { MatTreeFlatDataSource, MatTreeFlattener, FlatTreeControl, CdkDragDrop } from '@anyopsos/lib-angular-material';
 
-import {AnyOpsOSAppInfrastructureAsCodeProjectTreeService} from '../../../../services/anyopsos-app-infrastructure-as-code-project-tree.service';
-import {FileFlatNode} from '../../../../types/file-flat-node';
-import {FileNode} from '../../../../types/file-node';
-import {Category} from '../../../../types/category';
-import {Inventory} from '../../../../types/inventory';
+import { AnyOpsOSAppInfrastructureAsCodeProjectTreeService } from '../../../../services/anyopsos-app-infrastructure-as-code-project-tree.service';
+import { FileFlatNode } from '../../../../types/file-flat-node';
+import { FileNode } from '../../../../types/file-node';
+import { Category } from '../../../../types/category';
+import { Inventory } from '../../../../types/inventory';
 
 @Component({
   selector: 'aaiac-project-form',
@@ -65,7 +65,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
     // Set inventory nodes on form projectInventories values change
     this.thirdFormGroup.controls.projectInventories.valueChanges
-      .pipe(takeUntil(this.destroySubject$)).subscribe( (value: { inventories: Inventory[]; }) => this.setInventoryNodes(value));
+      .pipe(takeUntil(this.destroySubject$)).subscribe((value: { inventories: Inventory[]; }) => this.setInventoryNodes(value));
 
     // Listen for treeData changes
     this.InfrastructureAsCodeProjectTree.dataChange
@@ -234,9 +234,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   dragHover(node: FileFlatNode): void {
     if (this.dragging) {
       clearTimeout(this.expandTimeout);
-      this.expandTimeout = setTimeout(() => {
-        this.treeControl.expand(node);
-      }, this.expandDelay);
+      this.expandTimeout = setTimeout(() => { this.treeControl.expand(node); }, this.expandDelay);
     }
   }
 

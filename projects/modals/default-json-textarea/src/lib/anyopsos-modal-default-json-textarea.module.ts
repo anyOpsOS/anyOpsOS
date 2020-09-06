@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService} from '@anyopsos/lib-modal';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService } from '@anyopsos/lib-modal';
 
-import {EntryComponent} from './entry/entry.component';
-import {AnyOpsOSModalDefaultJsonTextareaComponent} from './anyopsos-modal-default-json-textarea.component';
-import {AnyOpsOSLibUtilsModule} from '@anyopsos/lib-utils';
+import { EntryComponent } from './entry/entry.component';
+import { AnyOpsOSModalDefaultJsonTextareaComponent } from './anyopsos-modal-default-json-textarea.component';
+import { AnyOpsOSLibUtilsModule } from '@anyopsos/lib-utils';
 
 @NgModule({
   declarations: [

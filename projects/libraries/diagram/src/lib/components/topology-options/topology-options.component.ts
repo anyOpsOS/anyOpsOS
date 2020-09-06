@@ -1,15 +1,15 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {isEqual} from 'lodash-es';
+import { isEqual } from 'lodash-es';
 
-import {AnyOpsOSLibDiagramService} from '../../services/anyopsos-lib-diagram.service';
-import {AnyOpsOSLibDiagramStateService} from '../../services/anyopsos-lib-diagram-state.service';
-import {AnyOpsOSLibDiagramTopologyUtilsService} from '../../services/anyopsos-lib-diagram-topology-utils.service';
-import {Topology} from '../../types/topology';
-import {TopologyOption} from '../../types/topology-option';
+import { AnyOpsOSLibDiagramService } from '../../services/anyopsos-lib-diagram.service';
+import { AnyOpsOSLibDiagramStateService } from '../../services/anyopsos-lib-diagram-state.service';
+import { AnyOpsOSLibDiagramTopologyUtilsService } from '../../services/anyopsos-lib-diagram-topology-utils.service';
+import { Topology } from '../../types/topology';
+import { TopologyOption } from '../../types/topology-option';
 
 @Component({
   selector: 'aldiagram-topology-options',

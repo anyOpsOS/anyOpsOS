@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import {AnyOpsOSSshSessionStateModule} from '@anyopsos/module-ssh';
+import { AnyOpsOSSshSessionStateModule } from '@anyopsos/module-ssh';
 
 export interface HidsResult {
   line: string;
@@ -152,25 +152,25 @@ export class HidsModule {
     return new Promise((resolve) => {
 
       if ((this.currentResult.condition === 'any' || this.currentResult.condition === 'any required') && match === 1) {
-        this.currentResult.lines.push({line, result: 'passed'});
+        this.currentResult.lines.push({ line, result: 'passed' });
         this.matched = 3;
       } else if ((this.currentResult.condition === 'any' || this.currentResult.condition === 'any required') && match === 0) {
-        this.currentResult.lines.push({line, result: 'not passed right now'});
+        this.currentResult.lines.push({ line, result: 'not passed right now' });
         this.matched = 5;
       } else if ((this.currentResult.condition === 'all' || this.currentResult.condition === 'all required') && match === 0) {
-        this.currentResult.lines.push({line, result: 'not passed'});
+        this.currentResult.lines.push({ line, result: 'not passed' });
         this.matched = 2;
       } else if ((this.currentResult.condition === 'all' || this.currentResult.condition === 'all required') && match === 1) {
-        this.currentResult.lines.push({line, result: 'passed right now'});
+        this.currentResult.lines.push({ line, result: 'passed right now' });
         this.matched = 1;
       } else if (this.currentResult.condition === 'none' && match === 1) {
-        this.currentResult.lines.push({line, result: 'not passed'});
+        this.currentResult.lines.push({ line, result: 'not passed' });
         this.matched = 2;
       } else if (this.currentResult.condition === 'none' && match === 0) {
-        this.currentResult.lines.push({line, result: 'passed right now'});
+        this.currentResult.lines.push({ line, result: 'passed right now' });
         this.matched = 4;
       } else {
-        this.currentResult.lines.push({line, result: 'not passed right now'});
+        this.currentResult.lines.push({ line, result: 'not passed right now' });
         this.matched = 5;
       }
 
@@ -292,7 +292,7 @@ export class HidsModule {
         while ((m = regex.exec(segment)) !== null) {
 
           if (m.index === regex.lastIndex) regex.lastIndex++;
-          if (m[1] === 'r' || m[1] === '!r' || m[1] === '=' || m[1] === '>' || m[1] === '<') regexConditions.push({type: m[1], regex: m[2]});
+          if (m[1] === 'r' || m[1] === '!r' || m[1] === '=' || m[1] === '>' || m[1] === '<') regexConditions.push({ type: m[1], regex: m[2] });
         }
       }
 

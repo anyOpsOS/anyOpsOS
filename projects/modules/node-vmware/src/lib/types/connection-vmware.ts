@@ -1,12 +1,12 @@
-import {Connection} from '@anyopsos/backend-core/app/types/connection';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { Connection } from '@anyopsos/backend-core/app/types/connection';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
-import {VMWareVM} from './vmware-vm';
-import {VMWareDatastore} from './vmware-datastore';
-import {VMWareHost} from './vmware-host';
-import {VMWareDatacenter} from './vmware-datacenter';
-import {VMWareFolder} from './vmware-folder';
-import {VMWareResourcePool} from './vmware-resource-pool';
+import { VMWareVM } from './vmware-vm';
+import { VMWareDatastore } from './vmware-datastore';
+import { VMWareHost } from './vmware-host';
+import { VMWareDatacenter } from './vmware-datacenter';
+import { VMWareFolder } from './vmware-folder';
+import { VMWareResourcePool } from './vmware-resource-pool';
 
 export interface ConnectionVmware extends Connection {
   type: 'vmware';

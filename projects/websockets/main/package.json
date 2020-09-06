@@ -6,7 +6,9 @@
   "dependencies": {
     "log4js": "^6.1.0"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "@anyopsos/module-sys-workspace": "~0.0.1"
+  },
   "devDependencies": {
     "socket.io": "^2.3.0",
     "socket-controllers": "https://github.com/anyOpsOS/socket-controllers.git#build",

@@ -1,14 +1,14 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-import {combineLatest, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {COMMA, ENTER, MatChipInputEvent} from '@anyopsos/lib-angular-material';
+import { COMMA, ENTER, MatChipInputEvent } from '@anyopsos/lib-angular-material';
 
-import {AnyOpsOSLibDiagramService} from '../../services/anyopsos-lib-diagram.service';
-import {AnyOpsOSLibDiagramStateService} from '../../services/anyopsos-lib-diagram-state.service';
-import {AnyOpsOSLibDiagramTopologyUtilsService} from '../../services/anyopsos-lib-diagram-topology-utils.service';
-import {Node} from '../../types/node';
+import { AnyOpsOSLibDiagramService } from '../../services/anyopsos-lib-diagram.service';
+import { AnyOpsOSLibDiagramStateService } from '../../services/anyopsos-lib-diagram-state.service';
+import { AnyOpsOSLibDiagramTopologyUtilsService } from '../../services/anyopsos-lib-diagram-topology-utils.service';
+import { Node } from '../../types/node';
 
 @Component({
   selector: 'aldiagram-search',
@@ -16,7 +16,13 @@ import {Node} from '../../types/node';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  @ViewChild('searchInput', {static: false}) searchInput: ElementRef<HTMLInputElement>;
+
+  constructor(private readonly LibDiagram: AnyOpsOSLibDiagramService,
+              private readonly LibDiagramState: AnyOpsOSLibDiagramStateService,
+              private readonly LibDiagramTopologyUtils: AnyOpsOSLibDiagramTopologyUtilsService) {
+
+  }
+  @ViewChild('searchInput', { static: false }) searchInput: ElementRef<HTMLInputElement>;
 
   private destroySubject$: Subject<void> = new Subject();
 
@@ -32,10 +38,40 @@ export class SearchComponent implements OnInit {
   searchMatchesCount: number = 0;
   searchHint: string;
 
-  constructor(private readonly LibDiagram: AnyOpsOSLibDiagramService,
-              private readonly LibDiagramState: AnyOpsOSLibDiagramStateService,
-              private readonly LibDiagramTopologyUtils: AnyOpsOSLibDiagramTopologyUtilsService) {
+  private static shortenHintLabel(text: string): string {
+    return text
+      .split(' ')[0]
+      .toLowerCase()
+      .substr(0, 12);
+  }
 
+  private static slugify(label: string): string {
+    const CLEAN_LABEL_REGEX = /[^A-Za-z0-9]/g;
+    return label.replace(CLEAN_LABEL_REGEX, '').toLowerCase();
+  }
+
+
+  private static getHint(nodes: Node[]): { label: string; metadataLabel: string; metadataValue: string; } {
+    let label = 'mycontainer';
+    let metadataLabel = 'ip';
+    let metadataValue = '10.1.0.1';
+
+    const node = [...nodes.filter(n => !n.pseudo && n.metadata)].pop();
+
+    if (node) {
+      [label] = SearchComponent.shortenHintLabel(node.label).split('.');
+      if (node.metadata) {
+        const metadataField = node.metadata[0];
+        metadataLabel = SearchComponent.shortenHintLabel(SearchComponent.slugify(metadataField.label)).split('.').pop();
+        metadataValue = SearchComponent.shortenHintLabel(metadataField.value);
+      }
+    }
+
+    return {
+      label,
+      metadataLabel,
+      metadataValue
+    };
   }
 
   ngOnInit(): void {
@@ -60,42 +96,6 @@ export class SearchComponent implements OnInit {
       const hintData = SearchComponent.getHint(nodes);
       this.searchHint = `Try "${hintData.label}", "${hintData.metadataLabel}:${hintData.metadataValue}", or "cpu > 2%".`;
     });
-  }
-
-  private static shortenHintLabel(text: string): string {
-    return text
-      .split(' ')[0]
-      .toLowerCase()
-      .substr(0, 12);
-  }
-
-  private static slugify(label: string): string {
-    const CLEAN_LABEL_REGEX = /[^A-Za-z0-9]/g;
-    return label.replace(CLEAN_LABEL_REGEX, '').toLowerCase();
-  }
-
-
-  private static getHint(nodes: Node[]): { label: string; metadataLabel: string; metadataValue: string; }{
-    let label = 'mycontainer';
-    let metadataLabel = 'ip';
-    let metadataValue = '10.1.0.1';
-
-    const node = [...nodes.filter(n => !n.pseudo && n.metadata)].pop();
-
-    if (node) {
-      [label] = SearchComponent.shortenHintLabel(node.label).split('.');
-      if (node.metadata) {
-        const metadataField = node.metadata[0];
-        metadataLabel = SearchComponent.shortenHintLabel(SearchComponent.slugify(metadataField.label)).split('.').pop();
-        metadataValue = SearchComponent.shortenHintLabel(metadataField.value);
-      }
-    }
-
-    return {
-      label,
-      metadataLabel,
-      metadataValue
-    };
   }
 
   openHelp() {

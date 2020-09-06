@@ -2,7 +2,11 @@
   "name": "@anyopsos/module-sys-api-caller",
   "version": "0.0.1",
   "main": "src/index.ts",
+  "dependencies": {
+    "@anyopsos/module-sys-constants": "~0.0.1"
+  },
   "devDependencies": {
+    "@anyopsos/backend-core": "~0.0.1",
     "@types/node": "^14.0.27",
     "typescript": "^3.9.7"
   },

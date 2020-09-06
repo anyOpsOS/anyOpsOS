@@ -1,16 +1,16 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {SocketIoModule, SocketIoConfig} from 'ngx-socket-io';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibDesktopModule} from '@anyopsos/lib-desktop';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibDesktopModule } from '@anyopsos/lib-desktop';
 
-import {AnyOpsOSLibBootstrapService} from './services/anyopsos-lib-bootstrap.service';
-import {AppComponent} from './components/app.component';
-import {InitializeComponent} from './components/initialize/initialize.component';
-import {LoginComponent} from './components/login/login.component';
+import { AnyOpsOSLibBootstrapService } from './services/anyopsos-lib-bootstrap.service';
+import { AppComponent } from './components/app.component';
+import { InitializeComponent } from './components/initialize/initialize.component';
+import { LoginComponent } from './components/login/login.component';
 
 const config: SocketIoConfig = {
   url: window.location.host,
@@ -50,8 +50,8 @@ export class AnyOpsOSLibBootstrapModule {
     console.log('Loading AnyOpsOSLibBootstrapModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibBootstrapModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibBootstrapModule is already loaded. You should not import it manually.');
     }
   }
 

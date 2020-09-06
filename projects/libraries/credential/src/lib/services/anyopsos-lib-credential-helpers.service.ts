@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Credential} from '@anyopsos/module-credential';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
+import { Credential } from '@anyopsos/module-credential';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
 
-import {AnyOpsOSLibCredentialStateService} from './anyopsos-lib-credential-state.service';
-import {Observable} from 'rxjs';
+import { AnyOpsOSLibCredentialStateService } from './anyopsos-lib-credential-state.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

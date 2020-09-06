@@ -5,10 +5,13 @@
     "entryFile": "src/public-api.ts"
   },
   "whitelistedNonPeerDependencies": [
+    "uuid",
+    "@anyopsos/lib-angular-material",
     "@anyopsos/lib-application",
     "@anyopsos/lib-file-system",
     "@anyopsos/lib-logger",
     "@anyopsos/lib-modal",
+    "@anyopsos/lib-node",
     "@anyopsos/lib-node-netapp",
     "@anyopsos/lib-node-vmware"
   ]

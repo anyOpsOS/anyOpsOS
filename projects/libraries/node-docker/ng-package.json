@@ -5,8 +5,11 @@
     "entryFile": "src/public-api.ts"
   },
   "whitelistedNonPeerDependencies": [
+    "@anyopsos/lib-bootstrap",
     "@anyopsos/lib-file-system",
     "@anyopsos/lib-logger",
-    "@anyopsos/module-node-docker"
+    "@anyopsos/lib-ssh",
+    "@anyopsos/lib-workspace",
+    "ngx-socket-io"
   ]
 }

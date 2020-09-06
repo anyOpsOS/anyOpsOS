@@ -1,14 +1,24 @@
 {
   "name": "@anyopsos/lib-bootstrap",
   "version": "0.0.1",
+  "dependencies": {
+    "tslib": "^2.0.0",
+    "ngx-socket-io": "^3.2.0",
+    "ngx-cookie-service": "^10.0.1",
+    "@anyopsos/lib-angular-material": "~0.0.1",
+    "@anyopsos/lib-logger": "~0.0.1",
+    "@anyopsos/lib-user": "~0.0.1",
+    "@anyopsos/lib-modal": "~0.0.1"
+  },
   "peerDependencies": {
     "@angular/common": "~10.0.11",
-    "@angular/core": "~10.0.11"
-  },
-  "dependencies": {
-    "tslib": "^2.0.0"
+    "@angular/core": "~10.0.11",
+    "@angular/forms": "~10.0.11",
+    "rxjs": "^6.6.2"
   },
   "devDependencies": {
+    "@angular/platform-browser-dynamic": "~10.0.11",
+    "zone.js": "~0.10.3",
     "@anyopsos/backend-core": "~0.0.1",
     "@anyopsos/module-vault": "~0.0.1"
   },

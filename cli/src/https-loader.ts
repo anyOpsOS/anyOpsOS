@@ -1,4 +1,4 @@
-import {INTERNAL_PATH_CWD} from './constants.js';
+import { INTERNAL_PATH_CWD } from './constants.js';
 
 export function resolve(specifier: string, context: { parentURL?: any }, defaultResolve: (...args: any) => any) {
   const { parentURL = null } = context;

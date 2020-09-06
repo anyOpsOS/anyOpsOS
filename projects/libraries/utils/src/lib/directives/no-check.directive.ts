@@ -1,5 +1,5 @@
-import {AfterViewChecked, Directive, EmbeddedViewRef, Input, TemplateRef, ViewContainerRef} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
+import { AfterViewChecked, Directive, EmbeddedViewRef, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 export interface NgNoCheckContext {
   $implicit: NgNoCheck;
@@ -42,7 +42,7 @@ export class NgNoCheck implements AfterViewChecked {
   private view: EmbeddedViewRef<NgNoCheckContext>;
 
   constructor(private template: TemplateRef<NgNoCheckContext>, private vcRef: ViewContainerRef) {
-    this.view = this.vcRef.createEmbeddedView(this.template, {$implicit: this});
+    this.view = this.vcRef.createEmbeddedView(this.template, { $implicit: this });
   }
 
   ngAfterViewChecked(): void {

@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Socket} from 'ngx-socket-io';
-import {Terminal as xtermTerminal} from 'xterm';
-import {FitAddon} from 'xterm-addon-fit';
+import { Socket } from 'ngx-socket-io';
+import { Terminal as xtermTerminal } from 'xterm';
+import { FitAddon } from 'xterm-addon-fit';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {Terminal as TerminalData} from '../types/terminal';
+import { Terminal as TerminalData } from '../types/terminal';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +59,7 @@ export class AnyOpsOSLibTerminalService {
         connectionUuid,
         terminalUuid,
         data
-      }, (resultData: BackendResponse) => {
+      },               (resultData: BackendResponse) => {
         if (resultData.status === 'error') this.logger.error('LibTerminal', 'Error on [terminal-stdin]', null, resultData.data);
       });
     });
@@ -71,7 +71,7 @@ export class AnyOpsOSLibTerminalService {
         terminalUuid,
         cols: size.cols,
         rows: size.rows
-      }, (resultData: BackendResponse) => {
+      },               (resultData: BackendResponse) => {
         if (resultData.status === 'error') this.logger.error('LibTerminal', 'Error on [terminal-geometry]', null, resultData.data);
       });
     });
@@ -91,7 +91,7 @@ export class AnyOpsOSLibTerminalService {
       workspaceUuid: this.terminals[terminalUuid].workspaceUuid,
       connectionUuid: this.terminals[terminalUuid].connectionUuid,
       terminalUuid
-    }, (resultData: BackendResponse) => {
+    },               (resultData: BackendResponse) => {
       if (resultData.status === 'error') return this.logger.error('LibTerminal', 'Error on [terminal-delete]', null, resultData.data);
 
       this.terminals[terminalUuid] = undefined;

@@ -3,5 +3,13 @@
   "dest": "../../../.dist/libraries/bootstrap",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "ngx-socket-io",
+    "ngx-cookie-service",
+    "@anyopsos/lib-angular-material",
+    "@anyopsos/lib-logger",
+    "@anyopsos/lib-user",
+    "@anyopsos/lib-modal"
+  ]
 }

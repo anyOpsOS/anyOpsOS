@@ -1,11 +1,11 @@
-import log4js, {Logger} from 'log4js';
-import {client} from 'node-vault';
+import log4js, { Logger } from 'log4js';
+import { client } from 'node-vault';
 
 // TODO ESM
-const {configure, getLogger} = log4js
+const { configure, getLogger } = log4js
 
-import {AnyOpsOSVaultModule, VaultState} from '@anyopsos/module-vault'
-import {AnyOpsOSAuthModule, User} from '@anyopsos/module-auth'
+import { AnyOpsOSVaultModule, VaultState } from '@anyopsos/module-vault'
+import { AnyOpsOSAuthModule, User } from '@anyopsos/module-auth'
 
 
 const logger: Logger = getLogger('mainLog');
@@ -18,14 +18,14 @@ export class Init {
   constructor() {
     configure({
       appenders: {
-        console: {type: 'console', level: 'trace'}
+        console: { type: 'console', level: 'trace' }
       },
       categories: {
-        default: {appenders: ['console'], level: 'trace'},
-        mainLog: {appenders: ['console'], level: 'trace'},
-        auth: {appenders: ['console'], level: 'trace'},
-        credential: {appenders: ['console'], level: 'trace'},
-        vault: {appenders: ['console'], level: 'trace'}
+        default: { appenders: ['console'], level: 'trace' },
+        mainLog: { appenders: ['console'], level: 'trace' },
+        auth: { appenders: ['console'], level: 'trace' },
+        credential: { appenders: ['console'], level: 'trace' },
+        vault: { appenders: ['console'], level: 'trace' }
       }
     });
   }

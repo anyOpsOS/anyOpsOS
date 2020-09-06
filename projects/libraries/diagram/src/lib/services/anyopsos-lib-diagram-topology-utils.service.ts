@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {AnyOpsOSLibDiagramStateService} from './anyopsos-lib-diagram-state.service';
+import { AnyOpsOSLibDiagramStateService } from './anyopsos-lib-diagram-state.service';
 
-import {Topology} from '../types/topology';
+import { Topology } from '../types/topology';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class AnyOpsOSLibDiagramTopologyUtilsService {
   }
 
   findTopologyById(subTree: Topology[], topologyId: string): Topology {
-    let foundTopology;
+    let foundTopology: Topology;
 
     subTree.forEach((topology) => {
       if (topology.id === topologyId) foundTopology = topology;

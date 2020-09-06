@@ -1,11 +1,11 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService} from '@anyopsos/lib-modal';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService } from '@anyopsos/lib-modal';
 
-import {EntryComponent} from './entry/entry.component';
-import {AnyOpsOSModalMonitorXssComponent} from './anyopsos-modal-monitor-xss.component';
+import { EntryComponent } from './entry/entry.component';
+import { AnyOpsOSModalMonitorXssComponent } from './anyopsos-modal-monitor-xss.component';
 
 @NgModule({
   declarations: [

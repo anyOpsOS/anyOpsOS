@@ -1,15 +1,15 @@
-import {Injectable, ViewContainerRef} from '@angular/core';
+import { Injectable, ViewContainerRef } from '@angular/core';
 
-import {BehaviorSubject, Observable} from 'rxjs';
-import {v4 as uuidv4} from 'uuid';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibSshConnectionsStateService, AnyOpsOSLibSshHelpersService, AnyOpsOSLibSshService} from '@anyopsos/lib-ssh';
-import {ConnectionSsh} from '@anyopsos/module-ssh';
-import {ConnectionTypes} from '@anyopsos/backend-core/app/types/connection-types';
-import {take} from 'rxjs/operators';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibSshConnectionsStateService, AnyOpsOSLibSshHelpersService, AnyOpsOSLibSshService } from '@anyopsos/lib-ssh';
+import { ConnectionSsh } from '@anyopsos/module-ssh';
+import { ConnectionTypes } from '@anyopsos/backend-core/app/types/connection-types';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -113,7 +113,7 @@ export class AnyOpsOSAppSshService {
     if (connection.uuid) {
       await this.LibSshConnectionsState.patchFullConnection(connection);
 
-    // New connection received
+      // New connection received
     } else {
       connection = {
         type: 'ssh',
@@ -140,7 +140,9 @@ export class AnyOpsOSAppSshService {
     if (!connectionUuid) connectionUuid = this.dataStore.activeConnectionUuid;
 
     const currentConnection: ConnectionSsh = this.LibSshHelpers.getConnectionByUuid(connectionUuid, 'ssh') as ConnectionSsh;
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.bodyContainer,
       {
         title: `Delete connection ${currentConnection.description}`,
         text: 'Remove the selected connection from the inventory?',
@@ -150,8 +152,7 @@ export class AnyOpsOSAppSshService {
         boxContent: 'This action is permanent. Anything using this connection as a dependency will be deleted as well.',
         boxClass: 'text-danger',
         boxIcon: 'fa-exclamation-triangle'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (result: boolean): Promise<void> => {
       if (result !== true) return;
@@ -170,7 +171,9 @@ export class AnyOpsOSAppSshService {
     const currentConnection: ConnectionSsh = this.LibSshHelpers.getConnectionByUuid(connectionUuid, 'ssh') as ConnectionSsh;
     if (currentConnection.state === 'disconnected') return this.setActiveConnectionUuid(connectionUuid);
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.bodyContainer,
       {
         title: `Edit connection ${currentConnection.description}`,
         text: 'Your connection will be disconnected before editing it. Continue?',
@@ -180,8 +183,7 @@ export class AnyOpsOSAppSshService {
         boxContent: 'Anything using this as a dependency will be disconnected.',
         boxClass: 'text-danger',
         boxIcon: 'fa-exclamation-triangle'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (result: boolean): Promise<void> => {
       if (result !== true) return;

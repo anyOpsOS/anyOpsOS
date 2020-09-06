@@ -3,11 +3,11 @@ import fs from 'fs-extra';
 import awaitSpawn from 'await-spawn';
 
 // TODO ESM
-const {blue, blueBright, red, yellow} = chalk
-const {ensureFile, pathExistsSync, ensureSymlink} = fs;
+const { blue, blueBright, red, yellow } = chalk
+const { ensureFile, pathExistsSync, ensureSymlink } = fs;
 
-import {runInDocker} from '../utils.js';
-import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants.js';
+import { runInDocker } from '../utils.js';
+import { INTERNAL_PATH_CWD, MAIN_PATH_CWD } from '../constants.js';
 
 export class Docker {
 
@@ -143,7 +143,7 @@ export class Docker {
 
       await awaitSpawn('docker', ['rm', '--force', 'anyopsos-devel']).catch((e: any) => {
         if (e.stderr) throw e.stderr.toString();
-      throw e;
+        throw e;
       });
 
     }
@@ -167,7 +167,7 @@ export class Docker {
         stdio: 'inherit'
       }).catch((e: any) => {
         if (e.stderr) throw e.stderr.toString();
-      throw e;
+        throw e;
       });
     }
 
@@ -187,7 +187,7 @@ export class Docker {
       // Create data volume
       await awaitSpawn('docker', ['volume', 'create', 'anyopsos-data']).catch((e: any) => {
         if (e.stderr) throw e.stderr.toString();
-      throw e;
+        throw e;
       });
     }
 
@@ -217,7 +217,7 @@ export class Docker {
       '-v', '/var/run/docker.sock:/var/run/docker.sock',
       '--name', 'anyopsos-devel',
       'anyopsos-devel'
-    ], {
+    ],               {
       cwd: MAIN_PATH_CWD,
       stdio: 'inherit'
     }).catch((e: any) => {

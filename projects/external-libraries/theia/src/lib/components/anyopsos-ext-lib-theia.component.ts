@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild, ViewEncapsulation} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'altheia-theia',
@@ -7,7 +7,7 @@ import {AfterViewInit, Component, ElementRef, ViewChild, ViewEncapsulation} from
   encapsulation: ViewEncapsulation.None
 })
 export class AnyOpsOSExtLibTheiaComponent implements AfterViewInit {
-  @ViewChild('theia', {static: false}) theiaRef: ElementRef;
+  @ViewChild('theia', { static: false }) theiaRef: ElementRef;
 
   ngAfterViewInit() {
     // this.runApplication(this.theiaRef.nativeElement);

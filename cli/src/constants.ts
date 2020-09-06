@@ -1,4 +1,4 @@
-import {fileURLToPath} from 'url';
+import { fileURLToPath } from 'url';
 
 // TODO HARDCODED
 export const MAIN_PATH_CWD: string = fileURLToPath(import.meta.url).replace('src/constants.js', '');

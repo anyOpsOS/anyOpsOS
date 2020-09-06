@@ -1,15 +1,15 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {CookieService} from 'ngx-cookie-service';
+import { CookieService } from 'ngx-cookie-service';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibUserService} from '@anyopsos/lib-user';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {VaultState} from '@anyopsos/module-vault';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibUserService } from '@anyopsos/lib-user';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { VaultState } from '@anyopsos/module-vault';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSLibBootstrapService} from '../services/anyopsos-lib-bootstrap.service';
+import { AnyOpsOSLibBootstrapService } from '../services/anyopsos-lib-bootstrap.service';
 
 @Component({
   selector: 'albp-root',

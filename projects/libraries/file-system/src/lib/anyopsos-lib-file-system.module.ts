@@ -1,12 +1,12 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 
-import {AnyOpsOSLibFileSystemUiModule} from '@anyopsos/lib-file-system-ui';
-import {AnyOpsOSLibWorkspaceModule} from '@anyopsos/lib-workspace';
-import {AnyOpsOSLibModalModule} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibApplicationModule} from '@anyopsos/lib-application';
+import { AnyOpsOSLibFileSystemUiModule } from '@anyopsos/lib-file-system-ui';
+import { AnyOpsOSLibWorkspaceModule } from '@anyopsos/lib-workspace';
+import { AnyOpsOSLibModalModule } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibApplicationModule } from '@anyopsos/lib-application';
 
-import {AnyOpsOSLibFileSystemService} from './services/anyopsos-lib-file-system.service';
-import {AnyOpsOSLibFileSystemFileHandlersService} from './services/anyopsos-lib-file-system-file-handlers.service';
+import { AnyOpsOSLibFileSystemService } from './services/anyopsos-lib-file-system.service';
+import { AnyOpsOSLibFileSystemFileHandlersService } from './services/anyopsos-lib-file-system-file-handlers.service';
 
 @NgModule({
   declarations: [],
@@ -25,8 +25,8 @@ export class AnyOpsOSLibFileSystemModule {
     console.log('Loading AnyOpsOSLibFileSystemModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibFileSystemModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibFileSystemModule is already loaded. You should not import it manually.');
     }
 
     // This allows to manage local file and folders

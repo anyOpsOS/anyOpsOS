@@ -1,6 +1,6 @@
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {AnyOpsOSLibSelectableService} from './services/anyopsos-lib-selectable.service';
+import { AnyOpsOSLibSelectableService } from './services/anyopsos-lib-selectable.service';
 
 @NgModule({
   declarations: [],

@@ -1,4 +1,4 @@
-import {KubeObject} from './kube-object';
+import { KubeObject } from './kube-object';
 import { KubeObjectMetadata } from './kube-object-metadata';
 
 export interface WorkloadKubeObject extends KubeObject {

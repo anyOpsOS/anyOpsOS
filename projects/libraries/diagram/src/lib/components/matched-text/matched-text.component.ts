@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, SimpleChanges } from '@angular/core';
 
-import {flatMap, compact} from 'lodash-es';
+import { flatMap, compact } from 'lodash-es';
 
 @Component({
   selector: 'aldiagram-matched-text',
@@ -9,6 +9,10 @@ import {flatMap, compact} from 'lodash-es';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MatchedTextComponent implements OnInit {
+
+  constructor() {
+
+  }
   @Input() readonly text: string = '';
   @Input() private readonly matches: string[] = [];
 
@@ -17,8 +21,16 @@ export class MatchedTextComponent implements OnInit {
     matched: boolean;
   }[];
 
-  constructor() {
+  private static intersperse(arr, obj) {
+    if (!arr.length) return [];
+    if (arr.length === 1) return arr.slice(0);
 
+    const items = [arr[0]];
+    for (let i = 1, len = arr.length; i < len; ++i) {
+      items.push(obj, arr[i]);
+    }
+
+    return items;
   }
 
   ngOnInit(): void {
@@ -43,7 +55,7 @@ export class MatchedTextComponent implements OnInit {
 
   // Splits the text into chunks by finding all occurences of all matches in the list.
   private buildChunks = (text, matches) => {
-    let chunks = [{matched: false, text}];
+    let chunks = [{ matched: false, text }];
     matches.forEach(match => {
       chunks = flatMap(
         chunks,
@@ -53,17 +65,5 @@ export class MatchedTextComponent implements OnInit {
     });
     return chunks;
   };
-
-  private static intersperse(arr, obj) {
-    if (!arr.length) return [];
-    if (arr.length === 1) return arr.slice(0);
-
-    const items = [arr[0]];
-    for (let i = 1, len = arr.length; i < len; ++i) {
-      items.push(obj, arr[i]);
-    }
-
-    return items;
-  }
 
 }

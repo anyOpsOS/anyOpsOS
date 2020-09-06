@@ -1,8 +1,8 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 
-import {MAT_DIALOG_DATA, MatDialogRef} from '@anyopsos/lib-angular-material';
-import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@anyopsos/lib-angular-material';
+import { BodyComponent, ModalData } from '@anyopsos/lib-modal';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
 @Component({
   selector: 'amkubernetes-scale-resource-anyopsos-modal-kubernetes-scale-resource',
@@ -10,7 +10,7 @@ import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
   styleUrls: ['./anyopsos-modal-kubernetes-scale-resource.component.scss']
 })
 export class AnyOpsOSModalKubernetesScaleResourceComponent implements OnInit {
-  @ViewChild('modalBody', {static: true}) modalBody: BodyComponent;
+  @ViewChild('modalBody', { static: true }) modalBody: BodyComponent;
 
   object: DataObject;
 

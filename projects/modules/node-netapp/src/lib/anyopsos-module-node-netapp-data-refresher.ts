@@ -1,12 +1,12 @@
 import socketControllers from 'socket-controllers';
 
 // TODO ESM
-const {getSocketIO} = socketControllers;
+const { getSocketIO } = socketControllers;
 
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
-import {NETAPP_CONFIG_FILE} from './anyopsos-module-node-netapp.constants';
+import { NETAPP_CONFIG_FILE } from './anyopsos-module-node-netapp.constants';
 
 export class AnyOpsOSNodeNetappDataRefresherModule {
 
@@ -79,7 +79,7 @@ export class AnyOpsOSNodeNetappDataRefresherModule {
     };
 
     const objectUuid: string = `${this.connectionUuid}#netapp;\u003c${object.name}:${object.type}\u003e`;
-    const newObj: DataObject ={
+    const newObj: DataObject = {
       name,
       type: obj.type,
       info: {

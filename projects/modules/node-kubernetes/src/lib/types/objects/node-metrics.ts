@@ -1,4 +1,4 @@
-import {Metrics} from './metrics';
+import { Metrics } from './metrics';
 
 export interface NodeMetrics<T = Metrics> {
   [metric: string]: T;

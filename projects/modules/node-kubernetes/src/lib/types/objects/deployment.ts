@@ -1,5 +1,5 @@
-import {WorkloadKubeObject} from './workload-kube-object';
-import {Affinity} from './affinity';
+import { WorkloadKubeObject } from './workload-kube-object';
+import { Affinity } from './affinity';
 
 export interface Deployment extends WorkloadKubeObject {
   kind: 'Deployment';

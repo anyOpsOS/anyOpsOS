@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Socket} from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
-import {ConnectionVmware} from '@anyopsos/module-node-vmware';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibWorkspaceService } from '@anyopsos/lib-workspace';
+import { ConnectionVmware } from '@anyopsos/module-node-vmware';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSLibNodeVmwareConnectionsStateService} from './anyopsos-lib-node-vmware-connections-state.service';
-import {AnyOpsOSLibNodeVmwareHelpersService} from './anyopsos-lib-node-vmware-helpers.service';
+import { AnyOpsOSLibNodeVmwareConnectionsStateService } from './anyopsos-lib-node-vmware-connections-state.service';
+import { AnyOpsOSLibNodeVmwareHelpersService } from './anyopsos-lib-node-vmware-helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -46,24 +46,26 @@ export class AnyOpsOSLibNodeVmwareService {
     return new Promise((resolve, reject) => {
 
       // Create new Vmware session
-      this.socket.emit('[vmware-session]', {
-        connectionUuid: connection.uuid,
-        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (data: BackendResponse) => {
+      this.socket.emit('[vmware-session]',
+                       {
+                        connectionUuid: connection.uuid,
+                        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
+                       },
+                       async (data: BackendResponse) => {
 
-        if (data.status === 'error') {
-          this.logger.error('LibNodeVmware', 'Error while emitting [vmware-session]', loggerArgs, data.data);
-          await this.LibNodeVmwareConnectionsState.patchConnection(connection.uuid, 'error', data.data);
+                        if (data.status === 'error') {
+                          this.logger.error('LibNodeVmware', 'Error while emitting [vmware-session]', loggerArgs, data.data);
+                          await this.LibNodeVmwareConnectionsState.patchConnection(connection.uuid, 'error', data.data);
 
-          return reject(data.data);
-        }
+                          return reject(data.data);
+                        }
 
-        // Set connection state as connected and remove any previous errors
-        await this.LibNodeVmwareConnectionsState.patchConnection(connection.uuid, 'state', 'connected');
-        await this.LibNodeVmwareConnectionsState.patchConnection(connection.uuid, 'error', null);
+                        // Set connection state as connected and remove any previous errors
+                        await this.LibNodeVmwareConnectionsState.patchConnection(connection.uuid, 'state', 'connected');
+                        await this.LibNodeVmwareConnectionsState.patchConnection(connection.uuid, 'error', null);
 
-        return resolve();
-      });
+                        return resolve();
+                       });
     });
   }
 
@@ -79,24 +81,26 @@ export class AnyOpsOSLibNodeVmwareService {
       const currentConnection: ConnectionVmware = await this.LibNodeVmwarehHelpers.getConnectionByUuid(connectionUuid);
       if (currentConnection.state === 'disconnected') throw new Error('already_disconnected');
 
-      this.socket.emit('[vmware-disconnect]', {
-        connectionUuid,
-        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (data: BackendResponse) => {
+      this.socket.emit('[vmware-disconnect]',
+                       {
+                        connectionUuid,
+                        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
+                       },
+                       async (data: BackendResponse) => {
 
-        if (data.status === 'error') {
-          this.logger.error('LibNodeVmware', 'Error while emitting [vmware-disconnect]', loggerArgs, data.data);
-          await this.LibNodeVmwareConnectionsState.patchConnection(connectionUuid, 'error', data.data);
+                        if (data.status === 'error') {
+                          this.logger.error('LibNodeVmware', 'Error while emitting [vmware-disconnect]', loggerArgs, data.data);
+                          await this.LibNodeVmwareConnectionsState.patchConnection(connectionUuid, 'error', data.data);
 
-          return reject(data.data);
-        }
+                          return reject(data.data);
+                        }
 
-        // Set connection state as connected and remove any previous errors
-        await this.LibNodeVmwareConnectionsState.patchConnection(connectionUuid, 'state', 'disconnected');
-        await this.LibNodeVmwareConnectionsState.patchConnection(connectionUuid, 'error', null);
+                        // Set connection state as connected and remove any previous errors
+                        await this.LibNodeVmwareConnectionsState.patchConnection(connectionUuid, 'state', 'disconnected');
+                        await this.LibNodeVmwareConnectionsState.patchConnection(connectionUuid, 'error', null);
 
-        return resolve();
-      });
+                        return resolve();
+                      });
     });
   }
 

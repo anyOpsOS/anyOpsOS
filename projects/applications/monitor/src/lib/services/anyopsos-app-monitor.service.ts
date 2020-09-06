@@ -1,16 +1,16 @@
-import {Injectable, ViewContainerRef} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable, ViewContainerRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {BehaviorSubject, Observable} from 'rxjs';
-import {v4 as uuidv4} from 'uuid';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {AnyOpsOSExtLibNetdataService} from '@anyopsos/ext-lib-netdata';
-import {ConnectionMonitor} from '@anyopsos/module-monitor';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibFileSystemService } from '@anyopsos/lib-file-system';
+import { AnyOpsOSExtLibNetdataService } from '@anyopsos/ext-lib-netdata';
+import { ConnectionMonitor } from '@anyopsos/module-monitor';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 // TODO extract it from '@anyopsos/module-monitor'
 const MONITOR_CONFIG_FILE = 'monitor.json';
@@ -182,8 +182,8 @@ export class AnyOpsOSAppMonitorService {
       this.LibModal.closeModal('.window--monitor .window__main');
       this.setActiveConnectionUuid(connection.uuid);
 
-    // TODO: race/catch condition on saveConnection() this will not work if connection info not exists on backend
-    // Internal or Netdata with credentials connection
+      // TODO: race/catch condition on saveConnection() this will not work if connection info not exists on backend
+      // Internal or Netdata with credentials connection
     } else {
 
       this.http.get(`/api/monitor/connect/${connection.uuid}/${connection.type}`).subscribe(
@@ -245,7 +245,9 @@ export class AnyOpsOSAppMonitorService {
 
     const configFile = 'applications/monitor/config.json';
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.bodyContainer,
       {
         title: `Delete connection ${this.getConnectionByUuid(connectionUuid).description}`,
         text: 'Remove the selected connection from the inventory?',
@@ -255,8 +257,7 @@ export class AnyOpsOSAppMonitorService {
         boxContent: 'This action is permanent. Anything using this connection as a dependency will be deleted as well.',
         boxClass: 'text-danger',
         boxIcon: 'fa-exclamation-triangle'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (result: boolean): Promise<void> => {
       if (result !== true) return;
@@ -267,19 +268,19 @@ export class AnyOpsOSAppMonitorService {
       this.setActiveConnectionUuid(null);
 
       this.LibFileSystem.deleteConfigFile(configFile, connectionUuid).subscribe(
-      () => {
-        this.dataStore.connections = this.dataStore.connections.filter((connection) => {
-          return connection.uuid !== connectionUuid;
+        () => {
+          this.dataStore.connections = this.dataStore.connections.filter((connection) => {
+            return connection.uuid !== connectionUuid;
+          });
+
+          // broadcast data to subscribers
+          this.$connections.next(Object.assign({}, this.dataStore).connections);
+
+          this.logger.debug('Monitor', 'Connection deleted successfully');
+        },
+        error => {
+          this.logger.error('Monitor', 'Error while deleting connection', null, error);
         });
-
-        // broadcast data to subscribers
-        this.$connections.next(Object.assign({}, this.dataStore).connections);
-
-        this.logger.debug('Monitor', 'Connection deleted successfully');
-      },
-      error => {
-        this.logger.error('Monitor', 'Error while deleting connection', null, error);
-      });
 
     });
   }
@@ -289,7 +290,9 @@ export class AnyOpsOSAppMonitorService {
 
     if (this.getConnectionByUuid(connectionUuid).state === 'disconnected') return this.setActiveConnectionUuid(connectionUuid);
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.bodyContainer,
       {
         title: `Edit connection ${this.getConnectionByUuid(connectionUuid).description}`,
         text: 'Your connection will be disconnected before editing it. Continue?',
@@ -299,8 +302,7 @@ export class AnyOpsOSAppMonitorService {
         boxContent: 'Anything using this as a dependency will be disconnected.',
         boxClass: 'text-danger',
         boxIcon: 'fa-exclamation-triangle'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (result: boolean): Promise<void> => {
       if (result !== true) return;

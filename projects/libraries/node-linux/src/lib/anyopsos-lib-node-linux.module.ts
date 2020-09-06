@@ -1,12 +1,12 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 
-import {AnyOpsOSLibBootstrapService} from '@anyopsos/lib-bootstrap';
+import { AnyOpsOSLibBootstrapService } from '@anyopsos/lib-bootstrap';
 
-import {AnyOpsOSLibNodeLinuxService} from './services/anyopsos-lib-node-linux.service';
-import {AnyOpsOSLibNodeLinuxApiService} from './services/anyopsos-lib-node-linux-api.service';
-import {AnyOpsOSLibNodeLinuxHelpersService} from './services/anyopsos-lib-node-linux-helpers.service';
-import {AnyOpsOSLibNodeLinuxConnectionsStateService} from './services/anyopsos-lib-node-linux-connections-state.service';
-import {AnyOpsOSLibNodeLinuxFileSystemHandlersService} from './services/anyopsos-lib-node-linux-file-system-handlers.service';
+import { AnyOpsOSLibNodeLinuxService } from './services/anyopsos-lib-node-linux.service';
+import { AnyOpsOSLibNodeLinuxApiService } from './services/anyopsos-lib-node-linux-api.service';
+import { AnyOpsOSLibNodeLinuxHelpersService } from './services/anyopsos-lib-node-linux-helpers.service';
+import { AnyOpsOSLibNodeLinuxConnectionsStateService } from './services/anyopsos-lib-node-linux-connections-state.service';
+import { AnyOpsOSLibNodeLinuxFileSystemHandlersService } from './services/anyopsos-lib-node-linux-file-system-handlers.service';
 
 @NgModule({
   declarations: [],
@@ -22,8 +22,8 @@ export class AnyOpsOSLibNodeLinuxModule {
     console.log('Loading AnyOpsOSLibNodeLinuxModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibNodeLinuxModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibNodeLinuxModule is already loaded. You should not import it manually.');
     }
 
     // Initialize connections when user is loggedIn

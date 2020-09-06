@@ -8,7 +8,6 @@
     "@anyopsos/lib-angular-material",
     "@anyopsos/lib-application",
     "@anyopsos/lib-file",
-    "@anyopsos/lib-file-system",
     "@anyopsos/lib-file-system-ui",
     "@anyopsos/lib-logger",
     "@anyopsos/lib-pipes",

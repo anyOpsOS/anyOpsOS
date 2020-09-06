@@ -1,14 +1,14 @@
 import socketControllers from 'socket-controllers';
-import {Readable, Writable} from 'stream';
-import {ClientChannel} from 'ssh2';
+import { Readable, Writable } from 'stream';
+import { ClientChannel } from 'ssh2';
 
 // TODO ESM
-const {getSocketIO} = socketControllers;
+const { getSocketIO } = socketControllers;
 
-import {AnyOpsOSTerminalSessionStateModule} from './anyopsos-module-terminal-session-state';
-import {TerminalTypes} from './types/terminal-types';
-import {TerminalMap} from './types/terminal-map';
-import {Socket} from 'socket.io';
+import { AnyOpsOSTerminalSessionStateModule } from './anyopsos-module-terminal-session-state';
+import { TerminalTypes } from './types/terminal-types';
+import { TerminalMap } from './types/terminal-map';
+import { Socket } from 'socket.io';
 
 export class AnyOpsOSTerminalModule {
 
@@ -51,13 +51,13 @@ export class AnyOpsOSTerminalModule {
 
       currentTerminal.terminal.stream.stderr.on('data', (chunk: Buffer | string) => this.terminalStout(terminalUuid, chunk.toString()));
       currentTerminal.terminal.stream.on('data', (data: Buffer | string) => this.terminalStout(terminalUuid, data.toString()));
-      currentTerminal.terminal.stream.on('close', (code: number | null, signal: string) => this.deleteTerminal(terminalUuid, {code, signal}));
+      currentTerminal.terminal.stream.on('close', (code: number | null, signal: string) => this.deleteTerminal(terminalUuid, { code, signal }));
     }
 
     if (stdout) {
       currentTerminal.terminal.stdout = stdout;
 
-      currentTerminal.terminal.stdout.on('close', (code: number | null, signal: string) => this.deleteTerminal(terminalUuid, {code, signal}));
+      currentTerminal.terminal.stdout.on('close', (code: number | null, signal: string) => this.deleteTerminal(terminalUuid, { code, signal }));
     }
 
     if (stdin) {

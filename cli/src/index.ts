@@ -2,17 +2,18 @@ import chalk from 'chalk';
 import yargs from 'yargs';
 
 // TODO ESM
-const {blueBright, green} = chalk
+const { blueBright, green } = chalk
 
-import {Builders} from './commands/builders.js';
-import {Linters} from './commands/linters.js';
-import {Generators} from './commands/generators.js';
-import {Docker} from './commands/docker.js';
-import {Watcher} from './commands/watcher.js';
-import {swagger} from './swagger-generator/index.js';
-import {Types} from './types/types.js';
-import {runInDocker} from './utils.js';
+import { Builders } from './commands/builders.js';
+import { Linters } from './commands/linters.js';
+import { Generators } from './commands/generators.js';
+import { Docker } from './commands/docker.js';
+import { Watcher } from './commands/watcher.js';
+import { Swagger } from './swagger-generator/index.js';
+import { Types } from './types/types.js';
+import { runInDocker } from './utils.js';
 
+// tslint:disable-next-line: class-name
 export class anyOpsOS {
 
   constructor() {
@@ -28,7 +29,7 @@ export class anyOpsOS {
         handler: async () => {
           try {
 
-            await new Docker().prepare({force: true});
+            await new Docker().prepare({ force: true });
             await new Docker().download();
             await new Docker().certificate();
             await new Docker().k8s();
@@ -70,6 +71,7 @@ export class anyOpsOS {
         handler: async () => {
           try {
 
+            // tslint:disable-next-line: max-line-length
             return runInDocker('stmux -w always -e ERROR -m beep,system -- [ [ "node .dist/cli/bin/anyopsos.js docker logs" .. "node .dist/cli/bin/anyopsos.js watch" ] : -s 1/3 [ -s 6/10 -f "bash" .. [ "kubectl get pods -w" : "docker stats --all --format \'table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}\t{{.BlockIO}}\'" ] ] ]');
 
           } catch (err) {
@@ -239,7 +241,7 @@ export class anyOpsOS {
             if (argv.type === 'all') return new Builders().buildAll();
             if (argv.type === 'module') return new Builders().buildBackendTypes(argv);
             if (argv.type === 'api-middleware') return new Builders().buildBackendTypes(argv);
-            if (argv.type === 'api') return new Builders().buildBackendTypes(argv).then(async () => await new swagger().createSwaggerFiles());
+            if (argv.type === 'api') return new Builders().buildBackendTypes(argv).then(async () => new Swagger().createSwaggerFiles());
             if (argv.type === 'websocket') return new Builders().buildBackendTypes(argv);
             if (argv.type === 'backend') return new Builders().buildBackend();
             if (argv.type === 'frontend') return new Builders().buildFrontend();
@@ -249,7 +251,7 @@ export class anyOpsOS {
             if (argv.type === 'modal') return new Builders().buildFrontendTypes(argv);
             if (argv.type === 'cli') return new Builders().buildCli();
           } catch (err) {
-            console.trace(err);
+            console.log(err);
             process.exit(1);
           }
         }

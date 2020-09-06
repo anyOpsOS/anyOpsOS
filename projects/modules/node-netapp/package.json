@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "src/index.ts",
   "dependencies": {
+    "fs-extra": "^9.0.1",
     "log4js": "^6.1.1",
     "node-fetch": "^2.6.0",
     "socket-controllers": "https://github.com/anyOpsOS/socket-controllers.git#build",
@@ -10,12 +11,15 @@
     "xml2js": "^0.4.23"
   },
   "peerDependencies": {
-    "@anyopsos/backend-core": "~0.0.1",
     "@anyopsos/module-config-file": "~0.0.1",
+    "@anyopsos/module-credential": "~0.0.1",
+    "@anyopsos/module-sys-get-path": "~0.0.1",
     "@anyopsos/module-sys-workspace": "~0.0.1",
-    "@anyopsos/module-credentia": "~0.0.1"
+    "@anyopsos/module-credentia": "~0.0.1",
+    "@anyopsos/sdk-netapp": "~0.0.1"
   },
   "devDependencies": {
+    "@anyopsos/backend-core": "~0.0.1",
     "@types/node": "^14.0.27",
     "@types/node-fetch": "^2.5.5",
     "@types/xml2js": "^0.4.5",

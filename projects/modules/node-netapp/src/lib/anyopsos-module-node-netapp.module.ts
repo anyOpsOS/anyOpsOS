@@ -1,24 +1,24 @@
 import socketControllers from 'socket-controllers';
-import fetch, {Response} from 'node-fetch';
+import fetch, { Response } from 'node-fetch';
 import xml2js from 'xml2js';
 
 // TODO ESM
-const {getSocketIO} = socketControllers;
-const {parseStringPromise} = xml2js;
+const { getSocketIO } = socketControllers;
+const { parseStringPromise } = xml2js;
 
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSNodeNetappSessionStateModule} from './anyopsos-module-node-netapp-session-state';
-import {AnyOpsOSNodeNetappDataRefresherModule} from './anyopsos-module-node-netapp-data-refresher';
+import { AnyOpsOSNodeNetappSessionStateModule } from './anyopsos-module-node-netapp-session-state';
+import { AnyOpsOSNodeNetappDataRefresherModule } from './anyopsos-module-node-netapp-data-refresher';
 
-import {ConnectionNetapp} from './types/connection-netapp';
-import {ConnectionNetappServer} from './types/connection-netapp-server';
+import { ConnectionNetapp } from './types/connection-netapp';
+import { ConnectionNetappServer } from './types/connection-netapp-server';
 
-import {NETAPP_SOAP_COOKIE, NETAPP_CONFIG_FILE} from './anyopsos-module-node-netapp.constants';
+import { NETAPP_SOAP_COOKIE, NETAPP_CONFIG_FILE } from './anyopsos-module-node-netapp.constants';
 
-import {parseNetAppObject, setDynamicProperties} from './anyopsos-module-node-netapp-sdk-helpers';
-import {NetappSdkFunctions, NetappSdkVfilerFunctions, NetappSdkFunctionsInput, NetappSdkVfilerFunctionsInput, NetappSdkFunctionsOutput, NetappSdkVfilerFunctionsOutput} from '@anyopsos/sdk-netapp';
+import { parseNetAppObject, setDynamicProperties } from './anyopsos-module-node-netapp-sdk-helpers';
+import { NetappSdkFunctions, NetappSdkVfilerFunctions, NetappSdkFunctionsInput, NetappSdkVfilerFunctionsInput, NetappSdkFunctionsOutput, NetappSdkVfilerFunctionsOutput } from '@anyopsos/sdk-netapp';
 
 
 export class AnyOpsOSNodeNetappModule {
@@ -46,7 +46,7 @@ export class AnyOpsOSNodeNetappModule {
       const connectionData: ConnectionNetapp = await this.NetappSessionStateModule.getConnection();
 
       const systemVersionResult: NetappSdkFunctionsOutput<'system-get-version'> = await this.callSoapApi('system-get-version', {});
-      if (systemVersionResult.status === 'error') throw {error: systemVersionResult.data, description: 'Failed to get NetApp System Version'};
+      if (systemVersionResult.status === 'error') throw { error: systemVersionResult.data, description: 'Failed to get NetApp System Version' };
 
       connectionData.data.Base = {
         ...connectionData.data.Base,
@@ -66,13 +66,13 @@ export class AnyOpsOSNodeNetappModule {
         this.callSoapApi('license-v2-status-list-info', {}),
         this.callSoapApi('system-get-ontapi-version', {}),
       ]).then((res) => {
-        if (res[0].status === 'error') throw {error: res[0].data, description: 'Failed to get NetApp Network Interfaces'};
-        if (res[1].status === 'error') throw {error: res[0].data, description: 'Failed to get NetApp FCP Interfaces'};
-        if (res[2].status === 'error') throw {error: res[0].data, description: 'Failed to get NetApp FCP Adapters'};
-        if (res[3].status === 'error') throw {error: res[0].data, description: 'Failed to get NetApp Metrocluster data'};
-        if (res[4].status === 'error') throw {error: res[0].data, description: 'Failed to get NetApp Cluster Identity'};
-        if (res[5].status === 'error') throw {error: res[0].data, description: 'Failed to get NetApp Licenses'};
-        if (res[6].status === 'error') throw {error: res[0].data, description: 'Failed to get NetApp Ontapi Version'};
+        if (res[0].status === 'error') throw { error: res[0].data, description: 'Failed to get NetApp Network Interfaces' };
+        if (res[1].status === 'error') throw { error: res[0].data, description: 'Failed to get NetApp FCP Interfaces' };
+        if (res[2].status === 'error') throw { error: res[0].data, description: 'Failed to get NetApp FCP Adapters' };
+        if (res[3].status === 'error') throw { error: res[0].data, description: 'Failed to get NetApp Metrocluster data' };
+        if (res[4].status === 'error') throw { error: res[0].data, description: 'Failed to get NetApp Cluster Identity' };
+        if (res[5].status === 'error') throw { error: res[0].data, description: 'Failed to get NetApp Licenses' };
+        if (res[6].status === 'error') throw { error: res[0].data, description: 'Failed to get NetApp Ontapi Version' };
 
         connectionData.data.Base.metroCluster = res[3].data;
         connectionData.data.Base.cluster = res[4].data;
@@ -102,11 +102,11 @@ export class AnyOpsOSNodeNetappModule {
           this.callSoapApi('qtree-list-iter', {})
         ]);
       }).then(res => {
-        if (res[0].status === 'error') throw {error: res[0].data, description: 'Failed to get NetApp Vservers'};
-        if (res[1].status === 'error') throw {error: res[0].data, description: 'Failed to get NetApp Volumes'};
-        if (res[2].status === 'error') throw {error: res[0].data, description: 'Failed to get NetApp Luns'};
-        if (res[3].status === 'error') throw {error: res[0].data, description: 'Failed to get NetApp Snapshots'};
-        if (res[4].status === 'error') throw {error: res[0].data, description: 'Failed to get NetApp Qtrees'};
+        if (res[0].status === 'error') throw { error: res[0].data, description: 'Failed to get NetApp Vservers' };
+        if (res[1].status === 'error') throw { error: res[0].data, description: 'Failed to get NetApp Volumes' };
+        if (res[2].status === 'error') throw { error: res[0].data, description: 'Failed to get NetApp Luns' };
+        if (res[3].status === 'error') throw { error: res[0].data, description: 'Failed to get NetApp Snapshots' };
+        if (res[4].status === 'error') throw { error: res[0].data, description: 'Failed to get NetApp Qtrees' };
 
         this.NetappDataRefresherModule.parseObjects('vserver', res[0].data);
         this.NetappDataRefresherModule.parseObjects('volume', res[1].data);
@@ -135,7 +135,7 @@ export class AnyOpsOSNodeNetappModule {
          */
       });
 
-      return {status: 'ok', data: 'connected'} as BackendResponse;
+      return { status: 'ok', data: 'connected' } as BackendResponse;
 
     }).catch((e: Error) => {
       throw e;
@@ -149,7 +149,7 @@ export class AnyOpsOSNodeNetappModule {
 
     return this.NetappSessionStateModule.disconnectSession().then(() => {
 
-      return {status: 'ok', data: 'disconnected'} as BackendResponse;
+      return { status: 'ok', data: 'disconnected' } as BackendResponse;
 
     }).catch((e: Error) => {
       throw e;
@@ -194,16 +194,16 @@ export class AnyOpsOSNodeNetappModule {
       body: '<?xml version=\'1.0\' encoding=\'utf-8\' ?><!DOCTYPE netapp SYSTEM \'file:/etc/netapp_filer.dtd\'>' + xml,
       headers: requestHeaders
     })
-    .then((res: Response) => res.text())
-    .then(async (res: any) => {
+      .then((res: Response) => res.text())
+      .then(async (res: any) => {
 
-      return parseStringPromise(res);
+        return parseStringPromise(res);
 
-    }).then((resultAsXml) => {
+      }).then((resultAsXml) => {
 
-      return parseNetAppObject(resultAsXml['soapenv:Envelope']['soapenv:Body'][0]);
+        return parseNetAppObject(resultAsXml['soapenv:Envelope']['soapenv:Body'][0]);
 
-    }).catch(e => e);
+      }).catch(e => e);
 
   }
 

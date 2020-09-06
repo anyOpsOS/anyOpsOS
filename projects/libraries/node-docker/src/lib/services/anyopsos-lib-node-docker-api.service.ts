@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
 
 @Injectable({
   providedIn: 'root'

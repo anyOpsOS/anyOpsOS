@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {merge} from 'lodash-es';
+import { merge } from 'lodash-es';
 
-import {AnyOpsOSLibDiagramStateService} from './anyopsos-lib-diagram-state.service';
-import {AnyOpsOSLibDiagramTopologyUtilsService} from './anyopsos-lib-diagram-topology-utils.service';
-import {Node} from '../types/node';
-import {Topology} from '../types/topology';
-import {TopologyOption} from '../types/topology-option';
+import { AnyOpsOSLibDiagramStateService } from './anyopsos-lib-diagram-state.service';
+import { AnyOpsOSLibDiagramTopologyUtilsService } from './anyopsos-lib-diagram-topology-utils.service';
+import { Node } from '../types/node';
+import { Topology } from '../types/topology';
+import { TopologyOption } from '../types/topology-option';
 
 @Injectable({
   providedIn: 'root'
@@ -76,12 +76,12 @@ export class AnyOpsOSLibDiagramInitializerService {
   }
 
   getDefaultTopologyOptions(): { [key: string]: string; }[] {
-    let topologyOptions: { [key: string]: string; }[] = [];
+    const topologyOptions: { [key: string]: string; }[] = [];
 
     const topologies: Topology[] = this.LibDiagramState.$topologies.getValue();
 
     topologies.forEach((topology: Topology) => {
-      let defaultOptions: { [key: string]: string; }[] = [];
+      const defaultOptions: { [key: string]: string; }[] = [];
 
       if (topology.options) {
 
@@ -139,7 +139,7 @@ export class AnyOpsOSLibDiagramInitializerService {
 
     const immNextTopologies: Topology[] = topologiesWithFullnames.sort((a, b) => {
       if (a.rank < b.rank) return -1;
-      if (a.rank > b.rank)return 1;
+      if (a.rank > b.rank) return 1;
       return 0;
     });
 
@@ -151,13 +151,13 @@ export class AnyOpsOSLibDiagramInitializerService {
     return topologies.map((t) => {
 
       if (!t.sub_topologies) {
-        return Object.assign({}, t, {fullName: t.name});
+        return Object.assign({}, t, { fullName: t.name });
       }
 
       return Object.assign({}, t, {
         fullName: t.name,
         sub_topologies: t.sub_topologies.map(st => (
-          Object.assign({}, st, {fullName: `${t.name} ${st.name}`})
+          Object.assign({}, st, { fullName: `${t.name} ${st.name}` })
         ))
       });
 
@@ -175,7 +175,7 @@ export class AnyOpsOSLibDiagramInitializerService {
     };
 
     if (topology.sub_topologies) {
-      result.sub_topologies = topology.sub_topologies.map((topology: Topology) => this.calcSelectType(topology));
+      result.sub_topologies = topology.sub_topologies.map((top: Topology) => this.calcSelectType(top));
     }
 
     return result;

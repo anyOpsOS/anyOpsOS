@@ -1,5 +1,5 @@
-import {Terminal as xtermTerminal} from 'xterm';
-import {FitAddon} from 'xterm-addon-fit';
+import { Terminal as xtermTerminal } from 'xterm';
+import { FitAddon } from 'xterm-addon-fit';
 
 export interface Terminal {
   workspaceUuid: string;

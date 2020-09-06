@@ -7,7 +7,8 @@
   },
   "peerDependencies": {
     "@anyopsos/module-api-globals": "~0.0.1",
-    "@anyopsos/module-file-system": "~0.0.1"
+    "@anyopsos/module-file-system": "~0.0.1",
+    "@anyopsos/module-ssh": "~0.0.1"
   },
   "devDependencies": {
     "@anyopsos/backend-core": "~0.0.1",

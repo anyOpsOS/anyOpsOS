@@ -1,4 +1,4 @@
-import {CredentialTypes} from './credential-types';
+import { CredentialTypes } from './credential-types';
 
 export interface Credential {
   uuid: string;

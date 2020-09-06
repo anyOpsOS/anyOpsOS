@@ -1,14 +1,14 @@
-import {Injectable, ViewContainerRef} from '@angular/core';
+import { Injectable, ViewContainerRef } from '@angular/core';
 
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibFileSystemUiService, CutCopyFile, SendFileExchange} from '@anyopsos/lib-file-system-ui';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {ConnectionVmware} from '@anyopsos/module-node-vmware';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibFileSystemUiService, CutCopyFile, SendFileExchange } from '@anyopsos/lib-file-system-ui';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { ConnectionVmware } from '@anyopsos/module-node-vmware';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
 
-import {AnyOpsOSLibNodeVmwareFileSystemService} from './anyopsos-lib-node-vmware-file-system.service';
+import { AnyOpsOSLibNodeVmwareFileSystemService } from './anyopsos-lib-node-vmware-file-system.service';
 
 @Injectable({
   providedIn: 'root'
@@ -55,13 +55,14 @@ export class AnyOpsOSLibNodeVmwareFileSystemHandlersService {
 
         return new Promise(async (resolve, reject) => {
 
-          const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('input', data.viewContainerRef,
-            {
-              title: 'Create new folder',
-              buttonText: 'Create',
-              inputPlaceholder: 'Folder name',
-              inputValue: 'NewFolder'
-            }
+          const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('input',
+                                                                                           data.viewContainerRef,
+                                                                                           {
+                                                                                            title: 'Create new folder',
+                                                                                            buttonText: 'Create',
+                                                                                            inputPlaceholder: 'Folder name',
+                                                                                            inputValue: 'NewFolder'
+                                                                                           }
           );
 
           modalInstance.afterClosed().subscribe((folderName: string) => {
@@ -93,13 +94,14 @@ export class AnyOpsOSLibNodeVmwareFileSystemHandlersService {
 
         return new Promise(async (resolve, reject) => {
 
-          const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('input', data.viewContainerRef,
-            {
-              title: 'Rename file',
-              buttonText: 'Rename',
-              inputPlaceholder: 'File name',
-              inputValue: data.file.fileName
-            }
+          const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('input',
+                                                                                           data.viewContainerRef,
+                                                                                           {
+                                                                                            title: 'Rename file',
+                                                                                            buttonText: 'Rename',
+                                                                                            inputPlaceholder: 'File name',
+                                                                                            inputValue: data.file.fileName
+                                                                                           }
           );
 
           modalInstance.afterClosed().subscribe((fileName: string) => {
@@ -131,17 +133,18 @@ export class AnyOpsOSLibNodeVmwareFileSystemHandlersService {
 
         return new Promise(async (resolve, reject) => {
 
-          const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', data.viewContainerRef,
-            {
-              title: `Delete file ${data.file.fileName}`,
-              text: `Delete ${data.file.fileName} from ${data.connection.host} Server?`,
-              yes: 'Delete',
-              yesClass: 'warn',
-              no: 'Cancel',
-              boxContent: 'This action is permanent.',
-              boxClass: 'text-danger',
-              boxIcon: 'fa-exclamation-triangle'
-            }
+          const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question',
+                                                                                           data.viewContainerRef,
+                                                                                           {
+                                                                                            title: `Delete file ${data.file.fileName}`,
+                                                                                            text: `Delete ${data.file.fileName} from ${data.connection.host} Server?`,
+                                                                                            yes: 'Delete',
+                                                                                            yesClass: 'warn',
+                                                                                            no: 'Cancel',
+                                                                                            boxContent: 'This action is permanent.',
+                                                                                            boxClass: 'text-danger',
+                                                                                            boxIcon: 'fa-exclamation-triangle'
+                                                                                           }
           );
 
           modalInstance.afterClosed().subscribe((result: string) => {

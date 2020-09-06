@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
 
-import {AnyOpsOSModalMonitorAlarmsComponent} from '../../anyopsos-modal-monitor-alarms.component';
+import { AnyOpsOSModalMonitorAlarmsComponent } from '../../anyopsos-modal-monitor-alarms.component';
 
 @Component({
   selector: 'ammonitor-alarms-alarm',
@@ -74,7 +74,7 @@ export class AlarmComponent implements OnInit {
     }
 
     // tslint:disable-next-line:max-line-length
-    return `<code>${alarm.lookup_method}</code> ${dimensions}, of chart <code>${alarm.chart}</code>, starting <code>${this.NETDATA.seconds4human(alarm.lookup_after + alarm.lookup_before, {space: '&nbsp;'})}</code> and up to <code>${this.NETDATA.seconds4human(alarm.lookup_before, {space: '&nbsp;'})}</code>${(alarm.lookup_options) ? (', with options <code>' + alarm.lookup_options.replace(/ /g, ',&nbsp;') + '</code>') : ''}.`;
+    return `<code>${alarm.lookup_method}</code> ${dimensions}, of chart <code>${alarm.chart}</code>, starting <code>${this.NETDATA.seconds4human(alarm.lookup_after + alarm.lookup_before, { space: '&nbsp;' })}</code> and up to <code>${this.NETDATA.seconds4human(alarm.lookup_before, { space: '&nbsp;' })}</code>${(alarm.lookup_options) ? (', with options <code>' + alarm.lookup_options.replace(/ /g, ',&nbsp;') + '</code>') : ''}.`;
   }
 
   scrollToChartAfterHidingModal(alarm) {

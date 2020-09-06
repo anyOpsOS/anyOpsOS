@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {BehaviorSubject, Observable} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {AnyOpsOSLibApplicationService, Application} from '@anyopsos/lib-application';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibFileSystemService } from '@anyopsos/lib-file-system';
+import { AnyOpsOSLibApplicationService, Application } from '@anyopsos/lib-application';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {TaskbarApplication} from '../types/taskbar-application';
+import { TaskbarApplication } from '../types/taskbar-application';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +48,7 @@ export class AnyOpsOSLibDesktopTaskBarService {
     // Application not in pinned list. Show it on Desktop Task Bar (application opened)
     opened.forEach((application: Application) => {
       if (!this.isApplicationInTaskBar(application.uuid)) {
-        this.registerTaskBarApplication({uuid: application.uuid, pinned: false});
+        this.registerTaskBarApplication({ uuid: application.uuid, pinned: false });
       }
     });
   }
@@ -126,7 +126,7 @@ export class AnyOpsOSLibDesktopTaskBarService {
         this.logger.info('LibDesktopTaskBar', 'Got TaskBar Applications successfully');
 
         // Register Start button
-        const startApp: TaskbarApplication = {uuid: 'start', pinned: true};
+        const startApp: TaskbarApplication = { uuid: 'start', pinned: true };
         this.registerTaskBarApplication(startApp);
 
         // Register every pinned application

@@ -1,16 +1,16 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService} from '@anyopsos/lib-modal';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService } from '@anyopsos/lib-modal';
 
-import {EntryComponent} from './entry/entry.component';
-import {AnyOpsOSModalKubernetesCreateResourceComponent} from './anyopsos-modal-kubernetes-create-resource.component';
-import {CreateFromFileComponent} from './components/create-from-file/create-from-file.component';
-import {CreateFromFormComponent} from './components/create-from-form/create-from-form.component';
-import {CreateFromInputComponent} from './components/create-from-input/create-from-input.component';
-import {AnyOpsOSLibUtilsModule} from '@anyopsos/lib-utils';
+import { EntryComponent } from './entry/entry.component';
+import { AnyOpsOSModalKubernetesCreateResourceComponent } from './anyopsos-modal-kubernetes-create-resource.component';
+import { CreateFromFileComponent } from './components/create-from-file/create-from-file.component';
+import { CreateFromFormComponent } from './components/create-from-form/create-from-form.component';
+import { CreateFromInputComponent } from './components/create-from-input/create-from-input.component';
+import { AnyOpsOSLibUtilsModule } from '@anyopsos/lib-utils';
 
 @NgModule({
   declarations: [

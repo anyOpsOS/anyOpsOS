@@ -1,13 +1,13 @@
-import {Component, OnInit, Input, OnDestroy, ViewChild, ViewContainerRef} from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
-import {Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibSshHelpersService} from '@anyopsos/lib-ssh';
-import {ConnectionSsh, ConnectionSftp} from '@anyopsos/module-ssh';
+import { Application } from '@anyopsos/lib-application';
+import { AnyOpsOSLibSshHelpersService } from '@anyopsos/lib-ssh';
+import { ConnectionSsh, ConnectionSftp } from '@anyopsos/module-ssh';
 
-import {AnyOpsOSAppSftpService} from '../../services/anyopsos-app-sftp.service';
+import { AnyOpsOSAppSftpService } from '../../services/anyopsos-app-sftp.service';
 
 @Component({
   selector: 'aasftp-body',
@@ -15,7 +15,7 @@ import {AnyOpsOSAppSftpService} from '../../services/anyopsos-app-sftp.service';
   styleUrls: ['./body.component.scss']
 })
 export class BodyComponent implements OnDestroy, OnInit {
-  @ViewChild('bodyContainer', {static: true, read: ViewContainerRef}) private readonly bodyContainer: ViewContainerRef;
+  @ViewChild('bodyContainer', { static: true, read: ViewContainerRef }) private readonly bodyContainer: ViewContainerRef;
   @Input() readonly application: Application;
 
   private readonly destroySubject$: Subject<void> = new Subject();
@@ -38,7 +38,7 @@ export class BodyComponent implements OnDestroy, OnInit {
 
         const sftpConnections: ConnectionSftp[] = connections.filter((connection: ConnectionSsh | ConnectionSftp) => connection.type === 'sftp') as ConnectionSftp[];
         this.onConnectionsChange(sftpConnections);
-    });
+      });
 
     // Set bodyContainerRef, this is used by Modals
     this.Sftp.setBodyContainerRef(this.bodyContainer);

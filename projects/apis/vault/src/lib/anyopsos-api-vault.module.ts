@@ -1,14 +1,14 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import routingControllers from 'routing-controllers';
-import log4js, {Logger} from 'log4js';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {BodyParam, Controller, Get, Post, Req, Res} = routingControllers;
-const {getLogger} = log4js;
+const { BodyParam, Controller, Get, Post, Req, Res } = routingControllers;
+const { getLogger } = log4js;
 
-import {AnyOpsOSApiGlobalsModule} from '@anyopsos/module-api-globals';
-import {AnyOpsOSVaultModule, VaultState} from '@anyopsos/module-vault';
-import {AnyOpsOSAuthModule} from '@anyopsos/module-auth';
+import { AnyOpsOSApiGlobalsModule } from '@anyopsos/module-api-globals';
+import { AnyOpsOSVaultModule, VaultState } from '@anyopsos/module-vault';
+import { AnyOpsOSAuthModule } from '@anyopsos/module-auth';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -54,7 +54,7 @@ export class AnyOpsOSVaultApiController {
     const vaultData: { keys: string[]; keys_base64: string[]; root_token: string; } = await VaultModule.initializeVault();
     const userData: { successCreated: boolean; userUuid: string; password: string; } = await AuthModule.createUser(username);
 
-    return new AnyOpsOSApiGlobalsModule(request, response).jsonDataResponse({...vaultData, ...userData});
+    return new AnyOpsOSApiGlobalsModule(request, response).jsonDataResponse({ ...vaultData, ...userData });
   }
 
   /**

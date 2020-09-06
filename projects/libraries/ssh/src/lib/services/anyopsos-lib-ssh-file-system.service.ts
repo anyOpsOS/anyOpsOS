@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibWorkspaceService } from '@anyopsos/lib-workspace';
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +19,13 @@ export class AnyOpsOSLibSshFileSystemService {
   /**
    * Folder API
    */
-  getFolder(srcPath: string, connectionUuid: string): Observable<Object> {
+  getFolder(srcPath: string, connectionUuid: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibSsh', 'getFolder', arguments);
 
     return this.http.get(`/api/sftp-folder/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/${encodeURIComponent(srcPath)}`);
   }
 
-  putFolder(dstPath: string, name: string, connectionUuid: string): Observable<Object> {
+  putFolder(dstPath: string, name: string, connectionUuid: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibSsh', 'createFolder', arguments);
 
     return this.http.put(`/api/sftp-folder/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/${encodeURIComponent(dstPath + name)}`, {});
@@ -37,19 +37,19 @@ export class AnyOpsOSLibSshFileSystemService {
    * getFile -> dstPath is anyOpsOS local path
    * putFile -> srcPath is anyOpsOS local path
    */
-  getFile(srcPath: string, dstPath: string, connectionUuid: string): Observable<Object> {
+  getFile(srcPath: string, dstPath: string, connectionUuid: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibSsh', 'getFile', arguments);
 
     return this.http.get(`/api/sftp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/${encodeURIComponent(srcPath)}/${encodeURIComponent(dstPath)}`);
   }
 
-  putFile(srcPath: string, dstPath: string, connectionUuid: string): Observable<Object> {
+  putFile(srcPath: string, dstPath: string, connectionUuid: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibSsh', 'uploadFile', arguments);
 
     return this.http.put(`/api/sftp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/${encodeURIComponent(srcPath)}/${encodeURIComponent(dstPath)}`, {});
   }
 
-  downloadFileFromUrl(dstPath: string, url: string, connectionUuid: string, credentialUuid?: string): Observable<Object> {
+  downloadFileFromUrl(dstPath: string, url: string, connectionUuid: string, credentialUuid?: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibSsh', 'downloadFileFromUrl', arguments);
 
     return this.http.post(`/api/sftp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/download_from_url`, {
@@ -59,25 +59,25 @@ export class AnyOpsOSLibSshFileSystemService {
     });
   }
 
-  copyFile(srcPath: string, dstPath: string, connectionUuid: string): Observable<Object> {
+  copyFile(srcPath: string, dstPath: string, connectionUuid: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibSsh', 'copyFile', arguments);
 
     return this.http.patch(`/api/sftp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/copy/${encodeURIComponent(srcPath)}`, { dstPath });
   }
 
-  moveFile(srcPath: string, dstPath: string, connectionUuid: string): Observable<Object> {
+  moveFile(srcPath: string, dstPath: string, connectionUuid: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibSsh', 'moveFile', arguments);
 
     return this.http.patch(`/api/sftp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/move/${encodeURIComponent(srcPath)}`, { dstPath });
   }
 
-  renameFile(srcPath: string, oldName: string, newName: string, connectionUuid: string): Observable<Object> {
+  renameFile(srcPath: string, oldName: string, newName: string, connectionUuid: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibSsh', 'renameFile', arguments);
 
     return this.http.patch(`/api/sftp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/rename/${encodeURIComponent(srcPath + oldName)}`, { dstPath: srcPath + newName });
   }
 
-  deleteFile(srcPath: string, name: string, connectionUuid: string): Observable<Object> {
+  deleteFile(srcPath: string, name: string, connectionUuid: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibSsh', 'deleteFile', arguments);
 
     return this.http.delete(`/api/sftp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/${encodeURIComponent(srcPath + name)}`);

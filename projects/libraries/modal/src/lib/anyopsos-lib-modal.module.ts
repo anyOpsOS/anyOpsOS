@@ -1,13 +1,13 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
 
-import {AnyOpsOSLibModalHelpersService} from './services/anyopsos-lib-modal-helpers.service';
-import {AnyOpsOSLibModalRegisteredStateService} from './services/anyopsos-lib-modal-registered-state.service';
-import {AnyOpsOSLibModalService} from './services/anyopsos-lib-modal.service';
-import {BodyComponent} from './components/body/body.component';
-import {ButtonsComponent} from './components/buttons/buttons.component';
+import { AnyOpsOSLibModalHelpersService } from './services/anyopsos-lib-modal-helpers.service';
+import { AnyOpsOSLibModalRegisteredStateService } from './services/anyopsos-lib-modal-registered-state.service';
+import { AnyOpsOSLibModalService } from './services/anyopsos-lib-modal.service';
+import { BodyComponent } from './components/body/body.component';
+import { ButtonsComponent } from './components/buttons/buttons.component';
 
 @NgModule({
   declarations: [
@@ -31,8 +31,8 @@ export class AnyOpsOSLibModalModule {
     console.log('Loading AnyOpsOSLibModalModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibModalModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibModalModule is already loaded. You should not import it manually.');
     }
   }
 

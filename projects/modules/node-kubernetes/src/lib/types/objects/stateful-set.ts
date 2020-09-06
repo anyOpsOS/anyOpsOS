@@ -1,4 +1,4 @@
-import {WorkloadKubeObject} from './workload-kube-object';
+import { WorkloadKubeObject } from './workload-kube-object';
 import { Affinity } from './affinity';
 
 export interface StatefulSet extends WorkloadKubeObject {

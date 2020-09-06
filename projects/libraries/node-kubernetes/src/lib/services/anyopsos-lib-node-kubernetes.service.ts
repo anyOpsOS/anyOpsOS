@@ -1,16 +1,16 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Socket} from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
-import {AnyOpsOSLibSshHelpersService, AnyOpsOSLibSshService} from '@anyopsos/lib-ssh';
-import {ConnectionKubernetes} from '@anyopsos/module-node-kubernetes';
-import {ConnectionSsh} from '@anyopsos/module-ssh';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibWorkspaceService } from '@anyopsos/lib-workspace';
+import { AnyOpsOSLibSshHelpersService, AnyOpsOSLibSshService } from '@anyopsos/lib-ssh';
+import { ConnectionKubernetes } from '@anyopsos/module-node-kubernetes';
+import { ConnectionSsh } from '@anyopsos/module-ssh';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSLibNodeKubernetesConnectionsStateService} from './anyopsos-lib-node-kubernetes-connections-state.service';
-import {AnyOpsOSLibNodeKubernetesHelpersService} from './anyopsos-lib-node-kubernetes-helpers.service';
+import { AnyOpsOSLibNodeKubernetesConnectionsStateService } from './anyopsos-lib-node-kubernetes-connections-state.service';
+import { AnyOpsOSLibNodeKubernetesHelpersService } from './anyopsos-lib-node-kubernetes-helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -56,24 +56,26 @@ export class AnyOpsOSLibNodeKubernetesService {
     return new Promise((resolve, reject) => {
 
       // Create new Kubernetes session
-      this.socket.emit('[kubernetes-session]', {
-        connectionUuid: connection.uuid,
-        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (data: BackendResponse) => {
+      this.socket.emit('[kubernetes-session]',
+                       {
+                        connectionUuid: connection.uuid,
+                        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
+                       },
+                       async (data: BackendResponse) => {
 
-        if (data.status === 'error') {
-          this.logger.error('LibNodeKubernetes', 'Error while emitting [kubernetes-session]', loggerArgs, data.data);
-          await this.LibNodeKubernetesConnectionsState.patchConnection(connection.uuid, 'error', data.data);
+                        if (data.status === 'error') {
+                          this.logger.error('LibNodeKubernetes', 'Error while emitting [kubernetes-session]', loggerArgs, data.data);
+                          await this.LibNodeKubernetesConnectionsState.patchConnection(connection.uuid, 'error', data.data);
 
-          return reject(data.data);
-        }
+                          return reject(data.data);
+                        }
 
-        // Set connection state as connected and remove any previous errors
-        await this.LibNodeKubernetesConnectionsState.patchConnection(connection.uuid, 'state', 'connected');
-        await this.LibNodeKubernetesConnectionsState.patchConnection(connection.uuid, 'error', null);
+                        // Set connection state as connected and remove any previous errors
+                        await this.LibNodeKubernetesConnectionsState.patchConnection(connection.uuid, 'state', 'connected');
+                        await this.LibNodeKubernetesConnectionsState.patchConnection(connection.uuid, 'error', null);
 
-        return resolve();
-      });
+                        return resolve();
+                       });
     });
   }
 
@@ -89,24 +91,26 @@ export class AnyOpsOSLibNodeKubernetesService {
       const currentConnection: ConnectionKubernetes = this.LibNodeKuberneteshHelpers.getConnectionByUuid(connectionUuid);
       if (currentConnection.state === 'disconnected') throw new Error('already_disconnected');
 
-      this.socket.emit('[kubernetes-disconnect]', {
-        connectionUuid,
-        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (data: BackendResponse) => {
+      this.socket.emit('[kubernetes-disconnect]',
+                       {
+                        connectionUuid,
+                        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
+                       },
+                       async (data: BackendResponse) => {
 
-        if (data.status === 'error') {
-          this.logger.error('LibNodeKubernetes', 'Error while emitting [kubernetes-disconnect]', loggerArgs, data.data);
-          await this.LibNodeKubernetesConnectionsState.patchConnection(connectionUuid, 'error', data.data);
+                        if (data.status === 'error') {
+                          this.logger.error('LibNodeKubernetes', 'Error while emitting [kubernetes-disconnect]', loggerArgs, data.data);
+                          await this.LibNodeKubernetesConnectionsState.patchConnection(connectionUuid, 'error', data.data);
 
-          return reject(data.data);
-        }
+                          return reject(data.data);
+                        }
 
-        // Set connection state as connected and remove any previous errors
-        await this.LibNodeKubernetesConnectionsState.patchConnection(connectionUuid, 'state', 'disconnected');
-        await this.LibNodeKubernetesConnectionsState.patchConnection(connectionUuid, 'error', null);
+                        // Set connection state as connected and remove any previous errors
+                        await this.LibNodeKubernetesConnectionsState.patchConnection(connectionUuid, 'state', 'disconnected');
+                        await this.LibNodeKubernetesConnectionsState.patchConnection(connectionUuid, 'error', null);
 
-        return resolve();
-      });
+                        return resolve();
+                       });
     });
   }
 

@@ -1,10 +1,10 @@
-import {Request, Response} from 'express';
-import log4js, {Logger} from 'log4js';
+import { Request, Response } from 'express';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getLogger} = log4js;
+const { getLogger } = log4js;
 
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -47,13 +47,13 @@ export class AnyOpsOSApiGlobalsModule {
   }
 
   public notFound(): Response {
-      this.response.status(404);
-      return this.response.json(
-        {
-          status: 'error',
-          data: 'resource_not_found'
-        } as BackendResponse
-      );
+    this.response.status(404);
+    return this.response.json(
+      {
+        status: 'error',
+        data: 'resource_not_found'
+      } as BackendResponse
+    );
   }
 
   public serverError(e: any): Response {

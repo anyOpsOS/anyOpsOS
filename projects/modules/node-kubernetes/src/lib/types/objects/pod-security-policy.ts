@@ -1,4 +1,4 @@
-import {KubeObject} from './kube-object';
+import { KubeObject } from './kube-object';
 
 export interface PodSecurityPolicy extends KubeObject {
   kind: 'PodSecurityPolicy';

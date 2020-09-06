@@ -1,19 +1,19 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 
-import {takeUntil} from 'rxjs/operators';
-import {Observable, Subject} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
-import {Application} from '@anyopsos/lib-application';
+import { Application } from '@anyopsos/lib-application';
 
-import {AnyOpsOSAppDatastoreExplorerService} from '../../services/anyopsos-app-datastore-explorer.service';
-import {DatastoreExplorerConnectionObject} from '../../types/datastore-explorer-connection-object';
+import { AnyOpsOSAppDatastoreExplorerService } from '../../services/anyopsos-app-datastore-explorer.service';
+import { DatastoreExplorerConnectionObject } from '../../types/datastore-explorer-connection-object';
 
 @Component({
   selector: 'aade-status',
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.scss']
 })
-export class StatusComponent implements OnInit {
+export class StatusComponent implements OnInit, OnDestroy {
   @Input() private readonly application: Application;
 
   private readonly destroySubject$: Subject<void> = new Subject();

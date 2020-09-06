@@ -1,19 +1,19 @@
 import socketControllers from 'socket-controllers';
-import fetch, {Response} from 'node-fetch';
+import fetch, { Response } from 'node-fetch';
 import validator from 'validator';
 
 // TODO ESM
-const {getSocketIO} = socketControllers;
+const { getSocketIO } = socketControllers;
 
-import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {AnyOpsOSCredentialModule} from '@anyopsos/module-credential';
+import { AnyOpsOSSysWorkspaceModule } from '@anyopsos/module-sys-workspace';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { AnyOpsOSCredentialModule } from '@anyopsos/module-credential';
 
-import {ConnectionVmware} from './types/connection-vmware';
-import {ConnectionVmwareServer} from './types/connection-vmware-server';
-import {WorkspaceToVmwareMap} from './types/workspace-to-vmware-map';
+import { ConnectionVmware } from './types/connection-vmware';
+import { ConnectionVmwareServer } from './types/connection-vmware-server';
+import { WorkspaceToVmwareMap } from './types/workspace-to-vmware-map';
 
-import {VMWARE_CONFIG_FILE, VMWARE_PORT, VMWARE_SOAP_COOKIE} from './anyopsos-module-node-vmware.constants';
+import { VMWARE_CONFIG_FILE, VMWARE_PORT, VMWARE_SOAP_COOKIE } from './anyopsos-module-node-vmware.constants';
 
 
 const vmwareSessions: WorkspaceToVmwareMap = {};
@@ -96,7 +96,7 @@ export class AnyOpsOSNodeVmwareSessionStateModule {
 
     return {
       host: connectionData.host,
-      port: (validator.isInt(connectionData.port.toString(), {min: 1, max: 65535}) && connectionData.port) || VMWARE_PORT,
+      port: (validator.isInt(connectionData.port.toString(), { min: 1, max: 65535 }) && connectionData.port) || VMWARE_PORT,
       credential: await this.CredentialModule.getCredential(connectionData.credential)
     };
 

@@ -1,5 +1,5 @@
-import {NgModule} from '@angular/core';
-import {ScrollSpyDirective} from './directives/scroll-spy.directive';
+import { NgModule } from '@angular/core';
+import { ScrollSpyDirective } from './directives/scroll-spy.directive';
 
 @NgModule({
   declarations: [ScrollSpyDirective],

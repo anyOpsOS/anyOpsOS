@@ -7,6 +7,7 @@
   },
   "peerDependencies": {
     "@anyopsos/module-api-globals": "~0.0.1",
+    "@anyopsos/module-auth": "~0.0.1",
     "@anyopsos/module-vault": "~0.0.1"
   },
   "devDependencies": {

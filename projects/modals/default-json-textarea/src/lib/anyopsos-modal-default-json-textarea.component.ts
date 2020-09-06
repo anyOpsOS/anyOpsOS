@@ -1,7 +1,7 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 
-import {MAT_DIALOG_DATA, MatDialogRef} from '@anyopsos/lib-angular-material';
-import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@anyopsos/lib-angular-material';
+import { BodyComponent, ModalData } from '@anyopsos/lib-modal';
 
 @Component({
   selector: 'amjsontextarea-anyopsos-modal-default-json-textarea',
@@ -9,7 +9,7 @@ import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
   styleUrls: ['./anyopsos-modal-default-json-textarea.component.scss']
 })
 export class AnyOpsOSModalDefaultJsonTextareaComponent implements OnInit {
-  @ViewChild('modalBody', {static: true}) modalBody: BodyComponent;
+  @ViewChild('modalBody', { static: true }) modalBody: BodyComponent;
 
   jsonData: string;
 

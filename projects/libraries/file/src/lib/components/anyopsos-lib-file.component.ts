@@ -1,12 +1,12 @@
-import {Component, Input, ViewChild, ElementRef, AfterViewInit, ViewContainerRef, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit, ViewContainerRef, OnChanges, SimpleChanges } from '@angular/core';
 
-import {MatMenuTrigger} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibSelectableService} from '@anyopsos/lib-selectable';
-import {AnyOpsOSLibFileSystemUiService, AnyOpsOSLibFileSystemUiHelpersService} from '@anyopsos/lib-file-system-ui';
-import {Application} from '@anyopsos/lib-application';
-import {ContextMenuItem} from '@anyopsos/lib-types';
-import {Connection} from '@anyopsos/backend-core/app/types/connection';
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { MatMenuTrigger } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibSelectableService } from '@anyopsos/lib-selectable';
+import { AnyOpsOSLibFileSystemUiService, AnyOpsOSLibFileSystemUiHelpersService } from '@anyopsos/lib-file-system-ui';
+import { Application } from '@anyopsos/lib-application';
+import { ContextMenuItem } from '@anyopsos/lib-types';
+import { Connection } from '@anyopsos/backend-core/app/types/connection';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
 
 @Component({
   selector: 'alfile-anyopsos-lib-file',
@@ -14,8 +14,8 @@ import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
   styleUrls: ['./anyopsos-lib-file.component.scss']
 })
 export class AnyOpsOSLibFileComponent implements AfterViewInit, OnChanges {
-  @ViewChild(MatMenuTrigger, {static: false}) readonly contextMenuFile: MatMenuTrigger;
-  @ViewChild('selectableFileElement', {static: false}) private readonly selectableFileElement: ElementRef;
+  @ViewChild(MatMenuTrigger, { static: false }) readonly contextMenuFile: MatMenuTrigger;
+  @ViewChild('selectableFileElement', { static: false }) private readonly selectableFileElement: ElementRef;
 
   @Input() private readonly application: Application;
   @Input() private readonly connection: Connection = null;
@@ -34,12 +34,13 @@ export class AnyOpsOSLibFileComponent implements AfterViewInit, OnChanges {
   private connectionUuid: string = null;
   private applicationType: 'local' | 'server' = 'local';
 
-  contextMenuPosition = {x: '0px', y: '0px'};
+  contextMenuPosition = { x: '0px', y: '0px' };
   readonly fileContextMenuItems: ContextMenuItem[] = [
     {
       id: 0, text: '<i class="fas fa-upload"></i> Upload to Remote', action: (file: AnyOpsOSFile): void => {
         this.UIuploadFile(file);
-      }, disabled: () => {
+      },
+      disabled: () => {
         if (this.connection) return true;
         return false;
       }
@@ -49,7 +50,8 @@ export class AnyOpsOSLibFileComponent implements AfterViewInit, OnChanges {
         this.connection && this.connection.uuid !== null ?
           '<i class="fas fa-cloud-download-alt"></i> Download to anyOpsOS' :
           '<i class="fas fa-download"></i> Download to local'
-      ), action: (file: AnyOpsOSFile): void => {
+      ),
+      action: (file: AnyOpsOSFile): void => {
         return this.UIdownloadFile(file);
       }
     },
@@ -62,11 +64,12 @@ export class AnyOpsOSLibFileComponent implements AfterViewInit, OnChanges {
         } else {
           return '<i class="fas fa-edit"></i> Open with Notepad';
         }
-      }, action: (file: AnyOpsOSFile): void => {
+      },
+      action: (file: AnyOpsOSFile): void => {
         return this.UIdoWithFile(file);
       }
     },
-    {id: 3, text: 'divider'},
+    { id: 3, text: 'divider' },
     {
       id: 4, text: '<i class="fas fa-copy"></i> Copy', action: (file: AnyOpsOSFile): void => {
         return this.UIcopyFile(file);
@@ -77,7 +80,7 @@ export class AnyOpsOSLibFileComponent implements AfterViewInit, OnChanges {
         return this.UIcutFile(file);
       }
     },
-    {id: 7, text: 'divider'},
+    { id: 7, text: 'divider' },
     {
       id: 8, text: '<i class="fas fa-font"></i> Rename', action: (file: AnyOpsOSFile): void => {
         return this.UIrenameFile(file);
@@ -88,7 +91,7 @@ export class AnyOpsOSLibFileComponent implements AfterViewInit, OnChanges {
         return this.UIdeleteFile(file);
       }
     },
-    {id: 10, text: 'divider'},
+    { id: 10, text: 'divider' },
     {
       id: 11, text: '<i class="fas fa-lock"></i> Permissions', action: (file: AnyOpsOSFile): void => {
         return this.UIfilePermissions(file);
@@ -172,7 +175,7 @@ export class AnyOpsOSLibFileComponent implements AfterViewInit, OnChanges {
       this.currentPath,
       file,
       `${this.application.uuid}#${this.applicationType}`,
-     this.connectionUuid
+      this.connectionUuid
     );
   }
 

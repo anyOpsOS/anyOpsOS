@@ -1,6 +1,6 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
-import {Application} from '@anyopsos/lib-application';
+import { Application } from '@anyopsos/lib-application';
 
 @Component({
   selector: 'aacm-status',

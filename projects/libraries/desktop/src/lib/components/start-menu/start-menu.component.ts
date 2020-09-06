@@ -1,12 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
-import {Application, AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
+import { Application, AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
 
 @Component({
-  selector: 'app-start-menu',
+  selector: 'aldesktop-start-menu',
   templateUrl: './start-menu.component.html',
   styleUrls: ['./start-menu.component.scss']
 })

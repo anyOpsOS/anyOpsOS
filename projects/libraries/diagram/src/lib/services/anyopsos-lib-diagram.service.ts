@@ -1,27 +1,27 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {escapeRegExp} from 'lodash-es';
-import {scaleThreshold} from 'd3-scale';
+import { escapeRegExp } from 'lodash-es';
+import { scaleThreshold } from 'd3-scale';
 
-import {AnyOpsOSLibDiagramStateService} from './anyopsos-lib-diagram-state.service';
-import {AnyOpsOSLibDiagramLayoutService} from './anyopsos-lib-diagram-layout.service';
-import {EDGE_ID_SEPARATOR} from '../anyopsos-lib-diagram.constants';
+import { AnyOpsOSLibDiagramStateService } from './anyopsos-lib-diagram-state.service';
+import { AnyOpsOSLibDiagramLayoutService } from './anyopsos-lib-diagram-layout.service';
+import { EDGE_ID_SEPARATOR } from '../anyopsos-lib-diagram.constants';
 
-import {Node} from '../types/node';
-import {Layout} from '../types/layout';
-import {LayoutNode} from '../types/layout-node';
-import {LayoutLimits} from '../types/layout-limits';
-import {LayoutOptions} from '../types/layout-options';
-import {SvgDomRect} from '../types/svg-dom-rect';
-import {SvgDomPos} from '../types/svg-dom-pos';
-import {TopologyOption} from '../types/topology-option';
-import {Topology} from '../types/topology';
-import {LayoutEdge} from '../types/layout-edge';
-import {Metric} from '../types/metric';
-import {Network} from '../types/network';
-import {ParsedSearchQuery} from '../types/parsed-search-query';
-import {ZoomState} from '../types/zoom-state';
-import {NodeMatch} from '../types/node-match';
+import { Node } from '../types/node';
+import { Layout } from '../types/layout';
+import { LayoutNode } from '../types/layout-node';
+import { LayoutLimits } from '../types/layout-limits';
+import { LayoutOptions } from '../types/layout-options';
+import { SvgDomRect } from '../types/svg-dom-rect';
+import { SvgDomPos } from '../types/svg-dom-pos';
+import { TopologyOption } from '../types/topology-option';
+import { Topology } from '../types/topology';
+import { LayoutEdge } from '../types/layout-edge';
+import { Metric } from '../types/metric';
+import { Network } from '../types/network';
+import { ParsedSearchQuery } from '../types/parsed-search-query';
+import { ZoomState } from '../types/zoom-state';
+import { NodeMatch } from '../types/node-match';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +43,7 @@ export class AnyOpsOSLibDiagramService {
         const source: string = node.id;
         const target: string = adjacentId;
 
-        if (nodes.some(n => n.id ===target)) {
+        if (nodes.some(n => n.id === target)) {
           // The direction source->target is important since dagre takes
           // directionality into account when calculating the layout.
           const edgeId: string = this.constructEdgeId(source, target);
@@ -167,13 +167,14 @@ export class AnyOpsOSLibDiagramService {
    * no match).
    * Returns a new instance of nodeMatches.
    */
-  findNodeMatch(nodeMatches: NodeMatch[],
-                keyPath: string[],
-                text: string,
-                query: string,
-                prefix?: string,
-                label?: string,
-                truncate?: boolean): NodeMatch[] {
+  findNodeMatch(
+    nodeMatches: NodeMatch[],
+    keyPath: string[],
+    text: string,
+    query: string,
+    prefix?: string,
+    label?: string,
+    truncate?: boolean): NodeMatch[] {
 
     if (!prefix || this.matchPrefix(label, prefix)) {
       const queryRe: RegExp = this.makeRegExp(query);
@@ -207,13 +208,14 @@ export class AnyOpsOSLibDiagramService {
    * If the metric matches the field's label and the value compares positively
    * with the comp operator, a nodeMatch is added
    */
-  findNodeMatchMetric(nodeMatches: NodeMatch[],
-                      keyPath: string[],
-                      fieldValue: string | number,
-                      fieldLabel: string,
-                      metric: string,
-                      comp: ParsedSearchQuery['comp'],
-                      value: string) {
+  findNodeMatchMetric(
+    nodeMatches: NodeMatch[],
+    keyPath: string[],
+    fieldValue: string | number,
+    fieldLabel: string,
+    metric: string,
+    comp: ParsedSearchQuery['comp'],
+    value: string) {
 
     if (this.slugify(metric) === this.slugify(fieldLabel)) {
       let matched: boolean = false;
@@ -255,7 +257,7 @@ export class AnyOpsOSLibDiagramService {
     return nodeMatches;
   }
 
-  searchNode(node: Node, {prefix, query, metric, comp, value}: ParsedSearchQuery): NodeMatch[] {
+  searchNode(node: Node, { prefix, query, metric, comp, value }: ParsedSearchQuery): NodeMatch[] {
     const SEARCH_FIELDS = [
       'label',
       'labelMinor'
@@ -438,7 +440,7 @@ export class AnyOpsOSLibDiagramService {
   }
 
   selectedMetricId(): string {
-    const availableMetrics: {id: string; label: string;}[] = this.availableMetrics();
+    const availableMetrics: { id: string; label: string; }[] = this.availableMetrics();
     const metricType: string = this.selectedMetricType();
 
     return (availableMetrics.find(m => m.label === metricType) || {}).id;
@@ -518,14 +520,14 @@ export class AnyOpsOSLibDiagramService {
 
   canvasWidth(): number {
     const viewport: SvgDomPos = this.LibDiagramState.$viewport.getValue();
-    const margins: SvgDomRect = {bottom: 150, left: 80, right: 80, top: 220};
+    const margins: SvgDomRect = { bottom: 150, left: 80, right: 80, top: 220 };
 
     return viewport.width - margins.top - margins.bottom
   }
 
   canvasHeight(): number {
     const viewport: SvgDomPos = this.LibDiagramState.$viewport.getValue();
-    const margins: SvgDomRect = {bottom: 150, left: 80, right: 80, top: 220};
+    const margins: SvgDomRect = { bottom: 150, left: 80, right: 80, top: 220 };
 
     return viewport.height - margins.top - margins.bottom
   }
@@ -576,7 +578,7 @@ export class AnyOpsOSLibDiagramService {
     const graphDefaultZoom: { scaleX: number; scaleY: number; translateX: number; translateY: number; } = this.graphDefaultZoom();
     const cachedZoomState: ZoomState = this.LibDiagramState.$zoomState.getValue();
 
-    return {...graphDefaultZoom, ...cachedZoomState};
+    return { ...graphDefaultZoom, ...cachedZoomState };
   }
 
   graphBoundingRectangle(): { xMax: number; xMin: number; yMax: number; yMin: number; } {
@@ -601,7 +603,7 @@ export class AnyOpsOSLibDiagramService {
     const visibleNodes: Node[] = nodes.filter(node => !node.filtered);
 
     if (visibleNodes.length === 0) {
-        return {
+      return {
         edges: [],
         nodes: []
       };
@@ -617,7 +619,7 @@ export class AnyOpsOSLibDiagramService {
     const zoomState: ZoomState = this.graphZoomState();
     const focusedNodesIds: string[] = this.focusedNodesIds();
     const scale: number = zoomState.scaleX;
-    const circularNodesCount: number = focusedNodesIds.length -1;
+    const circularNodesCount: number = focusedNodesIds.length - 1;
     const viewportExpanse: number = this.canvasCircularExpanse();
 
     // Here we calculate the zoom factor of the nodes that get selected into focus.
@@ -641,7 +643,7 @@ export class AnyOpsOSLibDiagramService {
     const circularRadius: number = viewportExpanse / radiusDensity(circularNodesCount) / scale;
     const circularInnerAngle: number = (2 * Math.PI) / circularNodesCount;
 
-    return {circularInnerAngle, circularRadius, selectedScale};
+    return { circularInnerAngle, circularRadius, selectedScale };
   }
 
   layoutOptions(): LayoutOptions {
@@ -686,7 +688,7 @@ export class AnyOpsOSLibDiagramService {
     const translationToCenter: { x: number; y: number; } = this.translationToViewportCenter();
     const layoutScalars: { circularInnerAngle: number; circularRadius: number; selectedScale: number; } = this.circularLayoutScalars();
 
-    const {circularRadius, circularInnerAngle} = layoutScalars;
+    const { circularRadius, circularInnerAngle } = layoutScalars;
     const circularOffsetAngle = Math.PI / 4;
 
     // Do nothing if the layout doesn't contain the selected node anymore.
@@ -727,8 +729,8 @@ export class AnyOpsOSLibDiagramService {
 
       if (focusedNodesIds.includes(source) || focusedNodesIds.includes(target)) {
 
-        const sourcePoints: {x, y} = layoutNodes.find(n => n.id === source);
-        const targetPoints: {x, y} = layoutNodes.find(n => n.id === target);
+        const sourcePoints: { x, y } = layoutNodes.find(n => n.id === source);
+        const targetPoints: { x, y } = layoutNodes.find(n => n.id === target);
 
         edge.points = [sourcePoints, targetPoints];
       }
@@ -749,13 +751,13 @@ export class AnyOpsOSLibDiagramService {
     }).flat().filter(m => m);
   }
 
-  availableMetrics(): {id: string; label: string;}[] {
+  availableMetrics(): { id: string; label: string; }[] {
     const nodes: Node[] = this.LibDiagramState.$nodes.getValue();
 
     return nodes
       .flatMap(n => n.metrics)
       .filter(m => m)
-      .map(m => ({id: m.id, label: m.label}))
+      .map(m => ({ id: m.id, label: m.label }))
       .sort((a, b) => a.label.localeCompare(b.label));
 
   }

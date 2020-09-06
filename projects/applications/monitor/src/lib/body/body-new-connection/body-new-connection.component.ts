@@ -1,23 +1,23 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import {Observable, Subject} from 'rxjs';
-import {map, startWith, takeUntil} from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {Application, AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSLibServiceInjectorService} from '@anyopsos/lib-service-injector';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibUtilsService} from '@anyopsos/lib-utils';
-import {AnyOpsOSLibCredentialHelpersService} from '@anyopsos/lib-credential';
-import {AnyOpsOSLibSshHelpersService} from '@anyopsos/lib-ssh';
-import {Credential} from '@anyopsos/module-credential';
-import {ConnectionSftp, ConnectionSsh} from '@anyopsos/module-ssh';
-import {ConnectionMonitor} from '@anyopsos/module-monitor';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { Application, AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
+import { AnyOpsOSLibServiceInjectorService } from '@anyopsos/lib-service-injector';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibUtilsService } from '@anyopsos/lib-utils';
+import { AnyOpsOSLibCredentialHelpersService } from '@anyopsos/lib-credential';
+import { AnyOpsOSLibSshHelpersService } from '@anyopsos/lib-ssh';
+import { Credential } from '@anyopsos/module-credential';
+import { ConnectionSftp, ConnectionSsh } from '@anyopsos/module-ssh';
+import { ConnectionMonitor } from '@anyopsos/module-monitor';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
-import {AnyOpsOSAppMonitorService} from '../../services/anyopsos-app-monitor.service';
+import { AnyOpsOSAppMonitorService } from '../../services/anyopsos-app-monitor.service';
 
 interface LinkTo {
   type: string;
@@ -36,7 +36,7 @@ const nodesFilter = (opt: DataObject[], value: string | DataObject): DataObject[
   styleUrls: ['./body-new-connection.component.scss']
 })
 export class BodyNewConnectionComponent implements OnDestroy, OnInit {
-  @ViewChild('scrollToElement', {static: false}) readonly scrollToElement: ElementRef<HTMLInputElement>;
+  @ViewChild('scrollToElement', { static: false }) readonly scrollToElement: ElementRef<HTMLInputElement>;
   @Input() private readonly application: Application;
 
   private readonly destroySubject$: Subject<void> = new Subject();
@@ -106,9 +106,9 @@ export class BodyNewConnectionComponent implements OnDestroy, OnInit {
     this.LibSshHelpers.getAllConnectionsObserver()
       .pipe(takeUntil(this.destroySubject$)).subscribe((connections: (ConnectionSsh | ConnectionSftp)[]) => {
 
-      const sshConnections: ConnectionSsh[] = connections.filter((connection: ConnectionSsh | ConnectionSftp) => connection.type === 'ssh') as ConnectionSsh[];
-      this.onSshConnectionsChange(sshConnections);
-    });
+        const sshConnections: ConnectionSsh[] = connections.filter((connection: ConnectionSsh | ConnectionSftp) => connection.type === 'ssh') as ConnectionSsh[];
+        this.onSshConnectionsChange(sshConnections);
+      });
 
     // Listen for activeConnection change
     this.Monitor.activeConnection
@@ -179,7 +179,7 @@ export class BodyNewConnectionComponent implements OnDestroy, OnInit {
   private filterGroup(value: string): LinkTo[] {
     if (value) {
       return this.linkGroups
-        .map(group => ({type: group.type, nodes: nodesFilter(group.nodes, value)}))
+        .map(group => ({ type: group.type, nodes: nodesFilter(group.nodes, value) }))
         .filter(group => group.nodes.length > 0);
     }
 

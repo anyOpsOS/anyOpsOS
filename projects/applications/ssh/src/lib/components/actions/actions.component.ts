@@ -1,12 +1,12 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {takeUntil} from 'rxjs/operators';
-import {Observable, Subject} from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
-import {AnyOpsOSLibApplicationService, Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibSshService} from '@anyopsos/lib-ssh';
-import {ConnectionSsh} from '@anyopsos/module-ssh';
+import { AnyOpsOSLibApplicationService, Application } from '@anyopsos/lib-application';
+import { AnyOpsOSLibSshService } from '@anyopsos/lib-ssh';
+import { ConnectionSsh } from '@anyopsos/module-ssh';
 
-import {AnyOpsOSAppSshService} from '../../services/anyopsos-app-ssh.service';
+import { AnyOpsOSAppSshService } from '../../services/anyopsos-app-ssh.service';
 
 @Component({
   selector: 'aassh-actions',

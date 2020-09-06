@@ -1,5 +1,5 @@
-import {RoleBindingSubject} from './role-binding-subject';
-import {KubeObject} from './kube-object';
+import { RoleBindingSubject } from './role-binding-subject';
+import { KubeObject } from './kube-object';
 
 export interface RoleBinding extends KubeObject {
   kind: 'RoleBinding';

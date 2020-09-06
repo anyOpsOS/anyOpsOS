@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibWorkspaceService } from '@anyopsos/lib-workspace';
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +19,13 @@ export class AnyOpsOSLibNodeNetappFileSystemService {
   /**
    * Folder API
    */
-  getFolder(srcPath: string, connectionUuid: string, vfiler: string): Observable<Object> {
+  getFolder(srcPath: string, connectionUuid: string, vfiler: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibNodeNetapp', 'getFolder', arguments);
 
     return this.http.get(`/api/netapp-folder/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/${encodeURIComponent(srcPath)}`);
   }
 
-  putFolder(dstPath: string, name: string, connectionUuid: string, vfiler: string): Observable<Object> {
+  putFolder(dstPath: string, name: string, connectionUuid: string, vfiler: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibNodeNetapp', 'createFolder', arguments);
 
     return this.http.put(`/api/netapp-folder/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/${encodeURIComponent(dstPath + name)}`, {});
@@ -37,37 +37,37 @@ export class AnyOpsOSLibNodeNetappFileSystemService {
    * getFile -> dstPath is anyOpsOS local path
    * putFile -> srcPath is anyOpsOS local path
    */
-  getFile(srcPath: string, dstPath: string, connectionUuid: string, vfiler: string): Observable<Object> {
+  getFile(srcPath: string, dstPath: string, connectionUuid: string, vfiler: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibNodeNetapp', 'getFile', arguments);
 
     return this.http.get(`/api/netapp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/${encodeURIComponent(srcPath)}/${encodeURIComponent(dstPath)}`);
   }
 
-  putFile(srcPath: string, dstPath: string, connectionUuid: string, vfiler: string): Observable<Object> {
+  putFile(srcPath: string, dstPath: string, connectionUuid: string, vfiler: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibNodeNetapp', 'uploadFile', arguments);
 
     return this.http.put(`/api/netapp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/${encodeURIComponent(srcPath)}/${encodeURIComponent(dstPath)}`, {});
   }
 
-  copyFile(srcPath: string, dstPath: string, connectionUuid: string, vfiler: string): Observable<Object> {
+  copyFile(srcPath: string, dstPath: string, connectionUuid: string, vfiler: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibNodeNetapp', 'copyFile', arguments);
 
     return this.http.patch(`/api/netapp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/copy/${encodeURIComponent(srcPath)}`, { dstPath });
   }
 
-  moveFile(srcPath: string, dstPath: string, connectionUuid: string, vfiler: string): Observable<Object> {
+  moveFile(srcPath: string, dstPath: string, connectionUuid: string, vfiler: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibNodeNetapp', 'moveFile', arguments);
 
     return this.http.patch(`/api/netapp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/move/${encodeURIComponent(srcPath)}`, { dstPath });
   }
 
-  renameFile(srcPath: string, oldName: string, newName: string, connectionUuid: string, vfiler: string): Observable<Object> {
+  renameFile(srcPath: string, oldName: string, newName: string, connectionUuid: string, vfiler: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibNodeNetapp', 'renameFile', arguments);
 
     return this.http.patch(`/api/netapp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/rename/${encodeURIComponent(srcPath + oldName)}`, { dstPath: srcPath + newName });
   }
 
-  deleteFile(srcPath: string, name: string, connectionUuid: string, vfiler: string): Observable<Object> {
+  deleteFile(srcPath: string, name: string, connectionUuid: string, vfiler: string): Observable<{ [key: string]: any }> {
     this.logger.debug('LibNodeNetapp', 'deleteFile', arguments);
 
     return this.http.delete(`/api/netapp-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${connectionUuid}/${encodeURIComponent(srcPath + name)}`);

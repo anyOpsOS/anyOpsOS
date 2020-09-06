@@ -1,13 +1,13 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibUtilsModule} from '@anyopsos/lib-utils';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibUtilsModule } from '@anyopsos/lib-utils';
 
-import {EntryComponent} from './entry/entry.component';
-import {AnyOpsOSModalKubernetesScaleResourceComponent} from './anyopsos-modal-kubernetes-scale-resource.component';
+import { EntryComponent } from './entry/entry.component';
+import { AnyOpsOSModalKubernetesScaleResourceComponent } from './anyopsos-modal-kubernetes-scale-resource.component';
 
 @NgModule({
   declarations: [

@@ -1,20 +1,20 @@
-import {Injectable, OnDestroy} from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
-import {AnyOpsOSLibNodeVmwareHelpersService} from '@anyopsos/lib-node-vmware';
-import {AnyOpsOSLibNodeNetappHelpersService} from '@anyopsos/lib-node-netapp';
-import {AnyOpsOSLibNodeDockerHelpersService} from '@anyopsos/lib-node-docker';
-import {AnyOpsOSLibNodeKubernetesHelpersService} from '@anyopsos/lib-node-kubernetes';
-import {AnyOpsOSLibNodeLinuxHelpersService} from '@anyopsos/lib-node-linux';
-import {AnyOpsOSLibNodeSnmpHelpersService} from '@anyopsos/lib-node-snmp';
-import {ConnectionTypes} from '@anyopsos/backend-core/app/types/connection-types';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { AnyOpsOSLibNodeHelpersService } from '@anyopsos/lib-node';
+import { AnyOpsOSLibNodeVmwareHelpersService } from '@anyopsos/lib-node-vmware';
+import { AnyOpsOSLibNodeNetappHelpersService } from '@anyopsos/lib-node-netapp';
+import { AnyOpsOSLibNodeDockerHelpersService } from '@anyopsos/lib-node-docker';
+import { AnyOpsOSLibNodeKubernetesHelpersService } from '@anyopsos/lib-node-kubernetes';
+import { AnyOpsOSLibNodeLinuxHelpersService } from '@anyopsos/lib-node-linux';
+import { AnyOpsOSLibNodeSnmpHelpersService } from '@anyopsos/lib-node-snmp';
+import { ConnectionTypes } from '@anyopsos/backend-core/app/types/connection-types';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
-import {AnyOpsOSAppInfrastructureManagerService} from './anyopsos-app-infrastructure-manager.service';
-import {ImTreeNode} from '../types/im-tree-node';
+import { AnyOpsOSAppInfrastructureManagerService } from './anyopsos-app-infrastructure-manager.service';
+import { ImTreeNode } from '../types/im-tree-node';
 
 
 /**
@@ -213,10 +213,10 @@ export class AnyOpsOSAppInfrastructureManagerTreeDataService implements OnDestro
             obj.info.parent.type === current.info.obj.type
           ) || (
 
-            // VMWare specific
-            obj.info.data.parentVApp &&
-            obj.info.data.parentVApp.name === current.info.obj.name
-          );
+              // VMWare specific
+              obj.info.data.parentVApp &&
+              obj.info.data.parentVApp.name === current.info.obj.name
+            );
 
         }).sort((a, b) => a.type === 'Folder' ? -1 : 1)
       ));

@@ -1,4 +1,4 @@
-import {AnyOpsOSSshSessionStateModule} from '@anyopsos/module-ssh';
+import { AnyOpsOSSshSessionStateModule } from '@anyopsos/module-ssh';
 
 export class ServerMonitorModule {
 
@@ -21,8 +21,8 @@ export class ServerMonitorModule {
     return cmdData.replace(/(\n|\r)+$/, '');
   }
 
-  async getCpu(): Promise<{option: unknown, data: unknown}[]> {
-    const cpuOptions: {option: unknown, data: unknown}[] = [];
+  async getCpu(): Promise<{ option: unknown, data: unknown }[]> {
+    const cpuOptions: { option: unknown, data: unknown }[] = [];
 
     return Promise.all([
       this.SshSessionStateModule.execAsync('lscpu'),

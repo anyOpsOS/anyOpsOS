@@ -1,10 +1,10 @@
 // @ts-ignore
 import * as netSnmp from 'net-snmp';
 
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSNodeSnmpSessionStateModule} from './anyopsos-module-node-snmp-session-state';
-import {VarBind} from './types/var-bind';
+import { AnyOpsOSNodeSnmpSessionStateModule } from './anyopsos-module-node-snmp-session-state';
+import { VarBind } from './types/var-bind';
 
 export class AnyOpsOSNodeSnmpModule {
 
@@ -31,7 +31,7 @@ export class AnyOpsOSNodeSnmpModule {
       // e.toString() this.SocketModule.emitProp(data.type, 'CONN ERROR ' + e, data.uuid, 'status');
     });
 
-    return {status: 'ok', data: 'connected'};
+    return { status: 'ok', data: 'connected' };
 
   }
 
@@ -42,7 +42,7 @@ export class AnyOpsOSNodeSnmpModule {
 
     return this.SnmpSessionsModule.disconnectSession().then(() => {
 
-      return {status: 'ok', data: 'disconnected'} as BackendResponse;
+      return { status: 'ok', data: 'disconnected' } as BackendResponse;
 
     }).catch((e: Error) => {
       throw e;

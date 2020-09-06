@@ -1,14 +1,14 @@
-import {AfterViewInit, Component, Input} from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 
-import {Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibNodeVmwareSoapApiService} from '@anyopsos/lib-node-vmware';
-import {VMWareVM} from '@anyopsos/module-node-vmware';
-import {VmwareSdkFunctionsOutput} from '@anyopsos/sdk-vmware';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { Application } from '@anyopsos/lib-application';
+import { AnyOpsOSLibNodeVmwareSoapApiService } from '@anyopsos/lib-node-vmware';
+import { VMWareVM } from '@anyopsos/module-node-vmware';
+import { VmwareSdkFunctionsOutput } from '@anyopsos/sdk-vmware';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
-import {AnyOpsOSExtLibJqueryService} from '@anyopsos/ext-lib-jquery';
+import { AnyOpsOSExtLibJqueryService } from '@anyopsos/ext-lib-jquery';
 
-import {WmksLib} from './trdParty/wmks';
+import { WmksLib } from './trdParty/wmks';
 
 @Component({
   selector: 'aawmks-anyopsos-app-wmks',
@@ -28,8 +28,8 @@ export class BodyComponent implements AfterViewInit {
 
   currentVm: DataObject & { info: { data: VMWareVM } };
 
-  constructor(private jQuery: AnyOpsOSExtLibJqueryService,
-              private readonly LibNodeVmwareSoapApiService: AnyOpsOSLibNodeVmwareSoapApiService,) {
+  constructor(private readonly jQuery: AnyOpsOSExtLibJqueryService,
+              private readonly LibNodeVmwareSoapApiService: AnyOpsOSLibNodeVmwareSoapApiService) {
 
     this.WMKS = WmksLib(jQuery.$);
 
@@ -84,7 +84,7 @@ export class BodyComponent implements AfterViewInit {
 
   toggleEnforce() {
     this.isEnforcingKeyboard = !this.isEnforcingKeyboard;
-    this.wmks.setOption("fixANSIEquivalentKeys", this.isEnforcingKeyboard);
+    this.wmks.setOption('fixANSIEquivalentKeys', this.isEnforcingKeyboard);
   }
 
   ngAfterViewInit() {

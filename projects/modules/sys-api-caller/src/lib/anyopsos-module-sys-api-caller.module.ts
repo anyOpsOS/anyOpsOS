@@ -1,7 +1,7 @@
-import {request, Agent} from 'https';
+import { request, Agent } from 'https';
 
-import {AOO_FILESYSTEM_HOST, AOO_FILESYSTEM_PORT, AOO_AUTH_HOST, AOO_AUTH_PORT, SSL_AUTH_CERT_KEY, SSL_AUTH_CERT} from '@anyopsos/module-sys-constants';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AOO_FILESYSTEM_HOST, AOO_FILESYSTEM_PORT, AOO_AUTH_HOST, AOO_AUTH_PORT, SSL_AUTH_CERT_KEY, SSL_AUTH_CERT, AOO_IMPERSONATE_HEADER } from '@anyopsos/module-sys-constants';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 export class AnyOpsOSSysApiCallerModule {
 
@@ -42,7 +42,7 @@ export class AnyOpsOSSysApiCallerModule {
       }
     }
 
-    if (userUuid) options.headers = {...options.headers, 'anyopsos-impersonate': userUuid}
+    if (userUuid) options.headers = { ...options.headers, [AOO_IMPERSONATE_HEADER]: userUuid }
 
     return new Promise((resolve, reject) => {
       const requestCall = request(options, (res) => {

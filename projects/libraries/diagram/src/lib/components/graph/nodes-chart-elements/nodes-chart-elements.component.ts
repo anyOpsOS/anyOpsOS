@@ -1,12 +1,12 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 
-import {combineLatest, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {debounce} from 'lodash-es';
+import { debounce } from 'lodash-es';
 
-import {AnyOpsOSLibDiagramStateService} from '../../../services/anyopsos-lib-diagram-state.service';
-import {AnyOpsOSLibDiagramService} from '../../../services/anyopsos-lib-diagram.service';
+import { AnyOpsOSLibDiagramStateService } from '../../../services/anyopsos-lib-diagram-state.service';
+import { AnyOpsOSLibDiagramService } from '../../../services/anyopsos-lib-diagram.service';
 import {
   BLURRED_EDGES_LAYER,
   BLURRED_NODES_LAYER,
@@ -17,12 +17,12 @@ import {
   NORMAL_NODES_LAYER
 } from '../../../anyopsos-lib-diagram.constants';
 
-import {Node} from '../../../types/node';
-import {LayoutNode} from '../../../types/layout-node';
-import {LayoutEdge} from '../../../types/layout-edge';
-import {Network} from '../../../types/network';
-import {Metric} from '../../../types/metric';
-import {NodeMatch} from '../../../types/node-match';
+import { Node } from '../../../types/node';
+import { LayoutNode } from '../../../types/layout-node';
+import { LayoutEdge } from '../../../types/layout-edge';
+import { Network } from '../../../types/network';
+import { Metric } from '../../../types/metric';
+import { NodeMatch } from '../../../types/node-match';
 
 @Component({
   selector: '[aldiagram-nodes-chart-elements]',
@@ -137,7 +137,7 @@ export class NodesChartElementsComponent implements OnInit, OnDestroy {
     const dnodes = this.layoutNodes.reduce((r, v, i, a, layer = this.nodeDisplayLayer(v)) => {
       (r[layer] || (r[layer] = [])).push(v);
       return r;
-    }, {});
+    },                                     {});
 
     this.layoutEdges
       .map(e => this.edgeHighlightedDecorator(e))
@@ -148,7 +148,7 @@ export class NodesChartElementsComponent implements OnInit, OnDestroy {
     const dedges = this.layoutEdges.reduce((r, v, i, a, layer = this.edgeDisplayLayer(v)) => {
       (r[layer] || (r[layer] = [])).push(v);
       return r;
-    }, {});
+    },                                     {});
 
     // NOTE: The elements need to be arranged into a single array outside
     // of DOM structure for React rendering engine to do smart rearrangements
@@ -157,7 +157,7 @@ export class NodesChartElementsComponent implements OnInit, OnDestroy {
     this.orderedElements$.next([
       ...(dedges[BLURRED_EDGES_LAYER] ?? []),
       ...(dnodes[BLURRED_NODES_LAYER] ?? []),
-      ...[{isActive: !!dnodes[BLURRED_NODES_LAYER], isOverlay: true, id: 'overlay'}],
+      ...[{ isActive: !!dnodes[BLURRED_NODES_LAYER], isOverlay: true, id: 'overlay' }],
       ...(dedges[NORMAL_EDGES_LAYER] ?? []),
       ...(dnodes[NORMAL_NODES_LAYER] ?? []),
       ...(dedges[HIGHLIGHTED_EDGES_LAYER] ?? []),
@@ -176,7 +176,7 @@ export class NodesChartElementsComponent implements OnInit, OnDestroy {
   }
 
   private getAdjacentNodes(originNodeId?: string): string[] {
-    let adjacentNodes: string[] = [];
+    const adjacentNodes: string[] = [];
     const nodeId: string = originNodeId ?? this.selectedNodeUuid;
 
     if (nodeId) {

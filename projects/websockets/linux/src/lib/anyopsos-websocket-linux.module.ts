@@ -1,10 +1,10 @@
 import socketControllers from 'socket-controllers';
-import {Socket} from 'socket.io';
-import log4js, {Logger} from 'log4js';
+import { Socket } from 'socket.io';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getLogger} = log4js;
-const {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, ReturnAck} = socketControllers;
+const { getLogger } = log4js;
+const { SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, ReturnAck } = socketControllers;
 
 const logger: Logger = getLogger('mainLog');
 

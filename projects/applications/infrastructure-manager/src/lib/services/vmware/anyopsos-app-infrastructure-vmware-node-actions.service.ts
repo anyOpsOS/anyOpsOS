@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibNodeVmwareSoapApiService, AnyOpsOSLibNodeVmwareSoapApiHelpersService} from '@anyopsos/lib-node-vmware';
-import {VMWareVM} from '@anyopsos/module-node-vmware';
-import {VmwareSdkFunctionsOutput} from '@anyopsos/sdk-vmware';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibNodeVmwareSoapApiService, AnyOpsOSLibNodeVmwareSoapApiHelpersService } from '@anyopsos/lib-node-vmware';
+import { VMWareVM } from '@anyopsos/module-node-vmware';
+import { VmwareSdkFunctionsOutput } from '@anyopsos/sdk-vmware';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
 
 @Injectable({
@@ -23,7 +23,7 @@ export class AnyOpsOSAppInfrastructureVmwareNodeActionsService {
   async doWithVM(connectionUuid: string, vm: DataObject & { info: { data: VMWareVM; } }, action: 'powerOn' | 'powerOff' | 'suspend' | 'reset' | 'powerOffGuestOS' | 'restartGuestOS' | 'refresh'): Promise<void> {
 
     return this.LibNodeVmwareSoapApiHelpersService.getVMRuntime(connectionUuid, vm.info.obj.name).then((vmRuntimeResult: VmwareSdkFunctionsOutput<'RetrieveProperties'>) => {
-      if (vmRuntimeResult.status === 'error') throw {error: vmRuntimeResult.data, description: 'Failed to get VM runtime'};
+      if (vmRuntimeResult.status === 'error') throw { error: vmRuntimeResult.data, description: 'Failed to get VM runtime' };
 
       // powerOn
       if (action === 'powerOn') {
@@ -109,7 +109,7 @@ export class AnyOpsOSAppInfrastructureVmwareNodeActionsService {
       }
 
     }).then((vmActionResult: VmwareSdkFunctionsOutput<'PowerOnVM_Task' | 'PowerOffVM_Task' | 'SuspendVM_Task' | 'ResetVM_Task' | 'ShutdownGuest' | 'RebootGuest'>) => {
-      if (vmActionResult.status === 'error') throw {error: vmActionResult.data, description: `Failed to ${action} off VM`};
+      if (vmActionResult.status === 'error') throw { error: vmActionResult.data, description: `Failed to ${action} off VM` };
     }).catch((e) => {
       this.logger.error((e.description ? e.description : e.message), `Error while ${action} on VMWare VM`);
 

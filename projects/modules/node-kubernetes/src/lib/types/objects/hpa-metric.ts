@@ -1,5 +1,5 @@
-import {HpaMetricType} from './hpa-metric-type';
-import {HpaMetricData} from './hpa-metric-data';
+import { HpaMetricType } from './hpa-metric-type';
+import { HpaMetricData } from './hpa-metric-data';
 
 export interface HpaMetric {
   [kind: string]: HpaMetricData;

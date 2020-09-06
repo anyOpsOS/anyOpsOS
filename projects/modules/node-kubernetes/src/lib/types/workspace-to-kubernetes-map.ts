@@ -1,4 +1,4 @@
-import {KubeConfig} from '@kubernetes/client-node';
+import { KubeConfig } from '@kubernetes/client-node';
 
 export interface WorkspaceToKubernetesMap {
   [key: string]: {

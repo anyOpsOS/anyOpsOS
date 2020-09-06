@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, Component, ElementRef, Input} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input } from '@angular/core';
 
 // import {Motion} from 'react-motion';
 
-import {LayoutNode} from '../../../types/layout-node';
+import { LayoutNode } from '../../../types/layout-node';
 
 @Component({
   selector: '[aldiagram-node]',

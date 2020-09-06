@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {ConnectionSnmp} from '@anyopsos/module-node-snmp';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibFileSystemService } from '@anyopsos/lib-file-system';
+import { ConnectionSnmp } from '@anyopsos/module-node-snmp';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 // TODO extract it from '@anyopsos/module-node-snmp'
 const SNMP_CONFIG_FILE = 'snmp.json';
@@ -54,8 +54,8 @@ export class AnyOpsOSLibNodeSnmpConnectionsStateService {
   initConnections(): void {
     if (this.getConnectionsInitialized()) throw new Error('connections_already_initialized');
 
-    this.LibFileSystem.getConfigFile(SNMP_CONFIG_FILE)
-      .subscribe((connectionsData: BackendResponse & { data: ConnectionSnmp[]; }) => {
+    this.LibFileSystem.getConfigFile(SNMP_CONFIG_FILE).subscribe(
+      (connectionsData: BackendResponse & { data: ConnectionSnmp[]; }) => {
         if (connectionsData.status === 'error') {
           this.logger.error('LibNodeSnmp', 'Error while initializing connections', null, connectionsData.data);
           throw connectionsData.data;
@@ -71,15 +71,16 @@ export class AnyOpsOSLibNodeSnmpConnectionsStateService {
         // If config file not exist, create a new one and try again
         if (error.data === 'resource_not_found') {
 
-          await this.LibFileSystem.putConfigFile([], SNMP_CONFIG_FILE).subscribe((res: BackendResponse) => {
-            if (res.status === 'error') throw res.data;
+          await this.LibFileSystem.putConfigFile([], SNMP_CONFIG_FILE).subscribe(
+            (res: BackendResponse) => {
+              if (res.status === 'error') throw res.data;
 
-            return this.initConnections();
-          },
-          error => {
-            this.logger.error('LibNodeSnmp', 'Error while getting connections', null, error);
-            this.logger.error('LibNodeSnmp', 'Error while creating configuration file', null, error);
-          });
+              return this.initConnections();
+            },
+            err => {
+              this.logger.error('LibNodeSnmp', 'Error while getting connections', null, err);
+              this.logger.error('LibNodeSnmp', 'Error while creating configuration file', null, err);
+            });
         } else {
           this.logger.error('LibNodeSnmp', 'Error while getting connections', null, error);
         }
@@ -186,22 +187,22 @@ export class AnyOpsOSLibNodeSnmpConnectionsStateService {
 
     return new Promise(async (resolve, reject) => {
 
-      let fileSystemObservable: Observable<Object>;
+      let fileSystemObservable: Observable<{ [key: string]: any }>;
 
       if (type === 'put') fileSystemObservable = this.LibFileSystem.putConfigFile(currentConnection, SNMP_CONFIG_FILE, currentConnection.uuid);
       if (type === 'patch') fileSystemObservable = this.LibFileSystem.patchConfigFile(currentConnection, SNMP_CONFIG_FILE, currentConnection.uuid);
       if (type === 'delete') fileSystemObservable = this.LibFileSystem.deleteConfigFile(SNMP_CONFIG_FILE, currentConnection.uuid);
 
       fileSystemObservable.subscribe((res: BackendResponse) => {
-          if (res.status === 'error') {
-            this.logger.error('LibNodeSnmp', 'Error while saving connection', null, res.data);
-            return reject(res.data);
-          }
+        if (res.status === 'error') {
+          this.logger.error('LibNodeSnmp', 'Error while saving connection', null, res.data);
+          return reject(res.data);
+        }
 
-          this.logger.debug('LibNodeSnmp', 'Saved connection successfully', loggerArgs);
-          return resolve(res.data);
-        },
-        error => {
+        this.logger.debug('LibNodeSnmp', 'Saved connection successfully', loggerArgs);
+        return resolve(res.data);
+      },
+                                     error => {
           this.logger.error('LibNodeSnmp', 'Error while saving connection', loggerArgs, error);
           return reject(error);
         });

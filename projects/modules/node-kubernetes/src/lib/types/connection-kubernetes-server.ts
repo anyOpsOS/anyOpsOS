@@ -1,4 +1,4 @@
-import {Credential} from '@anyopsos/module-credential';
+import { Credential } from '@anyopsos/module-credential';
 
 export interface ConnectionKubernetesServer {
   clusterName: string;

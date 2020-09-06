@@ -1,15 +1,15 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import routingControllers from 'routing-controllers';
 import routingControllersSessionParam from 'routing-controllers/decorator/SessionParam';
-import log4js, {Logger} from 'log4js';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {Controller, Get, Put, Authorized, Req, Res, BodyParam, Delete, Param, Patch} = routingControllers;
-const {SessionParam}  = routingControllersSessionParam
-const {getLogger} = log4js;
+const { Controller, Get, Put, Authorized, Req, Res, BodyParam, Delete, Param, Patch } = routingControllers;
+const { SessionParam } = routingControllersSessionParam
+const { getLogger } = log4js;
 
-import {AnyOpsOSApiGlobalsModule} from '@anyopsos/module-api-globals';
-import {AnyOpsOSCredentialModule, Credential} from '@anyopsos/module-credential';
+import { AnyOpsOSApiGlobalsModule } from '@anyopsos/module-api-globals';
+import { AnyOpsOSCredentialModule, Credential } from '@anyopsos/module-credential';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -37,11 +37,11 @@ export class AnyOpsOSCredentialApiController {
   // TODO ALLOW THIS API ONLY FROM INTERNAL SOURCES, NOT FROM THE USERS
   @Get('/:workspaceUuid/:credentialUuid')
   async getAllCredential(@Req() request: Request,
-                          @Res() response: Response,
-                          @SessionParam('userUuid') userUuid: string,
-                          @SessionParam('id') sessionUuid: string,
-                          @Param('workspaceUuid') workspaceUuid: string,
-                          @Param('credentialUuid') credentialUuid: string) {
+                         @Res() response: Response,
+                         @SessionParam('userUuid') userUuid: string,
+                         @SessionParam('id') sessionUuid: string,
+                         @Param('workspaceUuid') workspaceUuid: string,
+                         @Param('credentialUuid') credentialUuid: string) {
     logger.info(`[API Credentials] -> Get credential -> workspaceUuid [${workspaceUuid}], credentialUuid [${credentialUuid}]`);
 
     const CredentialModule: AnyOpsOSCredentialModule = new AnyOpsOSCredentialModule(userUuid, workspaceUuid);

@@ -1,7 +1,7 @@
-import {WorkloadKubeObject} from './workload-kube-object';
-import {PodContainer} from './pod-container';
-import {PodContainerStatus} from './pod-container-status';
-import {Affinity} from './affinity';
+import { WorkloadKubeObject } from './workload-kube-object';
+import { PodContainer } from './pod-container';
+import { PodContainerStatus } from './pod-container-status';
+import { Affinity } from './affinity';
 
 export interface Pod extends WorkloadKubeObject {
   kind: 'Pod',

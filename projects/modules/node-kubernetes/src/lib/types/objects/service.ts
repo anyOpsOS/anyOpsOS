@@ -1,5 +1,5 @@
-import {ServicePort} from './service-port';
-import {KubeObject} from './kube-object';
+import { ServicePort } from './service-port';
+import { KubeObject } from './kube-object';
 
 export interface Service extends KubeObject {
   kind: 'Service';

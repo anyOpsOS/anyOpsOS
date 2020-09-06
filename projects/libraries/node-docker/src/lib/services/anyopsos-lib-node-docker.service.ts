@@ -1,16 +1,16 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Socket} from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
-import {AnyOpsOSLibSshHelpersService, AnyOpsOSLibSshService} from '@anyopsos/lib-ssh';
-import {ConnectionDocker} from '@anyopsos/module-node-docker';
-import {ConnectionSsh} from '@anyopsos/module-ssh';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibWorkspaceService } from '@anyopsos/lib-workspace';
+import { AnyOpsOSLibSshHelpersService, AnyOpsOSLibSshService } from '@anyopsos/lib-ssh';
+import { ConnectionDocker } from '@anyopsos/module-node-docker';
+import { ConnectionSsh } from '@anyopsos/module-ssh';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSLibNodeDockerConnectionsStateService} from './anyopsos-lib-node-docker-connections-state.service';
-import {AnyOpsOSLibNodeDockerHelpersService} from './anyopsos-lib-node-docker-helpers.service';
+import { AnyOpsOSLibNodeDockerConnectionsStateService } from './anyopsos-lib-node-docker-connections-state.service';
+import { AnyOpsOSLibNodeDockerHelpersService } from './anyopsos-lib-node-docker-helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -56,24 +56,26 @@ export class AnyOpsOSLibNodeDockerService {
     return new Promise((resolve, reject) => {
 
       // Create new Docker session
-      this.socket.emit('[docker-session]', {
-        connectionUuid: connection.uuid,
-        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (data: BackendResponse) => {
+      this.socket.emit('[docker-session]',
+                       {
+                        connectionUuid: connection.uuid,
+                        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
+                       },
+                       async (data: BackendResponse) => {
 
-        if (data.status === 'error') {
-          this.logger.error('LibNodeDocker', 'Error while emitting [docker-session]', loggerArgs, data.data);
-          await this.LibNodeDockerConnectionsState.patchConnection(connection.uuid, 'error', data.data);
+                        if (data.status === 'error') {
+                          this.logger.error('LibNodeDocker', 'Error while emitting [docker-session]', loggerArgs, data.data);
+                          await this.LibNodeDockerConnectionsState.patchConnection(connection.uuid, 'error', data.data);
 
-          return reject(data.data);
-        }
+                          return reject(data.data);
+                        }
 
-        // Set connection state as connected and remove any previous errors
-        await this.LibNodeDockerConnectionsState.patchConnection(connection.uuid, 'state', 'connected');
-        await this.LibNodeDockerConnectionsState.patchConnection(connection.uuid, 'error', null);
+                        // Set connection state as connected and remove any previous errors
+                        await this.LibNodeDockerConnectionsState.patchConnection(connection.uuid, 'state', 'connected');
+                        await this.LibNodeDockerConnectionsState.patchConnection(connection.uuid, 'error', null);
 
-        return resolve();
-      });
+                        return resolve();
+                       });
     });
   }
 
@@ -89,24 +91,26 @@ export class AnyOpsOSLibNodeDockerService {
       const currentConnection: ConnectionDocker = this.LibNodeDockerhHelpers.getConnectionByUuid(connectionUuid);
       if (currentConnection.state === 'disconnected') throw new Error('already_disconnected');
 
-      this.socket.emit('[docker-disconnect]', {
-        connectionUuid,
-        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (data: BackendResponse) => {
+      this.socket.emit('[docker-disconnect]',
+                       {
+                        connectionUuid,
+                        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
+                       },
+                       async (data: BackendResponse) => {
 
-        if (data.status === 'error') {
-          this.logger.error('LibNodeDocker', 'Error while emitting [docker-disconnect]', loggerArgs, data.data);
-          await this.LibNodeDockerConnectionsState.patchConnection(connectionUuid, 'error', data.data);
+                        if (data.status === 'error') {
+                          this.logger.error('LibNodeDocker', 'Error while emitting [docker-disconnect]', loggerArgs, data.data);
+                          await this.LibNodeDockerConnectionsState.patchConnection(connectionUuid, 'error', data.data);
 
-          return reject(data.data);
-        }
+                          return reject(data.data);
+                        }
 
-        // Set connection state as connected and remove any previous errors
-        await this.LibNodeDockerConnectionsState.patchConnection(connectionUuid, 'state', 'disconnected');
-        await this.LibNodeDockerConnectionsState.patchConnection(connectionUuid, 'error', null);
+                        // Set connection state as connected and remove any previous errors
+                        await this.LibNodeDockerConnectionsState.patchConnection(connectionUuid, 'state', 'disconnected');
+                        await this.LibNodeDockerConnectionsState.patchConnection(connectionUuid, 'error', null);
 
-        return resolve();
-      });
+                        return resolve();
+                       });
     });
   }
 

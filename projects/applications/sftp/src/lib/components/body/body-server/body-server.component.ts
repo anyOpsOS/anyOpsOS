@@ -1,12 +1,12 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import {Observable, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {AnyOpsOSLibApplicationService, Application} from '@anyopsos/lib-application';
-import {ConnectionSftp} from '@anyopsos/module-ssh';
+import { AnyOpsOSLibApplicationService, Application } from '@anyopsos/lib-application';
+import { ConnectionSftp } from '@anyopsos/module-ssh';
 
-import {AnyOpsOSAppSftpService} from '../../../services/anyopsos-app-sftp.service';
+import { AnyOpsOSAppSftpService } from '../../../services/anyopsos-app-sftp.service';
 
 @Component({
   selector: 'aasftp-body-server',

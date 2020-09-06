@@ -1,23 +1,27 @@
 {
   "name": "@anyopsos/lib-folder",
   "version": "0.0.1",
-  "peerDependencies": {
-    "@angular/common": "~10.0.11",
-    "@angular/core": "~10.0.11",
-    "rxjs": "~6.6.0"
-  },
   "dependencies": {
     "tslib": "^2.0.0",
     "@anyopsos/lib-angular-material": "~0.0.1",
     "@anyopsos/lib-application": "~0.0.1",
     "@anyopsos/lib-file": "~0.0.1",
-    "@anyopsos/lib-file-system": "~0.0.1",
     "@anyopsos/lib-file-system-ui": "~0.0.1",
     "@anyopsos/lib-logger": "~0.0.1",
     "@anyopsos/lib-pipes": "~0.0.1",
     "@anyopsos/lib-selectable": "~0.0.1",
     "@anyopsos/lib-types": "~0.0.1",
     "angular-file": "^3.1.2"
+  },
+  "peerDependencies": {
+    "@angular/common": "~10.0.11",
+    "@angular/core": "~10.0.11",
+    "rxjs": "~6.6.0"
+  },
+  "devDependencies": {
+    "@angular/platform-browser-dynamic": "~10.0.11",
+    "zone.js": "~0.10.3",
+    "@anyopsos/backend-core": "~0.0.1"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

@@ -1,8 +1,8 @@
-import {Component, AfterViewInit, ViewEncapsulation} from '@angular/core';
+import { Component, AfterViewInit, ViewEncapsulation } from '@angular/core';
 
-import {AnyOpsOSExtLibMxgraphService} from '@anyopsos/ext-lib-mxgraph';
-import {AnyOpsOSExtLibPakoService} from '@anyopsos/ext-lib-pako';
-import {AnyOpsOSExtLibSpinJsService} from '@anyopsos/ext-lib-spin-js';
+import { AnyOpsOSExtLibMxgraphService } from '@anyopsos/ext-lib-mxgraph';
+import { AnyOpsOSExtLibPakoService } from '@anyopsos/ext-lib-pako';
+import { AnyOpsOSExtLibSpinJsService } from '@anyopsos/ext-lib-spin-js';
 
 declare var Load: any;
 

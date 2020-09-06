@@ -1,12 +1,12 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 
-import {AnyOpsOSLibBootstrapService} from '@anyopsos/lib-bootstrap';
+import { AnyOpsOSLibBootstrapService } from '@anyopsos/lib-bootstrap';
 
-import {AnyOpsOSLibNodeDockerService} from './services/anyopsos-lib-node-docker.service';
-import {AnyOpsOSLibNodeDockerApiService} from './services/anyopsos-lib-node-docker-api.service';
-import {AnyOpsOSLibNodeDockerHelpersService} from './services/anyopsos-lib-node-docker-helpers.service';
-import {AnyOpsOSLibNodeDockerConnectionsStateService} from './services/anyopsos-lib-node-docker-connections-state.service';
-import {AnyOpsOSLibNodeDockerFileSystemHandlersService} from './services/anyopsos-lib-node-docker-file-system-handlers.service';
+import { AnyOpsOSLibNodeDockerService } from './services/anyopsos-lib-node-docker.service';
+import { AnyOpsOSLibNodeDockerApiService } from './services/anyopsos-lib-node-docker-api.service';
+import { AnyOpsOSLibNodeDockerHelpersService } from './services/anyopsos-lib-node-docker-helpers.service';
+import { AnyOpsOSLibNodeDockerConnectionsStateService } from './services/anyopsos-lib-node-docker-connections-state.service';
+import { AnyOpsOSLibNodeDockerFileSystemHandlersService } from './services/anyopsos-lib-node-docker-file-system-handlers.service';
 
 @NgModule({
   declarations: [],
@@ -22,8 +22,8 @@ export class AnyOpsOSLibNodeDockerModule {
     console.log('Loading AnyOpsOSLibNodeDockerModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibNodeDockerModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibNodeDockerModule is already loaded. You should not import it manually.');
     }
 
     // Initialize connections when user is loggedIn

@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {BehaviorSubject, Observable} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import {Topology} from '../types/topology';
-import {TopologyOption} from '../types/topology-option';
-import {Node} from '../types/node';
-import {ZoomState} from '../types/zoom-state';
+import { Topology } from '../types/topology';
+import { TopologyOption } from '../types/topology-option';
+import { Node } from '../types/node';
+import { ZoomState } from '../types/zoom-state';
 
 @Injectable({
   providedIn: 'root'

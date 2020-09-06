@@ -1,18 +1,18 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 
-import { Observable, Subject, fromEvent} from 'rxjs';
-import {switchMap, map, takeUntil, tap} from 'rxjs/operators';
+import { Observable, Subject, fromEvent } from 'rxjs';
+import { switchMap, map, takeUntil, tap } from 'rxjs/operators';
 
-import {clamp, debounce} from 'lodash-es';
-import {scaleLog, ScaleLogarithmic} from 'd3-scale';
+import { clamp, debounce } from 'lodash-es';
+import { scaleLog, ScaleLogarithmic } from 'd3-scale';
 
-import {AnyOpsOSLibDiagramStateService} from '../../services/anyopsos-lib-diagram-state.service';
-import {AnyOpsOSLibDiagramService} from '../../services/anyopsos-lib-diagram.service';
-import {AnyOpsOSLibDiagramZoomUtilsService} from '../../services/anyopsos-lib-diagram-zoom-utils.service';
-import {LayoutLimits} from '../../types/layout-limits';
-import {SvgDomRect} from '../../types/svg-dom-rect';
-import {SvgDomPos} from '../../types/svg-dom-pos';
-import {ZoomState} from '../../types/zoom-state';
+import { AnyOpsOSLibDiagramStateService } from '../../services/anyopsos-lib-diagram-state.service';
+import { AnyOpsOSLibDiagramService } from '../../services/anyopsos-lib-diagram.service';
+import { AnyOpsOSLibDiagramZoomUtilsService } from '../../services/anyopsos-lib-diagram-zoom-utils.service';
+import { LayoutLimits } from '../../types/layout-limits';
+import { SvgDomRect } from '../../types/svg-dom-rect';
+import { SvgDomPos } from '../../types/svg-dom-pos';
+import { ZoomState } from '../../types/zoom-state';
 
 @Component({
   selector: 'aldiagram-zoomable-canvas',
@@ -21,7 +21,13 @@ import {ZoomState} from '../../types/zoom-state';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('canvas', {read: ElementRef, static: false}) private readonly canvas: ElementRef;
+
+  constructor(private readonly renderer: Renderer2,
+              private readonly LibDiagram: AnyOpsOSLibDiagramService,
+              private readonly LibDiagramState: AnyOpsOSLibDiagramStateService,
+              private readonly LibDiagramZoomUtils: AnyOpsOSLibDiagramZoomUtilsService) {
+  }
+  @ViewChild('canvas', { read: ElementRef, static: false }) private readonly canvas: ElementRef;
   private readonly destroySubject$: Subject<void> = new Subject();
   private readonly debouncedCacheZoom: debounce = debounce(this.cacheZoom.bind(this), 500);
 
@@ -45,10 +51,32 @@ export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy
   readonly zoomStateToString$: Subject<string> = new Subject();
   readonly isPanning$: Subject<boolean> = new Subject();
 
-  constructor(private readonly renderer: Renderer2,
-              private readonly LibDiagram: AnyOpsOSLibDiagramService,
-              private readonly LibDiagramState: AnyOpsOSLibDiagramStateService,
-              private readonly LibDiagramZoomUtils: AnyOpsOSLibDiagramZoomUtilsService) {
+  private static inverseTransform(transform: ZoomState, { width = 0, height = 0, x, y }: { width?: number; height?: number; x: number; y: number; }): SvgDomPos {
+    const inverseTranslateX = ({ scaleX = 1, translateX = 0 }, parentx) => (parentx - translateX) / scaleX;
+    const inverseTranslateY = ({ scaleY = 1, translateY = 0 }, parenty) => (parenty - translateY) / scaleY;
+    const inverseScaleX = ({ scaleX = 1 }, parentwidth) => parentwidth / scaleX;
+    const inverseScaleY = ({ scaleY = 1 }, parentheight) => parentheight / scaleY;
+
+    return {
+      height: inverseScaleY(transform, height),
+      width: inverseScaleX(transform, width),
+      x: inverseTranslateX(transform, x),
+      y: inverseTranslateY(transform, y),
+    };
+  }
+
+  private static applyTransform(transform: ZoomState, { width = 0, height = 0, x, y }: { width?: number; height?: number; x: number; y: number; }): SvgDomPos {
+    const applyTranslateX = ({ scaleX = 1, translateX = 0 }, parentx) => (parentx * scaleX) + translateX;
+    const applyTranslateY = ({ scaleY = 1, translateY = 0 }, parenty) => (parenty * scaleY) + translateY;
+    const applyScaleX = ({ scaleX = 1 }, parentwidth) => parentwidth * scaleX;
+    const applyScaleY = ({ scaleY = 1 }, parentheight) => parentheight * scaleY;
+
+    return {
+      height: applyScaleY(transform, height),
+      width: applyScaleX(transform, width),
+      x: applyTranslateX(transform, x),
+      y: applyTranslateY(transform, y),
+    };
   }
 
   ngOnInit(): void {
@@ -79,9 +107,9 @@ export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * DRAG SVG
      */
-    const mousedown$: Observable<any> = fromEvent(this.canvas.nativeElement, 'mousedown', {passive: true});
-    const mousemove$ = fromEvent(document, 'mousemove', {passive: true});
-    const mouseup$ = fromEvent(document, 'mouseup', {passive: true});
+    const mousedown$: Observable<any> = fromEvent(this.canvas.nativeElement, 'mousedown', { passive: true });
+    const mousemove$ = fromEvent(document, 'mousemove', { passive: true });
+    const mouseup$ = fromEvent(document, 'mouseup', { passive: true });
     const mousedrag$ = mousedown$.pipe(
       switchMap((event: MouseEvent) => {
         let prevX = event.clientX;
@@ -91,15 +119,15 @@ export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy
 
         return mousemove$
           .pipe(
-            map((event: MouseEvent) => {
+            map((mmevent: MouseEvent) => {
               event.preventDefault();
 
-              let delta = {
-                dx: event.clientX - prevX,
-                dy: event.clientY - prevY
+              const delta = {
+                dx: mmevent.clientX - prevX,
+                dy: mmevent.clientY - prevY
               };
-              prevX = event.clientX;
-              prevY = event.clientY;
+              prevX = mmevent.clientX;
+              prevY = mmevent.clientY;
 
               return delta;
             }),
@@ -129,7 +157,7 @@ export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * WHEEL SVG ZOOM
      */
-    const wheel$ = fromEvent(this.canvas.nativeElement, 'wheel', {passive: false}).pipe(
+    const wheel$ = fromEvent(this.canvas.nativeElement, 'wheel', { passive: false }).pipe(
       takeUntil(this.destroySubject$),
       tap((event: WheelEvent) => {
         event.preventDefault();
@@ -145,7 +173,7 @@ export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy
     this.destroySubject$.next();
   }
 
-  private transformZoomStateToString({translateX = 0, translateY = 0, scaleX = 1, scaleY = 1}): void {
+  private transformZoomStateToString({ translateX = 0, translateY = 0, scaleX = 1, scaleY = 1 }): void {
     this.zoomStateToString$.next(`translate(${translateX},${translateY}) scale(${scaleX},${scaleY})`);
   }
 
@@ -154,7 +182,7 @@ export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy
    */
   updateZoomLimits(): void {
     const layoutLimits: LayoutLimits = this.LibDiagram.layoutLimits();
-    this.zoomableState = {...this.zoomableState, ...layoutLimits};
+    this.zoomableState = { ...this.zoomableState, ...layoutLimits };
   }
 
   private restoreZoomState(): void {
@@ -163,7 +191,7 @@ export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy
     if (graphZoomState === null) return;
 
     // Update the state variables.
-    this.zoomableState = {...this.zoomableState, ...graphZoomState};
+    this.zoomableState = { ...this.zoomableState, ...graphZoomState };
     this.updateState();
   }
 
@@ -173,10 +201,10 @@ export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy
   private updateState(): void {
 
     // Do not debounce on drag
-    //const isPanning: boolean = await this.isPanning$.pipe(take(1)).toPromise();
-    //if (isPanning) return this.cacheZoom();
+    // const isPanning: boolean = await this.isPanning$.pipe(take(1)).toPromise();
+    // if (isPanning) return this.cacheZoom();
 
-     //this.debouncedCacheZoom();
+    // this.debouncedCacheZoom();
 
     return this.cacheZoom();
   }
@@ -199,7 +227,7 @@ export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.canChangeZoom()) {
 
       // Get the exact mouse cursor position in the SVG and zoom around it.
-      const {top, left} = this.canvas.nativeElement.getBoundingClientRect();
+      const { top, left } = this.canvas.nativeElement.getBoundingClientRect();
       const mousePosition = {
         x: event.clientX - left,
         y: event.clientY - top,
@@ -244,10 +272,10 @@ export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy
   private zoomAtPositionByFactor(position: { x: number; y: number; }, factor: number): void {
 
     // Update the scales by the given factor, respecting the zoom limits.
-    const {minScale, maxScale} = this.zoomableState;
+    const { minScale, maxScale } = this.zoomableState;
     const scaleX: number = clamp(this.zoomableState.scaleX * factor, minScale, maxScale);
     const scaleY: number = clamp(this.zoomableState.scaleY * factor, minScale, maxScale);
-    let zoomableState: ZoomState = {...this.zoomableState, scaleX, scaleY};
+    const zoomableState: ZoomState = { ...this.zoomableState, scaleX, scaleY };
 
     // Get the position in the coordinates before the transition and use it to adjust the translation
     // part of the new transition (respecting the translation limits). Adapted from:
@@ -262,48 +290,20 @@ export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy
     this.updateState();
   }
 
-  private static inverseTransform(transform: ZoomState, { width = 0, height = 0, x, y }: { width?: number; height?: number; x: number; y: number; }): SvgDomPos {
-    const inverseTranslateX = ({scaleX = 1, translateX = 0}, parentx) => (parentx - translateX) / scaleX;
-    const inverseTranslateY = ({scaleY = 1, translateY = 0}, parenty) => (parenty - translateY) / scaleY;
-    const inverseScaleX = ({scaleX = 1}, parentwidth) => parentwidth / scaleX;
-    const inverseScaleY = ({scaleY = 1}, parentheight) => parentheight / scaleY;
-
-    return {
-      height: inverseScaleY(transform, height),
-      width: inverseScaleX(transform, width),
-      x: inverseTranslateX(transform, x),
-      y: inverseTranslateY(transform, y),
-    };
-  }
-
-  private static applyTransform(transform: ZoomState, {width = 0, height = 0, x, y}: { width?: number; height?: number; x: number; y: number; }): SvgDomPos {
-    const applyTranslateX = ({scaleX = 1, translateX = 0}, parentx) => (parentx * scaleX) + translateX;
-    const applyTranslateY = ({scaleY = 1, translateY = 0}, parenty) => (parenty * scaleY) + translateY;
-    const applyScaleX = ({scaleX = 1}, parentwidth) => parentwidth * scaleX;
-    const applyScaleY = ({scaleY = 1}, parentheight) => parentheight * scaleY;
-
-    return {
-      height: applyScaleY(transform, height),
-      width: applyScaleX(transform, width),
-      x: applyTranslateX(transform, x),
-      y: applyTranslateY(transform, y),
-    };
-  }
-
   private clampedTranslation(zoomState: ZoomState): ZoomState {
     const canvasMargins: SvgDomRect = this.LibDiagram.canvasMargins();
     const canvasWidth: number = this.LibDiagram.canvasWidth();
     const canvasHeight: number = this.LibDiagram.canvasHeight();
 
-    const {contentMinX, contentMaxX, contentMinY, contentMaxY} = this.zoomableState;
+    const { contentMinX, contentMaxX, contentMinY, contentMaxY } = this.zoomableState;
 
     // If the content is required to be bounded in any way, the translation will
     // be adjusted so that certain constraints between the viewport and displayed
     // content bounding box are met.
-    const viewportMin: { x: number; y: number; } = {x: canvasMargins.left, y: canvasMargins.top};
-    const viewportMax: { x: number; y: number; } = {x: canvasMargins.left + canvasWidth, y: canvasMargins.top + canvasHeight};
-    const contentMin: SvgDomPos = ZoomableCanvasComponent.applyTransform(zoomState, {x: contentMinX, y: contentMinY});
-    const contentMax: SvgDomPos = ZoomableCanvasComponent.applyTransform(zoomState, {x: contentMaxX, y: contentMaxY});
+    const viewportMin: { x: number; y: number; } = { x: canvasMargins.left, y: canvasMargins.top };
+    const viewportMax: { x: number; y: number; } = { x: canvasMargins.left + canvasWidth, y: canvasMargins.top + canvasHeight };
+    const contentMin: SvgDomPos = ZoomableCanvasComponent.applyTransform(zoomState, { x: contentMinX, y: contentMinY });
+    const contentMax: SvgDomPos = ZoomableCanvasComponent.applyTransform(zoomState, { x: contentMaxX, y: contentMaxY });
 
     // These lines will adjust the translation by 'minimal effort' in
     // such a way that the content is always at least PARTLY contained
@@ -320,7 +320,7 @@ export class ZoomableCanvasComponent implements OnInit, AfterViewInit, OnDestroy
   private handleZoomControlAction(scale: number): void {
 
     // Get the center of the SVG and zoom around it.
-    const {top, bottom, left, right}: SvgDomRect = this.canvas.nativeElement.getBoundingClientRect();
+    const { top, bottom, left, right }: SvgDomRect = this.canvas.nativeElement.getBoundingClientRect();
 
     const centerOfCanvas: { x: number; y: number; } = {
       x: (left + right) / 2,

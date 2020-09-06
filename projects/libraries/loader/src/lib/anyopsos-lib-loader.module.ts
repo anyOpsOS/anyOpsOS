@@ -1,30 +1,30 @@
-import {NgModule, Optional, SkipSelf} from '@angular/core';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
 
-import {AnyOpsOSLibFileSystemModule} from '@anyopsos/lib-file-system';
-import {AnyOpsOSLibFileSystemUiModule} from '@anyopsos/lib-file-system-ui';
-import {AnyOpsOSLibLoggerModule} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibApplicationModule} from '@anyopsos/lib-application';
-import {AnyOpsOSLibModalModule} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibWorkspaceModule} from '@anyopsos/lib-workspace';
-import {AnyOpsOSLibDesktopModule} from '@anyopsos/lib-desktop';
-import {AnyOpsOSLibUserModule} from '@anyopsos/lib-user';
-import {AnyOpsOSLibBootstrapModule} from '@anyopsos/lib-bootstrap';
+import { AnyOpsOSLibFileSystemModule } from '@anyopsos/lib-file-system';
+import { AnyOpsOSLibFileSystemUiModule } from '@anyopsos/lib-file-system-ui';
+import { AnyOpsOSLibLoggerModule } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibApplicationModule } from '@anyopsos/lib-application';
+import { AnyOpsOSLibModalModule } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibWorkspaceModule } from '@anyopsos/lib-workspace';
+import { AnyOpsOSLibDesktopModule } from '@anyopsos/lib-desktop';
+import { AnyOpsOSLibUserModule } from '@anyopsos/lib-user';
+import { AnyOpsOSLibBootstrapModule } from '@anyopsos/lib-bootstrap';
 
-import {AnyOpsOSLibCredentialModule} from '@anyopsos/lib-credential';
-import {AnyOpsOSLibSshModule} from '@anyopsos/lib-ssh';
-import {AnyOpsOSLibNodeLinuxModule} from '@anyopsos/lib-node-linux';
-import {AnyOpsOSLibNodeKubernetesModule} from '@anyopsos/lib-node-kubernetes';
-import {AnyOpsOSLibNodeDockerModule} from '@anyopsos/lib-node-docker';
-import {AnyOpsOSLibNodeVmwareModule} from '@anyopsos/lib-node-vmware';
-import {AnyOpsOSLibNodeNetappModule} from '@anyopsos/lib-node-netapp';
-import {AnyOpsOSLibNodeSnmpModule} from '@anyopsos/lib-node-snmp';
+import { AnyOpsOSLibCredentialModule } from '@anyopsos/lib-credential';
+import { AnyOpsOSLibSshModule } from '@anyopsos/lib-ssh';
+import { AnyOpsOSLibNodeLinuxModule } from '@anyopsos/lib-node-linux';
+import { AnyOpsOSLibNodeKubernetesModule } from '@anyopsos/lib-node-kubernetes';
+import { AnyOpsOSLibNodeDockerModule } from '@anyopsos/lib-node-docker';
+import { AnyOpsOSLibNodeVmwareModule } from '@anyopsos/lib-node-vmware';
+import { AnyOpsOSLibNodeNetappModule } from '@anyopsos/lib-node-netapp';
+import { AnyOpsOSLibNodeSnmpModule } from '@anyopsos/lib-node-snmp';
 
-import {AnyOpsOSLibUserService} from '@anyopsos/lib-user';
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
-import {AnyOpsOSLibBootstrapService} from '@anyopsos/lib-bootstrap';
-import {AnyOpsOSLibDesktopTaskBarService} from '@anyopsos/lib-desktop';
+import { AnyOpsOSLibUserService } from '@anyopsos/lib-user';
+import { AnyOpsOSLibWorkspaceService } from '@anyopsos/lib-workspace';
+import { AnyOpsOSLibBootstrapService } from '@anyopsos/lib-bootstrap';
+import { AnyOpsOSLibDesktopTaskBarService } from '@anyopsos/lib-desktop';
 
-import {AnyOpsOSLibLoaderService} from './services/anyopsos-lib-loader.service';
+import { AnyOpsOSLibLoaderService } from './services/anyopsos-lib-loader.service';
 
 @NgModule({
   declarations: [],

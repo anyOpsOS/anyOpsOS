@@ -1,11 +1,11 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 
-import {AnyOpsOSLibBootstrapService} from '@anyopsos/lib-bootstrap';
+import { AnyOpsOSLibBootstrapService } from '@anyopsos/lib-bootstrap';
 
-import {AnyOpsOSLibCredentialService} from './services/anyopsos-lib-credential.service';
-import {AnyOpsOSLibCredentialStateService} from './services/anyopsos-lib-credential-state.service';
-import {AnyOpsOSLibCredentialApiService} from './services/anyopsos-lib-credential-api.service';
-import {AnyOpsOSLibCredentialHelpersService} from './services/anyopsos-lib-credential-helpers.service';
+import { AnyOpsOSLibCredentialService } from './services/anyopsos-lib-credential.service';
+import { AnyOpsOSLibCredentialStateService } from './services/anyopsos-lib-credential-state.service';
+import { AnyOpsOSLibCredentialApiService } from './services/anyopsos-lib-credential-api.service';
+import { AnyOpsOSLibCredentialHelpersService } from './services/anyopsos-lib-credential-helpers.service';
 
 @NgModule({
   declarations: [],

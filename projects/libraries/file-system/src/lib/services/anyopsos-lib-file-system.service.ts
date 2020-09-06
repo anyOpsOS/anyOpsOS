@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
-import {ConfigFile, ConfigFileData} from '@anyopsos/module-config-file';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibWorkspaceService } from '@anyopsos/lib-workspace';
+import { ConfigFile, ConfigFileData } from '@anyopsos/module-config-file';
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +20,13 @@ export class AnyOpsOSLibFileSystemService {
   /**
    * Folder API
    */
-  getFolder(srcPath: string): Observable<Object> {
+  getFolder(srcPath: string): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'getFolder', arguments);
 
     return this.http.get(`/api/folder/${encodeURIComponent(srcPath)}`);
   }
 
-  putFolder(dstPath: string, name: string): Observable<Object> {
+  putFolder(dstPath: string, name: string): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'createFolder', arguments);
 
     return this.http.put(`/api/folder/${encodeURIComponent(dstPath + name)}`, {});
@@ -35,13 +35,13 @@ export class AnyOpsOSLibFileSystemService {
   /**
    * File API
    */
-  getFile(srcPath: string): Observable<Object> {
+  getFile(srcPath: string): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'getFile', arguments);
 
-    return this.http.get(`/api/file/${encodeURIComponent(srcPath)}`, {responseType: 'blob'});
+    return this.http.get(`/api/file/${encodeURIComponent(srcPath)}`, { responseType: 'blob' });
   }
 
-  putFile(dstPath: string, file: File): Observable<Object> {
+  putFile(dstPath: string, file: File): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'uploadFile', arguments);
 
     const formData = new FormData();
@@ -52,7 +52,7 @@ export class AnyOpsOSLibFileSystemService {
     });
   }
 
-  downloadFileFromUrl(dstPath: string, url: string, credentialUuid?: string): Observable<Object> {
+  downloadFileFromUrl(dstPath: string, url: string, credentialUuid?: string): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'downloadFileFromUrl', arguments);
 
     return this.http.post('/api/file/download_from_url', {
@@ -62,25 +62,25 @@ export class AnyOpsOSLibFileSystemService {
     });
   }
 
-  copyFile(srcPath: string, dstPath: string): Observable<Object> {
+  copyFile(srcPath: string, dstPath: string): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'copyFile', arguments);
 
     return this.http.patch(`/api/file/copy/${encodeURIComponent(srcPath)}`, { dstPath });
   }
 
-  moveFile(srcPath: string, dstPath: string): Observable<Object> {
+  moveFile(srcPath: string, dstPath: string): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'moveFile', arguments);
 
     return this.http.patch(`/api/file/move/${encodeURIComponent(srcPath)}`, { dstPath });
   }
 
-  renameFile(srcPath: string, oldName: string, newName: string): Observable<Object> {
+  renameFile(srcPath: string, oldName: string, newName: string): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'renameFile', arguments);
 
     return this.http.patch(`/api/file/rename/${encodeURIComponent(srcPath + oldName)}`, { dstPath: srcPath + newName });
   }
 
-  deleteFile(srcPath: string, name: string): Observable<Object> {
+  deleteFile(srcPath: string, name: string): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'deleteFile', arguments);
 
     return this.http.delete(`/api/file/${encodeURIComponent(srcPath + name)}`);
@@ -91,32 +91,32 @@ export class AnyOpsOSLibFileSystemService {
    *
    * ConfigFiles are locates at /etc. You must exclude /etc from 'fileName'
    */
-  getConfigFile(fileName: string, configUuid?: string): Observable<Object> {
+  getConfigFile(fileName: string, configUuid?: string): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'getConfigFile', arguments);
 
     if (configUuid) return this.http.get(`/api/config-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${encodeURIComponent(fileName)}/${configUuid}`);
     return this.http.get(`/api/config-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${encodeURIComponent(fileName)}`);
   }
 
-  putConfigFile(data: ConfigFile, fileName: string): Observable<Object>;
-  putConfigFile(data: ConfigFileData, fileName: string, configUuid: string): Observable<Object>;
-  putConfigFile(data: ConfigFileData | ConfigFileData[], fileName: string, configUuid?: string): Observable<Object> {
+  putConfigFile(data: ConfigFile, fileName: string): Observable<{ [key: string]: any }>;
+  putConfigFile(data: ConfigFileData, fileName: string, configUuid: string): Observable<{ [key: string]: any }>;
+  putConfigFile(data: ConfigFileData | ConfigFileData[], fileName: string, configUuid?: string): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'putConfigFile', arguments);
 
-    if (configUuid) return this.http.put(`/api/config-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${encodeURIComponent(fileName)}/${configUuid}`, {data});
-    return this.http.put(`/api/config-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${encodeURIComponent(fileName)}`, {data});
+    if (configUuid) return this.http.put(`/api/config-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${encodeURIComponent(fileName)}/${configUuid}`, { data });
+    return this.http.put(`/api/config-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${encodeURIComponent(fileName)}`, { data });
   }
 
-  patchConfigFile(data: ConfigFile, fileName: string): Observable<Object>;
-  patchConfigFile(data: ConfigFileData, fileName: string, configUuid: string): Observable<Object>;
-  patchConfigFile(data: ConfigFileData | ConfigFileData[], fileName: string, configUuid?: string): Observable<Object> {
+  patchConfigFile(data: ConfigFile, fileName: string): Observable<{ [key: string]: any }>;
+  patchConfigFile(data: ConfigFileData, fileName: string, configUuid: string): Observable<{ [key: string]: any }>;
+  patchConfigFile(data: ConfigFileData | ConfigFileData[], fileName: string, configUuid?: string): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'patchConfigFile', arguments);
 
-    if (configUuid) return this.http.patch(`/api/config-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${encodeURIComponent(fileName)}/${configUuid}`, {data});
-    return this.http.patch(`/api/config-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${encodeURIComponent(fileName)}`, {data});
+    if (configUuid) return this.http.patch(`/api/config-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${encodeURIComponent(fileName)}/${configUuid}`, { data });
+    return this.http.patch(`/api/config-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${encodeURIComponent(fileName)}`, { data });
   }
 
-  deleteConfigFile(fileName: string, configUuid?: string): Observable<Object> {
+  deleteConfigFile(fileName: string, configUuid?: string): Observable<{ [key: string]: any }> {
     this.logger.debug('fileSystem', 'deleteConfigFile', arguments);
 
     if (configUuid) return this.http.delete(`/api/config-file/${this.LibWorkspace.getCurrentWorkspaceUuid()}/${encodeURIComponent(fileName)}/${configUuid}`);

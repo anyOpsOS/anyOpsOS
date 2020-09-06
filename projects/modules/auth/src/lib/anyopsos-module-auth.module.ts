@@ -1,15 +1,15 @@
-import log4js, {Logger} from 'log4js';
-import {v4 as uuidv4} from 'uuid';
-import {client} from 'node-vault';
+import log4js, { Logger } from 'log4js';
+import { v4 as uuidv4 } from 'uuid';
+import { client } from 'node-vault';
 
 // TODO ESM
-const {getLogger} = log4js;
+const { getLogger } = log4js;
 
-import {AnyOpsOSVaultModule} from '@anyopsos/module-vault';
-import {AnyOpsOSFileSystemModule} from '@anyopsos/module-file-system';
-import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
+import { AnyOpsOSVaultModule } from '@anyopsos/module-vault';
+import { AnyOpsOSFileSystemModule } from '@anyopsos/module-file-system';
+import { AnyOpsOSSysWorkspaceModule } from '@anyopsos/module-sys-workspace';
 
-import {User} from './types/user';
+import { User } from './types/user';
 
 
 const logger: Logger = getLogger('auth');
@@ -32,7 +32,7 @@ export class AnyOpsOSAuthModule {
   // With no parameters, means no authentication.
   constructor(private readonly userUuid?: string) {
 
-    // TODO: VALIDATE PRIVILEGES
+    // TODO FIXME: VALIDATE PRIVILEGES
     if (this.userUuid) this.validPrivilegedUser = true;
   }
 
@@ -82,7 +82,7 @@ export class AnyOpsOSAuthModule {
     })
 
     // Check login against Vault
-    await (this.vaultClient as client & { authenticateUser: (...args: [{username: string; password: string}]) => Promise<void> })
+    await (this.vaultClient as client & { authenticateUser: (...args: [{ username: string; password: string }]) => Promise<void> })
       .authenticateUser({ username, password });
 
     const user: User = await this.geUserDetail(username);
@@ -128,7 +128,7 @@ export class AnyOpsOSAuthModule {
     await this.vaultClient.write(`auth/userpass/users/${username}`, { password });
     await this.vaultClient.write(`secret/users/${username}`, { uuid: userUuid, home: `/home/${username}` });
 
-    await this.createUserWorkspace({...userData, username} as User);
+    await this.createUserWorkspace({ ...userData, username } as User);
 
     logger.info(`[Module Auth] -> createUser -> New User created [${username}] -> userUuid [${userUuid}]`);
 

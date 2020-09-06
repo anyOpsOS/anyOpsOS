@@ -1,22 +1,22 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 import * as Dashboard from 'netdata/web/gui/dashboard';
 import * as DashboardInfo from 'netdata/web/gui/dashboard_info';
 
-import {AnyOpsOSExtLibJqueryService} from '@anyopsos/ext-lib-jquery';
-import {AnyOpsOSExtLibDygraphsService} from '@anyopsos/ext-lib-dygraphs';
-import {AnyOpsOSExtLibEasypiechartService} from '@anyopsos/ext-lib-easy-pie-chart';
-import {AnyOpsOSExtLibGaugejsService} from '@anyopsos/ext-lib-gauge-js';
-import {AnyOpsOSExtLibPerfectscrollbarService} from '@anyopsos/ext-lib-perfect-scrollbar';
-import {AnyOpsOSExtLibPakoService} from '@anyopsos/ext-lib-pako';
-import {AnyOpsOSExtLibLzStringService} from '@anyopsos/ext-lib-lz-string';
+import { AnyOpsOSExtLibJqueryService } from '@anyopsos/ext-lib-jquery';
+import { AnyOpsOSExtLibDygraphsService } from '@anyopsos/ext-lib-dygraphs';
+import { AnyOpsOSExtLibEasypiechartService } from '@anyopsos/ext-lib-easy-pie-chart';
+import { AnyOpsOSExtLibGaugejsService } from '@anyopsos/ext-lib-gauge-js';
+import { AnyOpsOSExtLibPerfectscrollbarService } from '@anyopsos/ext-lib-perfect-scrollbar';
+import { AnyOpsOSExtLibPakoService } from '@anyopsos/ext-lib-pako';
+import { AnyOpsOSExtLibLzStringService } from '@anyopsos/ext-lib-lz-string';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {NetdataConnection} from './types/netdata-connection';
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { NetdataConnection } from './types/netdata-connection';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
 
 let NETDATA = null;
 
@@ -32,8 +32,8 @@ export class AnyOpsOSExtLibNetdataService {
   dataStore: {  // This is where we will store our data in memory
     connections: { [name: string]: NetdataConnection };
   } = {
-    connections: {}
-  };
+        connections: {}
+      };
 
   constructor(private readonly jQuery: AnyOpsOSExtLibJqueryService,
               private readonly Dygraphs: AnyOpsOSExtLibDygraphsService,
@@ -47,8 +47,8 @@ export class AnyOpsOSExtLibNetdataService {
               private readonly LibModal: AnyOpsOSLibModalService) {
     const classThis = this;
     // Set easyPieChart
-    this.jQuery.$.fn.easyPieChart = function(options) {
-      return this.each(function() {
+    this.jQuery.$.fn.easyPieChart = function (options) {
+      return this.each(function () {
         let instanceOptions;
 
         if (!classThis.jQuery.$.data(this, 'easyPieChart')) {
@@ -453,31 +453,39 @@ export class AnyOpsOSExtLibNetdataService {
               + '&nbsp;' + chart.type.slice(-(chart.type.length - chart.menu_pattern.length - 1)).toString()).replace(/_/g, ' ');
           }
 
-          return (this.dataStore.connections[connection.uuid].netdataDashboard.anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'title', chart.menu, chart.menu)).toString().replace(/_/g, ' ');
+          return (this.dataStore.connections[connection.uuid].netdataDashboard
+            .anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'title', chart.menu, chart.menu)).toString().replace(/_/g, ' ');
         },
         menuIcon: (chart) => {
           if (typeof chart.menu_pattern !== 'undefined') {
-            return this.dataStore.connections[connection.uuid].netdataDashboard.anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'icon', chart.menu_pattern, '<i class="fas fa-puzzle-piece"></i>').toString();
+            return this.dataStore.connections[connection.uuid].netdataDashboard
+              .anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'icon', chart.menu_pattern, '<i class="fas fa-puzzle-piece"></i>').toString();
           }
 
-          return this.dataStore.connections[connection.uuid].netdataDashboard.anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'icon', chart.menu, '<i class="fas fa-puzzle-piece"></i>');
+          return this.dataStore.connections[connection.uuid].netdataDashboard
+            .anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'icon', chart.menu, '<i class="fas fa-puzzle-piece"></i>');
         },
         menuInfo: (chart) => {
           if (typeof chart.menu_pattern !== 'undefined') {
-            return this.dataStore.connections[connection.uuid].netdataDashboard.anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'info', chart.menu_pattern, null);
+            return this.dataStore.connections[connection.uuid].netdataDashboard
+              .anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'info', chart.menu_pattern, null);
           }
-          return this.dataStore.connections[connection.uuid].netdataDashboard.anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'info', chart.menu, null);
+          return this.dataStore.connections[connection.uuid].netdataDashboard
+            .anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'info', chart.menu, null);
         },
         menuHeight: (chart) => {
           if (typeof chart.menu_pattern !== 'undefined') {
-            return this.dataStore.connections[connection.uuid].netdataDashboard.anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'height', chart.menu_pattern, 1.0);
+            return this.dataStore.connections[connection.uuid].netdataDashboard
+              .anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'height', chart.menu_pattern, 1.0);
           }
 
-          return this.dataStore.connections[connection.uuid].netdataDashboard.anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'height', chart.menu, 1.0);
+          return this.dataStore.connections[connection.uuid].netdataDashboard
+            .anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.menu, 'height', chart.menu, 1.0);
         },
         submenuTitle: (menu, submenu) => {
           const key = menu + '.' + submenu;
-          const title = this.dataStore.connections[connection.uuid].netdataDashboard.anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.submenu, 'title', key, submenu).toString().replace(/_/g, ' ');
+          const title = this.dataStore.connections[connection.uuid].netdataDashboard
+            .anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.submenu, 'title', key, submenu).toString().replace(/_/g, ' ');
           if (title.length > 28) {
             const a = title.substring(0, 13);
             const b = title.substring(title.length - 12, title.length);
@@ -487,14 +495,17 @@ export class AnyOpsOSExtLibNetdataService {
         },
         submenuInfo: (menu, submenu) => {
           const key = menu + '.' + submenu;
-          return this.dataStore.connections[connection.uuid].netdataDashboard.anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.submenu, 'info', key, null);
+          return this.dataStore.connections[connection.uuid].netdataDashboard
+            .anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.submenu, 'info', key, null);
         },
         submenuHeight: (menu, submenu, relative) => {
           const key = menu + '.' + submenu;
-          return this.dataStore.connections[connection.uuid].netdataDashboard.anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.submenu, 'height', key, 1.0) * relative;
+          return this.dataStore.connections[connection.uuid].netdataDashboard
+            .anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.submenu, 'height', key, 1.0) * relative;
         },
         contextInfo: (id) => {
-          const x = this.dataStore.connections[connection.uuid].netdataDashboard.anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.context, 'info', id, null);
+          const x = this.dataStore.connections[connection.uuid].netdataDashboard
+            .anyAttribute(this.dataStore.connections[connection.uuid].netdataDashboard.context, 'info', id, null);
 
           if (x !== null) {
             return '<div class="shorten dashboard-context-info netdata-chart-alignment" role="document">' + x + '</div>';
@@ -503,21 +514,30 @@ export class AnyOpsOSExtLibNetdataService {
           }
         },
         contextValueRange: (id) => {
-          if (typeof this.dataStore.connections[connection.uuid].netdataDashboard.context[id] !== 'undefined' && typeof this.dataStore.connections[connection.uuid].netdataDashboard.context[id].valueRange !== 'undefined') {
+          if (
+            typeof this.dataStore.connections[connection.uuid].netdataDashboard.context[id] !== 'undefined' &&
+            typeof this.dataStore.connections[connection.uuid].netdataDashboard.context[id].valueRange !== 'undefined'
+          ) {
             return this.dataStore.connections[connection.uuid].netdataDashboard.context[id].valueRange;
           } else {
             return '[null, null]';
           }
         },
         contextHeight: (id, def) => {
-          if (typeof this.dataStore.connections[connection.uuid].netdataDashboard.context[id] !== 'undefined' && typeof this.dataStore.connections[connection.uuid].netdataDashboard.context[id].height !== 'undefined') {
+          if (
+            typeof this.dataStore.connections[connection.uuid].netdataDashboard.context[id] !== 'undefined' &&
+            typeof this.dataStore.connections[connection.uuid].netdataDashboard.context[id].height !== 'undefined'
+          ) {
             return def * this.dataStore.connections[connection.uuid].netdataDashboard.context[id].height;
           } else {
             return def;
           }
         },
         contextDecimalDigits: (id, def) => {
-          if (typeof this.dataStore.connections[connection.uuid].netdataDashboard.context[id] !== 'undefined' && typeof this.dataStore.connections[connection.uuid].netdataDashboard.context[id].decimalDigits !== 'undefined') {
+          if (
+            typeof this.dataStore.connections[connection.uuid].netdataDashboard.context[id] !== 'undefined' &&
+            typeof this.dataStore.connections[connection.uuid].netdataDashboard.context[id].decimalDigits !== 'undefined'
+          ) {
             return this.dataStore.connections[connection.uuid].netdataDashboard.context[id].decimalDigits;
           } else {
             return def;
@@ -626,6 +646,7 @@ export class AnyOpsOSExtLibNetdataService {
             this.dataStore.connections[connection.uuid].urlOptions.pan_and_zoom = false;
           }
 
+          // tslint:disable-next-line: max-line-length
           this.dataStore.connections[connection.uuid].urlOptions.highlight = this.dataStore.connections[connection.uuid].urlOptions.highlight_before > 0 && this.dataStore.connections[connection.uuid].urlOptions.highlight_after > 0;
 
         },
@@ -797,7 +818,7 @@ export class AnyOpsOSExtLibNetdataService {
 
       // TODO viewContainerRef
       const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('monitor-xss', null,
-        {
+                                                                                       {
           url: currentNetdata.serverDefault
         }
       );

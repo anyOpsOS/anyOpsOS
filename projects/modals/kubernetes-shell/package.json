@@ -1,9 +1,18 @@
 {
   "name": "@anyopsos/modal-kubernetes-shell",
   "version": "0.0.1",
+  "dependencies": {
+    "tslib": "^2.0.0",
+    "@anyopsos/lib-angular-material": "~0.0.1",
+    "@anyopsos/lib-modal": "~0.0.1"
+  },
   "peerDependencies": {
     "@angular/common": "~10.0.11",
     "@angular/core": "~10.0.11"
+  },
+  "devDependencies": {
+    "@angular/platform-browser-dynamic": "~10.0.11",
+    "zone.js": "~0.10.3"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {
@@ -15,9 +24,5 @@
   "description": "anyOpsOS kubernetes-shell modal",
   "author": "Isart Navarro <contact@isartnavarro.io> (https://isartnavarro.io)",
   "license": "GPL-3.0-or-later",
-  "private": true,
-  "dependencies": {
-    "@anyopsos/lib-angular-material": "~0.0.1",
-    "@anyopsos/lib-modal": "~0.0.1"
-  }
+  "private": true
 }

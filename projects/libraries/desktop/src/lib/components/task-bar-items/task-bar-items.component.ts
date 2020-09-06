@@ -1,42 +1,43 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
-import {MatMenuTrigger} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibApplicationService, Application} from '@anyopsos/lib-application';
-import {ContextMenuItem} from '@anyopsos/lib-types';
+import { MatMenuTrigger } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibApplicationService, Application } from '@anyopsos/lib-application';
+import { ContextMenuItem } from '@anyopsos/lib-types';
 
-import {AnyOpsOSLibDesktopTaskBarService} from '../../services/anyopsos-lib-desktop-task-bar.service';
-import {TaskbarApplication} from '../../types/taskbar-application';
+import { AnyOpsOSLibDesktopTaskBarService } from '../../services/anyopsos-lib-desktop-task-bar.service';
+import { TaskbarApplication } from '../../types/taskbar-application';
 
 
 
 @Component({
-  selector: 'app-task-bar-items',
+  selector: 'aldesktop-task-bar-items',
   templateUrl: './task-bar-items.component.html',
   styleUrls: ['./task-bar-items.component.scss']
 })
 export class TaskBarItemsComponent implements OnInit, OnDestroy {
-  @ViewChild(MatMenuTrigger, {static: false}) readonly contextMenuApp: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, { static: false }) readonly contextMenuApp: MatMenuTrigger;
   @Input() readonly application: Application;
 
   private readonly destroySubject$: Subject<void> = new Subject();
 
   private activeApplication: string;
-  readonly contextMenuPosition = {x: '0px', y: '0px'};
+  readonly contextMenuPosition = { x: '0px', y: '0px' };
   readonly appContextMenuItems: ContextMenuItem[] = [
     {
       id: 1, text: (application: Application) => {
         return '<span class="fa-stack">' +
           '<i class="fa-stack-2x ' + this.getApplicationByUuid(application.uuid).ico + '"></i>' +
           '</span> ' + this.getApplicationByUuid(application.uuid).name;
-      }, action: (application: Application) => {
+      },
+      action: (application: Application) => {
         this.toggleApplication(application.uuid);
       }
     },
-    {id: 2, text: 'divider'},
+    { id: 2, text: 'divider' },
     {
       id: 3, text: (application: Application) => {
         if (application.pinned) {
@@ -45,14 +46,16 @@ export class TaskBarItemsComponent implements OnInit, OnDestroy {
             '</span> Unpin from Task Bar';
         }
         return '<span class="fa-stack"><i class="fas fa-stack-2x fa-thumbtack fa-rotate-90"></i></span> Pin to Task Bar';
-      }, action: (application: TaskbarApplication) => {
+      },
+      action: (application: TaskbarApplication) => {
         this.PinOrUnpinApplication(application);
       }
     },
     {
       id: 4, text: '<span class="fa-stack"><i class="fas fa-stack-2x fa-times"></i></span> Close', action: (application: Application) => {
         this.LibApplication.sendCloseApplication(application);
-      }, disabled: (application: Application) => {
+      },
+      disabled: (application: Application) => {
         return !this.isApplicationOpened(application.uuid);
       }
     }
@@ -72,10 +75,12 @@ export class TaskBarItemsComponent implements OnInit, OnDestroy {
   }
 
   private PinOrUnpinApplication(application: TaskbarApplication): void {
-    this.LibDesktopTaskBar.registerTaskBarApplication({
-      uuid: application.uuid,
-      pinned: !application.pinned
-    }, true);
+    this.LibDesktopTaskBar.registerTaskBarApplication(
+      {
+        uuid: application.uuid,
+        pinned: !application.pinned
+      },
+      true);
   }
 
   onAppContextMenu(event: MouseEvent, application: Application): void {

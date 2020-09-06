@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {Credential} from '@anyopsos/module-credential';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { Credential } from '@anyopsos/module-credential';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSLibCredentialApiService} from './anyopsos-lib-credential-api.service';
+import { AnyOpsOSLibCredentialApiService } from './anyopsos-lib-credential-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ import {AnyOpsOSLibCredentialApiService} from './anyopsos-lib-credential-api.ser
 export class AnyOpsOSLibCredentialStateService {
   private credentialsInitialized: boolean = false;
 
-  readonly $credentials: BehaviorSubject<Omit<Credential, 'password'>[] |[]>;
+  readonly $credentials: BehaviorSubject<Omit<Credential, 'password'>[] | []>;
   private dataStore: {
     credentials: Omit<Credential, 'password'>[],
   };
@@ -62,7 +62,7 @@ export class AnyOpsOSLibCredentialStateService {
 
       this.dataStore.credentials.push(credential);
 
-    // If already have an uuid, means that this is called on {@link AnyOpsOSLibCredentialService#initCredentials}
+      // If already have an uuid, means that this is called on {@link AnyOpsOSLibCredentialService#initCredentials}
     } else {
       this.dataStore.credentials.push(credential);
     }
@@ -119,13 +119,14 @@ export class AnyOpsOSLibCredentialStateService {
   private saveBackend(currentCredential: Credential, type: 'put' | 'patch' | 'delete', credentialUuid?: string): Promise<string> {
     return new Promise(async (resolve, reject) => {
 
-      let credentialObservable: Observable<Object>;
+      let credentialObservable: Observable<{ [key: string]: any }>;
 
       if (type === 'put') credentialObservable = this.LibCredentialApi.putCredential(currentCredential);
       if (type === 'patch') credentialObservable = this.LibCredentialApi.patchCredential(credentialUuid, currentCredential);
       if (type === 'delete') credentialObservable = this.LibCredentialApi.deleteCredential(currentCredential.uuid);
 
-      credentialObservable.subscribe((credentialStatus: BackendResponse & { data: string }) => {
+      credentialObservable.subscribe(
+        (credentialStatus: BackendResponse & { data: string }) => {
           if (credentialStatus.status === 'error') {
             this.logger.error('LibCredential', 'Error while saving credential', null, credentialStatus.data);
             return reject(credentialStatus.data);

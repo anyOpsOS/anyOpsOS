@@ -1,8 +1,8 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 
-import {MAT_DIALOG_DATA, MatDialogRef} from '@anyopsos/lib-angular-material';
-import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
-import {ConnectionMonitor} from '@anyopsos/module-monitor';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@anyopsos/lib-angular-material';
+import { BodyComponent, ModalData } from '@anyopsos/lib-modal';
+import { ConnectionMonitor } from '@anyopsos/module-monitor';
 
 @Component({
   selector: 'ammonitor-options-anyopsos-modal-monitor-options',
@@ -10,7 +10,7 @@ import {ConnectionMonitor} from '@anyopsos/module-monitor';
   styleUrls: ['./anyopsos-modal-monitor-options.component.scss']
 })
 export class AnyOpsOSModalMonitorOptionsComponent implements OnInit {
-  @ViewChild('modalBody', {static: true}) modalBody: BodyComponent;
+  @ViewChild('modalBody', { static: true }) modalBody: BodyComponent;
 
   connection: ConnectionMonitor;
 

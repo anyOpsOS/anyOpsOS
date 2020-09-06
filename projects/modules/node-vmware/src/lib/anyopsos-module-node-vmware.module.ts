@@ -1,27 +1,27 @@
 import socketControllers from 'socket-controllers';
-import fetch, {Response} from 'node-fetch';
+import fetch, { Response } from 'node-fetch';
 import xml2js from 'xml2js';
-import log4js, {Logger} from 'log4js';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getSocketIO} = socketControllers;
-const {parseStringPromise} = xml2js;
-const {getLogger} = log4js;
+const { getSocketIO } = socketControllers;
+const { parseStringPromise } = xml2js;
+const { getLogger } = log4js;
 
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSNodeVmwareSessionStateModule} from './anyopsos-module-node-vmware-session-state'
-import {AnyOpsOSNodeVmwareDataRefresherModule} from './anyopsos-module-node-vmware-data-refresher';
+import { AnyOpsOSNodeVmwareSessionStateModule } from './anyopsos-module-node-vmware-session-state'
+import { AnyOpsOSNodeVmwareDataRefresherModule } from './anyopsos-module-node-vmware-data-refresher';
 
-import {ConnectionVmware} from './types/connection-vmware';
-import {ConnectionVmwareServer} from './types/connection-vmware-server';
+import { ConnectionVmware } from './types/connection-vmware';
+import { ConnectionVmwareServer } from './types/connection-vmware-server';
 
-import {VMWARE_API_COOKIE, VMWARE_CONFIG_FILE, VMWARE_SOAP_COOKIE} from './anyopsos-module-node-vmware.constants';
+import { VMWARE_API_COOKIE, VMWARE_CONFIG_FILE, VMWARE_SOAP_COOKIE } from './anyopsos-module-node-vmware.constants';
 
-import {parseVMwareObject, setDynamicProperties} from './anyopsos-module-node-vmware-sdk-helpers';
-import {anyOpsOSExtension, allBasicDataFilter} from './anyopsos-module-node-vmware-sdk-aliases';
-import {VmwareSdkFunctions, VmwareSdkFunctionsInput, VmwareSdkFunctionsOutput} from '@anyopsos/sdk-vmware';
+import { parseVMwareObject, setDynamicProperties } from './anyopsos-module-node-vmware-sdk-helpers';
+import { anyOpsOSExtension, allBasicDataFilter } from './anyopsos-module-node-vmware-sdk-aliases';
+import { VmwareSdkFunctions, VmwareSdkFunctionsInput, VmwareSdkFunctionsOutput } from '@anyopsos/sdk-vmware';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -52,7 +52,7 @@ export class AnyOpsOSNodeVmwareModule {
 
       // Get Base data
       const clientVersionResult: BackendResponse = await this.getClientVersion();
-      if (clientVersionResult.status === 'error') throw {error: clientVersionResult.data, description: 'Failed to connect to VMWare'};
+      if (clientVersionResult.status === 'error') throw { error: clientVersionResult.data, description: 'Failed to connect to VMWare' };
       if (clientVersionResult.data.version[0] < 6) throw new Error('VMWare version not compatible');
 
       connectionData.data.Base = {
@@ -87,7 +87,7 @@ export class AnyOpsOSNodeVmwareModule {
         extensionKey: 'com.anyopsos.management'
       });
 
-      if (findExtensionResult.status === 'error') throw { error: findExtensionResult.data, description: 'Failed to get anyOpsOS extension to VMWare'};
+      if (findExtensionResult.status === 'error') throw { error: findExtensionResult.data, description: 'Failed to get anyOpsOS extension to VMWare' };
 
       if (!findExtensionResult.data.returnval) {
         const registerExtensionResult: VmwareSdkFunctionsOutput<'RegisterExtension'> = await this.callSoapApi('RegisterExtension', {
@@ -107,12 +107,12 @@ export class AnyOpsOSNodeVmwareModule {
         spec: allBasicDataFilter(),
         partialUpdates: false
       });
-      if (createFilterResult.status === 'error') throw { error: createFilterResult.data, description: 'Failed to set data filter to VMWare'};
+      if (createFilterResult.status === 'error') throw { error: createFilterResult.data, description: 'Failed to set data filter to VMWare' };
 
       // Update VMWare data
       this.getWaitForUpdatesEx();
 
-      return {status: 'ok', data: 'connected'} as BackendResponse;
+      return { status: 'ok', data: 'connected' } as BackendResponse;
 
     }).catch((e: Error) => {
       throw e;
@@ -133,13 +133,13 @@ export class AnyOpsOSNodeVmwareModule {
       options: { maxWaitSeconds: 0 },
       version
     });
-    if (waitForUpdatesExResult.status === 'error') throw {error: waitForUpdatesExResult.data, description: 'Failed to get data from VMWare'};
+    if (waitForUpdatesExResult.status === 'error') throw { error: waitForUpdatesExResult.data, description: 'Failed to get data from VMWare' };
 
     this.VmwareDataRefresherModule.parseObjects(waitForUpdatesExResult.data.returnval[0].filterSet[0].objectSet);
 
     setTimeout(() => {
       return this.getWaitForUpdatesEx();
-    }, 60000);
+    },         60000);
   }
 
   /**
@@ -149,7 +149,7 @@ export class AnyOpsOSNodeVmwareModule {
 
     return this.VmwareSessionStateModule.disconnectSession().then(() => {
 
-      return {status: 'ok', data: 'disconnected'} as BackendResponse;
+      return { status: 'ok', data: 'disconnected' } as BackendResponse;
 
     }).catch((e: Error) => {
       throw e;
@@ -172,12 +172,12 @@ export class AnyOpsOSNodeVmwareModule {
       method: 'GET',
       headers: requestHeaders
     })
-    .then((res: Response) => res.text())
-    .then(async (res: any) => {
+      .then((res: Response) => res.text())
+      .then(async (res: any) => {
 
-      return parseStringPromise(res);
+        return parseStringPromise(res);
 
-    }).catch(e => e);
+      }).catch(e => e);
 
   }
 
@@ -215,27 +215,27 @@ export class AnyOpsOSNodeVmwareModule {
       body: xml,
       headers: requestHeaders
     })
-    .then((res: Response) => res.text())
-    .then(async (res: any) => {
+      .then((res: Response) => res.text())
+      .then(async (res: any) => {
 
-      return parseStringPromise(res);
+        return parseStringPromise(res);
 
-    }).then((resultAsXml) => {
+      }).then((resultAsXml) => {
 
-      // Something is wrong
-      if (resultAsXml['soapenv:Envelope']['soapenv:Body'][0]['soapenv:Fault']) {
-        throw {
-          status: 'error',
-          data: {
-            detail: resultAsXml['soapenv:Envelope']['soapenv:Body'][0]['soapenv:Fault'][0].detail[0],
-            faultstring: resultAsXml['soapenv:Envelope']['soapenv:Body'][0]['soapenv:Fault'][0].faultstring
-          }
-        };
-      }
+        // Something is wrong
+        if (resultAsXml['soapenv:Envelope']['soapenv:Body'][0]['soapenv:Fault']) {
+          throw {
+            status: 'error',
+            data: {
+              detail: resultAsXml['soapenv:Envelope']['soapenv:Body'][0]['soapenv:Fault'][0].detail[0],
+              faultstring: resultAsXml['soapenv:Envelope']['soapenv:Body'][0]['soapenv:Fault'][0].faultstring
+            }
+          };
+        }
 
-      return parseVMwareObject(resultAsXml['soapenv:Envelope']['soapenv:Body'][0]);
+        return parseVMwareObject(resultAsXml['soapenv:Envelope']['soapenv:Body'][0]);
 
-    }).catch(e => e);
+      }).catch(e => e);
 
   }
 

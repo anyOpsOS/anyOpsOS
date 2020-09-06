@@ -1,4 +1,4 @@
-import {KubeObject} from './kube-object';
+import { KubeObject } from './kube-object';
 
 export interface Node extends KubeObject {
   kind: 'Node';

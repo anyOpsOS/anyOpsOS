@@ -1,14 +1,14 @@
 import validator from 'validator';
 
-import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {AnyOpsOSCredentialModule} from '@anyopsos/module-credential';
+import { AnyOpsOSSysWorkspaceModule } from '@anyopsos/module-sys-workspace';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { AnyOpsOSCredentialModule } from '@anyopsos/module-credential';
 
-import {ConnectionMonitor} from './types/connection-monitor';
-import {ConnectionMonitorServer} from './types/connection-monitor-server';
-import {WorkspaceToMonitorMap} from './types/workspace-to-monitor-map';
+import { ConnectionMonitor } from './types/connection-monitor';
+import { ConnectionMonitorServer } from './types/connection-monitor-server';
+import { WorkspaceToMonitorMap } from './types/workspace-to-monitor-map';
 
-import {MONITOR_CONFIG_FILE, MONITOR_PORT} from './anyopsos-module-monitor.constants';
+import { MONITOR_CONFIG_FILE, MONITOR_PORT } from './anyopsos-module-monitor.constants';
 
 
 const monitorSessions: WorkspaceToMonitorMap = {};
@@ -66,7 +66,7 @@ export class AnyOpsOSMonitorSessionStateModule {
 
     return {
       host: connectionData.host,
-      port: (validator.isInt(connectionData.port.toString(), {min: 1, max: 65535}) && connectionData.port) || MONITOR_PORT,
+      port: (validator.isInt(connectionData.port.toString(), { min: 1, max: 65535 }) && connectionData.port) || MONITOR_PORT,
       credential: await this.CredentialModule.getCredential(connectionData.credential)
     };
 

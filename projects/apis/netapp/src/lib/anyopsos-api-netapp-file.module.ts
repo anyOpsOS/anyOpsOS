@@ -1,16 +1,16 @@
-import {Request, Response} from 'express';
-import {EventEmitter} from 'events';
+import { Request, Response } from 'express';
+import { EventEmitter } from 'events';
 import routingControllers from 'routing-controllers';
 import routingControllersSessionParam from 'routing-controllers/decorator/SessionParam';
-import log4js, {Logger} from 'log4js';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {Controller, Authorized, Req, Res, Param, BodyParam, Patch, Delete, Put, Get} = routingControllers;
-const {SessionParam} = routingControllersSessionParam;
-const {getLogger} = log4js;
+const { Controller, Authorized, Req, Res, Param, BodyParam, Patch, Delete, Put, Get } = routingControllers;
+const { SessionParam } = routingControllersSessionParam;
+const { getLogger } = log4js;
 
-import {AnyOpsOSApiGlobalsModule} from '@anyopsos/module-api-globals';
-import {AnyOpsOSNodeNetappFileSystemModule} from '@anyopsos/module-node-netapp';
+import { AnyOpsOSApiGlobalsModule } from '@anyopsos/module-api-globals';
+import { AnyOpsOSNodeNetappFileSystemModule } from '@anyopsos/module-node-netapp';
 
 
 const logger: Logger = getLogger('mainLog');

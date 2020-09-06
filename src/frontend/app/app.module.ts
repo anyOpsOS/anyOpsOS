@@ -1,8 +1,8 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {NgModule, Compiler, Injector, NgModuleFactory, NgModuleRef} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule, Compiler, Injector, NgModuleFactory, NgModuleRef } from '@angular/core';
 
-import {SystemJsLoaderService} from './services/system-js-loader.service';
+import { SystemJsLoaderService } from './services/system-js-loader.service';
 
 // Prepare output for SystemJS
 declare const window: any;
@@ -29,7 +29,7 @@ export class AppModule {
    */
   ngDoBootstrap() {
 
-    const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port: '')}`;
+    const currentLocation = `${location.protocol}//${location.hostname}${(location.port ? ':' + location.port : '')}`;
 
     return window.System.import(`${currentLocation}/api/loader//bin/libraries/anyopsos-lib-loader.umd.js`).then((moduleToCompile: any) => {
 

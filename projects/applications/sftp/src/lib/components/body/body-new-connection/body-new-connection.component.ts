@@ -1,19 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibCredentialHelpersService} from '@anyopsos/lib-credential';
-import {AnyOpsOSLibSshHelpersService} from '@anyopsos/lib-ssh';
-import {Credential} from '@anyopsos/module-credential';
-import {ConnectionSsh, ConnectionSftp} from '@anyopsos/module-ssh';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibCredentialHelpersService } from '@anyopsos/lib-credential';
+import { AnyOpsOSLibSshHelpersService } from '@anyopsos/lib-ssh';
+import { Credential } from '@anyopsos/module-credential';
+import { ConnectionSsh, ConnectionSftp } from '@anyopsos/module-ssh';
 
-import {AnyOpsOSAppSftpService} from '../../../services/anyopsos-app-sftp.service';
+import { AnyOpsOSAppSftpService } from '../../../services/anyopsos-app-sftp.service';
 
 @Component({
   selector: 'aasftp-body-new-connection',
@@ -60,7 +60,7 @@ export class BodyNewConnectionComponent implements OnDestroy, OnInit {
 
         const sshConnections: ConnectionSsh[] = connections.filter((connection: ConnectionSsh | ConnectionSftp) => connection.type === 'ssh') as ConnectionSsh[];
         this.onConnectionsChange(sshConnections);
-    });
+      });
 
     // Listen for activeConnection change
     this.Sftp.activeConnectionUuid

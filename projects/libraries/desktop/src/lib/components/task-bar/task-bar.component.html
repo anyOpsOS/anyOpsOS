@@ -1,8 +1,8 @@
-<app-start-menu></app-start-menu>
+<aldesktop-start-menu></aldesktop-start-menu>
 <div class="taskbar" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
 
   <div class="taskbar__items">
-    <app-task-bar-items *ngFor="let application of taskBarApplications" cdkDrag cdkDragLockAxis="x" cdkDragBoundary=".taskbar" [cdkDragDisabled]="application.uuid === 'start'" [application]="application"></app-task-bar-items>
+    <aldesktop-task-bar-items *ngFor="let application of taskBarApplications" cdkDrag cdkDragLockAxis="x" cdkDragBoundary=".taskbar" [cdkDragDisabled]="application.uuid === 'start'" [application]="application"></aldesktop-task-bar-items>
   </div>
 
   <div class="taskbar__minimize" (click)="minimizeToDesktop()"></div>

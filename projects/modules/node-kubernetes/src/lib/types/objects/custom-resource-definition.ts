@@ -1,4 +1,4 @@
-import {KubeObject} from './kube-object';
+import { KubeObject } from './kube-object';
 
 export interface CustomResourceDefinition extends KubeObject {
   kind: 'CustomResourceDefinition';

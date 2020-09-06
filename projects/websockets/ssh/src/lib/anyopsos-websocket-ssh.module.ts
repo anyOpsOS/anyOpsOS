@@ -1,13 +1,13 @@
 import socketControllers from 'socket-controllers';
-import {Socket} from 'socket.io';
-import log4js, {Logger} from 'log4js';
+import { Socket } from 'socket.io';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getLogger} = log4js;
-const {SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam} = socketControllers;
+const { getLogger } = log4js;
+const { SocketController, ConnectedSocket, SocketId, MessageBody, OnMessage, OnDisconnect, ReturnAck, SocketSessionParam } = socketControllers;
 
-import {AnyOpsOSSshModule} from '@anyopsos/module-ssh';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSSshModule } from '@anyopsos/module-ssh';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -27,7 +27,7 @@ export class AnyOpsOSSshWebsocketController {
            @SocketId() id: string,
            @SocketSessionParam('userUuid') userUuid: string,
            @SocketSessionParam('sessionId') sessionUuid: string,
-           @MessageBody() connectionData: { connectionUuid: string; workspaceUuid: string; terminalUuid: string;}) {
+           @MessageBody() connectionData: { connectionUuid: string; workspaceUuid: string; terminalUuid: string; }) {
     logger.info(`[Websocket ssh] -> shell -> id [${id}], connectionUuid [${connectionData.connectionUuid}], workspaceUuid [${connectionData.workspaceUuid}], terminalUuid [${connectionData.terminalUuid}]`);
 
     const SshModule: AnyOpsOSSshModule = new AnyOpsOSSshModule(userUuid, connectionData.workspaceUuid, connectionData.connectionUuid);
@@ -35,7 +35,7 @@ export class AnyOpsOSSshWebsocketController {
     return SshModule.createShellToTerminal(connectionData.terminalUuid).then((result: BackendResponse) => {
       return result;
     }).catch((e: Error) => {
-      return {status: 'error', data: e.toString()} as BackendResponse;
+      return { status: 'error', data: e.toString() } as BackendResponse;
     });
   }
 
@@ -53,7 +53,7 @@ export class AnyOpsOSSshWebsocketController {
     return SshModule.createSftpClient().then((result: BackendResponse) => {
       return result;
     }).catch((e: Error) => {
-      return {status: 'error', data: e.toString()} as BackendResponse;
+      return { status: 'error', data: e.toString() } as BackendResponse;
     });
   }
 
@@ -71,7 +71,7 @@ export class AnyOpsOSSshWebsocketController {
     return SshModule.disconnectConnection().then((result: BackendResponse) => {
       return result;
     }).catch((e: Error) => {
-      return {status: 'error', data: e.toString()} as BackendResponse;
+      return { status: 'error', data: e.toString() } as BackendResponse;
     });
   }
 
@@ -89,7 +89,7 @@ export class AnyOpsOSSshWebsocketController {
     return SshModule.newConnection().then((result: BackendResponse) => {
       return result;
     }).catch((e: Error) => {
-      return {status: 'error', data: e.toString()} as BackendResponse;
+      return { status: 'error', data: e.toString() } as BackendResponse;
     });
   }
 

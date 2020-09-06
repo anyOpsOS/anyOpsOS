@@ -1,12 +1,12 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 
-import {AnyOpsOSLibBootstrapService} from '@anyopsos/lib-bootstrap';
+import { AnyOpsOSLibBootstrapService } from '@anyopsos/lib-bootstrap';
 
-import {AnyOpsOSLibSshService} from './services/anyopsos-lib-ssh.service';
-import {AnyOpsOSLibSshHelpersService} from './services/anyopsos-lib-ssh-helpers.service';
-import {AnyOpsOSLibSshFileSystemService} from './services/anyopsos-lib-ssh-file-system.service';
-import {AnyOpsOSLibSshConnectionsStateService} from './services/anyopsos-lib-ssh-connections-state.service';
-import {AnyOpsOSLibSshFileSystemHandlersService} from './services/anyopsos-lib-ssh-file-system-handlers.service';
+import { AnyOpsOSLibSshService } from './services/anyopsos-lib-ssh.service';
+import { AnyOpsOSLibSshHelpersService } from './services/anyopsos-lib-ssh-helpers.service';
+import { AnyOpsOSLibSshFileSystemService } from './services/anyopsos-lib-ssh-file-system.service';
+import { AnyOpsOSLibSshConnectionsStateService } from './services/anyopsos-lib-ssh-connections-state.service';
+import { AnyOpsOSLibSshFileSystemHandlersService } from './services/anyopsos-lib-ssh-file-system-handlers.service';
 
 @NgModule({
   declarations: [],
@@ -22,8 +22,8 @@ export class AnyOpsOSLibSshModule {
     console.log('Loading AnyOpsOSLibSshModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibSshModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibSshModule is already loaded. You should not import it manually.');
     }
 
     // Initialize connections when user is loggedIn

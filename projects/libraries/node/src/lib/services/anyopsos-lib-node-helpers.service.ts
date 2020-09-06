@@ -1,21 +1,21 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {AnyOpsOSLibNodeVmwareHelpersService} from '@anyopsos/lib-node-vmware';
-import {AnyOpsOSLibNodeNetappHelpersService} from '@anyopsos/lib-node-netapp';
-import {AnyOpsOSLibNodeDockerHelpersService} from '@anyopsos/lib-node-docker';
-import {AnyOpsOSLibNodeKubernetesHelpersService} from '@anyopsos/lib-node-kubernetes';
-import {AnyOpsOSLibNodeLinuxHelpersService} from '@anyopsos/lib-node-linux';
-import {AnyOpsOSLibNodeSnmpHelpersService} from '@anyopsos/lib-node-snmp';
+import { AnyOpsOSLibNodeVmwareHelpersService } from '@anyopsos/lib-node-vmware';
+import { AnyOpsOSLibNodeNetappHelpersService } from '@anyopsos/lib-node-netapp';
+import { AnyOpsOSLibNodeDockerHelpersService } from '@anyopsos/lib-node-docker';
+import { AnyOpsOSLibNodeKubernetesHelpersService } from '@anyopsos/lib-node-kubernetes';
+import { AnyOpsOSLibNodeLinuxHelpersService } from '@anyopsos/lib-node-linux';
+import { AnyOpsOSLibNodeSnmpHelpersService } from '@anyopsos/lib-node-snmp';
 
-import {ConnectionVmware} from '@anyopsos/module-node-vmware';
-import {ConnectionDocker} from '@anyopsos/module-node-docker';
-import {ConnectionKubernetes} from '@anyopsos/module-node-kubernetes';
-import {ConnectionSnmp} from '@anyopsos/module-node-snmp';
-import {ConnectionLinux} from '@anyopsos/module-node-linux';
-import {ConnectionNetapp} from '@anyopsos/module-node-netapp';
+import { ConnectionVmware } from '@anyopsos/module-node-vmware';
+import { ConnectionDocker } from '@anyopsos/module-node-docker';
+import { ConnectionKubernetes } from '@anyopsos/module-node-kubernetes';
+import { ConnectionSnmp } from '@anyopsos/module-node-snmp';
+import { ConnectionLinux } from '@anyopsos/module-node-linux';
+import { ConnectionNetapp } from '@anyopsos/module-node-netapp';
 
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
-import {ConnectionTypes} from '@anyopsos/backend-core/app/types/connection-types';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
+import { ConnectionTypes } from '@anyopsos/backend-core/app/types/connection-types';
 
 @Injectable({
   providedIn: 'root'

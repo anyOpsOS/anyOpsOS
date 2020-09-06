@@ -9,14 +9,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSExtLibNetdataService} from '@anyopsos/ext-lib-netdata';
+import { Application } from '@anyopsos/lib-application';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSExtLibNetdataService } from '@anyopsos/ext-lib-netdata';
 
-import {AnyOpsOSAppMonitorService} from '../../services/anyopsos-app-monitor.service';
+import { AnyOpsOSAppMonitorService } from '../../services/anyopsos-app-monitor.service';
 
 
 // Required to be available inside generateHeadCharts. TODO: STILL required?
@@ -29,7 +29,7 @@ const NETDATA = null;
   styleUrls: ['./body-dashboard.component.scss']
 })
 export class BodyDashboardComponent implements AfterViewInit, OnDestroy, OnInit {
-  @ViewChild('chartsDiv', {static: false, read: ElementRef}) chartsDiv: ElementRef;
+  @ViewChild('chartsDiv', { static: false, read: ElementRef }) chartsDiv: ElementRef;
   @Input() application: Application;
 
   private destroySubject$: Subject<void> = new Subject();
@@ -70,8 +70,14 @@ export class BodyDashboardComponent implements AfterViewInit, OnDestroy, OnInit 
   private onConnectionsChange(connections): void {
     // Initialize eventListeners for 1st time
     if (!this.connection && connections[this.activeConnection] && this.chartsDiv) {
-      this.chartsDiv.nativeElement.parentNode.addEventListener('resize', connections[this.activeConnection].NETDATA.onresize, connections[this.activeConnection].NETDATA.supportsPassiveEvents() ? {passive: true} : false);
-      this.chartsDiv.nativeElement.parentNode.addEventListener('scroll', connections[this.activeConnection].NETDATA.onscroll, connections[this.activeConnection].NETDATA.supportsPassiveEvents() ? {passive: true} : false);
+      this.chartsDiv.nativeElement.parentNode.addEventListener(
+        'resize',
+        connections[this.activeConnection].NETDATA.onresize,
+        connections[this.activeConnection].NETDATA.supportsPassiveEvents() ? { passive: true } : false);
+      this.chartsDiv.nativeElement.parentNode.addEventListener(
+        'scroll',
+        connections[this.activeConnection].NETDATA.onscroll,
+        connections[this.activeConnection].NETDATA.supportsPassiveEvents() ? { passive: true } : false);
     }
 
     this.connection = connections[this.activeConnection];
@@ -103,14 +109,14 @@ export class BodyDashboardComponent implements AfterViewInit, OnDestroy, OnInit 
         if (this.connection) {
           // Restart NETDATA Dashboard object. With setTimeout we make sure new template data is created
           setTimeout(() => this.connection.NETDATA.parseDom(this.connection.NETDATA.chartRefresher), 100);
-          this.chartsDiv.nativeElement.parentNode.addEventListener('resize', this.connection.NETDATA.onresize, this.connection.NETDATA.supportsPassiveEvents() ? {passive: true} : false);
-          this.chartsDiv.nativeElement.parentNode.addEventListener('scroll', this.connection.NETDATA.onscroll, this.connection.NETDATA.supportsPassiveEvents() ? {passive: true} : false);
+          this.chartsDiv.nativeElement.parentNode.addEventListener('resize', this.connection.NETDATA.onresize, this.connection.NETDATA.supportsPassiveEvents() ? { passive: true } : false);
+          this.chartsDiv.nativeElement.parentNode.addEventListener('scroll', this.connection.NETDATA.onscroll, this.connection.NETDATA.supportsPassiveEvents() ? { passive: true } : false);
         } else {
           // Create new NETDATA object
           this.Netdata.newDashboard(this.Monitor.getActiveConnection());
           this.Netdata.initializeDynamicDashboard(this.Monitor.getActiveConnection(), this.chartsDiv);
         }
-      }, 0);
+      },         0);
 
     }
   }

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import Dygraph from 'dygraphs';
 
@@ -108,10 +108,10 @@ export class AnyOpsOSExtLibDygraphsService {
         p1 = p1 && isOK(p1.canvasy) ? p1 : null;
         p2 = p2 && isOK(p2.canvasy) ? p2 : null;
         if (p0 && p1) {
-          const controls = getControlPoints({x: p0.canvasx, y: p0.canvasy},
-            {x: p1.canvasx, y: p1.canvasy},
-            p2 && {x: p2.canvasx, y: p2.canvasy},
-            smoothPlotter.smoothing);
+          const controls = getControlPoints({ x: p0.canvasx, y: p0.canvasy },
+                                            { x: p1.canvasx, y: p1.canvasy },
+                                            p2 && { x: p2.canvasx, y: p2.canvasy },
+                                            smoothPlotter.smoothing);
           // Uncomment to show the control points:
           // ctx.lineTo(lastRightX, lastRightY);
           // ctx.lineTo(controls[0], controls[1]);
@@ -119,8 +119,8 @@ export class AnyOpsOSExtLibDygraphsService {
           lastRightX = (lastRightX !== null) ? lastRightX : p0.canvasx;
           lastRightY = (lastRightY !== null) ? lastRightY : p0.canvasy;
           ctx.bezierCurveTo(lastRightX, lastRightY,
-            controls[0], controls[1],
-            p1.canvasx, p1.canvasy);
+                            controls[0], controls[1],
+                            p1.canvasx, p1.canvasy);
           lastRightX = controls[2];
           lastRightY = controls[3];
         } else if (p1) {

@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
 
-import {AnyOpsOSAppInfrastructureManagerService} from '../../../services/anyopsos-app-infrastructure-manager.service';
+import { AnyOpsOSAppInfrastructureManagerService } from '../../../services/anyopsos-app-infrastructure-manager.service';
 
 export interface StringMap {
   [key: string]: string;

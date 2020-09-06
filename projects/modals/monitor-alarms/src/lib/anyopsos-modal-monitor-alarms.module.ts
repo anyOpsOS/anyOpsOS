@@ -1,14 +1,14 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibPipesModule} from '@anyopsos/lib-pipes';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibPipesModule } from '@anyopsos/lib-pipes';
 
-import {EntryComponent} from './entry/entry.component';
-import {AnyOpsOSModalMonitorAlarmsComponent} from './anyopsos-modal-monitor-alarms.component';
+import { EntryComponent } from './entry/entry.component';
+import { AnyOpsOSModalMonitorAlarmsComponent } from './anyopsos-modal-monitor-alarms.component';
 
-import {AlarmComponent} from './components/alarm/alarm.component';
+import { AlarmComponent } from './components/alarm/alarm.component';
 
 @NgModule({
   declarations: [

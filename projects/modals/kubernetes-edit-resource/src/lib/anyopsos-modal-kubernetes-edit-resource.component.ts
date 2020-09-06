@@ -1,11 +1,11 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 
-import {dump as toYaml, load as fromYaml} from 'js-yaml';
+import { dump as toYaml, load as fromYaml } from 'js-yaml';
 
-import {MAT_DIALOG_DATA, MatDialogRef, MatButtonToggleGroup} from '@anyopsos/lib-angular-material';
-import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibNodeKubernetesApiService} from '@anyopsos/lib-node-kubernetes';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { MAT_DIALOG_DATA, MatDialogRef, MatButtonToggleGroup } from '@anyopsos/lib-angular-material';
+import { BodyComponent, ModalData } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibNodeKubernetesApiService } from '@anyopsos/lib-node-kubernetes';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
 enum EditorMode {
   JSON = 'json',
@@ -18,8 +18,15 @@ enum EditorMode {
   styleUrls: ['./anyopsos-modal-kubernetes-edit-resource.component.scss']
 })
 export class AnyOpsOSModalKubernetesEditResourceComponent implements OnInit {
-  @ViewChild('modalBody', {static: true}) modalBody: BodyComponent;
-  @ViewChild('group', {static: false}) buttonToggleGroup: MatButtonToggleGroup;
+
+  constructor(public readonly dialogRef: MatDialogRef<AnyOpsOSModalKubernetesEditResourceComponent>,
+              @Inject(MAT_DIALOG_DATA) public readonly data: ModalData,
+              private readonly LibKubernetesApi: AnyOpsOSLibNodeKubernetesApiService) {
+
+    this.object = data.object;
+  }
+  @ViewChild('modalBody', { static: true }) modalBody: BodyComponent;
+  @ViewChild('group', { static: false }) buttonToggleGroup: MatButtonToggleGroup;
 
   object: DataObject;
 
@@ -27,11 +34,8 @@ export class AnyOpsOSModalKubernetesEditResourceComponent implements OnInit {
   text = '';
   modes = EditorMode;
 
-  constructor(public readonly dialogRef: MatDialogRef<AnyOpsOSModalKubernetesEditResourceComponent>,
-              @Inject(MAT_DIALOG_DATA) public readonly data: ModalData,
-              private readonly LibKubernetesApi: AnyOpsOSLibNodeKubernetesApiService) {
-
-    this.object = data.object;
+  private static toRawJSON(object: {}): string {
+    return JSON.stringify(object, null, '\t');
   }
 
   ngOnInit(): void {
@@ -42,7 +46,7 @@ export class AnyOpsOSModalKubernetesEditResourceComponent implements OnInit {
     this.modalBody.type = this.data.type;
 
     this.LibKubernetesApi.getResourceBySelfLink(this.object).then(resourceResult => {
-      if (resourceResult.status === 'error') throw {error: resourceResult.error, description: 'Failed to get Kubernetes resource'};
+      if (resourceResult.status === 'error') throw { error: resourceResult.error, description: 'Failed to get Kubernetes resource' };
       this.text = toYaml(resourceResult.data);
     });
 
@@ -76,10 +80,6 @@ export class AnyOpsOSModalKubernetesEditResourceComponent implements OnInit {
     } else {
       this.text = AnyOpsOSModalKubernetesEditResourceComponent.toRawJSON(fromYaml(this.text));
     }
-  }
-
-  private static toRawJSON(object: {}): string {
-    return JSON.stringify(object, null, '\t');
   }
 
 

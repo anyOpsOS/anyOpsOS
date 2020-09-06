@@ -1,11 +1,11 @@
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {OrderModule} from 'ngx-order-pipe';
-import {FilterPipeModule} from 'ngx-filter-pipe';
+import { OrderModule } from 'ngx-order-pipe';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 
-import {SanitizeHtmlPipe} from './sanitize/html/sanitize-html.pipe';
-import {SanitizeUrlPipe} from './sanitize/url/sanitize-url.pipe';
-import {SanitizeStylePipe} from './sanitize/style/sanitize-style.pipe';
+import { SanitizeHtmlPipe } from './sanitize/html/sanitize-html.pipe';
+import { SanitizeUrlPipe } from './sanitize/url/sanitize-url.pipe';
+import { SanitizeStylePipe } from './sanitize/style/sanitize-style.pipe';
 
 @NgModule({
   declarations: [

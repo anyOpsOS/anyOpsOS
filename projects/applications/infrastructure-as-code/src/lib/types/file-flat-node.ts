@@ -6,5 +6,5 @@ export class FileFlatNode {
     public level: number,
     public type: any,
     public id: string
-  ) {}
+  ) { }
 }

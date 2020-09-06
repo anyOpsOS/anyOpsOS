@@ -1,13 +1,13 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 
-import {Observable, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibUtilsService} from '@anyopsos/lib-utils';
-import {ConnectionMonitor} from '@anyopsos/module-monitor';
+import { Application } from '@anyopsos/lib-application';
+import { AnyOpsOSLibUtilsService } from '@anyopsos/lib-utils';
+import { ConnectionMonitor } from '@anyopsos/module-monitor';
 
-import {AnyOpsOSAppMonitorService} from '../services/anyopsos-app-monitor.service';
+import { AnyOpsOSAppMonitorService } from '../services/anyopsos-app-monitor.service';
 
 @Component({
   selector: 'aamon-body',
@@ -15,7 +15,7 @@ import {AnyOpsOSAppMonitorService} from '../services/anyopsos-app-monitor.servic
   styleUrls: ['./body.component.scss']
 })
 export class BodyComponent implements OnDestroy, OnInit {
-  @ViewChild('bodyContainer', {static: true, read: ViewContainerRef}) private readonly bodyContainer: ViewContainerRef;
+  @ViewChild('bodyContainer', { static: true, read: ViewContainerRef }) private readonly bodyContainer: ViewContainerRef;
   @Input() readonly application: Application;
 
   private destroySubject$: Subject<void> = new Subject();

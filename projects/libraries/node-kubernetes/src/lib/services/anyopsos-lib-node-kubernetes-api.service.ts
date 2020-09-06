@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,8 @@ export class AnyOpsOSLibNodeKubernetesApiService {
   }
 
   getResourceBySelfLink(object): Promise<any> {
-    return this.http.get(`/api/kubernetes/resource/${object.info.mainUuid}/${encodeURIComponent(object.info.data.metadata.selfLink)}`).pipe(map((data: any) => {
+    return this.http.get(`/api/kubernetes/resource/${object.info.mainUuid}/${encodeURIComponent(object.info.data.metadata.selfLink)}`).pipe(map(
+      (data: any) => {
         if (data.status === 'error') return this.errorHandler(data.errno ? data.errno : data.data);
         if (!data.data) return this.errorHandler(data.data);
 
@@ -42,7 +43,8 @@ export class AnyOpsOSLibNodeKubernetesApiService {
   }
 
   getContainerLogsToSocket(connectionUuid: string, terminalUuid: string, namespace: string, pod: string, container: string, showContainersName: boolean = false): Promise<any> {
-    return this.http.get(`/api/kubernetes/log/${connectionUuid}/${terminalUuid}/${namespace}/${pod}/${container}/${showContainersName}`).pipe(map((data: any) => {
+    return this.http.get(`/api/kubernetes/log/${connectionUuid}/${terminalUuid}/${namespace}/${pod}/${container}/${showContainersName}`).pipe(map(
+      (data: any) => {
         if (data.status === 'error') return this.errorHandler(data.errno ? data.errno : data.data);
 
         return data;
@@ -53,7 +55,8 @@ export class AnyOpsOSLibNodeKubernetesApiService {
   }
 
   endContainerLogs(logUuid: string): Promise<any> {
-    return this.http.delete(`/api/kubernetes/log/${logUuid}`).pipe(map((data: any) => {
+    return this.http.delete(`/api/kubernetes/log/${logUuid}`).pipe(map(
+      (data: any) => {
         if (data.status === 'error') return this.errorHandler(data.errno ? data.errno : data.data);
 
         return data;
@@ -64,7 +67,8 @@ export class AnyOpsOSLibNodeKubernetesApiService {
   }
 
   getContainerShellToSocket(type: string, connectionUuid: string, terminalUuid: string, namespace: string, pod: string, container: string, command: string = '/bin/sh'): Promise<any> {
-    return this.http.get(`/api/kubernetes/shell/${type}/${connectionUuid}/${terminalUuid}/${namespace}/${pod}/${container}/${encodeURIComponent(command)}`).pipe(map((data: any) => {
+    return this.http.get(`/api/kubernetes/shell/${type}/${connectionUuid}/${terminalUuid}/${namespace}/${pod}/${container}/${encodeURIComponent(command)}`).pipe(map(
+      (data: any) => {
         if (data.status === 'error') return this.errorHandler(data.errno ? data.errno : data.data);
 
         return data;
@@ -75,7 +79,8 @@ export class AnyOpsOSLibNodeKubernetesApiService {
   }
 
   endContainerShell(terminalUuid: string): Promise<any> {
-    return this.http.delete(`/api/kubernetes/shell/${terminalUuid}`).pipe(map((data: any) => {
+    return this.http.delete(`/api/kubernetes/shell/${terminalUuid}`).pipe(map(
+      (data: any) => {
         if (data.status === 'error') return this.errorHandler(data.errno ? data.errno : data.data);
 
         return data;

@@ -7,8 +7,10 @@
     "socket-controllers": "https://github.com/anyOpsOS/socket-controllers.git#build"
   },
   "peerDependencies": {
+    "@anyopsos/module-config-file": "~0.0.1",
     "@anyopsos/module-credential": "~0.0.1",
-    "@anyopsos/module-socket": "~0.0.1"
+    "@anyopsos/module-socket": "~0.0.1",
+    "@anyopsos/module-sys-workspace": "~0.0.1"
   },
   "devDependencies": {
     "@anyopsos/backend-core": "~0.0.1",

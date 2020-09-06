@@ -8,6 +8,8 @@
     "uuid": "^8.3.0"
   },
   "peerDependencies": {
+    "@anyopsos/module-file-system": "~0.0.1",
+    "@anyopsos/module-sys-workspace": "~0.0.1",
     "@anyopsos/module-vault": "~0.0.1"
   },
   "devDependencies": {

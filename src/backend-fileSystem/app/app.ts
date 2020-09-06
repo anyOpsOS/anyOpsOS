@@ -1,10 +1,9 @@
-import log4js, {Logger} from 'log4js';
-import {createServer as createServers, Server as Servers, ServerOptions} from 'https';
-import {PeerCertificate} from 'tls';
-import express, {Application, RequestHandler} from 'express';
-import routingControllers, {Action} from 'routing-controllers';
-import connectRedis, {RedisStore} from 'connect-redis';
-import bodyParser from 'body-parser';
+import log4js, { Logger } from 'log4js';
+import { createServer as createServers, Server as Servers, ServerOptions } from 'https';
+import { PeerCertificate } from 'tls';
+import express, { Application, RequestHandler } from 'express';
+import routingControllers, { Action } from 'routing-controllers';
+import connectRedis, { RedisStore } from 'connect-redis';
 import session from 'express-session';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
@@ -12,14 +11,26 @@ import cors from 'cors';
 import helmet from 'helmet';
 
 // TODO ESM
-const {getLogger, connectLogger} = log4js;
-const {urlencoded, json} = bodyParser;
-const {useExpressServer} = routingControllers;
-const {frameguard, xssFilter, noSniff, ieNoOpen, hsts} = helmet;
+const { urlencoded, json } = express;
+const { getLogger, connectLogger } = log4js;
+const { useExpressServer } = routingControllers;
+const { frameguard, xssFilter, noSniff, ieNoOpen, hsts } = helmet;
 
-import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
-import {AnyOpsOSSysRedisSessionModule} from '@anyopsos/module-sys-redis-session'
-import {AOO_SESSION_COOKIE, AOO_SESSION_COOKIE_SECRET, AOO_UNIQUE_COOKIE_NAME, SSL_DHPARAM, SSL_CA_CERT, SSL_FILESYSTEM_CERT, SSL_FILESYSTEM_CERT_KEY, AOO_AUTH_HOST, AOO_CORE_HOST} from '@anyopsos/module-sys-constants';
+import { AnyOpsOSSysGetPathModule } from '@anyopsos/module-sys-get-path';
+import { AnyOpsOSSysRedisSessionModule } from '@anyopsos/module-sys-redis-session'
+import {
+  AOO_SESSION_COOKIE,
+  AOO_SESSION_COOKIE_SECRET,
+  AOO_UNIQUE_COOKIE_NAME,
+  SSL_DHPARAM,
+  SSL_CA_CERT,
+  SSL_FILESYSTEM_CERT,
+  SSL_FILESYSTEM_CERT_KEY,
+  AOO_AUTH_HOST,
+  AOO_CORE_HOST,
+  AOO_FILESYSTEM_CONTROLLERS,
+  AOO_IMPERSONATE_HEADER
+} from '@anyopsos/module-sys-constants';
 
 
 /**
@@ -87,7 +98,7 @@ export class App {
     this.app.use(urlencoded({
       extended: true
     }));
-    this.app.use(json({limit: '50mb'}));
+    this.app.use(json({ limit: '50mb' }));
     this.app.use(cookieParser(this.sessionSecret));
     this.app.use(frameguard());
     this.app.use(xssFilter());
@@ -112,12 +123,8 @@ export class App {
           required: true
         }
       },
-      controllers: [
-        // Import modules dynamically, users should be able to override it with their
-        new AnyOpsOSSysGetPathModule().bin + 'apis/config-file/index.js',
-        new AnyOpsOSSysGetPathModule().bin + 'apis/file/index.js',
-        new AnyOpsOSSysGetPathModule().bin + 'apis/folder/index.js'
-      ],
+      // Import APIs from FileSystem
+      controllers: AOO_FILESYSTEM_CONTROLLERS.map((path: string) => new AnyOpsOSSysGetPathModule().bin + path),
       middlewares: [
         new AnyOpsOSSysGetPathModule().bin + 'api-middlewares/final/index.js',
         new AnyOpsOSSysGetPathModule().bin + 'api-middlewares/error-handler/index.js'
@@ -130,8 +137,8 @@ export class App {
           if (cert.subject.CN !== AOO_AUTH_HOST && cert.subject.CN !== AOO_CORE_HOST) return false;
 
           // Impersonate userUuid
-          if (action.request.headers['anyopsos-impersonate']) {
-            action.request.session.userUuid = action.request.headers['anyopsos-impersonate'];
+          if (action.request.headers[AOO_IMPERSONATE_HEADER]) {
+            action.request.session.userUuid = action.request.headers[AOO_IMPERSONATE_HEADER];
           } else {
             action.request.session.userUuid = 'internal';
           }

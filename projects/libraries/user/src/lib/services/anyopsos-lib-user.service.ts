@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {BehaviorSubject, Observable} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import {UserState} from '../types/user-state';
+import { UserState } from '../types/user-state';
 
 @Injectable({
   providedIn: 'root'
@@ -23,14 +23,14 @@ export class AnyOpsOSLibUserService {
     this.stateSource.next(data);
   }
 
-  loginUser(username: string, password: string): Observable<Object> {
+  loginUser(username: string, password: string): Observable<{ [key: string]: any }> {
     return this.http.post('/api/auth', {
       username,
       password
     });
   }
 
-  getSession(): Observable<Object> {
+  getSession(): Observable<{ [key: string]: any }> {
     return this.http.get('/api/auth');
   }
 }

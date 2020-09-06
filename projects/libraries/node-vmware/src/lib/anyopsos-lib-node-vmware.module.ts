@@ -1,14 +1,14 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 
-import {AnyOpsOSLibBootstrapService} from '@anyopsos/lib-bootstrap';
+import { AnyOpsOSLibBootstrapService } from '@anyopsos/lib-bootstrap';
 
-import {AnyOpsOSLibNodeVmwareConnectionsStateService} from './services/anyopsos-lib-node-vmware-connections-state.service';
-import {AnyOpsOSLibNodeVmwareFileSystemHandlersService} from './services/anyopsos-lib-node-vmware-file-system-handlers.service';
-import {AnyOpsOSLibNodeVmwareFileSystemService} from './services/anyopsos-lib-node-vmware-file-system.service';
-import {AnyOpsOSLibNodeVmwareHelpersService} from './services/anyopsos-lib-node-vmware-helpers.service';
-import {AnyOpsOSLibNodeVmwareSoapApiHelpersService} from './services/anyopsos-lib-node-vmware-soap-api-helpers.service';
-import {AnyOpsOSLibNodeVmwareSoapApiService} from './services/anyopsos-lib-node-vmware-soap-api.service';
-import {AnyOpsOSLibNodeVmwareService} from './services/anyopsos-lib-node-vmware.service';
+import { AnyOpsOSLibNodeVmwareConnectionsStateService } from './services/anyopsos-lib-node-vmware-connections-state.service';
+import { AnyOpsOSLibNodeVmwareFileSystemHandlersService } from './services/anyopsos-lib-node-vmware-file-system-handlers.service';
+import { AnyOpsOSLibNodeVmwareFileSystemService } from './services/anyopsos-lib-node-vmware-file-system.service';
+import { AnyOpsOSLibNodeVmwareHelpersService } from './services/anyopsos-lib-node-vmware-helpers.service';
+import { AnyOpsOSLibNodeVmwareSoapApiHelpersService } from './services/anyopsos-lib-node-vmware-soap-api-helpers.service';
+import { AnyOpsOSLibNodeVmwareSoapApiService } from './services/anyopsos-lib-node-vmware-soap-api.service';
+import { AnyOpsOSLibNodeVmwareService } from './services/anyopsos-lib-node-vmware.service';
 
 @NgModule({
   declarations: [],
@@ -24,8 +24,8 @@ export class AnyOpsOSLibNodeVmwareModule {
     console.log('Loading AnyOpsOSLibNodeVmwareModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibNodeVmwareModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibNodeVmwareModule is already loaded. You should not import it manually.');
     }
 
     // Initialize connections when user is loggedIn

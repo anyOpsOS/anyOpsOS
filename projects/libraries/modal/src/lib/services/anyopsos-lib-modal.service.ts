@@ -1,14 +1,12 @@
-import {Injectable, ViewContainerRef, ComponentFactory, ComponentRef} from '@angular/core';
+import { Injectable, ViewContainerRef, ComponentFactory, ComponentRef } from '@angular/core';
 
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
-import {MatDialogRef, MatDialogConfig} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
+import { MatDialogRef, MatDialogConfig } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
 
-import {AnyOpsOSLibModalRegisteredStateService} from './anyopsos-lib-modal-registered-state.service';
-import {AnyOpsOSLibModalHelpersService} from './anyopsos-lib-modal-helpers.service';
-import {ModalType} from '../types/modal-type';
-import {Modal} from '../types/modal';
+import { AnyOpsOSLibModalHelpersService } from './anyopsos-lib-modal-helpers.service';
+import { ModalType } from '../types/modal-type';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +16,6 @@ export class AnyOpsOSLibModalService {
   private mainContainerRef: ViewContainerRef;
 
   constructor(private readonly logger: AnyOpsOSLibLoggerService,
-              private readonly ModalRegisteredState: AnyOpsOSLibModalRegisteredStateService,
               private readonly ModalHelpers: AnyOpsOSLibModalHelpersService) {
   }
 
@@ -64,7 +61,7 @@ export class AnyOpsOSLibModalService {
       setTimeout(() => {
         this.modalInstances[modalInstanceUuid] = (cmpRef.instance as any).dialogRef;
         return resolve(this.modalInstances[modalInstanceUuid]);
-      }, 0);
+      },         0);
     });
 
   }

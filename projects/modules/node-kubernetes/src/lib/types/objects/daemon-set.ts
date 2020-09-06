@@ -1,6 +1,6 @@
-import {WorkloadKubeObject} from './workload-kube-object';
-import {PodContainer} from './pod-container';
-import {Affinity} from './affinity';
+import { WorkloadKubeObject } from './workload-kube-object';
+import { PodContainer } from './pod-container';
+import { Affinity } from './affinity';
 
 export interface DaemonSet extends WorkloadKubeObject {
   kind: 'DaemonSet';

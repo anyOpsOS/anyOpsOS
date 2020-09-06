@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {ConnectionDocker} from '@anyopsos/module-node-docker';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibFileSystemService } from '@anyopsos/lib-file-system';
+import { ConnectionDocker } from '@anyopsos/module-node-docker';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-// TODO extract it from '@anyopsos/module-node-docker'
+// TODO FIXME extract it from '@anyopsos/module-node-docker'
 const DOCKER_CONFIG_FILE = 'docker.json';
 
 @Injectable({
@@ -54,8 +54,8 @@ export class AnyOpsOSLibNodeDockerConnectionsStateService {
   initConnections(): void {
     if (this.getConnectionsInitialized()) throw new Error('connections_already_initialized');
 
-    this.LibFileSystem.getConfigFile(DOCKER_CONFIG_FILE)
-      .subscribe((connectionsData: BackendResponse & { data: ConnectionDocker[]; }) => {
+    this.LibFileSystem.getConfigFile(DOCKER_CONFIG_FILE).subscribe(
+      (connectionsData: BackendResponse & { data: ConnectionDocker[]; }) => {
         if (connectionsData.status === 'error') {
           this.logger.error('LibNodeDocker', 'Error while initializing connections', null, connectionsData.data);
           throw connectionsData.data;
@@ -71,15 +71,16 @@ export class AnyOpsOSLibNodeDockerConnectionsStateService {
         // If config file not exist, create a new one and try again
         if (error.data === 'resource_not_found') {
 
-          await this.LibFileSystem.putConfigFile([], DOCKER_CONFIG_FILE).subscribe((res: BackendResponse) => {
-            if (res.status === 'error') throw res.data;
+          await this.LibFileSystem.putConfigFile([], DOCKER_CONFIG_FILE).subscribe(
+            (res: BackendResponse) => {
+              if (res.status === 'error') throw res.data;
 
-            return this.initConnections();
-          },
-          error => {
-            this.logger.error('LibNodeDocker', 'Error while getting connections', null, error);
-            this.logger.error('LibNodeDocker', 'Error while creating configuration file', null, error);
-          });
+              return this.initConnections();
+            },
+            err => {
+              this.logger.error('LibNodeDocker', 'Error while getting connections', null, err);
+              this.logger.error('LibNodeDocker', 'Error while creating configuration file', null, err);
+            });
         } else {
           this.logger.error('LibNodeDocker', 'Error while getting connections', null, error);
         }
@@ -186,13 +187,14 @@ export class AnyOpsOSLibNodeDockerConnectionsStateService {
 
     return new Promise(async (resolve, reject) => {
 
-      let fileSystemObservable: Observable<Object>;
+      let fileSystemObservable: Observable<{ [key: string]: any }>;
 
       if (type === 'put') fileSystemObservable = this.LibFileSystem.putConfigFile(currentConnection, DOCKER_CONFIG_FILE, currentConnection.uuid);
       if (type === 'patch') fileSystemObservable = this.LibFileSystem.patchConfigFile(currentConnection, DOCKER_CONFIG_FILE, currentConnection.uuid);
       if (type === 'delete') fileSystemObservable = this.LibFileSystem.deleteConfigFile(DOCKER_CONFIG_FILE, currentConnection.uuid);
 
-      fileSystemObservable.subscribe((res: BackendResponse) => {
+      fileSystemObservable.subscribe(
+        (res: BackendResponse) => {
           if (res.status === 'error') {
             this.logger.error('LibNodeDocker', 'Error while saving connection', null, res.data);
             return reject(res.data);

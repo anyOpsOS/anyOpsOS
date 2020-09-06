@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService} from '@anyopsos/lib-modal';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibModalModule, AnyOpsOSLibModalRegisteredStateService } from '@anyopsos/lib-modal';
 
-import {EntryComponent} from './entry/entry.component';
-import {AnyOpsOSModalMonitorExportComponent} from './anyopsos-modal-monitor-export.component';
+import { EntryComponent } from './entry/entry.component';
+import { AnyOpsOSModalMonitorExportComponent } from './anyopsos-modal-monitor-export.component';
 
 @NgModule({
   declarations: [

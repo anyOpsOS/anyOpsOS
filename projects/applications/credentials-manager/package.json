@@ -15,6 +15,8 @@
     "@anyopsos/lib-service-injector": "~0.0.1"
   },
   "devDependencies": {
+    "@angular/platform-browser-dynamic": "~10.0.11",
+    "zone.js": "~0.10.3",
     "@anyopsos/module-credential": "~0.0.1"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",

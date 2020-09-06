@@ -1,16 +1,16 @@
-import {Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 
-import {combineLatest, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {scaleLog} from 'd3-scale';
-import {format as d3Format} from 'd3-format';
+import { scaleLog } from 'd3-scale';
+import { format as d3Format } from 'd3-format';
 import filesize from 'filesize';
 
-import {AnyOpsOSLibDiagramStateService} from '../../../services/anyopsos-lib-diagram-state.service';
-import {colors} from '../../../utils/color-utils';
-import {LayoutNode} from '../../../types/layout-node';
-import {Metric} from '../../../types/metric';
+import { AnyOpsOSLibDiagramStateService } from '../../../services/anyopsos-lib-diagram-state.service';
+import { colors } from '../../../utils/color-utils';
+import { LayoutNode } from '../../../types/layout-node';
+import { Metric } from '../../../types/metric';
 
 
 const formatLargeValue = d3Format('s');
@@ -56,7 +56,7 @@ export class NodeContainerComponent implements OnInit, OnDestroy {
       this.searchTerms = [searchQuery];
       this.showingNetworks = showingNetworks;
 
-      const {hasMetric, height, formattedValue} = this.getMetricValue(this.nodeElement.metric);
+      const { hasMetric, height, formattedValue } = this.getMetricValue(this.nodeElement.metric);
       this.height = height;
       this.metricFormattedValue = !this.nodeElement.pseudo && hasMetric ? formattedValue : '';
       this.labelOffset = (this.showingNetworks && this.nodeElement.networks) ? 10 : 0;
@@ -101,7 +101,7 @@ export class NodeContainerComponent implements OnInit, OnDestroy {
 
       filesize(value) {
         // @ts-ignore TODO
-        const obj: { value: number; symbol: unknown; } = filesize(value, {output: 'object', round: 1});
+        const obj: { value: number; symbol: unknown; } = filesize(value, { output: 'object', round: 1 });
         return renderFn(obj.value, obj.symbol);
       },
 
@@ -110,7 +110,7 @@ export class NodeContainerComponent implements OnInit, OnDestroy {
 
         if (value < 1100 && value >= 0) return intNumber;
 
-        return formatLargeValue(parseInt(intNumber));
+        return formatLargeValue(parseInt(intNumber, 10));
       },
 
       number(value) {
@@ -148,11 +148,11 @@ export class NodeContainerComponent implements OnInit, OnDestroy {
   } {
     if (!metric) return { formattedValue: 'n/a', height: 0, value: null };
 
-    const {value} = metric;
+    const { value } = metric;
     const loadScale = scaleLog().domain([0.01, 100]).range([0, 1]);
 
     let valuePercentage = value === 0 ? 0 : value / metric.max;
-    let {max} = metric;
+    let { max } = metric;
     if (['load1', 'load5', 'load15'].includes(metric.id)) {
       valuePercentage = loadScale(value);
       max = null;

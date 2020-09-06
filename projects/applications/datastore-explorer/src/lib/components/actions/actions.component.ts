@@ -1,12 +1,12 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import {takeUntil} from 'rxjs/operators';
-import {Observable, Subject} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
-import {Application} from '@anyopsos/lib-application';
+import { Application } from '@anyopsos/lib-application';
 
-import {AnyOpsOSAppDatastoreExplorerService} from '../../services/anyopsos-app-datastore-explorer.service';
-import {DatastoreExplorerConnectionObject} from '../../types/datastore-explorer-connection-object';
+import { AnyOpsOSAppDatastoreExplorerService } from '../../services/anyopsos-app-datastore-explorer.service';
+import { DatastoreExplorerConnectionObject } from '../../types/datastore-explorer-connection-object';
 
 @Component({
   selector: 'aade-actions',

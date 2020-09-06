@@ -20,7 +20,7 @@ spec:
             backend:
               serviceName: auth
               servicePort: auth-api
-          - path: /api/(file|folder|config-file)
+          - path: /api/(file|folder|loader|config-file)
             backend:
               serviceName: filesystem
               servicePort: filesystem-api

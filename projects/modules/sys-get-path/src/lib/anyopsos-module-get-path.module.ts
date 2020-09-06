@@ -1,6 +1,6 @@
-import {join} from 'path';
+import { join } from 'path';
 
-import {AOO_BASE_PATH} from '@anyopsos/module-sys-constants';
+import { AOO_BASE_PATH } from '@anyopsos/module-sys-constants';
 
 export class AnyOpsOSSysGetPathModule {
 

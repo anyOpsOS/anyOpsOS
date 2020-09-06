@@ -1,15 +1,15 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {takeUntil} from 'rxjs/operators';
-import {Observable, Subject} from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibUtilsService} from '@anyopsos/lib-utils';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { Application } from '@anyopsos/lib-application';
+import { AnyOpsOSLibUtilsService } from '@anyopsos/lib-utils';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
 
-import {AnyOpsOSAppInfrastructureManagerService} from '../../services/anyopsos-app-infrastructure-manager.service';
-import {ConnectionTypes} from '@anyopsos/backend-core/app/types/connection-types';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { AnyOpsOSAppInfrastructureManagerService } from '../../services/anyopsos-app-infrastructure-manager.service';
+import { ConnectionTypes } from '@anyopsos/backend-core/app/types/connection-types';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
 @Component({
   selector: 'aaim-actions',
@@ -165,23 +165,24 @@ export class ActionsComponent implements OnDestroy, OnInit {
 
     const activeObject: DataObject = this.getActiveObject();
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.InfrastructureManager.getBodyContainerRef(),
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.InfrastructureManager.getBodyContainerRef(),
       {
         title: 'Delete a resource',
         text: `Are you sure you want to delete ${activeObject.type} <i>${activeObject.name}</i> ${
           activeObject.info.data.metadata.namespace ? `in namespace <i>${activeObject.info.data.metadata.namespace}</i>` : ''
-        }?`,
+          }?`,
         yes: 'Delete',
         yesClass: 'warn',
         no: 'Cancel',
         boxContent: `<span>This action is equivalent to: </span>
 <code>kubectl delete ${
           activeObject.info.data.metadata.namespace ? `-n ${activeObject.info.data.metadata.namespace}` : ''
-}
+          }
 ${activeObject.type} ${activeObject.name}</code>`,
         boxIcon: 'fa-info'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe((result: string) => {
       if (!result) return;

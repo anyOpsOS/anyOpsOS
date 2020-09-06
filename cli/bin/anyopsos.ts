@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import {anyOpsOS} from '../src/index.js';
+import { anyOpsOS } from '../src/index.js';
 
 import chalk from 'chalk';
 import clear from 'clear';
@@ -18,6 +18,6 @@ console.log(chalk.red.bold('Danger:') + ' ' + chalk.blue('This project is on alp
 
 try {
   new anyOpsOS().runCli();
-} catch(e) {
+} catch (e) {
   throw e.toString();
 }

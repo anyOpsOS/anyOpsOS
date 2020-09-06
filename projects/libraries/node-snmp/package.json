@@ -1,12 +1,26 @@
 {
   "name": "@anyopsos/lib-node-snmp",
   "version": "0.0.1",
+  "dependencies": {
+    "tslib": "^2.0.0",
+    "ngx-socket-io": "^3.2.0",
+    "@anyopsos/lib-bootstrap": "~0.0.1",
+    "@anyopsos/lib-file-system": "~0.0.1",
+    "@anyopsos/lib-logger": "~0.0.1",
+    "@anyopsos/lib-ssh": "~0.0.1",
+    "@anyopsos/lib-workspace": "~0.0.1"
+  },
   "peerDependencies": {
     "@angular/common": "~10.0.11",
-    "@angular/core": "~10.0.11"
+    "@angular/core": "~10.0.11",
+    "rxjs": "^6.6.2"
   },
-  "dependencies": {
-    "tslib": "^2.0.0"
+  "devDependencies": {
+    "@angular/platform-browser-dynamic": "~10.0.11",
+    "zone.js": "~0.10.3",
+    "@anyopsos/backend-core": "~0.0.1",
+    "@anyopsos/module-node-snmp": "~0.0.1",
+    "@anyopsos/module-ssh": "~0.0.1"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {BehaviorSubject, Observable} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
-import {ConnectionSsh, ConnectionSftp} from '@anyopsos/module-ssh';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibFileSystemService } from '@anyopsos/lib-file-system';
+import { ConnectionSsh, ConnectionSftp } from '@anyopsos/module-ssh';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 // TODO extract it from '@anyopsos/module-ssh'
 const SSH_CONFIG_FILE = 'ssh.json';
@@ -55,8 +55,8 @@ export class AnyOpsOSLibSshConnectionsStateService {
   initConnections(): void {
     if (this.getConnectionsInitialized()) throw new Error('connections_already_initialized');
 
-    this.LibFileSystem.getConfigFile(SSH_CONFIG_FILE)
-      .subscribe((connectionsData: BackendResponse & { data: (ConnectionSsh | ConnectionSftp)[]; }) => {
+    this.LibFileSystem.getConfigFile(SSH_CONFIG_FILE).subscribe(
+      (connectionsData: BackendResponse & { data: (ConnectionSsh | ConnectionSftp)[]; }) => {
         if (connectionsData.status === 'error') {
           this.logger.error('LibSsh', 'Error while initializing connections', null, connectionsData.data);
           throw connectionsData.data;
@@ -72,15 +72,16 @@ export class AnyOpsOSLibSshConnectionsStateService {
         // If config file not exist, create a new one and try again
         if (error.data === 'resource_not_found') {
 
-          await this.LibFileSystem.putConfigFile([], SSH_CONFIG_FILE).subscribe((res: BackendResponse) => {
-            if (res.status === 'error') throw res.data;
+          await this.LibFileSystem.putConfigFile([], SSH_CONFIG_FILE).subscribe(
+            (res: BackendResponse) => {
+              if (res.status === 'error') throw res.data;
 
-            return this.initConnections();
-          },
-          error => {
-            this.logger.error('LibSsh', 'Error while getting connections', null, error);
-            this.logger.error('LibSsh', 'Error while creating configuration file', null, error);
-          });
+              return this.initConnections();
+            },
+            err => {
+              this.logger.error('LibSsh', 'Error while getting connections', null, err);
+              this.logger.error('LibSsh', 'Error while creating configuration file', null, err);
+            });
         } else {
           this.logger.error('LibSsh', 'Error while getting connections', null, error);
         }
@@ -169,7 +170,7 @@ export class AnyOpsOSLibSshConnectionsStateService {
 
     return new Promise(async (resolve, reject) => {
 
-      let fileSystemObservable: Observable<Object>;
+      let fileSystemObservable: Observable<{ [key: string]: any }>;
 
       if (type === 'put') fileSystemObservable = this.LibFileSystem.putConfigFile(currentConnection, SSH_CONFIG_FILE, currentConnection.uuid);
       if (type === 'patch') fileSystemObservable = this.LibFileSystem.patchConfigFile(currentConnection, SSH_CONFIG_FILE, currentConnection.uuid);
@@ -184,10 +185,10 @@ export class AnyOpsOSLibSshConnectionsStateService {
         this.logger.debug('LibSsh', 'Saved connection successfully', loggerArgs);
         return resolve(res.data);
       },
-      error => {
-        this.logger.error('LibSsh', 'Error while saving connection', loggerArgs, error);
-        return reject(error);
-      });
+                                     error => {
+          this.logger.error('LibSsh', 'Error while saving connection', loggerArgs, error);
+          return reject(error);
+        });
     });
   }
 }

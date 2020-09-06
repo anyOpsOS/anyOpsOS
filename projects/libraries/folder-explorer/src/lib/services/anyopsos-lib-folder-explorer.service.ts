@@ -1,11 +1,11 @@
-import {Injectable, ViewContainerRef} from '@angular/core';
+import { Injectable, ViewContainerRef } from '@angular/core';
 
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibFileSystemUiService} from '@anyopsos/lib-file-system-ui';
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
-import {Connection} from '@anyopsos/backend-core/app/types/connection';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibFileSystemUiService } from '@anyopsos/lib-file-system-ui';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { Connection } from '@anyopsos/backend-core/app/types/connection';
 
 @Injectable({
   providedIn: 'root'
@@ -88,7 +88,7 @@ export class AnyOpsOSLibFolderExplorerService {
   }
 
   setSearch(data: string): void {
-    this.dataStore.search = {fileName: data};
+    this.dataStore.search = { fileName: data };
 
     // broadcast data to subscribers
     this.$search.next(Object.assign({}, this.dataStore).search);

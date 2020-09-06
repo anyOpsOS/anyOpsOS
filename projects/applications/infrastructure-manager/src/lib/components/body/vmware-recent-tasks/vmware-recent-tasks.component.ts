@@ -53,8 +53,6 @@ export class VmwareRecentTasksComponent implements OnInit {
     }).then(async (createCollectorResult: VmwareSdkFunctionsOutput<'CreateCollectorForTasks'>) => {
       if (createCollectorResult.status === 'error') throw new Error('Failed to CreateCollectorForTasks to vCenter');
 
-      const currentConnection: ConnectionVmware = this.InfrastructureManager.getActiveConnection() as ConnectionVmware;
-
       return this.LibNodeVmwareSoapApiService.callSoapApi(currentConnection.uuid, 'ReadNextTasks', {
         _this: {
           $type: 'TaskHistoryCollector',

@@ -1,12 +1,12 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
-import {MAT_DIALOG_DATA, MatDialogRef} from '@anyopsos/lib-angular-material';
-import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
-import {AnyOpsOSLibNodeKubernetesApiService} from '@anyopsos/lib-node-kubernetes';
-import {Pod} from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod';
-import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@anyopsos/lib-angular-material';
+import { BodyComponent, ModalData } from '@anyopsos/lib-modal';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
+import { AnyOpsOSLibNodeKubernetesApiService } from '@anyopsos/lib-node-kubernetes';
+import { Pod } from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod';
+import { AnyOpsOSLibNodeHelpersService } from '@anyopsos/lib-node';
 
 @Component({
   selector: 'amkubernetes-logs-anyopsos-modal-kubernetes-logs',
@@ -14,7 +14,7 @@ import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
   styleUrls: ['./anyopsos-modal-kubernetes-logs.component.scss']
 })
 export class AnyOpsOSModalKubernetesLogsComponent implements OnInit {
-  @ViewChild('modalBody', {static: true}) modalBody: BodyComponent;
+  @ViewChild('modalBody', { static: true }) modalBody: BodyComponent;
 
   object: DataObject & { info: { data: Pod } };
 
@@ -37,12 +37,12 @@ export class AnyOpsOSModalKubernetesLogsComponent implements OnInit {
 
     this.object = data.object as DataObject & { info: { data: Pod } };
 
-    this.containerForm.valueChanges.subscribe( selectedContainers => {
+    this.containerForm.valueChanges.subscribe(selectedContainers => {
 
       // Reset deselected containers
       this.logRequests.forEach((request, index, object) => {
-        const stillSelected = selectedContainers.find(data => {
-          return data.pod.name === request.pod.name && data.container.name === request.container.name;
+        const stillSelected = selectedContainers.find(container => {
+          return container.pod.name === request.pod.name && container.container.name === request.container.name;
         });
 
         if (stillSelected) return;
@@ -57,26 +57,26 @@ export class AnyOpsOSModalKubernetesLogsComponent implements OnInit {
       });
 
       // Set new containers
-      selectedContainers.forEach(data => {
+      selectedContainers.forEach(container => {
 
         const alreadyExists = this.logRequests.find(request => {
-          return data.pod.name === request.pod.name && data.container.name === request.container.name;
+          return container.pod.name === request.pod.name && container.container.name === request.container.name;
         });
 
         if (alreadyExists) return;
 
         this.LibKubernetesApi.getContainerLogsToSocket(
-          data.pod.info.mainUuid,
+          container.pod.info.mainUuid,
           this.terminalUuid,
-          data.pod.info.data.metadata.namespace,
-          data.pod.name,
-          data.container.name,
+          container.pod.info.data.metadata.namespace,
+          container.pod.name,
+          container.container.name,
           this.showContainersName
         ).then((containerLogsData) => {
 
           this.logRequests.push({
-            pod: data.pod,
-            container: data.container,
+            pod: container.pod,
+            container: container.container,
             logUuid: containerLogsData.data.uuid
           });
 

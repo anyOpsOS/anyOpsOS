@@ -1,8 +1,8 @@
-import {Component, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 
-import {Application} from '@anyopsos/lib-application';
+import { Application } from '@anyopsos/lib-application';
 
-import {AnyOpsOSAppBackupsManagerService} from '../services/anyopsos-app-backups-manager.service';
+import { AnyOpsOSAppBackupsManagerService } from '../services/anyopsos-app-backups-manager.service';
 
 @Component({
   selector: 'aabm-body',
@@ -10,7 +10,7 @@ import {AnyOpsOSAppBackupsManagerService} from '../services/anyopsos-app-backups
   styleUrls: ['./body.component.scss']
 })
 export class BodyComponent implements OnInit {
-  @ViewChild('bodyContainer', {static: true, read: ViewContainerRef}) private readonly bodyContainer: ViewContainerRef;
+  @ViewChild('bodyContainer', { static: true, read: ViewContainerRef }) private readonly bodyContainer: ViewContainerRef;
   @Input() readonly application: Application;
 
   viewSide: boolean = true;

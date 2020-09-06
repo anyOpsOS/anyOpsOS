@@ -1,11 +1,11 @@
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {AnyOpsOSCredentialModule} from '@anyopsos/module-credential';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { AnyOpsOSCredentialModule } from '@anyopsos/module-credential';
 
-import {TerminalMap} from './types/terminal-map';
-import {Terminal} from './types/terminal';
-import {TerminalTypes} from './types/terminal-types';
+import { TerminalMap } from './types/terminal-map';
+import { Terminal } from './types/terminal';
+import { TerminalTypes } from './types/terminal-types';
 
 
 const terminalSessions: TerminalMap[] = [];

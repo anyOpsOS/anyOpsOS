@@ -1,7 +1,7 @@
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
-import {ImGraphNodeMetric} from './im-graph-node-metric';
-import {NodeGraphNodeMetadata} from './node-graph-node-metadata';
+import { ImGraphNodeMetric } from './im-graph-node-metric';
+import { NodeGraphNodeMetadata } from './node-graph-node-metadata';
 
 export interface ImGraphNode {
   id: string;

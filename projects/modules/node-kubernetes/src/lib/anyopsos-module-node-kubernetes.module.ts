@@ -1,21 +1,21 @@
-import k8sClientNode, {KubeConfig as IKubeConfig, Watch as IWatch, Log as ILog, Exec as IExec, Attach as IAttach, V1Status} from '@kubernetes/client-node';
-import {Cluster} from '@kubernetes/client-node/dist/config_types';
-import request, {Response, Options, Request} from 'request';
-import {Readable, Writable} from 'stream';
-import log4js, {Logger} from 'log4js';
+import k8sClientNode, { KubeConfig as IKubeConfig, Watch as IWatch, Log as ILog, Exec as IExec, Attach as IAttach, V1Status } from '@kubernetes/client-node';
+import { Cluster } from '@kubernetes/client-node/dist/config_types';
+import request, { Response, Options, Request } from 'request';
+import { Readable, Writable } from 'stream';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getLogger} = log4js;
-const {Watch, Log, Exec, Attach} = k8sClientNode;
-const {get} = request;
+const { getLogger } = log4js;
+const { Watch, Log, Exec, Attach } = k8sClientNode;
+const { get } = request;
 
-import {AnyOpsOSTerminalModule} from '@anyopsos/module-terminal';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSTerminalModule } from '@anyopsos/module-terminal';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSNodeKubernetesSessionStateModule} from './anyopsos-module-node-kubernetes-session-state';
-import {AnyOpsOSNodeKubernetesDataRefresherModule} from './anyopsos-module-node-kubernetes-data-refresher';
+import { AnyOpsOSNodeKubernetesSessionStateModule } from './anyopsos-module-node-kubernetes-session-state';
+import { AnyOpsOSNodeKubernetesDataRefresherModule } from './anyopsos-module-node-kubernetes-data-refresher';
 
-import {IsomorphicWs} from './types/isomorphic-ws';
+import { IsomorphicWs } from './types/isomorphic-ws';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -106,19 +106,19 @@ export class AnyOpsOSNodeKubernetesModule {
       apiUrls.forEach((url: string) => {
 
         watch.watch(url,
-          {},
-          (phase: string, obj: any) => {
+                    {},
+                    (phase: string, obj: any) => {
 
             this.KubernetesDataRefresherModule.parseObject(phase, obj);
           },
-          (e: Error) => {
+                    (e: Error) => {
             logger.error(`[Module Kubernetes] -> newConnection -> Watch error apiUrl [${url}] -> ${e}`);
             throw e;
           });
 
       });
 
-      return {status: 'ok', data: 'connected'} as BackendResponse;
+      return { status: 'ok', data: 'connected' } as BackendResponse;
 
     }).catch((e: Error) => {
       logger.error(`[Module Kubernetes] -> newConnection -> ${e}`);
@@ -134,7 +134,7 @@ export class AnyOpsOSNodeKubernetesModule {
 
     return this.KubernetesSessionStateModule.disconnectSession().then(() => {
 
-      return {status: 'ok', data: 'disconnected'} as BackendResponse;
+      return { status: 'ok', data: 'disconnected' } as BackendResponse;
 
     }).catch((e: Error) => {
       logger.error(`[Module Kubernetes] -> disconnectConnection -> ${e}`);
@@ -198,7 +198,7 @@ export class AnyOpsOSNodeKubernetesModule {
 
     const logRequest: Request = await log.log(namespace, pod, container, stdout, (e: any) => {
       console.log(e);
-    }, {
+    },                                        {
       follow: true
     });
 
@@ -212,7 +212,7 @@ export class AnyOpsOSNodeKubernetesModule {
   execToTerminal(terminalUuid: string, namespace: string, pod: string, container: string, command: string | string[] = '/bin/sh'): Promise<void> {
 
     const emitData = (termUuid: string, data: string) => this.TerminalsModule.terminalStout(termUuid, data);
-    const stdin = new Readable({read: () => {}});
+    const stdin = new Readable({ read: () => { } });
     const stdout = new Writable({
       write(chunk: any, encoding: string, callback: () => void) {
         emitData(terminalUuid, chunk.toString());
@@ -231,7 +231,7 @@ export class AnyOpsOSNodeKubernetesModule {
       // tslint:disable-next-line:no-console
       console.log(JSON.stringify(status, null, 2));
 
-    // @ts-ignore TODO
+      // @ts-ignore TODO
     }).then((websocket: IsomorphicWs) => {
 
       stdout.on('close', (code: number | null, signal: string) => {
@@ -246,7 +246,7 @@ export class AnyOpsOSNodeKubernetesModule {
   attachToTerminal(terminalUuid: string, namespace: string, pod: string, container: string): Promise<void> {
 
     const emitData = (termUuid: string, data: string) => this.TerminalsModule.terminalStout(termUuid, data);
-    const stdin = new Readable({read: () => {}});
+    const stdin = new Readable({ read: () => { } });
     const stdout = new Writable({
       write(chunk: any, encoding: string, callback: () => void) {
         emitData(terminalUuid, chunk.toString());
@@ -260,16 +260,16 @@ export class AnyOpsOSNodeKubernetesModule {
     const attach: IAttach = new Attach(kc);
 
     return attach.attach(namespace, pod, container, stdout, stdout, stdin, true)
-    // @ts-ignore TODO
-    .then((websocket: IsomorphicWs) => {
+      // @ts-ignore TODO
+      .then((websocket: IsomorphicWs) => {
 
-      stdout.on('close', (code: number | null, signal: string) => {
-        websocket.close();
+        stdout.on('close', (code: number | null, signal: string) => {
+          websocket.close();
+        });
+
+      }).catch((e: Error) => {
+        console.log(e);
       });
-
-    }).catch((e: Error) => {
-      console.log(e);
-    });
   }
 
 }

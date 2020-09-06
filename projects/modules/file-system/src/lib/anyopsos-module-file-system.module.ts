@@ -1,21 +1,21 @@
-import log4js, {Logger} from 'log4js';
-import {Stats} from 'fs';
-import {parse} from 'url';
-import {join} from 'path';
-import {get} from 'http';
+import log4js, { Logger } from 'log4js';
+import { Stats } from 'fs';
+import { parse } from 'url';
+import { join } from 'path';
+import { get } from 'http';
 import fs from 'fs-extra';
 
 
 // TODO ESM
-const {getLogger} = log4js;
-const {createWriteStream, copy, ensureDir, move, outputFile, pathExistsSync, readdir, remove, unlink, stat} = fs;
+const { getLogger } = log4js;
+const { createWriteStream, copy, ensureDir, move, outputFile, pathExistsSync, readdir, remove, unlink, stat } = fs;
 
-import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
-import {AnyOpsOSCredentialModule, Credential} from '@anyopsos/module-credential';
+import { AnyOpsOSSysGetPathModule } from '@anyopsos/module-sys-get-path';
+import { AnyOpsOSCredentialModule, Credential } from '@anyopsos/module-credential';
 
-import {ApiCaller} from './decorators/api-caller'
+import { ApiCaller } from './decorators/api-caller'
 
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
 
 
 const logger: Logger = getLogger('mainLog');

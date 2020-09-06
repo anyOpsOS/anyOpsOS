@@ -1,14 +1,14 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibCredentialHelpersService} from '@anyopsos/lib-credential';
-import {Credential} from '@anyopsos/module-credential';
+import { Application } from '@anyopsos/lib-application';
+import { AnyOpsOSLibCredentialHelpersService } from '@anyopsos/lib-credential';
+import { Credential } from '@anyopsos/module-credential';
 
-import {AnyOpsOSAppCredentialsManagerService} from '../../services/anyopsos-app-credentials-manager.service';
+import { AnyOpsOSAppCredentialsManagerService } from '../../services/anyopsos-app-credentials-manager.service';
 
 @Component({
   selector: 'aacm-body',
@@ -16,7 +16,7 @@ import {AnyOpsOSAppCredentialsManagerService} from '../../services/anyopsos-app-
   styleUrls: ['./body.component.scss']
 })
 export class BodyComponent implements OnDestroy, OnInit {
-  @ViewChild('bodyContainer', {static: true, read: ViewContainerRef}) private readonly bodyContainer: ViewContainerRef;
+  @ViewChild('bodyContainer', { static: true, read: ViewContainerRef }) private readonly bodyContainer: ViewContainerRef;
   @Input() readonly application: Application;
 
   private readonly destroySubject$: Subject<void> = new Subject();
@@ -35,16 +35,18 @@ export class BodyComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
 
-    this.credentialForm = this.formBuilder.group({
-      description: ['', Validators.required],
-      type: ['', Validators.required],
-      username: [''],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
-      uuid: [null]
-    }, {
-      validator: this.mustMatch('password', 'confirmPassword')
-    });
+    this.credentialForm = this.formBuilder.group(
+      {
+        description: ['', Validators.required],
+        type: ['', Validators.required],
+        username: [''],
+        password: ['', Validators.required],
+        confirmPassword: ['', Validators.required],
+        uuid: [null]
+      },
+      {
+        validator: this.mustMatch('password', 'confirmPassword')
+      });
 
     // Listen form credentialForm changes
     this.credentialForm.get('type').valueChanges
@@ -53,8 +55,8 @@ export class BodyComponent implements OnDestroy, OnInit {
     // Listen for credentials changes
     this.LibCredentialHelpers.getAllCredentialsObserver()
       .pipe(takeUntil(this.destroySubject$)).subscribe((credentials: Credential[]) => {
-      this.onCredentialsChange(credentials);
-    });
+        this.onCredentialsChange(credentials);
+      });
 
     // Set bodyContainerRef, this is used by Modals
     this.CredentialsManager.setBodyContainerRef(this.bodyContainer);

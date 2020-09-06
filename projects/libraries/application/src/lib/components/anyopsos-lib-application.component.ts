@@ -1,14 +1,14 @@
-import {Component, ElementRef, Input, OnInit, AfterViewInit, ViewChild, ViewContainerRef, Compiler, ViewEncapsulation} from '@angular/core';
+import { Component, ElementRef, Input, OnInit, AfterViewInit, ViewChild, ViewContainerRef, Compiler, ViewEncapsulation } from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 
-import {ResizeEvent} from 'angular-resizable-element';
+import { ResizeEvent } from 'angular-resizable-element';
 
-import {CdkDragRelease, CdkDragStart} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
+import { CdkDragRelease, CdkDragStart } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
 
-import {AnyOpsOSLibApplicationService} from '../services/anyopsos-lib-application.service';
-import {Application} from '../types/application';
+import { AnyOpsOSLibApplicationService } from '../services/anyopsos-lib-application.service';
+import { Application } from '../types/application';
 
 @Component({
   selector: 'alapp-anyopsos-lib-application',
@@ -17,11 +17,11 @@ import {Application} from '../types/application';
   encapsulation: ViewEncapsulation.None
 })
 export class AnyOpsOSLibApplicationComponent implements OnInit, AfterViewInit {
-  @ViewChild('appElement', {static: false}) appElement: ElementRef;
-  @ViewChild('appActions', {static: false, read: ViewContainerRef}) appActions;
-  @ViewChild('appBody', {static: false, read: ViewContainerRef}) appBody;
-  @ViewChild('appMenu', {static: false, read: ViewContainerRef}) appMenu;
-  @ViewChild('appStatus', {static: false, read: ViewContainerRef}) appStatus;
+  @ViewChild('appElement', { static: false }) appElement: ElementRef;
+  @ViewChild('appActions', { static: false, read: ViewContainerRef }) appActions;
+  @ViewChild('appBody', { static: false, read: ViewContainerRef }) appBody;
+  @ViewChild('appMenu', { static: false, read: ViewContainerRef }) appMenu;
+  @ViewChild('appStatus', { static: false, read: ViewContainerRef }) appStatus;
   @Input() application: Application;
 
   closeAppSubscription: Subscription;
@@ -97,53 +97,52 @@ export class AnyOpsOSLibApplicationComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
 
     // the missing step, need to use Compiler to resolve the module's embedded components
-    this.compiler.compileModuleAndAllComponentsAsync<any>(this.application.factory.moduleType)
-      .then((factory) => {
+    this.compiler.compileModuleAndAllComponentsAsync<any>(this.application.factory.moduleType).then((factory) => {
 
-        this.appActions.clear();
-        this.appBody.clear();
-        this.appMenu.clear();
-        this.appStatus.clear();
+      this.appActions.clear();
+      this.appBody.clear();
+      this.appMenu.clear();
+      this.appStatus.clear();
 
-        const actionsFactory = factory.componentFactories.filter((component) => {
-          return component.componentType.name === 'ActionsComponent';
-        })[0];
-        const bodyFactory = factory.componentFactories.filter((component) => {
-          return component.componentType.name === 'BodyComponent';
-        })[0];
+      const actionsFactory = factory.componentFactories.filter((component) => {
+        return component.componentType.name === 'ActionsComponent';
+      })[0];
+      const bodyFactory = factory.componentFactories.filter((component) => {
+        return component.componentType.name === 'BodyComponent';
+      })[0];
 
-        const menuFactory = factory.componentFactories.filter((component) => {
-          return component.componentType.name === 'MenuComponent';
-        })[0];
-        const statusFactory = factory.componentFactories.filter((component) => {
-          return component.componentType.name === 'StatusComponent';
-        })[0];
+      const menuFactory = factory.componentFactories.filter((component) => {
+        return component.componentType.name === 'MenuComponent';
+      })[0];
+      const statusFactory = factory.componentFactories.filter((component) => {
+        return component.componentType.name === 'StatusComponent';
+      })[0];
 
-        if (actionsFactory) {
-          const actionsComponentRef = this.appActions.createComponent(actionsFactory);
-          (actionsComponentRef.instance as any).application = this.application;
-        }
+      if (actionsFactory) {
+        const actionsComponentRef = this.appActions.createComponent(actionsFactory);
+        (actionsComponentRef.instance as any).application = this.application;
+      }
 
-        if (bodyFactory) {
-          const bodyComponentRef = this.appBody.createComponent(bodyFactory);
-          (bodyComponentRef.instance as any).application = this.application;
-        }
+      if (bodyFactory) {
+        const bodyComponentRef = this.appBody.createComponent(bodyFactory);
+        (bodyComponentRef.instance as any).application = this.application;
+      }
 
-        if (menuFactory) {
-          const menuComponentRef = this.appMenu.createComponent(menuFactory);
-          (menuComponentRef.instance as any).application = this.application;
-          (menuComponentRef.instance as any).isMenuOpened = this.isMenuOpened;
-        }
+      if (menuFactory) {
+        const menuComponentRef = this.appMenu.createComponent(menuFactory);
+        (menuComponentRef.instance as any).application = this.application;
+        (menuComponentRef.instance as any).isMenuOpened = this.isMenuOpened;
+      }
 
-        if (statusFactory) {
-          const statusComponentRef = this.appStatus.createComponent(statusFactory);
-          (statusComponentRef.instance as any).application = this.application;
-        }
+      if (statusFactory) {
+        const statusComponentRef = this.appStatus.createComponent(statusFactory);
+        (statusComponentRef.instance as any).application = this.application;
+      }
 
-        // Maximise if some portion of the app is outside of viewport
-        if (!this.isInViewport()) return this.maximize();
+      // Maximise if some portion of the app is outside of viewport
+      if (!this.isInViewport()) return this.maximize();
 
-      });
+    });
   }
 
   isInViewport(): boolean {
@@ -232,11 +231,14 @@ export class AnyOpsOSLibApplicationComponent implements OnInit, AfterViewInit {
     // Close this application
     this.isClosing = true;
 
-    setTimeout(() => {
-      this.isClosing = false;
-      this.LibApplication.closeApplication(this.application.uuid);
-      // hide $(parentWindow).hide()
-    }, 500);
+    setTimeout(
+      () => {
+        this.isClosing = false;
+        this.LibApplication.closeApplication(this.application.uuid);
+        // hide $(parentWindow).hide()
+      },
+      500
+    );
 
     // Close application in taskbar
     this.LibApplication.toggleApplication(null);

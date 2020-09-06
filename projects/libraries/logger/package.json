@@ -1,15 +1,20 @@
 {
   "name": "@anyopsos/lib-logger",
   "version": "0.0.1",
+  "dependencies": {
+    "tslib": "^2.0.0",
+    "@anyopsos/lib-angular-material": "~0.0.1",
+    "@anyopsos/lib-utils": "~0.0.1",
+    "ngx-logger": "^4.1.2"
+  },
   "peerDependencies": {
     "@angular/common": "~10.0.11",
     "@angular/core": "~10.0.11",
     "rxjs": "~6.6.0"
   },
-  "dependencies": {
-    "tslib": "^2.0.0",
-    "@anyopsos/lib-angular-material": "~0.0.1",
-    "ngx-logger": "^4.1.2"
+  "devDependencies": {
+    "@angular/platform-browser-dynamic": "~10.0.11",
+    "zone.js": "~0.10.3"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

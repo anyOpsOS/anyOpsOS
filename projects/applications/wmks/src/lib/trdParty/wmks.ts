@@ -1,4 +1,5 @@
-/* tslint:disable */
+// tslint:disable
+
 /**
  * This is a PoC
  * TODO:
@@ -18,7 +19,7 @@ declare global {
 }
 export function WmksLib($) {
 
-  (function($) {
+  (function ($) {
 
     $.ui = $.ui || {};
 
@@ -34,111 +35,111 @@ export function WmksLib($) {
  * http://jquery.org/license
  */
 
-//>>label: Widget
-//>>group: Core
-//>>description: Provides a factory for creating stateful widgets with a common API.
-//>>docs: http://api.jqueryui.com/jQuery.widget/
-//>>demos: http://jqueryui.com/widget/
+    //>>label: Widget
+    //>>group: Core
+    //>>description: Provides a factory for creating stateful widgets with a common API.
+    //>>docs: http://api.jqueryui.com/jQuery.widget/
+    //>>demos: http://jqueryui.com/widget/
 
 
 
     let widgetUuid = 0;
     let widgetSlice = Array.prototype.slice;
 
-    $.cleanData = ( function( orig ) {
-      return function( elems ) {
+    $.cleanData = (function (orig) {
+      return function (elems) {
         let events, elem, i;
-        for ( i = 0; ( elem = elems[ i ] ) != null; i++ ) {
+        for (i = 0; (elem = elems[i]) != null; i++) {
           try {
 
             // Only trigger remove when necessary to save time
-            events = $._data( elem, "events" );
-            if ( events && events.remove ) {
-              $( elem ).triggerHandler( "remove" );
+            events = $._data(elem, "events");
+            if (events && events.remove) {
+              $(elem).triggerHandler("remove");
             }
 
             // Http://bugs.jquery.com/ticket/8235
-          } catch ( e ) {}
+          } catch (e) { }
         }
-        orig( elems );
+        orig(elems);
       };
-    } )( $.cleanData );
+    })($.cleanData);
 
-    $.widget = function( name, base, prototype ) {
+    $.widget = function (name, base, prototype) {
       let existingConstructor, constructor, basePrototype;
 
       // ProxiedPrototype allows the provided prototype to remain unmodified
       // so that it can be used as a mixin for multiple widgets (#8876)
       let proxiedPrototype = {};
 
-      let namespace = name.split( "." )[ 0 ];
-      name = name.split( "." )[ 1 ];
+      let namespace = name.split(".")[0];
+      name = name.split(".")[1];
       let fullName = namespace + "-" + name;
 
-      if ( !prototype ) {
+      if (!prototype) {
         prototype = base;
         base = $.Widget;
       }
 
-      if ( $.isArray( prototype ) ) {
-        prototype = $.extend.apply( null, [ {} ].concat( prototype ) );
+      if ($.isArray(prototype)) {
+        prototype = $.extend.apply(null, [{}].concat(prototype));
       }
 
       // Create selector for plugin
-      $.expr[ ":" ][ fullName.toLowerCase() ] = function( elem ) {
-        return !!$.data( elem, fullName );
+      $.expr[":"][fullName.toLowerCase()] = function (elem) {
+        return !!$.data(elem, fullName);
       };
 
-      $[ namespace ] = $[ namespace ] || {};
-      existingConstructor = $[ namespace ][ name ];
-      constructor = $[ namespace ][ name ] = function( options, element ) {
+      $[namespace] = $[namespace] || {};
+      existingConstructor = $[namespace][name];
+      constructor = $[namespace][name] = function (options, element) {
 
         // Allow instantiation without "new" keyword
-        if ( !this._createWidget ) {
-          return new constructor( options, element );
+        if (!this._createWidget) {
+          return new constructor(options, element);
         }
 
         // Allow instantiation without initializing for simple inheritance
         // must use "new" keyword (the code above always passes args)
-        if ( arguments.length ) {
-          this._createWidget( options, element );
+        if (arguments.length) {
+          this._createWidget(options, element);
         }
       };
 
       // Extend with the existing constructor to carry over any static properties
-      $.extend( constructor, existingConstructor, {
+      $.extend(constructor, existingConstructor, {
         version: prototype.version,
 
         // Copy the object used to create the prototype in case we need to
         // redefine the widget later
-        _proto: $.extend( {}, prototype ),
+        _proto: $.extend({}, prototype),
 
         // Track widgets that inherit from this widget in case this widget is
         // redefined after a widget inherits from it
         _childConstructors: []
-      } );
+      });
 
       basePrototype = new base();
 
       // We need to make the options hash a property directly on the new instance
       // otherwise we'll modify the options hash on the prototype that we're
       // inheriting from
-      basePrototype.options = $.widget.extend( {}, basePrototype.options );
-      $.each( prototype, function( prop, value ) {
-        if ( !$.isFunction( value ) ) {
-          proxiedPrototype[ prop ] = value;
+      basePrototype.options = $.widget.extend({}, basePrototype.options);
+      $.each(prototype, function (prop, value) {
+        if (!$.isFunction(value)) {
+          proxiedPrototype[prop] = value;
           return;
         }
-        proxiedPrototype[ prop ] = ( function() {
+        proxiedPrototype[prop] = (function () {
           function _super() {
-            return base.prototype[ prop ].apply( this, arguments );
+            return base.prototype[prop].apply(this, arguments);
           }
 
-          function _superApply( args ) {
-            return base.prototype[ prop ].apply( this, args );
+          function _superApply(args) {
+            return base.prototype[prop].apply(this, args);
           }
 
-          return function() {
+          return function () {
             let __super = this._super;
             let __superApply = this._superApply;
             let returnValue;
@@ -146,77 +147,77 @@ export function WmksLib($) {
             this._super = _super;
             this._superApply = _superApply;
 
-            returnValue = value.apply( this, arguments );
+            returnValue = value.apply(this, arguments);
 
             this._super = __super;
             this._superApply = __superApply;
 
             return returnValue;
           };
-        } )();
-      } );
-      constructor.prototype = $.widget.extend( basePrototype, {
+        })();
+      });
+      constructor.prototype = $.widget.extend(basePrototype, {
 
         // TODO: remove support for widgetEventPrefix
         // always use the name + a colon as the prefix, e.g., draggable:start
         // don't prefix for widgets that aren't DOM-based
-        widgetEventPrefix: existingConstructor ? ( basePrototype.widgetEventPrefix || name ) : name
+        widgetEventPrefix: existingConstructor ? (basePrototype.widgetEventPrefix || name) : name
       }, proxiedPrototype, {
         constructor: constructor,
         namespace: namespace,
         widgetName: name,
         widgetFullName: fullName
-      } );
+      });
 
       // If this widget is being redefined then we need to find all widgets that
       // are inheriting from it and redefine all of them so that they inherit from
       // the new version of this widget. We're essentially trying to replace one
       // level in the prototype chain.
-      if ( existingConstructor ) {
-        $.each( existingConstructor._childConstructors, function( i, child ) {
+      if (existingConstructor) {
+        $.each(existingConstructor._childConstructors, function (i, child) {
           let childPrototype = child.prototype;
 
           // Redefine the child widget using the same prototype that was
           // originally used, but inherit from the new version of the base
-          $.widget( childPrototype.namespace + "." + childPrototype.widgetName, constructor,
-            child._proto );
-        } );
+          $.widget(childPrototype.namespace + "." + childPrototype.widgetName, constructor,
+            child._proto);
+        });
 
         // Remove the list of existing child constructors from the old constructor
         // so the old child constructors can be garbage collected
         delete existingConstructor._childConstructors;
       } else {
-        base._childConstructors.push( constructor );
+        base._childConstructors.push(constructor);
       }
 
-      $.widget.bridge( name, constructor );
+      $.widget.bridge(name, constructor);
 
       return constructor;
     };
 
-    $.widget.extend = function( target ) {
-      let input = widgetSlice.call( arguments, 1 );
+    $.widget.extend = function (target) {
+      let input = widgetSlice.call(arguments, 1);
       let inputIndex = 0;
       let inputLength = input.length;
       let key;
       let value;
 
-      for ( ; inputIndex < inputLength; inputIndex++ ) {
-        for ( key in input[ inputIndex ] ) {
-          value = input[ inputIndex ][ key ];
-          if ( input[ inputIndex ].hasOwnProperty( key ) && value !== undefined ) {
+      for (; inputIndex < inputLength; inputIndex++) {
+        for (key in input[inputIndex]) {
+          value = input[inputIndex][key];
+          if (input[inputIndex].hasOwnProperty(key) && value !== undefined) {
 
             // Clone objects
-            if ( $.isPlainObject( value ) ) {
-              target[ key ] = $.isPlainObject( target[ key ] ) ?
-                $.widget.extend( {}, target[ key ], value ) :
+            if ($.isPlainObject(value)) {
+              target[key] = $.isPlainObject(target[key]) ?
+                $.widget.extend({}, target[key], value) :
 
                 // Don't extend strings, arrays, etc. with objects
-                $.widget.extend( {}, value );
+                $.widget.extend({}, value);
 
               // Copy everything else by reference
             } else {
-              target[ key ] = value;
+              target[key] = value;
             }
           }
         }
@@ -224,75 +225,75 @@ export function WmksLib($) {
       return target;
     };
 
-    $.widget.bridge = function( name, object ) {
+    $.widget.bridge = function (name, object) {
       let fullName = object.prototype.widgetFullName || name;
-      $.fn[ name ] = function( options ) {
+      $.fn[name] = function (options) {
         let isMethodCall = typeof options === "string";
-        let args = widgetSlice.call( arguments, 1 );
+        let args = widgetSlice.call(arguments, 1);
         let returnValue = this;
 
-        if ( isMethodCall ) {
+        if (isMethodCall) {
 
           // If this is an empty collection, we need to have the instance method
           // return undefined instead of the jQuery instance
-          if ( !this.length && options === "instance" ) {
+          if (!this.length && options === "instance") {
             returnValue = undefined;
           } else {
-            this.each( function() {
+            this.each(function () {
               let methodValue;
-              let instance = $.data( this, fullName );
+              let instance = $.data(this, fullName);
 
-              if ( options === "instance" ) {
+              if (options === "instance") {
                 returnValue = instance;
                 return false;
               }
 
-              if ( !instance ) {
-                return $.error( "cannot call methods on " + name +
+              if (!instance) {
+                return $.error("cannot call methods on " + name +
                   " prior to initialization; " +
-                  "attempted to call method '" + options + "'" );
+                  "attempted to call method '" + options + "'");
               }
 
-              if ( !$.isFunction( instance[ options ] ) || options.charAt( 0 ) === "_" ) {
-                return $.error( "no such method '" + options + "' for " + name +
-                  " widget instance" );
+              if (!$.isFunction(instance[options]) || options.charAt(0) === "_") {
+                return $.error("no such method '" + options + "' for " + name +
+                  " widget instance");
               }
 
-              methodValue = instance[ options ].apply( instance, args );
+              methodValue = instance[options].apply(instance, args);
 
-              if ( methodValue !== instance && methodValue !== undefined ) {
+              if (methodValue !== instance && methodValue !== undefined) {
                 returnValue = methodValue && methodValue.jquery ?
-                  returnValue.pushStack( methodValue.get() ) :
+                  returnValue.pushStack(methodValue.get()) :
                   methodValue;
                 return false;
               }
-            } );
+            });
           }
         } else {
 
           // Allow multiple hashes to be passed on init
-          if ( args.length ) {
-            options = $.widget.extend.apply( null, [ options ].concat( args ) );
+          if (args.length) {
+            options = $.widget.extend.apply(null, [options].concat(args));
           }
 
-          this.each( function() {
-            let instance = $.data( this, fullName );
-            if ( instance ) {
-              instance.option( options || {} );
-              if ( instance._init ) {
+          this.each(function () {
+            let instance = $.data(this, fullName);
+            if (instance) {
+              instance.option(options || {});
+              if (instance._init) {
                 instance._init();
               }
             } else {
-              $.data( this, fullName, new object( options, this ) );
+              $.data(this, fullName, new object(options, this));
             }
-          } );
+          });
         }
 
         return returnValue;
       };
     };
 
-    $.Widget = function( /* options, element */ ) {};
+    $.Widget = function ( /* options, element */) { };
     $.Widget._childConstructors = [];
 
     $.Widget.prototype = {
@@ -308,9 +309,9 @@ export function WmksLib($) {
         create: null
       },
 
-      _createWidget: function( options, element ) {
-        element = $( element || this.defaultElement || this )[ 0 ];
-        this.element = $( element );
+      _createWidget: function (options, element) {
+        element = $(element || this.defaultElement || this)[0];
+        this.element = $(element);
         this.uuid = widgetUuid++;
         this.eventNamespace = "." + this.widgetName + this.uuid;
 
@@ -319,41 +320,41 @@ export function WmksLib($) {
         this.focusable = $();
         this.classesElementLookup = {};
 
-        if ( element !== this ) {
-          $.data( element, this.widgetFullName, this );
-          this._on( true, this.element, {
-            remove: function( event ) {
-              if ( event.target === element ) {
+        if (element !== this) {
+          $.data(element, this.widgetFullName, this);
+          this._on(true, this.element, {
+            remove: function (event) {
+              if (event.target === element) {
                 this.destroy();
               }
             }
-          } );
-          this.document = $( element.style ?
+          });
+          this.document = $(element.style ?
 
             // Element within the document
             element.ownerDocument :
 
             // Element is window or document
-            element.document || element );
-          this.window = $( this.document[ 0 ].defaultView || this.document[ 0 ].parentWindow );
+            element.document || element);
+          this.window = $(this.document[0].defaultView || this.document[0].parentWindow);
         }
 
-        this.options = $.widget.extend( {},
+        this.options = $.widget.extend({},
           this.options,
           this._getCreateOptions(),
-          options );
+          options);
 
         this._create();
 
-        if ( this.options.disabled ) {
-          this._setOptionDisabled( this.options.disabled );
+        if (this.options.disabled) {
+          this._setOptionDisabled(this.options.disabled);
         }
 
-        this._trigger( "create", null, this._getCreateEventData() );
+        this._trigger("create", null, this._getCreateEventData());
         this._init();
       },
 
-      _getCreateOptions: function() {
+      _getCreateOptions: function () {
         return {};
       },
 
@@ -363,107 +364,107 @@ export function WmksLib($) {
 
       _init: $.noop,
 
-      destroy: function() {
+      destroy: function () {
         let that = this;
 
         this._destroy();
-        $.each( this.classesElementLookup, function( key, value ) {
-          that._removeClass( value, key );
-        } );
+        $.each(this.classesElementLookup, function (key, value) {
+          that._removeClass(value, key);
+        });
 
         // We can probably remove the unbind calls in 2.0
         // all event bindings should go through this._on()
         this.element
-          .off( this.eventNamespace )
-          .removeData( this.widgetFullName );
+          .off(this.eventNamespace)
+          .removeData(this.widgetFullName);
         this.widget()
-          .off( this.eventNamespace )
-          .removeAttr( "aria-disabled" );
+          .off(this.eventNamespace)
+          .removeAttr("aria-disabled");
 
         // Clean up events and states
-        this.bindings.off( this.eventNamespace );
+        this.bindings.off(this.eventNamespace);
       },
 
       _destroy: $.noop,
 
-      widget: function() {
+      widget: function () {
         return this.element;
       },
 
-      option: function( key, value ) {
+      option: function (key, value) {
         let options = key;
         let parts;
         let curOption;
         let i;
 
-        if ( arguments.length === 0 ) {
+        if (arguments.length === 0) {
 
           // Don't return a reference to the internal hash
-          return $.widget.extend( {}, this.options );
+          return $.widget.extend({}, this.options);
         }
 
-        if ( typeof key === "string" ) {
+        if (typeof key === "string") {
 
           // Handle nested keys, e.g., "foo.bar" => { foo: { bar: ___ } }
           options = {};
-          parts = key.split( "." );
+          parts = key.split(".");
           key = parts.shift();
-          if ( parts.length ) {
-            curOption = options[ key ] = $.widget.extend( {}, this.options[ key ] );
-            for ( i = 0; i < parts.length - 1; i++ ) {
-              curOption[ parts[ i ] ] = curOption[ parts[ i ] ] || {};
-              curOption = curOption[ parts[ i ] ];
+          if (parts.length) {
+            curOption = options[key] = $.widget.extend({}, this.options[key]);
+            for (i = 0; i < parts.length - 1; i++) {
+              curOption[parts[i]] = curOption[parts[i]] || {};
+              curOption = curOption[parts[i]];
             }
             key = parts.pop();
-            if ( arguments.length === 1 ) {
-              return curOption[ key ] === undefined ? null : curOption[ key ];
+            if (arguments.length === 1) {
+              return curOption[key] === undefined ? null : curOption[key];
             }
-            curOption[ key ] = value;
+            curOption[key] = value;
           } else {
-            if ( arguments.length === 1 ) {
-              return this.options[ key ] === undefined ? null : this.options[ key ];
+            if (arguments.length === 1) {
+              return this.options[key] === undefined ? null : this.options[key];
             }
-            options[ key ] = value;
+            options[key] = value;
           }
         }
 
-        this._setOptions( options );
+        this._setOptions(options);
 
         return this;
       },
 
-      _setOptions: function( options ) {
+      _setOptions: function (options) {
         let key;
 
-        for ( key in options ) {
-          this._setOption( key, options[ key ] );
+        for (key in options) {
+          this._setOption(key, options[key]);
         }
 
         return this;
       },
 
-      _setOption: function( key, value ) {
-        if ( key === "classes" ) {
-          this._setOptionClasses( value );
+      _setOption: function (key, value) {
+        if (key === "classes") {
+          this._setOptionClasses(value);
         }
 
-        this.options[ key ] = value;
+        this.options[key] = value;
 
-        if ( key === "disabled" ) {
-          this._setOptionDisabled( value );
+        if (key === "disabled") {
+          this._setOptionDisabled(value);
         }
 
         return this;
       },
 
-      _setOptionClasses: function( value ) {
+      _setOptionClasses: function (value) {
         let classKey, elements, currentElements;
 
-        for ( classKey in value ) {
-          currentElements = this.classesElementLookup[ classKey ];
-          if ( value[ classKey ] === this.options.classes[ classKey ] ||
+        for (classKey in value) {
+          currentElements = this.classesElementLookup[classKey];
+          if (value[classKey] === this.options.classes[classKey] ||
             !currentElements ||
-            !currentElements.length ) {
+            !currentElements.length) {
             continue;
           }
 
@@ -471,242 +472,242 @@ export function WmksLib($) {
           // on the next line is going to destroy the reference to the current elements being
           // tracked. We need to save a copy of this collection so that we can add the new classes
           // below.
-          elements = $( currentElements.get() );
-          this._removeClass( currentElements, classKey );
+          elements = $(currentElements.get());
+          this._removeClass(currentElements, classKey);
 
           // We don't use _addClass() here, because that uses this.options.classes
           // for generating the string of classes. We want to use the value passed in from
           // _setOption(), this is the new value of the classes option which was passed to
           // _setOption(). We pass this value directly to _classes().
-          elements.addClass( this._classes( {
+          elements.addClass(this._classes({
             element: elements,
             keys: classKey,
             classes: value,
             add: true
-          } ) );
+          }));
         }
       },
 
-      _setOptionDisabled: function( value ) {
-        this._toggleClass( this.widget(), this.widgetFullName + "-disabled", null, !!value );
+      _setOptionDisabled: function (value) {
+        this._toggleClass(this.widget(), this.widgetFullName + "-disabled", null, !!value);
 
         // If the widget is becoming disabled, then nothing is interactive
-        if ( value ) {
-          this._removeClass( this.hoverable, null, "ui-state-hover" );
-          this._removeClass( this.focusable, null, "ui-state-focus" );
+        if (value) {
+          this._removeClass(this.hoverable, null, "ui-state-hover");
+          this._removeClass(this.focusable, null, "ui-state-focus");
         }
       },
 
-      enable: function() {
-        return this._setOptions( { disabled: false } );
+      enable: function () {
+        return this._setOptions({ disabled: false });
       },
 
-      disable: function() {
-        return this._setOptions( { disabled: true } );
+      disable: function () {
+        return this._setOptions({ disabled: true });
       },
 
-      _classes: function( options ) {
+      _classes: function (options) {
         let full = [];
         let that = this;
 
-        options = $.extend( {
+        options = $.extend({
           element: this.element,
           classes: this.options.classes || {}
-        }, options );
+        }, options);
 
-        function processClassString( classes, checkOption? ) {
+        function processClassString(classes, checkOption?) {
           let current, i;
-          for ( i = 0; i < classes.length; i++ ) {
-            current = that.classesElementLookup[ classes[ i ] ] || $();
-            if ( options.add ) {
-              current = $( $.unique( current.get().concat( options.element.get() ) ) );
+          for (i = 0; i < classes.length; i++) {
+            current = that.classesElementLookup[classes[i]] || $();
+            if (options.add) {
+              current = $($.unique(current.get().concat(options.element.get())));
             } else {
-              current = $( current.not( options.element ).get() );
+              current = $(current.not(options.element).get());
             }
-            that.classesElementLookup[ classes[ i ] ] = current;
-            full.push( classes[ i ] );
-            if ( checkOption && options.classes[ classes[ i ] ] ) {
-              full.push( options.classes[ classes[ i ] ] );
+            that.classesElementLookup[classes[i]] = current;
+            full.push(classes[i]);
+            if (checkOption && options.classes[classes[i]]) {
+              full.push(options.classes[classes[i]]);
             }
           }
         }
 
-        this._on( options.element, {
+        this._on(options.element, {
           "remove": "_untrackClassesElement"
-        } );
+        });
 
-        if ( options.keys ) {
-          processClassString( options.keys.match( /\S+/g ) || [], true );
+        if (options.keys) {
+          processClassString(options.keys.match(/\S+/g) || [], true);
         }
-        if ( options.extra ) {
-          processClassString( options.extra.match( /\S+/g ) || [] );
+        if (options.extra) {
+          processClassString(options.extra.match(/\S+/g) || []);
         }
 
-        return full.join( " " );
+        return full.join(" ");
       },
 
-      _untrackClassesElement: function( event ) {
+      _untrackClassesElement: function (event) {
         let that = this;
-        $.each( that.classesElementLookup, function( key, value ) {
-          if ( $.inArray( event.target, value ) !== -1 ) {
-            that.classesElementLookup[ key ] = $( value.not( event.target ).get() );
+        $.each(that.classesElementLookup, function (key, value) {
+          if ($.inArray(event.target, value) !== -1) {
+            that.classesElementLookup[key] = $(value.not(event.target).get());
           }
-        } );
+        });
       },
 
-      _removeClass: function( element, keys, extra ) {
-        return this._toggleClass( element, keys, extra, false );
+      _removeClass: function (element, keys, extra) {
+        return this._toggleClass(element, keys, extra, false);
       },
 
-      _addClass: function( element, keys, extra ) {
-        return this._toggleClass( element, keys, extra, true );
+      _addClass: function (element, keys, extra) {
+        return this._toggleClass(element, keys, extra, true);
       },
 
-      _toggleClass: function( element, keys, extra, add ) {
-        add = ( typeof add === "boolean" ) ? add : extra;
-        let shift = ( typeof element === "string" || element === null ),
+      _toggleClass: function (element, keys, extra, add) {
+        add = (typeof add === "boolean") ? add : extra;
+        let shift = (typeof element === "string" || element === null),
           options = {
             extra: shift ? keys : extra,
             keys: shift ? element : keys,
             element: shift ? this.element : element,
             add: add
           };
-        options.element.toggleClass( this._classes( options ), add );
+        options.element.toggleClass(this._classes(options), add);
         return this;
       },
 
-      _on: function( suppressDisabledCheck, element, handlers ) {
+      _on: function (suppressDisabledCheck, element, handlers) {
         let delegateElement;
         let instance = this;
 
         // No suppressDisabledCheck flag, shuffle arguments
-        if ( typeof suppressDisabledCheck !== "boolean" ) {
+        if (typeof suppressDisabledCheck !== "boolean") {
           handlers = element;
           element = suppressDisabledCheck;
           suppressDisabledCheck = false;
         }
 
         // No element argument, shuffle and use this.element
-        if ( !handlers ) {
+        if (!handlers) {
           handlers = element;
           element = this.element;
           delegateElement = this.widget();
         } else {
-          element = delegateElement = $( element );
-          this.bindings = this.bindings.add( element );
+          element = delegateElement = $(element);
+          this.bindings = this.bindings.add(element);
         }
 
-        $.each( handlers, function( event, handler ) {
+        $.each(handlers, function (event, handler) {
           function handlerProxy() {
 
             // Allow widgets to customize the disabled handling
             // - disabled as an array instead of boolean
             // - disabled class as method for disabling individual parts
-            if ( !suppressDisabledCheck &&
-              ( instance.options.disabled === true ||
-                $( this ).hasClass( "ui-state-disabled" ) ) ) {
+            if (!suppressDisabledCheck &&
+              (instance.options.disabled === true ||
+                $(this).hasClass("ui-state-disabled"))) {
               return;
             }
-            return ( typeof handler === "string" ? instance[ handler ] : handler )
-              .apply( instance, arguments );
+            return (typeof handler === "string" ? instance[handler] : handler)
+              .apply(instance, arguments);
           }
 
           // Copy the guid so direct unbinding works
-          if ( typeof handler !== "string" ) {
+          if (typeof handler !== "string") {
             handlerProxy.guid = handler.guid =
               handler.guid || handlerProxy.guid || $.guid++;
           }
 
-          let match = event.match( /^([\w:-]*)\s*(.*)$/ );
-          let eventName = match[ 1 ] + instance.eventNamespace;
-          let selector = match[ 2 ];
+          let match = event.match(/^([\w:-]*)\s*(.*)$/);
+          let eventName = match[1] + instance.eventNamespace;
+          let selector = match[2];
 
-          if ( selector ) {
-            delegateElement.on( eventName, selector, handlerProxy );
+          if (selector) {
+            delegateElement.on(eventName, selector, handlerProxy);
           } else {
-            element.on( eventName, handlerProxy );
+            element.on(eventName, handlerProxy);
           }
-        } );
+        });
       },
 
-      _off: function( element, eventName ) {
-        eventName = ( eventName || "" ).split( " " ).join( this.eventNamespace + " " ) +
+      _off: function (element, eventName) {
+        eventName = (eventName || "").split(" ").join(this.eventNamespace + " ") +
           this.eventNamespace;
-        element.off( eventName ).off( eventName );
+        element.off(eventName).off(eventName);
 
         // Clear the stack to avoid memory leaks (#10056)
-        this.bindings = $( this.bindings.not( element ).get() );
-        this.focusable = $( this.focusable.not( element ).get() );
-        this.hoverable = $( this.hoverable.not( element ).get() );
+        this.bindings = $(this.bindings.not(element).get());
+        this.focusable = $(this.focusable.not(element).get());
+        this.hoverable = $(this.hoverable.not(element).get());
       },
 
-      _delay: function( handler, delay ) {
+      _delay: function (handler, delay) {
         function handlerProxy() {
-          return ( typeof handler === "string" ? instance[ handler ] : handler )
-            .apply( instance, arguments );
+          return (typeof handler === "string" ? instance[handler] : handler)
+            .apply(instance, arguments);
         }
         let instance = this;
-        return setTimeout( handlerProxy, delay || 0 );
+        return setTimeout(handlerProxy, delay || 0);
       },
 
-      _hoverable: function( element ) {
-        this.hoverable = this.hoverable.add( element );
-        this._on( element, {
-          mouseenter: function( event ) {
-            this._addClass( $( event.currentTarget ), null, "ui-state-hover" );
+      _hoverable: function (element) {
+        this.hoverable = this.hoverable.add(element);
+        this._on(element, {
+          mouseenter: function (event) {
+            this._addClass($(event.currentTarget), null, "ui-state-hover");
           },
-          mouseleave: function( event ) {
-            this._removeClass( $( event.currentTarget ), null, "ui-state-hover" );
+          mouseleave: function (event) {
+            this._removeClass($(event.currentTarget), null, "ui-state-hover");
           }
-        } );
+        });
       },
 
-      _focusable: function( element ) {
-        this.focusable = this.focusable.add( element );
-        this._on( element, {
-          focusin: function( event ) {
-            this._addClass( $( event.currentTarget ), null, "ui-state-focus" );
+      _focusable: function (element) {
+        this.focusable = this.focusable.add(element);
+        this._on(element, {
+          focusin: function (event) {
+            this._addClass($(event.currentTarget), null, "ui-state-focus");
           },
-          focusout: function( event ) {
-            this._removeClass( $( event.currentTarget ), null, "ui-state-focus" );
+          focusout: function (event) {
+            this._removeClass($(event.currentTarget), null, "ui-state-focus");
           }
-        } );
+        });
       },
 
-      _trigger: function( type, event, data ) {
+      _trigger: function (type, event, data) {
         let prop, orig;
-        let callback = this.options[ type ];
+        let callback = this.options[type];
 
         data = data || {};
-        event = $.Event( event );
-        event.type = ( type === this.widgetEventPrefix ?
+        event = $.Event(event);
+        event.type = (type === this.widgetEventPrefix ?
           type :
-          this.widgetEventPrefix + type ).toLowerCase();
+          this.widgetEventPrefix + type).toLowerCase();
 
         // The original event may come from any element
         // so we need to reset the target on the new event
-        event.target = this.element[ 0 ];
+        event.target = this.element[0];
 
         // Copy original event properties over to the new event
         orig = event.originalEvent;
-        if ( orig ) {
-          for ( prop in orig ) {
-            if ( !( prop in event ) ) {
-              event[ prop ] = orig[ prop ];
+        if (orig) {
+          for (prop in orig) {
+            if (!(prop in event)) {
+              event[prop] = orig[prop];
             }
           }
         }
 
-        this.element.trigger( event, data );
-        return !( $.isFunction( callback ) &&
-          callback.apply( this.element[ 0 ], [ event ].concat( data ) ) === false ||
-          event.isDefaultPrevented() );
+        this.element.trigger(event, data);
+        return !($.isFunction(callback) &&
+          callback.apply(this.element[0], [event].concat(data)) === false ||
+          event.isDefaultPrevented());
       }
     };
 
-    $.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
-      $.Widget.prototype[ "_" + method ] = function( element, options, callback ) {
-        if ( typeof options === "string" ) {
+    $.each({ show: "fadeIn", hide: "fadeOut" }, function (method, defaultEffect) {
+      $.Widget.prototype["_" + method] = function (element, options, callback) {
+        if (typeof options === "string") {
           options = { effect: options };
         }
 
@@ -718,32 +719,32 @@ export function WmksLib($) {
             options.effect || defaultEffect;
 
         options = options || {};
-        if ( typeof options === "number" ) {
+        if (typeof options === "number") {
           options = { duration: options };
         }
 
-        hasOptions = !$.isEmptyObject( options );
+        hasOptions = !$.isEmptyObject(options);
         options.complete = callback;
 
-        if ( options.delay ) {
-          element.delay( options.delay );
+        if (options.delay) {
+          element.delay(options.delay);
         }
 
-        if ( hasOptions && $.effects && $.effects.effect[ effectName ] ) {
-          element[ method ]( options );
-        } else if ( effectName !== method && element[ effectName ] ) {
-          element[ effectName ]( options.duration, options.easing, callback );
+        if (hasOptions && $.effects && $.effects.effect[effectName]) {
+          element[method](options);
+        } else if (effectName !== method && element[effectName]) {
+          element[effectName](options.duration, options.easing, callback);
         } else {
-          element.queue( function( next ) {
-            $( this )[ method ]();
-            if ( callback ) {
-              callback.call( element[ 0 ] );
+          element.queue(function (next) {
+            $(this)[method]();
+            if (callback) {
+              callback.call(element[0]);
             }
             next();
-          } );
+          });
         }
       };
-    } );
+    });
 
     let widget = $.widget;
 
@@ -759,7 +760,7 @@ export function WmksLib($) {
      */
 
 
-    ( function() {
+    (function () {
       let cachedScrollbarWidth,
         max = Math.max,
         abs = Math.abs,
@@ -770,34 +771,34 @@ export function WmksLib($) {
         rpercent = /%$/,
         _position = $.fn.position;
 
-      function getOffsets( offsets, width, height ) {
+      function getOffsets(offsets, width, height) {
         return [
-          parseFloat( offsets[ 0 ] ) * ( rpercent.test( offsets[ 0 ] ) ? width / 100 : 1 ),
-          parseFloat( offsets[ 1 ] ) * ( rpercent.test( offsets[ 1 ] ) ? height / 100 : 1 )
+          parseFloat(offsets[0]) * (rpercent.test(offsets[0]) ? width / 100 : 1),
+          parseFloat(offsets[1]) * (rpercent.test(offsets[1]) ? height / 100 : 1)
         ];
       }
 
-      function parseCss( element, property ) {
-        return parseInt( $.css( element, property ), 10 ) || 0;
+      function parseCss(element, property) {
+        return parseInt($.css(element, property), 10) || 0;
       }
 
-      function getDimensions( elem ) {
-        let raw = elem[ 0 ];
-        if ( raw.nodeType === 9 ) {
+      function getDimensions(elem) {
+        let raw = elem[0];
+        if (raw.nodeType === 9) {
           return {
             width: elem.width(),
             height: elem.height(),
             offset: { top: 0, left: 0 }
           };
         }
-        if ( $.isWindow( raw ) ) {
+        if ($.isWindow(raw)) {
           return {
             width: elem.width(),
             height: elem.height(),
             offset: { top: elem.scrollTop(), left: elem.scrollLeft() }
           };
         }
-        if ( raw.preventDefault ) {
+        if (raw.preventDefault) {
           return {
             width: 0,
             height: 0,
@@ -812,54 +813,54 @@ export function WmksLib($) {
       }
 
       $.position = {
-        scrollbarWidth: function() {
-          if ( cachedScrollbarWidth !== undefined ) {
+        scrollbarWidth: function () {
+          if (cachedScrollbarWidth !== undefined) {
             return cachedScrollbarWidth;
           }
           let w1, w2,
-            div = $( "<div " +
+            div = $("<div " +
               "style='display:block;position:absolute;width:50px;height:50px;overflow:hidden;'>" +
-              "<div style='height:100px;width:auto;'></div></div>" ),
-            innerDiv = div.children()[ 0 ];
+              "<div style='height:100px;width:auto;'></div></div>"),
+            innerDiv = div.children()[0];
 
-          $( "body" ).append( div );
+          $("body").append(div);
           w1 = innerDiv.offsetWidth;
-          div.css( "overflow", "scroll" );
+          div.css("overflow", "scroll");
 
           w2 = innerDiv.offsetWidth;
 
-          if ( w1 === w2 ) {
-            w2 = div[ 0 ].clientWidth;
+          if (w1 === w2) {
+            w2 = div[0].clientWidth;
           }
 
           div.remove();
 
-          return ( cachedScrollbarWidth = w1 - w2 );
+          return (cachedScrollbarWidth = w1 - w2);
         },
-        getScrollInfo: function( within ) {
+        getScrollInfo: function (within) {
           let overflowX = within.isWindow || within.isDocument ? "" :
-            within.element.css( "overflow-x" ),
+            within.element.css("overflow-x"),
             overflowY = within.isWindow || within.isDocument ? "" :
-              within.element.css( "overflow-y" ),
+              within.element.css("overflow-y"),
             hasOverflowX = overflowX === "scroll" ||
-              ( overflowX === "auto" && within.width < within.element[ 0 ].scrollWidth ),
+              (overflowX === "auto" && within.width < within.element[0].scrollWidth),
             hasOverflowY = overflowY === "scroll" ||
-              ( overflowY === "auto" && within.height < within.element[ 0 ].scrollHeight );
+              (overflowY === "auto" && within.height < within.element[0].scrollHeight);
           return {
             width: hasOverflowY ? $.position.scrollbarWidth() : 0,
             height: hasOverflowX ? $.position.scrollbarWidth() : 0
           };
         },
-        getWithinInfo: function( element ) {
-          let withinElement = $( element || window ),
-            isWindow = $.isWindow( withinElement[ 0 ] ),
-            isDocument = !!withinElement[ 0 ] && withinElement[ 0 ].nodeType === 9,
+        getWithinInfo: function (element) {
+          let withinElement = $(element || window),
+            isWindow = $.isWindow(withinElement[0]),
+            isDocument = !!withinElement[0] && withinElement[0].nodeType === 9,
             hasOffset = !isWindow && !isDocument;
           return {
             element: withinElement,
             isWindow: isWindow,
             isDocument: isDocument,
-            offset: hasOffset ? $( element ).offset() : { left: 0, top: 0 },
+            offset: hasOffset ? $(element).offset() : { left: 0, top: 0 },
             scrollLeft: withinElement.scrollLeft(),
             scrollTop: withinElement.scrollTop(),
             width: withinElement.outerWidth(),
@@ -868,23 +869,23 @@ export function WmksLib($) {
         }
       };
 
-      $.fn.position = function( options ) {
-        if ( !options || !options.of ) {
-          return _position.apply( this, arguments );
+      $.fn.position = function (options) {
+        if (!options || !options.of) {
+          return _position.apply(this, arguments);
         }
 
         // Make a copy, we don't want to modify arguments
-        options = $.extend( {}, options );
+        options = $.extend({}, options);
 
         let atOffset, targetWidth, targetHeight, targetOffset, basePosition, dimensions,
-          target = $( options.of ),
-          within = $.position.getWithinInfo( options.within ),
-          scrollInfo = $.position.getScrollInfo( within ),
-          collision = ( options.collision || "flip" ).split( " " ),
+          target = $(options.of),
+          within = $.position.getWithinInfo(options.within),
+          scrollInfo = $.position.getScrollInfo(within),
+          collision = (options.collision || "flip").split(" "),
           offsets: any = {};
 
-        dimensions = getDimensions( target );
-        if ( target[ 0 ].preventDefault ) {
+        dimensions = getDimensions(target);
+        if (target[0].preventDefault) {
 
           // Force left top to allow flipping
           options.at = "left top";
@@ -894,98 +895,98 @@ export function WmksLib($) {
         targetOffset = dimensions.offset;
 
         // Clone to reuse original targetOffset later
-        basePosition = $.extend( {}, targetOffset );
+        basePosition = $.extend({}, targetOffset);
 
         // Force my and at to have valid horizontal and vertical positions
         // if a value is missing or invalid, it will be converted to center
-        $.each( [ "my", "at" ], function() {
-          let pos = ( options[ this ] || "" ).split( " " ),
+        $.each(["my", "at"], function () {
+          let pos = (options[this] || "").split(" "),
             horizontalOffset,
             verticalOffset;
 
-          if ( pos.length === 1 ) {
-            pos = rhorizontal.test( pos[ 0 ] ) ?
-              pos.concat( [ "center" ] ) :
-              rvertical.test( pos[ 0 ] ) ?
-                [ "center" ].concat( pos ) :
-                [ "center", "center" ];
+          if (pos.length === 1) {
+            pos = rhorizontal.test(pos[0]) ?
+              pos.concat(["center"]) :
+              rvertical.test(pos[0]) ?
+                ["center"].concat(pos) :
+                ["center", "center"];
           }
-          pos[ 0 ] = rhorizontal.test( pos[ 0 ] ) ? pos[ 0 ] : "center";
-          pos[ 1 ] = rvertical.test( pos[ 1 ] ) ? pos[ 1 ] : "center";
+          pos[0] = rhorizontal.test(pos[0]) ? pos[0] : "center";
+          pos[1] = rvertical.test(pos[1]) ? pos[1] : "center";
 
           // Calculate offsets
-          horizontalOffset = roffset.exec( pos[ 0 ] );
-          verticalOffset = roffset.exec( pos[ 1 ] );
-          offsets[ this ] = [
-            horizontalOffset ? horizontalOffset[ 0 ] : 0,
-            verticalOffset ? verticalOffset[ 0 ] : 0
+          horizontalOffset = roffset.exec(pos[0]);
+          verticalOffset = roffset.exec(pos[1]);
+          offsets[this] = [
+            horizontalOffset ? horizontalOffset[0] : 0,
+            verticalOffset ? verticalOffset[0] : 0
           ];
 
           // Reduce to just the positions without the offsets
-          options[ this ] = [
-            rposition.exec( pos[ 0 ] )[ 0 ],
-            rposition.exec( pos[ 1 ] )[ 0 ]
+          options[this] = [
+            rposition.exec(pos[0])[0],
+            rposition.exec(pos[1])[0]
           ];
-        } );
+        });
 
         // Normalize collision option
-        if ( collision.length === 1 ) {
-          collision[ 1 ] = collision[ 0 ];
+        if (collision.length === 1) {
+          collision[1] = collision[0];
         }
 
-        if ( options.at[ 0 ] === "right" ) {
+        if (options.at[0] === "right") {
           basePosition.left += targetWidth;
-        } else if ( options.at[ 0 ] === "center" ) {
+        } else if (options.at[0] === "center") {
           basePosition.left += targetWidth / 2;
         }
 
-        if ( options.at[ 1 ] === "bottom" ) {
+        if (options.at[1] === "bottom") {
           basePosition.top += targetHeight;
-        } else if ( options.at[ 1 ] === "center" ) {
+        } else if (options.at[1] === "center") {
           basePosition.top += targetHeight / 2;
         }
 
-        atOffset = getOffsets( offsets.at, targetWidth, targetHeight );
-        basePosition.left += atOffset[ 0 ];
-        basePosition.top += atOffset[ 1 ];
+        atOffset = getOffsets(offsets.at, targetWidth, targetHeight);
+        basePosition.left += atOffset[0];
+        basePosition.top += atOffset[1];
 
-        return this.each( function() {
+        return this.each(function () {
           let collisionPosition, using,
-            elem = $( this ),
+            elem = $(this),
             elemWidth = elem.outerWidth(),
             elemHeight = elem.outerHeight(),
-            marginLeft = parseCss( this, "marginLeft" ),
-            marginTop = parseCss( this, "marginTop" ),
-            collisionWidth = elemWidth + marginLeft + parseCss( this, "marginRight" ) +
+            marginLeft = parseCss(this, "marginLeft"),
+            marginTop = parseCss(this, "marginTop"),
+            collisionWidth = elemWidth + marginLeft + parseCss(this, "marginRight") +
               scrollInfo.width,
-            collisionHeight = elemHeight + marginTop + parseCss( this, "marginBottom" ) +
+            collisionHeight = elemHeight + marginTop + parseCss(this, "marginBottom") +
               scrollInfo.height,
-            position = $.extend( {}, basePosition ),
-            myOffset = getOffsets( offsets.my, elem.outerWidth(), elem.outerHeight() );
+            position = $.extend({}, basePosition),
+            myOffset = getOffsets(offsets.my, elem.outerWidth(), elem.outerHeight());
 
-          if ( options.my[ 0 ] === "right" ) {
+          if (options.my[0] === "right") {
             position.left -= elemWidth;
-          } else if ( options.my[ 0 ] === "center" ) {
+          } else if (options.my[0] === "center") {
             position.left -= elemWidth / 2;
           }
 
-          if ( options.my[ 1 ] === "bottom" ) {
+          if (options.my[1] === "bottom") {
             position.top -= elemHeight;
-          } else if ( options.my[ 1 ] === "center" ) {
+          } else if (options.my[1] === "center") {
             position.top -= elemHeight / 2;
           }
 
-          position.left += myOffset[ 0 ];
-          position.top += myOffset[ 1 ];
+          position.left += myOffset[0];
+          position.top += myOffset[1];
 
           collisionPosition = {
             marginLeft: marginLeft,
             marginTop: marginTop
           };
 
-          $.each( [ "left", "top" ], function( i, dir ) {
-            if ( $.ui.position[ collision[ i ] ] ) {
-              $.ui.position[ collision[ i ] ][ dir ]( position, {
+          $.each(["left", "top"], function (i, dir) {
+            if ($.ui.position[collision[i]]) {
+              $.ui.position[collision[i]][dir](position, {
                 targetWidth: targetWidth,
                 targetHeight: targetHeight,
                 elemWidth: elemWidth,
@@ -993,19 +994,19 @@ export function WmksLib($) {
                 collisionPosition: collisionPosition,
                 collisionWidth: collisionWidth,
                 collisionHeight: collisionHeight,
-                offset: [ atOffset[ 0 ] + myOffset[ 0 ], atOffset [ 1 ] + myOffset[ 1 ] ],
+                offset: [atOffset[0] + myOffset[0], atOffset[1] + myOffset[1]],
                 my: options.my,
                 at: options.at,
                 within: within,
                 elem: elem
-              } );
+              });
             }
-          } );
+          });
 
-          if ( options.using ) {
+          if (options.using) {
 
             // Adds feedback as second argument to using callback, if present
-            using = function( props ) {
+            using = function (props) {
               let left = targetOffset.left - position.left,
                 right = left + targetWidth - elemWidth,
                 top = targetOffset.top - position.top,
@@ -1028,28 +1029,28 @@ export function WmksLib($) {
                   horizontal: right < 0 ? "left" : left > 0 ? "right" : "center",
                   vertical: bottom < 0 ? "top" : top > 0 ? "bottom" : "middle"
                 };
-              if ( targetWidth < elemWidth && abs( left + right ) < targetWidth ) {
+              if (targetWidth < elemWidth && abs(left + right) < targetWidth) {
                 feedback.horizontal = "center";
               }
-              if ( targetHeight < elemHeight && abs( top + bottom ) < targetHeight ) {
+              if (targetHeight < elemHeight && abs(top + bottom) < targetHeight) {
                 feedback.vertical = "middle";
               }
-              if ( max( abs( left ), abs( right ) ) > max( abs( top ), abs( bottom ) ) ) {
+              if (max(abs(left), abs(right)) > max(abs(top), abs(bottom))) {
                 feedback.important = "horizontal";
               } else {
                 feedback.important = "vertical";
               }
-              options.using.call( this, props, feedback );
+              options.using.call(this, props, feedback);
             };
           }
 
-          elem.offset( $.extend( position, { using: using } ) );
-        } );
+          elem.offset($.extend(position, { using: using }));
+        });
       };
 
       $.ui.position = {
         fit: {
-          left: function( position, data ) {
+          left: function (position, data) {
             let within = data.within,
               withinOffset = within.isWindow ? within.scrollLeft : within.offset.left,
               outerWidth = within.width,
@@ -1059,21 +1060,21 @@ export function WmksLib($) {
               newOverRight;
 
             // Element is wider than within
-            if ( data.collisionWidth > outerWidth ) {
+            if (data.collisionWidth > outerWidth) {
 
               // Element is initially over the left side of within
-              if ( overLeft > 0 && overRight <= 0 ) {
+              if (overLeft > 0 && overRight <= 0) {
                 newOverRight = position.left + overLeft + data.collisionWidth - outerWidth -
                   withinOffset;
                 position.left += overLeft - newOverRight;
 
                 // Element is initially over right side of within
-              } else if ( overRight > 0 && overLeft <= 0 ) {
+              } else if (overRight > 0 && overLeft <= 0) {
                 position.left = withinOffset;
 
                 // Element is initially over both left and right sides of within
               } else {
-                if ( overLeft > overRight ) {
+                if (overLeft > overRight) {
                   position.left = withinOffset + outerWidth - data.collisionWidth;
                 } else {
                   position.left = withinOffset;
@@ -1081,19 +1082,19 @@ export function WmksLib($) {
               }
 
               // Too far left -> align with left edge
-            } else if ( overLeft > 0 ) {
+            } else if (overLeft > 0) {
               position.left += overLeft;
 
               // Too far right -> align with right edge
-            } else if ( overRight > 0 ) {
+            } else if (overRight > 0) {
               position.left -= overRight;
 
               // Adjust based on position and margin
             } else {
-              position.left = max( position.left - collisionPosLeft, position.left );
+              position.left = max(position.left - collisionPosLeft, position.left);
             }
           },
-          top: function( position, data ) {
+          top: function (position, data) {
             let within = data.within,
               withinOffset = within.isWindow ? within.scrollTop : within.offset.top,
               outerHeight = data.within.height,
@@ -1103,21 +1104,21 @@ export function WmksLib($) {
               newOverBottom;
 
             // Element is taller than within
-            if ( data.collisionHeight > outerHeight ) {
+            if (data.collisionHeight > outerHeight) {
 
               // Element is initially over the top of within
-              if ( overTop > 0 && overBottom <= 0 ) {
+              if (overTop > 0 && overBottom <= 0) {
                 newOverBottom = position.top + overTop + data.collisionHeight - outerHeight -
                   withinOffset;
                 position.top += overTop - newOverBottom;
 
                 // Element is initially over bottom of within
-              } else if ( overBottom > 0 && overTop <= 0 ) {
+              } else if (overBottom > 0 && overTop <= 0) {
                 position.top = withinOffset;
 
                 // Element is initially over both top and bottom of within
               } else {
-                if ( overTop > overBottom ) {
+                if (overTop > overBottom) {
                   position.top = withinOffset + outerHeight - data.collisionHeight;
                 } else {
                   position.top = withinOffset;
@@ -1125,21 +1126,21 @@ export function WmksLib($) {
               }
 
               // Too far up -> align with top
-            } else if ( overTop > 0 ) {
+            } else if (overTop > 0) {
               position.top += overTop;
 
               // Too far down -> align with bottom edge
-            } else if ( overBottom > 0 ) {
+            } else if (overBottom > 0) {
               position.top -= overBottom;
 
               // Adjust based on position and margin
             } else {
-              position.top = max( position.top - collisionPosTop, position.top );
+              position.top = max(position.top - collisionPosTop, position.top);
             }
           }
         },
         flip: {
-          left: function( position, data ) {
+          left: function (position, data) {
             let within = data.within,
               withinOffset = within.offset.left + within.scrollLeft,
               outerWidth = within.width,
@@ -1147,35 +1148,35 @@ export function WmksLib($) {
               collisionPosLeft = position.left - data.collisionPosition.marginLeft,
               overLeft = collisionPosLeft - offsetLeft,
               overRight = collisionPosLeft + data.collisionWidth - outerWidth - offsetLeft,
-              myOffset = data.my[ 0 ] === "left" ?
+              myOffset = data.my[0] === "left" ?
                 -data.elemWidth :
-                data.my[ 0 ] === "right" ?
+                data.my[0] === "right" ?
                   data.elemWidth :
                   0,
-              atOffset = data.at[ 0 ] === "left" ?
+              atOffset = data.at[0] === "left" ?
                 data.targetWidth :
-                data.at[ 0 ] === "right" ?
+                data.at[0] === "right" ?
                   -data.targetWidth :
                   0,
-              offset = -2 * data.offset[ 0 ],
+              offset = -2 * data.offset[0],
               newOverRight,
               newOverLeft;
 
-            if ( overLeft < 0 ) {
+            if (overLeft < 0) {
               newOverRight = position.left + myOffset + atOffset + offset + data.collisionWidth -
                 outerWidth - withinOffset;
-              if ( newOverRight < 0 || newOverRight < abs( overLeft ) ) {
+              if (newOverRight < 0 || newOverRight < abs(overLeft)) {
                 position.left += myOffset + atOffset + offset;
               }
-            } else if ( overRight > 0 ) {
+            } else if (overRight > 0) {
               newOverLeft = position.left - data.collisionPosition.marginLeft + myOffset +
                 atOffset + offset - offsetLeft;
-              if ( newOverLeft > 0 || abs( newOverLeft ) < overRight ) {
+              if (newOverLeft > 0 || abs(newOverLeft) < overRight) {
                 position.left += myOffset + atOffset + offset;
               }
             }
           },
-          top: function( position, data ) {
+          top: function (position, data) {
             let within = data.within,
               withinOffset = within.offset.top + within.scrollTop,
               outerHeight = within.height,
@@ -1183,48 +1184,48 @@ export function WmksLib($) {
               collisionPosTop = position.top - data.collisionPosition.marginTop,
               overTop = collisionPosTop - offsetTop,
               overBottom = collisionPosTop + data.collisionHeight - outerHeight - offsetTop,
-              top = data.my[ 1 ] === "top",
+              top = data.my[1] === "top",
               myOffset = top ?
                 -data.elemHeight :
-                data.my[ 1 ] === "bottom" ?
+                data.my[1] === "bottom" ?
                   data.elemHeight :
                   0,
-              atOffset = data.at[ 1 ] === "top" ?
+              atOffset = data.at[1] === "top" ?
                 data.targetHeight :
-                data.at[ 1 ] === "bottom" ?
+                data.at[1] === "bottom" ?
                   -data.targetHeight :
                   0,
-              offset = -2 * data.offset[ 1 ],
+              offset = -2 * data.offset[1],
               newOverTop,
               newOverBottom;
-            if ( overTop < 0 ) {
+            if (overTop < 0) {
               newOverBottom = position.top + myOffset + atOffset + offset + data.collisionHeight -
                 outerHeight - withinOffset;
-              if ( newOverBottom < 0 || newOverBottom < abs( overTop ) ) {
+              if (newOverBottom < 0 || newOverBottom < abs(overTop)) {
                 position.top += myOffset + atOffset + offset;
               }
-            } else if ( overBottom > 0 ) {
+            } else if (overBottom > 0) {
               newOverTop = position.top - data.collisionPosition.marginTop + myOffset + atOffset +
                 offset - offsetTop;
-              if ( newOverTop > 0 || abs( newOverTop ) < overBottom ) {
+              if (newOverTop > 0 || abs(newOverTop) < overBottom) {
                 position.top += myOffset + atOffset + offset;
               }
             }
           }
         },
         flipfit: {
-          left: function() {
-            $.ui.position.flip.left.apply( this, arguments );
-            $.ui.position.fit.left.apply( this, arguments );
+          left: function () {
+            $.ui.position.flip.left.apply(this, arguments);
+            $.ui.position.fit.left.apply(this, arguments);
           },
-          top: function() {
-            $.ui.position.flip.top.apply( this, arguments );
-            $.ui.position.fit.top.apply( this, arguments );
+          top: function () {
+            $.ui.position.flip.top.apply(this, arguments);
+            $.ui.position.fit.top.apply(this, arguments);
           }
         }
       };
 
-    } )();
+    })();
 
     let position = $.ui.position;
 
@@ -1237,19 +1238,19 @@ export function WmksLib($) {
      * http://jquery.org/license
      */
 
-    let data = $.extend( $.expr[ ":" ], {
+    let data = $.extend($.expr[":"], {
       data: $.expr.createPseudo ?
-        $.expr.createPseudo( function( dataName ) {
-          return function( elem ) {
-            return !!$.data( elem, dataName );
+        $.expr.createPseudo(function (dataName) {
+          return function (elem) {
+            return !!$.data(elem, dataName);
           };
-        } ) :
+        }) :
 
         // Support: jQuery <1.8
-        function( elem, i, match ) {
-          return !!$.data( elem, match[ 3 ] );
+        function (elem, i, match) {
+          return !!$.data(elem, match[3]);
         }
-    } );
+    });
 
     /*!
      * jQuery UI Disable Selection 1.12.1
@@ -1260,23 +1261,23 @@ export function WmksLib($) {
      * http://jquery.org/license
      */
 
-    let disableSelection = $.fn.extend( {
-      disableSelection: ( function() {
-        let eventType = "onselectstart" in document.createElement( "div" ) ?
+    let disableSelection = $.fn.extend({
+      disableSelection: (function () {
+        let eventType = "onselectstart" in document.createElement("div") ?
           "selectstart" :
           "mousedown";
 
-        return function() {
-          return this.on( eventType + ".ui-disableSelection", function( event ) {
+        return function () {
+          return this.on(eventType + ".ui-disableSelection", function (event) {
             event.preventDefault();
-          } );
+          });
         };
-      } )(),
+      })(),
 
-      enableSelection: function() {
-        return this.off( ".ui-disableSelection" );
+      enableSelection: function () {
+        return this.off(".ui-disableSelection");
       }
-    } );
+    });
 
 
     /*!
@@ -1288,62 +1289,62 @@ export function WmksLib($) {
      * http://jquery.org/license
      */
 
-    $.ui.focusable = function( element, hasTabindex ) {
+    $.ui.focusable = function (element, hasTabindex) {
       let map, mapName, img, focusableIfVisible, fieldset,
         nodeName = element.nodeName.toLowerCase();
 
-      if ( "area" === nodeName ) {
+      if ("area" === nodeName) {
         map = element.parentNode;
         mapName = map.name;
-        if ( !element.href || !mapName || map.nodeName.toLowerCase() !== "map" ) {
+        if (!element.href || !mapName || map.nodeName.toLowerCase() !== "map") {
           return false;
         }
-        img = $( "img[usemap='#" + mapName + "']" );
-        return img.length > 0 && img.is( ":visible" );
+        img = $("img[usemap='#" + mapName + "']");
+        return img.length > 0 && img.is(":visible");
       }
 
-      if ( /^(input|select|textarea|button|object)$/.test( nodeName ) ) {
+      if (/^(input|select|textarea|button|object)$/.test(nodeName)) {
         focusableIfVisible = !element.disabled;
 
-        if ( focusableIfVisible ) {
+        if (focusableIfVisible) {
 
           // Form controls within a disabled fieldset are disabled.
           // However, controls within the fieldset's legend do not get disabled.
           // Since controls generally aren't placed inside legends, we skip
           // this portion of the check.
-          fieldset = $( element ).closest( "fieldset" )[ 0 ];
-          if ( fieldset ) {
+          fieldset = $(element).closest("fieldset")[0];
+          if (fieldset) {
             focusableIfVisible = !fieldset.disabled;
           }
         }
-      } else if ( "a" === nodeName ) {
+      } else if ("a" === nodeName) {
         focusableIfVisible = element.href || hasTabindex;
       } else {
         focusableIfVisible = hasTabindex;
       }
 
-      return focusableIfVisible && $( element ).is( ":visible" ) && visible( $( element ) );
+      return focusableIfVisible && $(element).is(":visible") && visible($(element));
     };
 
-    function visible( element ) {
-      let visibility = element.css( "visibility" );
-      while ( visibility === "inherit" ) {
+    function visible(element) {
+      let visibility = element.css("visibility");
+      while (visibility === "inherit") {
         element = element.parent();
-        visibility = element.css( "visibility" );
+        visibility = element.css("visibility");
       }
       return visibility !== "hidden";
     }
 
-    $.extend( $.expr[ ":" ], {
-      focusable: function( element ) {
-        return $.ui.focusable( element, $.attr( element, "tabindex" ) != null );
+    $.extend($.expr[":"], {
+      focusable: function (element) {
+        return $.ui.focusable(element, $.attr(element, "tabindex") != null);
       }
-    } );
+    });
 
     let focusable = $.ui.focusable;
 
-    let form = $.fn.form = function() {
-      return typeof this[ 0 ].form === "string" ? this.closest( "form" ) : $( this[ 0 ].form );
+    let form = $.fn.form = function () {
+      return typeof this[0].form === "string" ? this.closest("form") : $(this[0].form);
     };
 
 
@@ -1357,47 +1358,47 @@ export function WmksLib($) {
      */
 
     let formResetMixin = $.ui.formResetMixin = {
-      _formResetHandler: function() {
-        let form = $( this );
+      _formResetHandler: function () {
+        let form = $(this);
 
         // Wait for the form reset to actually happen before refreshing
-        setTimeout( function() {
-          let instances = form.data( "ui-form-reset-instances" );
-          $.each( instances, function() {
+        setTimeout(function () {
+          let instances = form.data("ui-form-reset-instances");
+          $.each(instances, function () {
             this.refresh();
-          } );
-        } );
+          });
+        });
       },
 
-      _bindFormResetHandler: function() {
+      _bindFormResetHandler: function () {
         this.form = this.element.form();
-        if ( !this.form.length ) {
+        if (!this.form.length) {
           return;
         }
 
-        let instances = this.form.data( "ui-form-reset-instances" ) || [];
-        if ( !instances.length ) {
+        let instances = this.form.data("ui-form-reset-instances") || [];
+        if (!instances.length) {
 
           // We don't use _on() here because we use a single event handler per form
-          this.form.on( "reset.ui-form-reset", this._formResetHandler );
+          this.form.on("reset.ui-form-reset", this._formResetHandler);
         }
-        instances.push( this );
-        this.form.data( "ui-form-reset-instances", instances );
+        instances.push(this);
+        this.form.data("ui-form-reset-instances", instances);
       },
 
-      _unbindFormResetHandler: function() {
-        if ( !this.form.length ) {
+      _unbindFormResetHandler: function () {
+        if (!this.form.length) {
           return;
         }
 
-        let instances = this.form.data( "ui-form-reset-instances" );
-        instances.splice( $.inArray( this, instances ), 1 );
-        if ( instances.length ) {
-          this.form.data( "ui-form-reset-instances", instances );
+        let instances = this.form.data("ui-form-reset-instances");
+        instances.splice($.inArray(this, instances), 1);
+        if (instances.length) {
+          this.form.data("ui-form-reset-instances", instances);
         } else {
           this.form
-            .removeData( "ui-form-reset-instances" )
-            .off( "reset.ui-form-reset" );
+            .removeData("ui-form-reset-instances")
+            .off("reset.ui-form-reset");
         }
       }
     };
@@ -1430,12 +1431,12 @@ export function WmksLib($) {
       UP: 38
     };
 
-    let escapeSelector = $.ui.escapeSelector = ( function() {
+    let escapeSelector = $.ui.escapeSelector = (function () {
       let selectorEscape = /([!"#$%&'()*+,./:;<=>?@[\]^`{|}~])/g;
-      return function( selector ) {
-        return selector.replace( selectorEscape, "\\$1" );
+      return function (selector) {
+        return selector.replace(selectorEscape, "\\$1");
       };
-    } )();
+    })();
 
 
     /*!
@@ -1447,39 +1448,39 @@ export function WmksLib($) {
      * http://jquery.org/license
      */
 
-    let labels = $.fn.labels = function() {
+    let labels = $.fn.labels = function () {
       let ancestor, selector, id, labels, ancestors;
 
       // Check control.labels first
-      if ( this[ 0 ].labels && this[ 0 ].labels.length ) {
-        return this.pushStack( this[ 0 ].labels );
+      if (this[0].labels && this[0].labels.length) {
+        return this.pushStack(this[0].labels);
       }
 
       // Support: IE <= 11, FF <= 37, Android <= 2.3 only
       // Above browsers do not support control.labels. Everything below is to support them
       // as well as document fragments. control.labels does not work on document fragments
-      labels = this.eq( 0 ).parents( "label" );
+      labels = this.eq(0).parents("label");
 
       // Look for the label based on the id
-      id = this.attr( "id" );
-      if ( id ) {
+      id = this.attr("id");
+      if (id) {
 
         // We don't search against the document in case the element
         // is disconnected from the DOM
-        ancestor = this.eq( 0 ).parents().last();
+        ancestor = this.eq(0).parents().last();
 
         // Get a full set of top level ancestors
-        ancestors = ancestor.add( ancestor.length ? ancestor.siblings() : this.siblings() );
+        ancestors = ancestor.add(ancestor.length ? ancestor.siblings() : this.siblings());
 
         // Create a selector for the label based on the id
-        selector = "label[for='" + $.ui.escapeSelector( id ) + "']";
+        selector = "label[for='" + $.ui.escapeSelector(id) + "']";
 
-        labels = labels.add( ancestors.find( selector ).addBack( selector ) );
+        labels = labels.add(ancestors.find(selector).addBack(selector));
 
       }
 
       // Return whatever we have found for labels
-      return this.pushStack( labels );
+      return this.pushStack(labels);
     };
 
     /*!
@@ -1491,21 +1492,21 @@ export function WmksLib($) {
      * http://jquery.org/license
      */
 
-    let scrollParent = $.fn.scrollParent = function( includeHidden ) {
-      let position = this.css( "position" ),
+    let scrollParent = $.fn.scrollParent = function (includeHidden) {
+      let position = this.css("position"),
         excludeStaticParent = position === "absolute",
         overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/,
-        scrollParent = this.parents().filter( function() {
-          let parent = $( this );
-          if ( excludeStaticParent && parent.css( "position" ) === "static" ) {
+        scrollParent = this.parents().filter(function () {
+          let parent = $(this);
+          if (excludeStaticParent && parent.css("position") === "static") {
             return false;
           }
-          return overflowRegex.test( parent.css( "overflow" ) + parent.css( "overflow-y" ) +
-            parent.css( "overflow-x" ) );
-        } ).eq( 0 );
+          return overflowRegex.test(parent.css("overflow") + parent.css("overflow-y") +
+            parent.css("overflow-x"));
+        }).eq(0);
 
       return position === "fixed" || !scrollParent.length ?
-        $( this[ 0 ].ownerDocument || document ) :
+        $(this[0].ownerDocument || document) :
         scrollParent;
     };
 
@@ -1518,13 +1519,13 @@ export function WmksLib($) {
      * http://jquery.org/license
      */
 
-    let tabbable = $.extend( $.expr[ ":" ], {
-      tabbable: function( element ) {
-        let tabIndex = $.attr( element, "tabindex" ),
+    let tabbable = $.extend($.expr[":"], {
+      tabbable: function (element) {
+        let tabIndex = $.attr(element, "tabindex"),
           hasTabindex = tabIndex != null;
-        return ( !hasTabindex || tabIndex >= 0 ) && $.ui.focusable( element, hasTabindex );
+        return (!hasTabindex || tabIndex >= 0) && $.ui.focusable(element, hasTabindex);
       }
-    } );
+    });
 
     /*!
      * jQuery UI Unique ID 1.12.1
@@ -1535,29 +1536,29 @@ export function WmksLib($) {
      * http://jquery.org/license
      */
 
-    let uniqueId = $.fn.extend( {
-      uniqueId: ( function() {
+    let uniqueId = $.fn.extend({
+      uniqueId: (function () {
         let uuid = 0;
 
-        return function() {
-          return this.each( function() {
-            if ( !this.id ) {
-              this.id = "ui-id-" + ( ++uuid );
+        return function () {
+          return this.each(function () {
+            if (!this.id) {
+              this.id = "ui-id-" + (++uuid);
             }
-          } );
+          });
         };
-      } )(),
+      })(),
 
-      removeUniqueId: function() {
-        return this.each( function() {
-          if ( /^ui-id-\d+$/.test( this.id ) ) {
-            $( this ).removeAttr( "id" );
+      removeUniqueId: function () {
+        return this.each(function () {
+          if (/^ui-id-\d+$/.test(this.id)) {
+            $(this).removeAttr("id");
           }
-        } );
+        });
       }
-    } );
+    });
 
-    let ie = $.ui.ie = !!/msie [\w.]+/.exec( navigator.userAgent.toLowerCase() );
+    let ie = $.ui.ie = !!/msie [\w.]+/.exec(navigator.userAgent.toLowerCase());
 
     /*!
      * jQuery UI Mouse 1.12.1
@@ -1569,102 +1570,102 @@ export function WmksLib($) {
      */
 
     let mouseHandled = false;
-    $( document ).on( "mouseup", function() {
+    $(document).on("mouseup", function () {
       mouseHandled = false;
-    } );
+    });
 
-    let widgetsMouse = $.widget( "ui.mouse", {
+    let widgetsMouse = $.widget("ui.mouse", {
       version: "1.12.1",
       options: {
         cancel: "input, textarea, button, select, option",
         distance: 1,
         delay: 0
       },
-      _mouseInit: function() {
+      _mouseInit: function () {
         let that = this;
 
         this.element
-          .on( "mousedown." + this.widgetName, function( event ) {
-            return that._mouseDown( event );
-          } )
-          .on( "click." + this.widgetName, function( event ) {
-            if ( true === $.data( event.target, that.widgetName + ".preventClickEvent" ) ) {
-              $.removeData( event.target, that.widgetName + ".preventClickEvent" );
+          .on("mousedown." + this.widgetName, function (event) {
+            return that._mouseDown(event);
+          })
+          .on("click." + this.widgetName, function (event) {
+            if (true === $.data(event.target, that.widgetName + ".preventClickEvent")) {
+              $.removeData(event.target, that.widgetName + ".preventClickEvent");
               event.stopImmediatePropagation();
               return false;
             }
-          } );
+          });
 
         this.started = false;
       },
 
       // TODO: make sure destroying one instance of mouse doesn't mess with
       // other instances of mouse
-      _mouseDestroy: function() {
-        this.element.off( "." + this.widgetName );
-        if ( this._mouseMoveDelegate ) {
+      _mouseDestroy: function () {
+        this.element.off("." + this.widgetName);
+        if (this._mouseMoveDelegate) {
           this.document
-            .off( "mousemove." + this.widgetName, this._mouseMoveDelegate )
-            .off( "mouseup." + this.widgetName, this._mouseUpDelegate );
+            .off("mousemove." + this.widgetName, this._mouseMoveDelegate)
+            .off("mouseup." + this.widgetName, this._mouseUpDelegate);
         }
       },
 
-      _mouseDown: function( event ) {
+      _mouseDown: function (event) {
 
         // don't let more than one widget handle mouseStart
-        if ( mouseHandled ) {
+        if (mouseHandled) {
           return;
         }
 
         this._mouseMoved = false;
 
         // We may have missed mouseup (out of window)
-        ( this._mouseStarted && this._mouseUp( event ) );
+        (this._mouseStarted && this._mouseUp(event));
 
         this._mouseDownEvent = event;
 
         let that = this,
-          btnIsLeft = ( event.which === 1 ),
+          btnIsLeft = (event.which === 1),
 
           // event.target.nodeName works around a bug in IE 8 with
           // disabled inputs (#7620)
-          elIsCancel = ( typeof this.options.cancel === "string" && event.target.nodeName ?
-            $( event.target ).closest( this.options.cancel ).length : false );
-        if ( !btnIsLeft || elIsCancel || !this._mouseCapture( event ) ) {
+          elIsCancel = (typeof this.options.cancel === "string" && event.target.nodeName ?
+            $(event.target).closest(this.options.cancel).length : false);
+        if (!btnIsLeft || elIsCancel || !this._mouseCapture(event)) {
           return true;
         }
 
         this.mouseDelayMet = !this.options.delay;
-        if ( !this.mouseDelayMet ) {
-          this._mouseDelayTimer = setTimeout( function() {
+        if (!this.mouseDelayMet) {
+          this._mouseDelayTimer = setTimeout(function () {
             that.mouseDelayMet = true;
-          }, this.options.delay );
+          }, this.options.delay);
         }
 
-        if ( this._mouseDistanceMet( event ) && this._mouseDelayMet( event ) ) {
-          this._mouseStarted = ( this._mouseStart( event ) !== false );
-          if ( !this._mouseStarted ) {
+        if (this._mouseDistanceMet(event) && this._mouseDelayMet(event)) {
+          this._mouseStarted = (this._mouseStart(event) !== false);
+          if (!this._mouseStarted) {
             event.preventDefault();
             return true;
           }
         }
 
         // Click event may never have fired (Gecko & Opera)
-        if ( true === $.data( event.target, this.widgetName + ".preventClickEvent" ) ) {
-          $.removeData( event.target, this.widgetName + ".preventClickEvent" );
+        if (true === $.data(event.target, this.widgetName + ".preventClickEvent")) {
+          $.removeData(event.target, this.widgetName + ".preventClickEvent");
         }
 
         // These delegates are required to keep context
-        this._mouseMoveDelegate = function( event ) {
-          return that._mouseMove( event );
+        this._mouseMoveDelegate = function (event) {
+          return that._mouseMove(event);
         };
-        this._mouseUpDelegate = function( event ) {
-          return that._mouseUp( event );
+        this._mouseUpDelegate = function (event) {
+          return that._mouseUp(event);
         };
 
         this.document
-          .on( "mousemove." + this.widgetName, this._mouseMoveDelegate )
-          .on( "mouseup." + this.widgetName, this._mouseUpDelegate );
+          .on("mousemove." + this.widgetName, this._mouseMoveDelegate)
+          .on("mouseup." + this.widgetName, this._mouseUpDelegate);
 
         event.preventDefault();
 
@@ -1672,70 +1673,70 @@ export function WmksLib($) {
         return true;
       },
 
-      _mouseMove: function( event ) {
+      _mouseMove: function (event) {
 
         // Only check for mouseups outside the document if you've moved inside the document
         // at least once. This prevents the firing of mouseup in the case of IE<9, which will
         // fire a mousemove event if content is placed under the cursor. See #7778
         // Support: IE <9
-        if ( this._mouseMoved ) {
+        if (this._mouseMoved) {
 
           // IE mouseup check - mouseup happened when mouse was out of window
           // @ts-ignore
-          if ( $.ui.ie && ( !document.documentMode || document.documentMode < 9 ) &&
-            !event.button ) {
-            return this._mouseUp( event );
+          if ($.ui.ie && (!document.documentMode || document.documentMode < 9) &&
+            !event.button) {
+            return this._mouseUp(event);
 
             // Iframe mouseup check - mouseup occurred in another document
-          } else if ( !event.which ) {
+          } else if (!event.which) {
 
             // Support: Safari <=8 - 9
             // Safari sets which to 0 if you press any of the following keys
             // during a drag (#14461)
-            if ( event.originalEvent.altKey || event.originalEvent.ctrlKey ||
-              event.originalEvent.metaKey || event.originalEvent.shiftKey ) {
+            if (event.originalEvent.altKey || event.originalEvent.ctrlKey ||
+              event.originalEvent.metaKey || event.originalEvent.shiftKey) {
               this.ignoreMissingWhich = true;
-            } else if ( !this.ignoreMissingWhich ) {
-              return this._mouseUp( event );
+            } else if (!this.ignoreMissingWhich) {
+              return this._mouseUp(event);
             }
           }
         }
 
-        if ( event.which || event.button ) {
+        if (event.which || event.button) {
           this._mouseMoved = true;
         }
 
-        if ( this._mouseStarted ) {
-          this._mouseDrag( event );
+        if (this._mouseStarted) {
+          this._mouseDrag(event);
           return event.preventDefault();
         }
 
-        if ( this._mouseDistanceMet( event ) && this._mouseDelayMet( event ) ) {
+        if (this._mouseDistanceMet(event) && this._mouseDelayMet(event)) {
           this._mouseStarted =
-            ( this._mouseStart( this._mouseDownEvent, event ) !== false );
-          ( this._mouseStarted ? this._mouseDrag( event ) : this._mouseUp( event ) );
+            (this._mouseStart(this._mouseDownEvent, event) !== false);
+          (this._mouseStarted ? this._mouseDrag(event) : this._mouseUp(event));
         }
 
         return !this._mouseStarted;
       },
 
-      _mouseUp: function( event ) {
+      _mouseUp: function (event) {
         this.document
-          .off( "mousemove." + this.widgetName, this._mouseMoveDelegate )
-          .off( "mouseup." + this.widgetName, this._mouseUpDelegate );
+          .off("mousemove." + this.widgetName, this._mouseMoveDelegate)
+          .off("mouseup." + this.widgetName, this._mouseUpDelegate);
 
-        if ( this._mouseStarted ) {
+        if (this._mouseStarted) {
           this._mouseStarted = false;
 
-          if ( event.target === this._mouseDownEvent.target ) {
-            $.data( event.target, this.widgetName + ".preventClickEvent", true );
+          if (event.target === this._mouseDownEvent.target) {
+            $.data(event.target, this.widgetName + ".preventClickEvent", true);
           }
 
-          this._mouseStop( event );
+          this._mouseStop(event);
         }
 
-        if ( this._mouseDelayTimer ) {
-          clearTimeout( this._mouseDelayTimer );
+        if (this._mouseDelayTimer) {
+          clearTimeout(this._mouseDelayTimer);
           delete this._mouseDelayTimer;
         }
 
@@ -1744,89 +1745,89 @@ export function WmksLib($) {
         event.preventDefault();
       },
 
-      _mouseDistanceMet: function( event ) {
-        return ( Math.max(
-            Math.abs( this._mouseDownEvent.pageX - event.pageX ),
-            Math.abs( this._mouseDownEvent.pageY - event.pageY )
-          ) >= this.options.distance
+      _mouseDistanceMet: function (event) {
+        return (Math.max(
+          Math.abs(this._mouseDownEvent.pageX - event.pageX),
+          Math.abs(this._mouseDownEvent.pageY - event.pageY)
+        ) >= this.options.distance
         );
       },
 
-      _mouseDelayMet: function( /* event */ ) {
+      _mouseDelayMet: function ( /* event */) {
         return this.mouseDelayMet;
       },
 
       // These are placeholder methods, to be overriden by extending plugin
-      _mouseStart: function( /* event */ ) {},
-      _mouseDrag: function( /* event */ ) {},
-      _mouseStop: function( /* event */ ) {},
-      _mouseCapture: function( /* event */ ) { return true; }
-    } );
+      _mouseStart: function ( /* event */) { },
+      _mouseDrag: function ( /* event */) { },
+      _mouseStop: function ( /* event */) { },
+      _mouseCapture: function ( /* event */) { return true; }
+    });
 
     let plugin = $.ui.plugin = {
-      add: function( module, option, set ) {
+      add: function (module, option, set) {
         let i,
-          proto = $.ui[ module ].prototype;
-        for ( i in set ) {
-          proto.plugins[ i ] = proto.plugins[ i ] || [];
-          proto.plugins[ i ].push( [ option, set[ i ] ] );
+          proto = $.ui[module].prototype;
+        for (i in set) {
+          proto.plugins[i] = proto.plugins[i] || [];
+          proto.plugins[i].push([option, set[i]]);
         }
       },
-      call: function( instance, name, args, allowDisconnected ) {
+      call: function (instance, name, args, allowDisconnected) {
         let i,
-          set = instance.plugins[ name ];
+          set = instance.plugins[name];
 
-        if ( !set ) {
+        if (!set) {
           return;
         }
 
-        if ( !allowDisconnected && ( !instance.element[ 0 ].parentNode ||
-          instance.element[ 0 ].parentNode.nodeType === 11 ) ) {
+        if (!allowDisconnected && (!instance.element[0].parentNode ||
+          instance.element[0].parentNode.nodeType === 11)) {
           return;
         }
 
-        for ( i = 0; i < set.length; i++ ) {
-          if ( instance.options[ set[ i ][ 0 ] ] ) {
-            set[ i ][ 1 ].apply( instance.element, args );
+        for (i = 0; i < set.length; i++) {
+          if (instance.options[set[i][0]]) {
+            set[i][1].apply(instance.element, args);
           }
         }
       }
     };
 
-    let safeActiveElement = $.ui.safeActiveElement = function( document ) {
+    let safeActiveElement = $.ui.safeActiveElement = function (document) {
       let activeElement;
 
       // Support: IE 9 only
       // IE9 throws an "Unspecified error" accessing document.activeElement from an <iframe>
       try {
         activeElement = document.activeElement;
-      } catch ( error ) {
+      } catch (error) {
         activeElement = document.body;
       }
 
       // Support: IE 9 - 11 only
       // IE may return null instead of an element
       // Interestingly, this only seems to occur when NOT in an iframe
-      if ( !activeElement ) {
+      if (!activeElement) {
         activeElement = document.body;
       }
 
       // Support: IE 11 only
       // IE11 returns a seemingly empty object in some cases when accessing
       // document.activeElement from an <iframe>
-      if ( !activeElement.nodeName ) {
+      if (!activeElement.nodeName) {
         activeElement = document.body;
       }
 
       return activeElement;
     };
 
-    let safeBlur = $.ui.safeBlur = function( element ) {
+    let safeBlur = $.ui.safeBlur = function (element) {
 
       // Support: IE9 - 10 only
       // If the <body> is blurred, IE will switch windows, see #9420
-      if ( element && element.nodeName.toLowerCase() !== "body" ) {
-        $( element ).trigger( "blur" );
+      if (element && element.nodeName.toLowerCase() !== "body") {
+        $(element).trigger("blur");
       }
     };
 
@@ -1839,7 +1840,7 @@ export function WmksLib($) {
      * http://jquery.org/license
      */
 
-    $.widget( "ui.draggable", $.ui.mouse, {
+    $.widget("ui.draggable", $.ui.mouse, {
       version: "1.12.1",
       widgetEventPrefix: "drag",
       options: {
@@ -1873,29 +1874,29 @@ export function WmksLib($) {
         start: null,
         stop: null
       },
-      _create: function() {
+      _create: function () {
 
-        if ( this.options.helper === "original" ) {
+        if (this.options.helper === "original") {
           this._setPositionRelative();
         }
-        if ( this.options.addClasses ) {
-          this._addClass( "ui-draggable" );
+        if (this.options.addClasses) {
+          this._addClass("ui-draggable");
         }
         this._setHandleClassName();
 
         this._mouseInit();
       },
 
-      _setOption: function( key, value ) {
-        this._super( key, value );
-        if ( key === "handle" ) {
+      _setOption: function (key, value) {
+        this._super(key, value);
+        if (key === "handle") {
           this._removeHandleClassName();
           this._setHandleClassName();
         }
       },
 
-      _destroy: function() {
-        if ( ( this.helper || this.element ).is( ".ui-draggable-dragging" ) ) {
+      _destroy: function () {
+        if ((this.helper || this.element).is(".ui-draggable-dragging")) {
           this.destroyOnClear = true;
           return;
         }
@@ -1903,78 +1904,78 @@ export function WmksLib($) {
         this._mouseDestroy();
       },
 
-      _mouseCapture: function( event ) {
+      _mouseCapture: function (event) {
         let o = this.options;
 
         // Among others, prevent a drag on a resizable-handle
-        if ( this.helper || o.disabled ||
-          $( event.target ).closest( ".ui-resizable-handle" ).length > 0 ) {
+        if (this.helper || o.disabled ||
+          $(event.target).closest(".ui-resizable-handle").length > 0) {
           return false;
         }
 
         //Quit if we're not on a valid handle
-        this.handle = this._getHandle( event );
-        if ( !this.handle ) {
+        this.handle = this._getHandle(event);
+        if (!this.handle) {
           return false;
         }
 
-        this._blurActiveElement( event );
+        this._blurActiveElement(event);
 
-        this._blockFrames( o.iframeFix === true ? "iframe" : o.iframeFix );
+        this._blockFrames(o.iframeFix === true ? "iframe" : o.iframeFix);
 
         return true;
 
       },
 
-      _blockFrames: function( selector ) {
-        this.iframeBlocks = this.document.find( selector ).map( function() {
-          let iframe = $( this );
+      _blockFrames: function (selector) {
+        this.iframeBlocks = this.document.find(selector).map(function () {
+          let iframe = $(this);
 
-          return $( "<div>" )
-            .css( "position", "absolute" )
-            .appendTo( iframe.parent() )
-            .outerWidth( iframe.outerWidth() )
-            .outerHeight( iframe.outerHeight() )
-            .offset( iframe.offset() )[ 0 ];
-        } );
+          return $("<div>")
+            .css("position", "absolute")
+            .appendTo(iframe.parent())
+            .outerWidth(iframe.outerWidth())
+            .outerHeight(iframe.outerHeight())
+            .offset(iframe.offset())[0];
+        });
       },
 
-      _unblockFrames: function() {
-        if ( this.iframeBlocks ) {
+      _unblockFrames: function () {
+        if (this.iframeBlocks) {
           this.iframeBlocks.remove();
           delete this.iframeBlocks;
         }
       },
 
-      _blurActiveElement: function( event ) {
-        let activeElement = $.ui.safeActiveElement( this.document[ 0 ] ),
-          target = $( event.target );
+      _blurActiveElement: function (event) {
+        let activeElement = $.ui.safeActiveElement(this.document[0]),
+          target = $(event.target);
 
         // Don't blur if the event occurred on an element that is within
         // the currently focused element
         // See #10527, #12472
-        if ( target.closest( activeElement ).length ) {
+        if (target.closest(activeElement).length) {
           return;
         }
 
         // Blur any element that currently has focus, see #4261
-        $.ui.safeBlur( activeElement );
+        $.ui.safeBlur(activeElement);
       },
 
-      _mouseStart: function( event ) {
+      _mouseStart: function (event) {
 
         let o = this.options;
 
         //Create and append the visible helper
-        this.helper = this._createHelper( event );
+        this.helper = this._createHelper(event);
 
-        this._addClass( this.helper, "ui-draggable-dragging" );
+        this._addClass(this.helper, "ui-draggable-dragging");
 
         //Cache the helper size
         this._cacheHelperProportions();
 
         //If ddmanager is used for droppables, set the global draggable
-        if ( $.ui.ddmanager ) {
+        if ($.ui.ddmanager) {
           $.ui.ddmanager.current = this;
         }
 
@@ -1987,30 +1988,30 @@ export function WmksLib($) {
         this._cacheMargins();
 
         //Store the helper's css position
-        this.cssPosition = this.helper.css( "position" );
-        this.scrollParent = this.helper.scrollParent( true );
+        this.cssPosition = this.helper.css("position");
+        this.scrollParent = this.helper.scrollParent(true);
         this.offsetParent = this.helper.offsetParent();
-        this.hasFixedAncestor = this.helper.parents().filter( function() {
-          return $( this ).css( "position" ) === "fixed";
-        } ).length > 0;
+        this.hasFixedAncestor = this.helper.parents().filter(function () {
+          return $(this).css("position") === "fixed";
+        }).length > 0;
 
         //The element's absolute position on the page minus margins
         this.positionAbs = this.element.offset();
-        this._refreshOffsets( event );
+        this._refreshOffsets(event);
 
         //Generate the original position
-        this.originalPosition = this.position = this._generatePosition( event, false );
+        this.originalPosition = this.position = this._generatePosition(event, false);
         this.originalPageX = event.pageX;
         this.originalPageY = event.pageY;
 
         //Adjust the mouse offset relative to the helper if "cursorAt" is supplied
-        ( o.cursorAt && this._adjustOffsetFromHelper( o.cursorAt ) );
+        (o.cursorAt && this._adjustOffsetFromHelper(o.cursorAt));
 
         //Set a containment if given in the options
         this._setContainment();
 
         //Trigger event + callbacks
-        if ( this._trigger( "start", event ) === false ) {
+        if (this._trigger("start", event) === false) {
           this._clear();
           return false;
         }
@@ -2019,24 +2020,24 @@ export function WmksLib($) {
         this._cacheHelperProportions();
 
         //Prepare the droppable offsets
-        if ( $.ui.ddmanager && !o.dropBehaviour ) {
-          $.ui.ddmanager.prepareOffsets( this, event );
+        if ($.ui.ddmanager && !o.dropBehaviour) {
+          $.ui.ddmanager.prepareOffsets(this, event);
         }
 
         // Execute the drag once - this causes the helper not to be visible before getting its
         // correct position
-        this._mouseDrag( event, true );
+        this._mouseDrag(event, true);
 
         // If the ddmanager is used for droppables, inform the manager that dragging has started
         // (see #5003)
-        if ( $.ui.ddmanager ) {
-          $.ui.ddmanager.dragStart( this, event );
+        if ($.ui.ddmanager) {
+          $.ui.ddmanager.dragStart(this, event);
         }
 
         return true;
       },
 
-      _refreshOffsets: function( event ) {
+      _refreshOffsets: function (event) {
         this.offset = {
           top: this.positionAbs.top - this.margins.top,
           left: this.positionAbs.left - this.margins.left,
@@ -2051,68 +2052,68 @@ export function WmksLib($) {
         };
       },
 
-      _mouseDrag: function( event, noPropagation ) {
+      _mouseDrag: function (event, noPropagation) {
 
         // reset any necessary cached properties (see #5009)
-        if ( this.hasFixedAncestor ) {
+        if (this.hasFixedAncestor) {
           this.offset.parent = this._getParentOffset();
         }
 
         //Compute the helpers position
-        this.position = this._generatePosition( event, true );
-        this.positionAbs = this._convertPositionTo( "absolute" );
+        this.position = this._generatePosition(event, true);
+        this.positionAbs = this._convertPositionTo("absolute");
 
         //Call plugins and callbacks and use the resulting position if something is returned
-        if ( !noPropagation ) {
+        if (!noPropagation) {
           let ui = this._uiHash();
-          if ( this._trigger( "drag", event, ui ) === false ) {
-            this._mouseUp( new $.Event( "mouseup", event ) );
+          if (this._trigger("drag", event, ui) === false) {
+            this._mouseUp(new $.Event("mouseup", event));
             return false;
           }
           this.position = ui.position;
         }
 
-        this.helper[ 0 ].style.left = this.position.left + "px";
-        this.helper[ 0 ].style.top = this.position.top + "px";
+        this.helper[0].style.left = this.position.left + "px";
+        this.helper[0].style.top = this.position.top + "px";
 
-        if ( $.ui.ddmanager ) {
-          $.ui.ddmanager.drag( this, event );
+        if ($.ui.ddmanager) {
+          $.ui.ddmanager.drag(this, event);
         }
 
         return false;
       },
 
-      _mouseStop: function( event ) {
+      _mouseStop: function (event) {
 
         //If we are using droppables, inform the manager about the drop
         let that = this,
           dropped = false;
-        if ( $.ui.ddmanager && !this.options.dropBehaviour ) {
-          dropped = $.ui.ddmanager.drop( this, event );
+        if ($.ui.ddmanager && !this.options.dropBehaviour) {
+          dropped = $.ui.ddmanager.drop(this, event);
         }
 
         //if a drop comes from outside (a sortable)
-        if ( this.dropped ) {
+        if (this.dropped) {
           dropped = this.dropped;
           this.dropped = false;
         }
 
-        if ( ( this.options.revert === "invalid" && !dropped ) ||
-          ( this.options.revert === "valid" && dropped ) ||
-          this.options.revert === true || ( $.isFunction( this.options.revert ) &&
-            this.options.revert.call( this.element, dropped ) )
+        if ((this.options.revert === "invalid" && !dropped) ||
+          (this.options.revert === "valid" && dropped) ||
+          this.options.revert === true || ($.isFunction(this.options.revert) &&
+            this.options.revert.call(this.element, dropped))
         ) {
-          $( this.helper ).animate(
+          $(this.helper).animate(
             this.originalPosition,
-            parseInt( this.options.revertDuration, 10 ),
-            function() {
-              if ( that._trigger( "stop", event ) !== false ) {
+            parseInt(this.options.revertDuration, 10),
+            function () {
+              if (that._trigger("stop", event) !== false) {
                 that._clear();
               }
             }
           );
         } else {
-          if ( this._trigger( "stop", event ) !== false ) {
+          if (this._trigger("stop", event) !== false) {
             this._clear();
           }
         }
@@ -2120,30 +2121,30 @@ export function WmksLib($) {
         return false;
       },
 
-      _mouseUp: function( event ) {
+      _mouseUp: function (event) {
         this._unblockFrames();
 
         // If the ddmanager is used for droppables, inform the manager that dragging has stopped
         // (see #5003)
-        if ( $.ui.ddmanager ) {
-          $.ui.ddmanager.dragStop( this, event );
+        if ($.ui.ddmanager) {
+          $.ui.ddmanager.dragStop(this, event);
         }
 
         // Only need to focus if the event occurred on the draggable itself, see #10527
-        if ( this.handleElement.is( event.target ) ) {
+        if (this.handleElement.is(event.target)) {
 
           // The interaction is over; whether or not the click resulted in a drag,
           // focus the element
-          this.element.trigger( "focus" );
+          this.element.trigger("focus");
         }
 
-        return $.ui.mouse.prototype._mouseUp.call( this, event );
+        return $.ui.mouse.prototype._mouseUp.call(this, event);
       },
 
-      cancel: function() {
+      cancel: function () {
 
-        if ( this.helper.is( ".ui-draggable-dragging" ) ) {
-          this._mouseUp( new $.Event( "mouseup", { target: this.element[ 0 ] } ) );
+        if (this.helper.is(".ui-draggable-dragging")) {
+          this._mouseUp(new $.Event("mouseup", { target: this.element[0] }));
         } else {
           this._clear();
         }
@@ -2152,90 +2153,90 @@ export function WmksLib($) {
 
       },
 
-      _getHandle: function( event ) {
+      _getHandle: function (event) {
         return this.options.handle ?
-          !!$( event.target ).closest( this.element.find( this.options.handle ) ).length :
+          !!$(event.target).closest(this.element.find(this.options.handle)).length :
           true;
       },
 
-      _setHandleClassName: function() {
+      _setHandleClassName: function () {
         this.handleElement = this.options.handle ?
-          this.element.find( this.options.handle ) : this.element;
-        this._addClass( this.handleElement, "ui-draggable-handle" );
+          this.element.find(this.options.handle) : this.element;
+        this._addClass(this.handleElement, "ui-draggable-handle");
       },
 
-      _removeHandleClassName: function() {
-        this._removeClass( this.handleElement, "ui-draggable-handle" );
+      _removeHandleClassName: function () {
+        this._removeClass(this.handleElement, "ui-draggable-handle");
       },
 
-      _createHelper: function( event ) {
+      _createHelper: function (event) {
 
         let o = this.options,
-          helperIsFunction = $.isFunction( o.helper ),
+          helperIsFunction = $.isFunction(o.helper),
           helper = helperIsFunction ?
-            $( o.helper.apply( this.element[ 0 ], [ event ] ) ) :
-            ( o.helper === "clone" ?
-              this.element.clone().removeAttr( "id" ) :
-              this.element );
+            $(o.helper.apply(this.element[0], [event])) :
+            (o.helper === "clone" ?
+              this.element.clone().removeAttr("id") :
+              this.element);
 
-        if ( !helper.parents( "body" ).length ) {
-          helper.appendTo( ( o.appendTo === "parent" ?
-            this.element[ 0 ].parentNode :
-            o.appendTo ) );
+        if (!helper.parents("body").length) {
+          helper.appendTo((o.appendTo === "parent" ?
+            this.element[0].parentNode :
+            o.appendTo));
         }
 
         // Http://bugs.jqueryui.com/ticket/9446
         // a helper function can return the original element
         // which wouldn't have been set to relative in _create
-        if ( helperIsFunction && helper[ 0 ] === this.element[ 0 ] ) {
+        if (helperIsFunction && helper[0] === this.element[0]) {
           this._setPositionRelative();
         }
 
-        if ( helper[ 0 ] !== this.element[ 0 ] &&
-          !( /(fixed|absolute)/ ).test( helper.css( "position" ) ) ) {
-          helper.css( "position", "absolute" );
+        if (helper[0] !== this.element[0] &&
+          !(/(fixed|absolute)/).test(helper.css("position"))) {
+          helper.css("position", "absolute");
         }
 
         return helper;
 
       },
 
-      _setPositionRelative: function() {
-        if ( !( /^(?:r|a|f)/ ).test( this.element.css( "position" ) ) ) {
-          this.element[ 0 ].style.position = "relative";
+      _setPositionRelative: function () {
+        if (!(/^(?:r|a|f)/).test(this.element.css("position"))) {
+          this.element[0].style.position = "relative";
         }
       },
 
-      _adjustOffsetFromHelper: function( obj ) {
-        if ( typeof obj === "string" ) {
-          obj = obj.split( " " );
+      _adjustOffsetFromHelper: function (obj) {
+        if (typeof obj === "string") {
+          obj = obj.split(" ");
         }
-        if ( $.isArray( obj ) ) {
-          obj = { left: +obj[ 0 ], top: +obj[ 1 ] || 0 };
+        if ($.isArray(obj)) {
+          obj = { left: +obj[0], top: +obj[1] || 0 };
         }
-        if ( "left" in obj ) {
+        if ("left" in obj) {
           this.offset.click.left = obj.left + this.margins.left;
         }
-        if ( "right" in obj ) {
+        if ("right" in obj) {
           this.offset.click.left = this.helperProportions.width - obj.right + this.margins.left;
         }
-        if ( "top" in obj ) {
+        if ("top" in obj) {
           this.offset.click.top = obj.top + this.margins.top;
         }
-        if ( "bottom" in obj ) {
+        if ("bottom" in obj) {
           this.offset.click.top = this.helperProportions.height - obj.bottom + this.margins.top;
         }
       },
 
-      _isRootNode: function( element ) {
-        return ( /(html|body)/i ).test( element.tagName ) || element === this.document[ 0 ];
+      _isRootNode: function (element) {
+        return (/(html|body)/i).test(element.tagName) || element === this.document[0];
       },
 
-      _getParentOffset: function() {
+      _getParentOffset: function () {
 
         //Get the offsetParent and cache its position
         let po = this.offsetParent.offset(),
-          document = this.document[ 0 ];
+          document = this.document[0];
 
         // This is a special case where we need to modify a offset calculated on start, since the
         // following happened:
@@ -2244,125 +2245,125 @@ export function WmksLib($) {
         // 2. The actual offset parent is a child of the scroll parent, and the scroll parent isn't
         // the document, which means that the scroll is included in the initial calculation of the
         // offset of the parent, and never recalculated upon drag
-        if ( this.cssPosition === "absolute" && this.scrollParent[ 0 ] !== document &&
-          $.contains( this.scrollParent[ 0 ], this.offsetParent[ 0 ] ) ) {
+        if (this.cssPosition === "absolute" && this.scrollParent[0] !== document &&
+          $.contains(this.scrollParent[0], this.offsetParent[0])) {
           po.left += this.scrollParent.scrollLeft();
           po.top += this.scrollParent.scrollTop();
         }
 
-        if ( this._isRootNode( this.offsetParent[ 0 ] ) ) {
+        if (this._isRootNode(this.offsetParent[0])) {
           po = { top: 0, left: 0 };
         }
 
         return {
-          top: po.top + ( parseInt( this.offsetParent.css( "borderTopWidth" ), 10 ) || 0 ),
-          left: po.left + ( parseInt( this.offsetParent.css( "borderLeftWidth" ), 10 ) || 0 )
+          top: po.top + (parseInt(this.offsetParent.css("borderTopWidth"), 10) || 0),
+          left: po.left + (parseInt(this.offsetParent.css("borderLeftWidth"), 10) || 0)
         };
 
       },
 
-      _getRelativeOffset: function() {
-        if ( this.cssPosition !== "relative" ) {
+      _getRelativeOffset: function () {
+        if (this.cssPosition !== "relative") {
           return { top: 0, left: 0 };
         }
 
         let p = this.element.position(),
-          scrollIsRootNode = this._isRootNode( this.scrollParent[ 0 ] );
+          scrollIsRootNode = this._isRootNode(this.scrollParent[0]);
 
         return {
-          top: p.top - ( parseInt( this.helper.css( "top" ), 10 ) || 0 ) +
-            ( !scrollIsRootNode ? this.scrollParent.scrollTop() : 0 ),
-          left: p.left - ( parseInt( this.helper.css( "left" ), 10 ) || 0 ) +
-            ( !scrollIsRootNode ? this.scrollParent.scrollLeft() : 0 )
+          top: p.top - (parseInt(this.helper.css("top"), 10) || 0) +
+            (!scrollIsRootNode ? this.scrollParent.scrollTop() : 0),
+          left: p.left - (parseInt(this.helper.css("left"), 10) || 0) +
+            (!scrollIsRootNode ? this.scrollParent.scrollLeft() : 0)
         };
 
       },
 
-      _cacheMargins: function() {
+      _cacheMargins: function () {
         this.margins = {
-          left: ( parseInt( this.element.css( "marginLeft" ), 10 ) || 0 ),
-          top: ( parseInt( this.element.css( "marginTop" ), 10 ) || 0 ),
-          right: ( parseInt( this.element.css( "marginRight" ), 10 ) || 0 ),
-          bottom: ( parseInt( this.element.css( "marginBottom" ), 10 ) || 0 )
+          left: (parseInt(this.element.css("marginLeft"), 10) || 0),
+          top: (parseInt(this.element.css("marginTop"), 10) || 0),
+          right: (parseInt(this.element.css("marginRight"), 10) || 0),
+          bottom: (parseInt(this.element.css("marginBottom"), 10) || 0)
         };
       },
 
-      _cacheHelperProportions: function() {
+      _cacheHelperProportions: function () {
         this.helperProportions = {
           width: this.helper.outerWidth(),
           height: this.helper.outerHeight()
         };
       },
 
-      _setContainment: function() {
+      _setContainment: function () {
 
         let isUserScrollable, c, ce,
           o = this.options,
-          document = this.document[ 0 ];
+          document = this.document[0];
 
         this.relativeContainer = null;
 
-        if ( !o.containment ) {
+        if (!o.containment) {
           this.containment = null;
           return;
         }
 
-        if ( o.containment === "window" ) {
+        if (o.containment === "window") {
           this.containment = [
-            $( window ).scrollLeft() - this.offset.relative.left - this.offset.parent.left,
-            $( window ).scrollTop() - this.offset.relative.top - this.offset.parent.top,
-            $( window ).scrollLeft() + $( window ).width() -
+            $(window).scrollLeft() - this.offset.relative.left - this.offset.parent.left,
+            $(window).scrollTop() - this.offset.relative.top - this.offset.parent.top,
+            $(window).scrollLeft() + $(window).width() -
             this.helperProportions.width - this.margins.left,
-            $( window ).scrollTop() +
-            ( $( window ).height() || document.body.parentNode.scrollHeight ) -
+            $(window).scrollTop() +
+            ($(window).height() || document.body.parentNode.scrollHeight) -
             this.helperProportions.height - this.margins.top
           ];
           return;
         }
 
-        if ( o.containment === "document" ) {
+        if (o.containment === "document") {
           this.containment = [
             0,
             0,
-            $( document ).width() - this.helperProportions.width - this.margins.left,
-            ( $( document ).height() || document.body.parentNode.scrollHeight ) -
+            $(document).width() - this.helperProportions.width - this.margins.left,
+            ($(document).height() || document.body.parentNode.scrollHeight) -
             this.helperProportions.height - this.margins.top
           ];
           return;
         }
 
-        if ( o.containment.constructor === Array ) {
+        if (o.containment.constructor === Array) {
           this.containment = o.containment;
           return;
         }
 
-        if ( o.containment === "parent" ) {
-          o.containment = this.helper[ 0 ].parentNode;
+        if (o.containment === "parent") {
+          o.containment = this.helper[0].parentNode;
         }
 
-        c = $( o.containment );
-        ce = c[ 0 ];
+        c = $(o.containment);
+        ce = c[0];
 
-        if ( !ce ) {
+        if (!ce) {
           return;
         }
 
-        isUserScrollable = /(scroll|auto)/.test( c.css( "overflow" ) );
+        isUserScrollable = /(scroll|auto)/.test(c.css("overflow"));
 
         this.containment = [
-          ( parseInt( c.css( "borderLeftWidth" ), 10 ) || 0 ) +
-          ( parseInt( c.css( "paddingLeft" ), 10 ) || 0 ),
-          ( parseInt( c.css( "borderTopWidth" ), 10 ) || 0 ) +
-          ( parseInt( c.css( "paddingTop" ), 10 ) || 0 ),
-          ( isUserScrollable ? Math.max( ce.scrollWidth, ce.offsetWidth ) : ce.offsetWidth ) -
-          ( parseInt( c.css( "borderRightWidth" ), 10 ) || 0 ) -
-          ( parseInt( c.css( "paddingRight" ), 10 ) || 0 ) -
+          (parseInt(c.css("borderLeftWidth"), 10) || 0) +
+          (parseInt(c.css("paddingLeft"), 10) || 0),
+          (parseInt(c.css("borderTopWidth"), 10) || 0) +
+          (parseInt(c.css("paddingTop"), 10) || 0),
+          (isUserScrollable ? Math.max(ce.scrollWidth, ce.offsetWidth) : ce.offsetWidth) -
+          (parseInt(c.css("borderRightWidth"), 10) || 0) -
+          (parseInt(c.css("paddingRight"), 10) || 0) -
           this.helperProportions.width -
           this.margins.left -
           this.margins.right,
-          ( isUserScrollable ? Math.max( ce.scrollHeight, ce.offsetHeight ) : ce.offsetHeight ) -
-          ( parseInt( c.css( "borderBottomWidth" ), 10 ) || 0 ) -
-          ( parseInt( c.css( "paddingBottom" ), 10 ) || 0 ) -
+          (isUserScrollable ? Math.max(ce.scrollHeight, ce.offsetHeight) : ce.offsetHeight) -
+          (parseInt(c.css("borderBottomWidth"), 10) || 0) -
+          (parseInt(c.css("paddingBottom"), 10) || 0) -
           this.helperProportions.height -
           this.margins.top -
           this.margins.bottom
@@ -2370,29 +2371,29 @@ export function WmksLib($) {
         this.relativeContainer = c;
       },
 
-      _convertPositionTo: function( d, pos ) {
+      _convertPositionTo: function (d, pos) {
 
-        if ( !pos ) {
+        if (!pos) {
           pos = this.position;
         }
 
         let mod = d === "absolute" ? 1 : -1,
-          scrollIsRootNode = this._isRootNode( this.scrollParent[ 0 ] );
+          scrollIsRootNode = this._isRootNode(this.scrollParent[0]);
 
         return {
           top: (
 
             // The absolute mouse position
-            pos.top	+
+            pos.top +
 
             // Only for relative positioned nodes: Relative offset from element to offset parent
             this.offset.relative.top * mod +
 
             // The offsetParent's offset without borders (offset + border)
             this.offset.parent.top * mod -
-            ( ( this.cssPosition === "fixed" ?
+            ((this.cssPosition === "fixed" ?
               -this.offset.scroll.top :
-              ( scrollIsRootNode ? 0 : this.offset.scroll.top ) ) * mod )
+              (scrollIsRootNode ? 0 : this.offset.scroll.top)) * mod)
           ),
           left: (
 
@@ -2403,25 +2404,25 @@ export function WmksLib($) {
             this.offset.relative.left * mod +
 
             // The offsetParent's offset without borders (offset + border)
-            this.offset.parent.left * mod	-
-            ( ( this.cssPosition === "fixed" ?
+            this.offset.parent.left * mod -
+            ((this.cssPosition === "fixed" ?
               -this.offset.scroll.left :
-              ( scrollIsRootNode ? 0 : this.offset.scroll.left ) ) * mod )
+              (scrollIsRootNode ? 0 : this.offset.scroll.left)) * mod)
           )
         };
 
       },
 
-      _generatePosition: function( event, constrainPosition ) {
+      _generatePosition: function (event, constrainPosition) {
 
         let containment, co, top, left,
           o = this.options,
-          scrollIsRootNode = this._isRootNode( this.scrollParent[ 0 ] ),
+          scrollIsRootNode = this._isRootNode(this.scrollParent[0]),
           pageX = event.pageX,
           pageY = event.pageY;
 
         // Cache the scroll
-        if ( !scrollIsRootNode || !this.offset.scroll ) {
+        if (!scrollIsRootNode || !this.offset.scroll) {
           this.offset.scroll = {
             top: this.scrollParent.scrollTop(),
             left: this.scrollParent.scrollLeft()
@@ -2434,61 +2435,61 @@ export function WmksLib($) {
 		 */
 
         // If we are not dragging yet, we won't check for options
-        if ( constrainPosition ) {
-          if ( this.containment ) {
-            if ( this.relativeContainer ) {
+        if (constrainPosition) {
+          if (this.containment) {
+            if (this.relativeContainer) {
               co = this.relativeContainer.offset();
               containment = [
-                this.containment[ 0 ] + co.left,
-                this.containment[ 1 ] + co.top,
-                this.containment[ 2 ] + co.left,
-                this.containment[ 3 ] + co.top
+                this.containment[0] + co.left,
+                this.containment[1] + co.top,
+                this.containment[2] + co.left,
+                this.containment[3] + co.top
               ];
             } else {
               containment = this.containment;
             }
 
-            if ( event.pageX - this.offset.click.left < containment[ 0 ] ) {
-              pageX = containment[ 0 ] + this.offset.click.left;
+            if (event.pageX - this.offset.click.left < containment[0]) {
+              pageX = containment[0] + this.offset.click.left;
             }
-            if ( event.pageY - this.offset.click.top < containment[ 1 ] ) {
-              pageY = containment[ 1 ] + this.offset.click.top;
+            if (event.pageY - this.offset.click.top < containment[1]) {
+              pageY = containment[1] + this.offset.click.top;
             }
-            if ( event.pageX - this.offset.click.left > containment[ 2 ] ) {
-              pageX = containment[ 2 ] + this.offset.click.left;
+            if (event.pageX - this.offset.click.left > containment[2]) {
+              pageX = containment[2] + this.offset.click.left;
             }
-            if ( event.pageY - this.offset.click.top > containment[ 3 ] ) {
-              pageY = containment[ 3 ] + this.offset.click.top;
+            if (event.pageY - this.offset.click.top > containment[3]) {
+              pageY = containment[3] + this.offset.click.top;
             }
           }
 
-          if ( o.grid ) {
+          if (o.grid) {
 
             //Check for grid elements set to 0 to prevent divide by 0 error causing invalid
             // argument errors in IE (see ticket #6950)
-            top = o.grid[ 1 ] ? this.originalPageY + Math.round( ( pageY -
-              this.originalPageY ) / o.grid[ 1 ] ) * o.grid[ 1 ] : this.originalPageY;
-            pageY = containment ? ( ( top - this.offset.click.top >= containment[ 1 ] ||
-              top - this.offset.click.top > containment[ 3 ] ) ?
+            top = o.grid[1] ? this.originalPageY + Math.round((pageY -
+              this.originalPageY) / o.grid[1]) * o.grid[1] : this.originalPageY;
+            pageY = containment ? ((top - this.offset.click.top >= containment[1] ||
+              top - this.offset.click.top > containment[3]) ?
               top :
-              ( ( top - this.offset.click.top >= containment[ 1 ] ) ?
-                top - o.grid[ 1 ] : top + o.grid[ 1 ] ) ) : top;
+              ((top - this.offset.click.top >= containment[1]) ?
+                top - o.grid[1] : top + o.grid[1])) : top;
 
-            left = o.grid[ 0 ] ? this.originalPageX +
-              Math.round( ( pageX - this.originalPageX ) / o.grid[ 0 ] ) * o.grid[ 0 ] :
+            left = o.grid[0] ? this.originalPageX +
+              Math.round((pageX - this.originalPageX) / o.grid[0]) * o.grid[0] :
               this.originalPageX;
-            pageX = containment ? ( ( left - this.offset.click.left >= containment[ 0 ] ||
-              left - this.offset.click.left > containment[ 2 ] ) ?
+            pageX = containment ? ((left - this.offset.click.left >= containment[0] ||
+              left - this.offset.click.left > containment[2]) ?
               left :
-              ( ( left - this.offset.click.left >= containment[ 0 ] ) ?
-                left - o.grid[ 0 ] : left + o.grid[ 0 ] ) ) : left;
+              ((left - this.offset.click.left >= containment[0]) ?
+                left - o.grid[0] : left + o.grid[0])) : left;
           }
 
-          if ( o.axis === "y" ) {
+          if (o.axis === "y") {
             pageX = this.originalPageX;
           }
 
-          if ( o.axis === "x" ) {
+          if (o.axis === "x") {
             pageY = this.originalPageY;
           }
         }
@@ -2507,9 +2508,9 @@ export function WmksLib($) {
 
             // The offsetParent's offset without borders (offset + border)
             this.offset.parent.top +
-            ( this.cssPosition === "fixed" ?
+            (this.cssPosition === "fixed" ?
               -this.offset.scroll.top :
-              ( scrollIsRootNode ? 0 : this.offset.scroll.top ) )
+              (scrollIsRootNode ? 0 : this.offset.scroll.top))
           ),
           left: (
 
@@ -2524,43 +2525,43 @@ export function WmksLib($) {
 
             // The offsetParent's offset without borders (offset + border)
             this.offset.parent.left +
-            ( this.cssPosition === "fixed" ?
+            (this.cssPosition === "fixed" ?
               -this.offset.scroll.left :
-              ( scrollIsRootNode ? 0 : this.offset.scroll.left ) )
+              (scrollIsRootNode ? 0 : this.offset.scroll.left))
           )
         };
 
       },
 
-      _clear: function() {
-        this._removeClass( this.helper, "ui-draggable-dragging" );
-        if ( this.helper[ 0 ] !== this.element[ 0 ] && !this.cancelHelperRemoval ) {
+      _clear: function () {
+        this._removeClass(this.helper, "ui-draggable-dragging");
+        if (this.helper[0] !== this.element[0] && !this.cancelHelperRemoval) {
           this.helper.remove();
         }
         this.helper = null;
         this.cancelHelperRemoval = false;
-        if ( this.destroyOnClear ) {
+        if (this.destroyOnClear) {
           this.destroy();
         }
       },
 
       // From now on bulk stuff - mainly helpers
 
-      _trigger: function( type, event, ui ) {
+      _trigger: function (type, event, ui) {
         ui = ui || this._uiHash();
-        $.ui.plugin.call( this, type, [ event, ui, this ], true );
+        $.ui.plugin.call(this, type, [event, ui, this], true);
 
         // Absolute position and offset (see #6884 ) have to be recalculated after plugins
-        if ( /^(drag|start|stop)/.test( type ) ) {
-          this.positionAbs = this._convertPositionTo( "absolute" );
+        if (/^(drag|start|stop)/.test(type)) {
+          this.positionAbs = this._convertPositionTo("absolute");
           ui.offset = this.positionAbs;
         }
-        return $.Widget.prototype._trigger.call( this, type, event, ui );
+        return $.Widget.prototype._trigger.call(this, type, event, ui);
       },
 
       plugins: {},
 
-      _uiHash: function() {
+      _uiHash: function () {
         return {
           helper: this.helper,
           position: this.position,
@@ -2569,40 +2570,40 @@ export function WmksLib($) {
         };
       }
 
-    } );
+    });
 
-    $.ui.plugin.add( "draggable", "connectToSortable", {
-      start: function( event, ui, draggable ) {
-        let uiSortable = $.extend( {}, ui, {
+    $.ui.plugin.add("draggable", "connectToSortable", {
+      start: function (event, ui, draggable) {
+        let uiSortable = $.extend({}, ui, {
           item: draggable.element
-        } );
+        });
 
         draggable.sortables = [];
-        $( draggable.options.connectToSortable ).each( function() {
-          let sortable = $( this ).sortable( "instance" );
+        $(draggable.options.connectToSortable).each(function () {
+          let sortable = $(this).sortable("instance");
 
-          if ( sortable && !sortable.options.disabled ) {
-            draggable.sortables.push( sortable );
+          if (sortable && !sortable.options.disabled) {
+            draggable.sortables.push(sortable);
 
             // RefreshPositions is called at drag start to refresh the containerCache
             // which is used in drag. This ensures it's initialized and synchronized
             // with any changes that might have happened on the page since initialization.
             sortable.refreshPositions();
-            sortable._trigger( "activate", event, uiSortable );
+            sortable._trigger("activate", event, uiSortable);
           }
-        } );
+        });
       },
-      stop: function( event, ui, draggable ) {
-        let uiSortable = $.extend( {}, ui, {
+      stop: function (event, ui, draggable) {
+        let uiSortable = $.extend({}, ui, {
           item: draggable.element
-        } );
+        });
 
         draggable.cancelHelperRemoval = false;
 
-        $.each( draggable.sortables, function() {
+        $.each(draggable.sortables, function () {
           let sortable = this;
 
-          if ( sortable.isOver ) {
+          if (sortable.isOver) {
             sortable.isOver = 0;
 
             // Allow this sortable to handle removing the helper
@@ -2613,12 +2614,12 @@ export function WmksLib($) {
             // as this also handles revert (#9675) since the draggable
             // may have modified them in unexpected ways (#8809)
             sortable._storedCSS = {
-              position: sortable.placeholder.css( "position" ),
-              top: sortable.placeholder.css( "top" ),
-              left: sortable.placeholder.css( "left" )
+              position: sortable.placeholder.css("position"),
+              top: sortable.placeholder.css("top"),
+              left: sortable.placeholder.css("left")
             };
 
-            sortable._mouseStop( event );
+            sortable._mouseStop(event);
 
             // Once drag has ended, the sortable should return to using
             // its original helper, not the shared helper from draggable
@@ -2630,12 +2631,12 @@ export function WmksLib($) {
             // either as another connected Sortable may yet handle the removal.
             sortable.cancelHelperRemoval = true;
 
-            sortable._trigger( "deactivate", event, uiSortable );
+            sortable._trigger("deactivate", event, uiSortable);
           }
-        } );
+        });
       },
-      drag: function( event, ui, draggable ) {
-        $.each( draggable.sortables, function() {
+      drag: function (event, ui, draggable) {
+        $.each(draggable.sortables, function () {
           let innermostIntersecting = false,
             sortable = this;
 
@@ -2644,52 +2645,52 @@ export function WmksLib($) {
           sortable.helperProportions = draggable.helperProportions;
           sortable.offset.click = draggable.offset.click;
 
-          if ( sortable._intersectsWith( sortable.containerCache ) ) {
+          if (sortable._intersectsWith(sortable.containerCache)) {
             innermostIntersecting = true;
 
-            $.each( draggable.sortables, function() {
+            $.each(draggable.sortables, function () {
 
               // Copy over variables that sortable's _intersectsWith uses
               this.positionAbs = draggable.positionAbs;
               this.helperProportions = draggable.helperProportions;
               this.offset.click = draggable.offset.click;
 
-              if ( this !== sortable &&
-                this._intersectsWith( this.containerCache ) &&
-                $.contains( sortable.element[ 0 ], this.element[ 0 ] ) ) {
+              if (this !== sortable &&
+                this._intersectsWith(this.containerCache) &&
+                $.contains(sortable.element[0], this.element[0])) {
                 innermostIntersecting = false;
               }
 
               return innermostIntersecting;
-            } );
+            });
           }
 
-          if ( innermostIntersecting ) {
+          if (innermostIntersecting) {
 
             // If it intersects, we use a little isOver variable and set it once,
             // so that the move-in stuff gets fired only once.
-            if ( !sortable.isOver ) {
+            if (!sortable.isOver) {
               sortable.isOver = 1;
 
               // Store draggable's parent in case we need to reappend to it later.
               draggable._parent = ui.helper.parent();
 
               sortable.currentItem = ui.helper
-                .appendTo( sortable.element )
-                .data( "ui-sortable-item", true );
+                .appendTo(sortable.element)
+                .data("ui-sortable-item", true);
 
               // Store helper option to later restore it
               sortable.options._helper = sortable.options.helper;
 
-              sortable.options.helper = function() {
-                return ui.helper[ 0 ];
+              sortable.options.helper = function () {
+                return ui.helper[0];
               };
 
               // Fire the start events of the sortable with our passed browser event,
               // and our own helper (so it doesn't create a new one)
-              event.target = sortable.currentItem[ 0 ];
-              sortable._mouseCapture( event, true );
-              sortable._mouseStart( event, true, true );
+              event.target = sortable.currentItem[0];
+              sortable._mouseCapture(event, true);
+              sortable._mouseStart(event, true, true);
 
               // Because the browser event is way off the new appended portlet,
               // modify necessary variables to reflect the changes
@@ -2700,7 +2701,7 @@ export function WmksLib($) {
               sortable.offset.parent.top -= draggable.offset.parent.top -
                 sortable.offset.parent.top;
 
-              draggable._trigger( "toSortable", event );
+              draggable._trigger("toSortable", event);
 
               // Inform draggable that the helper is in a valid drop zone,
               // used solely in the revert option to handle "valid/invalid".
@@ -2708,17 +2709,17 @@ export function WmksLib($) {
 
               // Need to refreshPositions of all sortables in the case that
               // adding to one sortable changes the location of the other sortables (#9675)
-              $.each( draggable.sortables, function() {
+              $.each(draggable.sortables, function () {
                 this.refreshPositions();
-              } );
+              });
 
               // Hack so receive/update callbacks work (mostly)
               draggable.currentItem = draggable.element;
               sortable.fromOutside = draggable;
             }
 
-            if ( sortable.currentItem ) {
-              sortable._mouseDrag( event );
+            if (sortable.currentItem) {
+              sortable._mouseDrag(event);
 
               // Copy the sortable's position because the draggable's can potentially reflect
               // a relative position, while sortable is always absolute, which the dragged
@@ -2730,7 +2731,7 @@ export function WmksLib($) {
             // If it doesn't intersect with the sortable, and it intersected before,
             // we fake the drag stop of the sortable, but make sure it doesn't remove
             // the helper by using cancelHelperRemoval.
-            if ( sortable.isOver ) {
+            if (sortable.isOver) {
 
               sortable.isOver = 0;
               sortable.cancelHelperRemoval = true;
@@ -2740,109 +2741,109 @@ export function WmksLib($) {
               sortable.options._revert = sortable.options.revert;
               sortable.options.revert = false;
 
-              sortable._trigger( "out", event, sortable._uiHash( sortable ) );
-              sortable._mouseStop( event, true );
+              sortable._trigger("out", event, sortable._uiHash(sortable));
+              sortable._mouseStop(event, true);
 
               // Restore sortable behaviors that were modfied
               // when the draggable entered the sortable area (#9481)
               sortable.options.revert = sortable.options._revert;
               sortable.options.helper = sortable.options._helper;
 
-              if ( sortable.placeholder ) {
+              if (sortable.placeholder) {
                 sortable.placeholder.remove();
               }
 
               // Restore and recalculate the draggable's offset considering the sortable
               // may have modified them in unexpected ways. (#8809, #10669)
-              ui.helper.appendTo( draggable._parent );
-              draggable._refreshOffsets( event );
-              ui.position = draggable._generatePosition( event, true );
+              ui.helper.appendTo(draggable._parent);
+              draggable._refreshOffsets(event);
+              ui.position = draggable._generatePosition(event, true);
 
-              draggable._trigger( "fromSortable", event );
+              draggable._trigger("fromSortable", event);
 
               // Inform draggable that the helper is no longer in a valid drop zone
               draggable.dropped = false;
 
               // Need to refreshPositions of all sortables just in case removing
               // from one sortable changes the location of other sortables (#9675)
-              $.each( draggable.sortables, function() {
+              $.each(draggable.sortables, function () {
                 this.refreshPositions();
-              } );
+              });
             }
           }
-        } );
+        });
       }
-    } );
+    });
 
-    $.ui.plugin.add( "draggable", "cursor", {
-      start: function( event, ui, instance ) {
-        let t = $( "body" ),
+    $.ui.plugin.add("draggable", "cursor", {
+      start: function (event, ui, instance) {
+        let t = $("body"),
           o = instance.options;
 
-        if ( t.css( "cursor" ) ) {
-          o._cursor = t.css( "cursor" );
+        if (t.css("cursor")) {
+          o._cursor = t.css("cursor");
         }
-        t.css( "cursor", o.cursor );
+        t.css("cursor", o.cursor);
       },
-      stop: function( event, ui, instance ) {
+      stop: function (event, ui, instance) {
         let o = instance.options;
-        if ( o._cursor ) {
-          $( "body" ).css( "cursor", o._cursor );
+        if (o._cursor) {
+          $("body").css("cursor", o._cursor);
         }
       }
-    } );
+    });
 
-    $.ui.plugin.add( "draggable", "opacity", {
-      start: function( event, ui, instance ) {
-        let t = $( ui.helper ),
+    $.ui.plugin.add("draggable", "opacity", {
+      start: function (event, ui, instance) {
+        let t = $(ui.helper),
           o = instance.options;
-        if ( t.css( "opacity" ) ) {
-          o._opacity = t.css( "opacity" );
+        if (t.css("opacity")) {
+          o._opacity = t.css("opacity");
         }
-        t.css( "opacity", o.opacity );
+        t.css("opacity", o.opacity);
       },
-      stop: function( event, ui, instance ) {
+      stop: function (event, ui, instance) {
         let o = instance.options;
-        if ( o._opacity ) {
-          $( ui.helper ).css( "opacity", o._opacity );
+        if (o._opacity) {
+          $(ui.helper).css("opacity", o._opacity);
         }
       }
-    } );
+    });
 
-    $.ui.plugin.add( "draggable", "scroll", {
-      start: function( event, ui, i ) {
-        if ( !i.scrollParentNotHidden ) {
-          i.scrollParentNotHidden = i.helper.scrollParent( false );
+    $.ui.plugin.add("draggable", "scroll", {
+      start: function (event, ui, i) {
+        if (!i.scrollParentNotHidden) {
+          i.scrollParentNotHidden = i.helper.scrollParent(false);
         }
 
-        if ( i.scrollParentNotHidden[ 0 ] !== i.document[ 0 ] &&
-          i.scrollParentNotHidden[ 0 ].tagName !== "HTML" ) {
+        if (i.scrollParentNotHidden[0] !== i.document[0] &&
+          i.scrollParentNotHidden[0].tagName !== "HTML") {
           i.overflowOffset = i.scrollParentNotHidden.offset();
         }
       },
-      drag: function( event, ui, i  ) {
+      drag: function (event, ui, i) {
 
         let o = i.options,
           scrolled = false,
-          scrollParent = i.scrollParentNotHidden[ 0 ],
-          document = i.document[ 0 ];
+          scrollParent = i.scrollParentNotHidden[0],
+          document = i.document[0];
 
-        if ( scrollParent !== document && scrollParent.tagName !== "HTML" ) {
-          if ( !o.axis || o.axis !== "x" ) {
-            if ( ( i.overflowOffset.top + scrollParent.offsetHeight ) - event.pageY <
-              o.scrollSensitivity ) {
+        if (scrollParent !== document && scrollParent.tagName !== "HTML") {
+          if (!o.axis || o.axis !== "x") {
+            if ((i.overflowOffset.top + scrollParent.offsetHeight) - event.pageY <
+              o.scrollSensitivity) {
               scrollParent.scrollTop = scrolled = scrollParent.scrollTop + o.scrollSpeed;
-            } else if ( event.pageY - i.overflowOffset.top < o.scrollSensitivity ) {
+            } else if (event.pageY - i.overflowOffset.top < o.scrollSensitivity) {
               // @ts-ignore
               scrollParent.scrollTop = scrolled = scrollParent.scrollTop - o.scrollSpeed;
             }
           }
 
-          if ( !o.axis || o.axis !== "y" ) {
-            if ( ( i.overflowOffset.left + scrollParent.offsetWidth ) - event.pageX <
-              o.scrollSensitivity ) {
+          if (!o.axis || o.axis !== "y") {
+            if ((i.overflowOffset.left + scrollParent.offsetWidth) - event.pageX <
+              o.scrollSensitivity) {
               scrollParent.scrollLeft = scrolled = scrollParent.scrollLeft + o.scrollSpeed;
-            } else if ( event.pageX - i.overflowOffset.left < o.scrollSensitivity ) {
+            } else if (event.pageX - i.overflowOffset.left < o.scrollSensitivity) {
               // @ts-ignore
               scrollParent.scrollLeft = scrolled = scrollParent.scrollLeft - o.scrollSpeed;
             }
@@ -2850,59 +2851,59 @@ export function WmksLib($) {
 
         } else {
 
-          if ( !o.axis || o.axis !== "x" ) {
-            if ( event.pageY - $( document ).scrollTop() < o.scrollSensitivity ) {
-              scrolled = $( document ).scrollTop( $( document ).scrollTop() - o.scrollSpeed );
-            } else if ( $( window ).height() - ( event.pageY - $( document ).scrollTop() ) <
-              o.scrollSensitivity ) {
-              scrolled = $( document ).scrollTop( $( document ).scrollTop() + o.scrollSpeed );
+          if (!o.axis || o.axis !== "x") {
+            if (event.pageY - $(document).scrollTop() < o.scrollSensitivity) {
+              scrolled = $(document).scrollTop($(document).scrollTop() - o.scrollSpeed);
+            } else if ($(window).height() - (event.pageY - $(document).scrollTop()) <
+              o.scrollSensitivity) {
+              scrolled = $(document).scrollTop($(document).scrollTop() + o.scrollSpeed);
             }
           }
 
-          if ( !o.axis || o.axis !== "y" ) {
-            if ( event.pageX - $( document ).scrollLeft() < o.scrollSensitivity ) {
-              scrolled = $( document ).scrollLeft(
-                $( document ).scrollLeft() - o.scrollSpeed
+          if (!o.axis || o.axis !== "y") {
+            if (event.pageX - $(document).scrollLeft() < o.scrollSensitivity) {
+              scrolled = $(document).scrollLeft(
+                $(document).scrollLeft() - o.scrollSpeed
               );
-            } else if ( $( window ).width() - ( event.pageX - $( document ).scrollLeft() ) <
-              o.scrollSensitivity ) {
-              scrolled = $( document ).scrollLeft(
-                $( document ).scrollLeft() + o.scrollSpeed
+            } else if ($(window).width() - (event.pageX - $(document).scrollLeft()) <
+              o.scrollSensitivity) {
+              scrolled = $(document).scrollLeft(
+                $(document).scrollLeft() + o.scrollSpeed
               );
             }
           }
 
         }
 
-        if ( scrolled !== false && $.ui.ddmanager && !o.dropBehaviour ) {
-          $.ui.ddmanager.prepareOffsets( i, event );
+        if (scrolled !== false && $.ui.ddmanager && !o.dropBehaviour) {
+          $.ui.ddmanager.prepareOffsets(i, event);
         }
 
       }
-    } );
+    });
 
-    $.ui.plugin.add( "draggable", "snap", {
-      start: function( event, ui, i ) {
+    $.ui.plugin.add("draggable", "snap", {
+      start: function (event, ui, i) {
 
         let o = i.options;
 
         i.snapElements = [];
 
-        $( o.snap.constructor !== String ? ( o.snap.items || ":data(ui-draggable)" ) : o.snap )
-          .each( function() {
-            let $t = $( this ),
+        $(o.snap.constructor !== String ? (o.snap.items || ":data(ui-draggable)") : o.snap)
+          .each(function () {
+            let $t = $(this),
               $o = $t.offset();
-            if ( this !== i.element[ 0 ] ) {
-              i.snapElements.push( {
+            if (this !== i.element[0]) {
+              i.snapElements.push({
                 item: this,
                 width: $t.outerWidth(), height: $t.outerHeight(),
                 top: $o.top, left: $o.left
-              } );
+              });
             }
-          } );
+          });
 
       },
-      drag: function( event, ui, inst ) {
+      drag: function (event, ui, inst) {
 
         let ts, bs, ls, rs, l, r, t, b, i, first,
           o = inst.options,
@@ -2910,145 +2911,145 @@ export function WmksLib($) {
           x1 = ui.offset.left, x2 = x1 + inst.helperProportions.width,
           y1 = ui.offset.top, y2 = y1 + inst.helperProportions.height;
 
-        for ( i = inst.snapElements.length - 1; i >= 0; i-- ) {
+        for (i = inst.snapElements.length - 1; i >= 0; i--) {
 
-          l = inst.snapElements[ i ].left - inst.margins.left;
-          r = l + inst.snapElements[ i ].width;
-          t = inst.snapElements[ i ].top - inst.margins.top;
-          b = t + inst.snapElements[ i ].height;
+          l = inst.snapElements[i].left - inst.margins.left;
+          r = l + inst.snapElements[i].width;
+          t = inst.snapElements[i].top - inst.margins.top;
+          b = t + inst.snapElements[i].height;
 
-          if ( x2 < l - d || x1 > r + d || y2 < t - d || y1 > b + d ||
-            !$.contains( inst.snapElements[ i ].item.ownerDocument,
-              inst.snapElements[ i ].item ) ) {
-            if ( inst.snapElements[ i ].snapping ) {
-              ( inst.options.snap.release &&
+          if (x2 < l - d || x1 > r + d || y2 < t - d || y1 > b + d ||
+            !$.contains(inst.snapElements[i].item.ownerDocument,
+              inst.snapElements[i].item)) {
+            if (inst.snapElements[i].snapping) {
+              (inst.options.snap.release &&
                 inst.options.snap.release.call(
                   inst.element,
                   event,
-                  $.extend( inst._uiHash(), { snapItem: inst.snapElements[ i ].item } )
-                ) );
+                  $.extend(inst._uiHash(), { snapItem: inst.snapElements[i].item })
+                ));
             }
-            inst.snapElements[ i ].snapping = false;
+            inst.snapElements[i].snapping = false;
             continue;
           }
 
-          if ( o.snapMode !== "inner" ) {
-            ts = Math.abs( t - y2 ) <= d;
-            bs = Math.abs( b - y1 ) <= d;
-            ls = Math.abs( l - x2 ) <= d;
-            rs = Math.abs( r - x1 ) <= d;
-            if ( ts ) {
-              ui.position.top = inst._convertPositionTo( "relative", {
+          if (o.snapMode !== "inner") {
+            ts = Math.abs(t - y2) <= d;
+            bs = Math.abs(b - y1) <= d;
+            ls = Math.abs(l - x2) <= d;
+            rs = Math.abs(r - x1) <= d;
+            if (ts) {
+              ui.position.top = inst._convertPositionTo("relative", {
                 top: t - inst.helperProportions.height,
                 left: 0
-              } ).top;
+              }).top;
             }
-            if ( bs ) {
-              ui.position.top = inst._convertPositionTo( "relative", {
+            if (bs) {
+              ui.position.top = inst._convertPositionTo("relative", {
                 top: b,
                 left: 0
-              } ).top;
+              }).top;
             }
-            if ( ls ) {
-              ui.position.left = inst._convertPositionTo( "relative", {
+            if (ls) {
+              ui.position.left = inst._convertPositionTo("relative", {
                 top: 0,
                 left: l - inst.helperProportions.width
-              } ).left;
+              }).left;
             }
-            if ( rs ) {
-              ui.position.left = inst._convertPositionTo( "relative", {
+            if (rs) {
+              ui.position.left = inst._convertPositionTo("relative", {
                 top: 0,
                 left: r
-              } ).left;
+              }).left;
             }
           }
 
-          first = ( ts || bs || ls || rs );
+          first = (ts || bs || ls || rs);
 
-          if ( o.snapMode !== "outer" ) {
-            ts = Math.abs( t - y1 ) <= d;
-            bs = Math.abs( b - y2 ) <= d;
-            ls = Math.abs( l - x1 ) <= d;
-            rs = Math.abs( r - x2 ) <= d;
-            if ( ts ) {
-              ui.position.top = inst._convertPositionTo( "relative", {
+          if (o.snapMode !== "outer") {
+            ts = Math.abs(t - y1) <= d;
+            bs = Math.abs(b - y2) <= d;
+            ls = Math.abs(l - x1) <= d;
+            rs = Math.abs(r - x2) <= d;
+            if (ts) {
+              ui.position.top = inst._convertPositionTo("relative", {
                 top: t,
                 left: 0
-              } ).top;
+              }).top;
             }
-            if ( bs ) {
-              ui.position.top = inst._convertPositionTo( "relative", {
+            if (bs) {
+              ui.position.top = inst._convertPositionTo("relative", {
                 top: b - inst.helperProportions.height,
                 left: 0
-              } ).top;
+              }).top;
             }
-            if ( ls ) {
-              ui.position.left = inst._convertPositionTo( "relative", {
+            if (ls) {
+              ui.position.left = inst._convertPositionTo("relative", {
                 top: 0,
                 left: l
-              } ).left;
+              }).left;
             }
-            if ( rs ) {
-              ui.position.left = inst._convertPositionTo( "relative", {
+            if (rs) {
+              ui.position.left = inst._convertPositionTo("relative", {
                 top: 0,
                 left: r - inst.helperProportions.width
-              } ).left;
+              }).left;
             }
           }
 
-          if ( !inst.snapElements[ i ].snapping && ( ts || bs || ls || rs || first ) ) {
-            ( inst.options.snap.snap &&
+          if (!inst.snapElements[i].snapping && (ts || bs || ls || rs || first)) {
+            (inst.options.snap.snap &&
               inst.options.snap.snap.call(
                 inst.element,
                 event,
-                $.extend( inst._uiHash(), {
-                  snapItem: inst.snapElements[ i ].item
-                } ) ) );
+                $.extend(inst._uiHash(), {
+                  snapItem: inst.snapElements[i].item
+                })));
           }
-          inst.snapElements[ i ].snapping = ( ts || bs || ls || rs || first );
+          inst.snapElements[i].snapping = (ts || bs || ls || rs || first);
 
         }
 
       }
-    } );
+    });
 
-    $.ui.plugin.add( "draggable", "stack", {
-      start: function( event, ui, instance ) {
+    $.ui.plugin.add("draggable", "stack", {
+      start: function (event, ui, instance) {
         let min,
           o = instance.options,
-          group = $.makeArray( $( o.stack ) ).sort( function( a, b ) {
-            return ( parseInt( $( a ).css( "zIndex" ), 10 ) || 0 ) -
-              ( parseInt( $( b ).css( "zIndex" ), 10 ) || 0 );
-          } );
+          group = $.makeArray($(o.stack)).sort(function (a, b) {
+            return (parseInt($(a).css("zIndex"), 10) || 0) -
+              (parseInt($(b).css("zIndex"), 10) || 0);
+          });
 
-        if ( !group.length ) { return; }
+        if (!group.length) { return; }
 
-        min = parseInt( $( group[ 0 ] ).css( "zIndex" ), 10 ) || 0;
-        $( group ).each( function( i ) {
-          $( this ).css( "zIndex", min + i );
-        } );
-        this.css( "zIndex", ( min + group.length ) );
+        min = parseInt($(group[0]).css("zIndex"), 10) || 0;
+        $(group).each(function (i) {
+          $(this).css("zIndex", min + i);
+        });
+        this.css("zIndex", (min + group.length));
       }
-    } );
+    });
 
-    $.ui.plugin.add( "draggable", "zIndex", {
-      start: function( event, ui, instance ) {
-        let t = $( ui.helper ),
+    $.ui.plugin.add("draggable", "zIndex", {
+      start: function (event, ui, instance) {
+        let t = $(ui.helper),
           o = instance.options;
 
-        if ( t.css( "zIndex" ) ) {
-          o._zIndex = t.css( "zIndex" );
+        if (t.css("zIndex")) {
+          o._zIndex = t.css("zIndex");
         }
-        t.css( "zIndex", o.zIndex );
+        t.css("zIndex", o.zIndex);
       },
-      stop: function( event, ui, instance ) {
+      stop: function (event, ui, instance) {
         let o = instance.options;
 
-        if ( o._zIndex ) {
-          $( ui.helper ).css( "zIndex", o._zIndex );
+        if (o._zIndex) {
+          $(ui.helper).css("zIndex", o._zIndex);
         }
       }
-    } );
+    });
 
     let widgetsDraggable = $.ui.draggable;
 
@@ -3062,7 +3063,7 @@ export function WmksLib($) {
      * http://jquery.org/license
      */
 
-    $.widget( "ui.resizable", $.ui.mouse, {
+    $.widget("ui.resizable", $.ui.mouse, {
       version: "1.12.1",
       widgetEventPrefix: "resize",
       options: {
@@ -3094,161 +3095,161 @@ export function WmksLib($) {
         stop: null
       },
 
-      _num: function( value ) {
-        return parseFloat( value ) || 0;
+      _num: function (value) {
+        return parseFloat(value) || 0;
       },
 
-      _isNumber: function( value ) {
-        return !isNaN( parseFloat( value ) );
+      _isNumber: function (value) {
+        return !isNaN(parseFloat(value));
       },
 
-      _hasScroll: function( el, a ) {
+      _hasScroll: function (el, a) {
 
-        if ( $( el ).css( "overflow" ) === "hidden" ) {
+        if ($(el).css("overflow") === "hidden") {
           return false;
         }
 
-        let scroll = ( a && a === "left" ) ? "scrollLeft" : "scrollTop",
+        let scroll = (a && a === "left") ? "scrollLeft" : "scrollTop",
           has = false;
 
-        if ( el[ scroll ] > 0 ) {
+        if (el[scroll] > 0) {
           return true;
         }
 
         // TODO: determine which cases actually cause this to happen
         // if the element doesn't have the scroll set, see if it's possible to
         // set the scroll
-        el[ scroll ] = 1;
-        has = ( el[ scroll ] > 0 );
-        el[ scroll ] = 0;
+        el[scroll] = 1;
+        has = (el[scroll] > 0);
+        el[scroll] = 0;
         return has;
       },
 
-      _create: function() {
+      _create: function () {
 
         let margins,
           o = this.options,
           that = this;
-        this._addClass( "ui-resizable" );
+        this._addClass("ui-resizable");
 
-        $.extend( this, {
-          _aspectRatio: !!( o.aspectRatio ),
+        $.extend(this, {
+          _aspectRatio: !!(o.aspectRatio),
           aspectRatio: o.aspectRatio,
           originalElement: this.element,
           _proportionallyResizeElements: [],
           _helper: o.helper || o.ghost || o.animate ? o.helper || "ui-resizable-helper" : null
-        } );
+        });
 
         // Wrap the element if it cannot hold child nodes
-        if ( this.element[ 0 ].nodeName.match( /^(canvas|textarea|input|select|button|img)$/i ) ) {
+        if (this.element[0].nodeName.match(/^(canvas|textarea|input|select|button|img)$/i)) {
 
           this.element.wrap(
-            $( "<div class='ui-wrapper' style='overflow: hidden;'></div>" ).css( {
-              position: this.element.css( "position" ),
+            $("<div class='ui-wrapper' style='overflow: hidden;'></div>").css({
+              position: this.element.css("position"),
               width: this.element.outerWidth(),
               height: this.element.outerHeight(),
-              top: this.element.css( "top" ),
-              left: this.element.css( "left" )
-            } )
+              top: this.element.css("top"),
+              left: this.element.css("left")
+            })
           );
 
           this.element = this.element.parent().data(
-            "ui-resizable", this.element.resizable( "instance" )
+            "ui-resizable", this.element.resizable("instance")
           );
 
           this.elementIsWrapper = true;
 
           margins = {
-            marginTop: this.originalElement.css( "marginTop" ),
-            marginRight: this.originalElement.css( "marginRight" ),
-            marginBottom: this.originalElement.css( "marginBottom" ),
-            marginLeft: this.originalElement.css( "marginLeft" )
+            marginTop: this.originalElement.css("marginTop"),
+            marginRight: this.originalElement.css("marginRight"),
+            marginBottom: this.originalElement.css("marginBottom"),
+            marginLeft: this.originalElement.css("marginLeft")
           };
 
-          this.element.css( margins );
-          this.originalElement.css( "margin", 0 );
+          this.element.css(margins);
+          this.originalElement.css("margin", 0);
 
           // support: Safari
           // Prevent Safari textarea resize
-          this.originalResizeStyle = this.originalElement.css( "resize" );
-          this.originalElement.css( "resize", "none" );
+          this.originalResizeStyle = this.originalElement.css("resize");
+          this.originalElement.css("resize", "none");
 
-          this._proportionallyResizeElements.push( this.originalElement.css( {
+          this._proportionallyResizeElements.push(this.originalElement.css({
             position: "static",
             zoom: 1,
             display: "block"
-          } ) );
+          }));
 
           // Support: IE9
           // avoid IE jump (hard set the margin)
-          this.originalElement.css( margins );
+          this.originalElement.css(margins);
 
           this._proportionallyResize();
         }
 
         this._setupHandles();
 
-        if ( o.autoHide ) {
-          $( this.element )
-            .on( "mouseenter", function() {
-              if ( o.disabled ) {
+        if (o.autoHide) {
+          $(this.element)
+            .on("mouseenter", function () {
+              if (o.disabled) {
                 return;
               }
-              that._removeClass( "ui-resizable-autohide" );
+              that._removeClass("ui-resizable-autohide");
               that._handles.show();
-            } )
-            .on( "mouseleave", function() {
-              if ( o.disabled ) {
+            })
+            .on("mouseleave", function () {
+              if (o.disabled) {
                 return;
               }
-              if ( !that.resizing ) {
-                that._addClass( "ui-resizable-autohide" );
+              if (!that.resizing) {
+                that._addClass("ui-resizable-autohide");
                 that._handles.hide();
               }
-            } );
+            });
         }
 
         this._mouseInit();
       },
 
-      _destroy: function() {
+      _destroy: function () {
 
         this._mouseDestroy();
 
         let wrapper,
-          _destroy = function( exp ) {
-            $( exp )
-              .removeData( "resizable" )
-              .removeData( "ui-resizable" )
-              .off( ".resizable" )
-              .find( ".ui-resizable-handle" )
+          _destroy = function (exp) {
+            $(exp)
+              .removeData("resizable")
+              .removeData("ui-resizable")
+              .off(".resizable")
+              .find(".ui-resizable-handle")
               .remove();
           };
 
         // TODO: Unwrap at same DOM position
-        if ( this.elementIsWrapper ) {
-          _destroy( this.element );
+        if (this.elementIsWrapper) {
+          _destroy(this.element);
           wrapper = this.element;
-          this.originalElement.css( {
-            position: wrapper.css( "position" ),
+          this.originalElement.css({
+            position: wrapper.css("position"),
             width: wrapper.outerWidth(),
             height: wrapper.outerHeight(),
-            top: wrapper.css( "top" ),
-            left: wrapper.css( "left" )
-          } ).insertAfter( wrapper );
+            top: wrapper.css("top"),
+            left: wrapper.css("left")
+          }).insertAfter(wrapper);
           wrapper.remove();
         }
 
-        this.originalElement.css( "resize", this.originalResizeStyle );
-        _destroy( this.originalElement );
+        this.originalElement.css("resize", this.originalResizeStyle);
+        _destroy(this.originalElement);
 
         return this;
       },
 
-      _setOption: function( key, value ) {
-        this._super( key, value );
+      _setOption: function (key, value) {
+        this._super(key, value);
 
-        switch ( key ) {
+        switch (key) {
           case "handles":
             this._removeHandles();
             this._setupHandles();
@@ -3258,10 +3259,10 @@ export function WmksLib($) {
         }
       },
 
-      _setupHandles: function() {
+      _setupHandles: function () {
         let o = this.options, handle, i, n, hname, axis, that = this;
         this.handles = o.handles ||
-          ( !$( ".ui-resizable-handle", this.element ).length ?
+          (!$(".ui-resizable-handle", this.element).length ?
             "e,s,se" : {
               n: ".ui-resizable-n",
               e: ".ui-resizable-e",
@@ -3271,104 +3272,104 @@ export function WmksLib($) {
               sw: ".ui-resizable-sw",
               ne: ".ui-resizable-ne",
               nw: ".ui-resizable-nw"
-            } );
+            });
 
         this._handles = $();
-        if ( this.handles.constructor === String ) {
+        if (this.handles.constructor === String) {
 
-          if ( this.handles === "all" ) {
+          if (this.handles === "all") {
             this.handles = "n,e,s,w,se,sw,ne,nw";
           }
 
-          n = this.handles.split( "," );
+          n = this.handles.split(",");
           this.handles = {};
 
-          for ( i = 0; i < n.length; i++ ) {
+          for (i = 0; i < n.length; i++) {
 
-            handle = $.trim( n[ i ] );
+            handle = $.trim(n[i]);
             hname = "ui-resizable-" + handle;
-            axis = $( "<div>" );
-            this._addClass( axis, "ui-resizable-handle " + hname );
+            axis = $("<div>");
+            this._addClass(axis, "ui-resizable-handle " + hname);
 
-            axis.css( { zIndex: o.zIndex } );
+            axis.css({ zIndex: o.zIndex });
 
-            this.handles[ handle ] = ".ui-resizable-" + handle;
-            this.element.append( axis );
+            this.handles[handle] = ".ui-resizable-" + handle;
+            this.element.append(axis);
           }
 
         }
 
-        this._renderAxis = function( target ) {
+        this._renderAxis = function (target) {
 
           let i, axis, padPos, padWrapper;
 
           target = target || this.element;
 
-          for ( i in this.handles ) {
+          for (i in this.handles) {
 
-            if ( this.handles[ i ].constructor === String ) {
-              this.handles[ i ] = this.element.children( this.handles[ i ] ).first().show();
-            } else if ( this.handles[ i ].jquery || this.handles[ i ].nodeType ) {
-              this.handles[ i ] = $( this.handles[ i ] );
-              this._on( this.handles[ i ], { "mousedown": that._mouseDown } );
+            if (this.handles[i].constructor === String) {
+              this.handles[i] = this.element.children(this.handles[i]).first().show();
+            } else if (this.handles[i].jquery || this.handles[i].nodeType) {
+              this.handles[i] = $(this.handles[i]);
+              this._on(this.handles[i], { "mousedown": that._mouseDown });
             }
 
-            if ( this.elementIsWrapper &&
-              this.originalElement[ 0 ]
+            if (this.elementIsWrapper &&
+              this.originalElement[0]
                 .nodeName
-                .match( /^(textarea|input|select|button)$/i ) ) {
-              axis = $( this.handles[ i ], this.element );
+                .match(/^(textarea|input|select|button)$/i)) {
+              axis = $(this.handles[i], this.element);
 
-              padWrapper = /sw|ne|nw|se|n|s/.test( i ) ?
+              padWrapper = /sw|ne|nw|se|n|s/.test(i) ?
                 axis.outerHeight() :
                 axis.outerWidth();
 
-              padPos = [ "padding",
-                /ne|nw|n/.test( i ) ? "Top" :
-                  /se|sw|s/.test( i ) ? "Bottom" :
-                    /^e$/.test( i ) ? "Right" : "Left" ].join( "" );
+              padPos = ["padding",
+                /ne|nw|n/.test(i) ? "Top" :
+                  /se|sw|s/.test(i) ? "Bottom" :
+                    /^e$/.test(i) ? "Right" : "Left"].join("");
 
-              target.css( padPos, padWrapper );
+              target.css(padPos, padWrapper);
 
               this._proportionallyResize();
             }
 
-            this._handles = this._handles.add( this.handles[ i ] );
+            this._handles = this._handles.add(this.handles[i]);
           }
         };
 
         // TODO: make renderAxis a prototype function
-        this._renderAxis( this.element );
+        this._renderAxis(this.element);
 
-        this._handles = this._handles.add( this.element.find( ".ui-resizable-handle" ) );
+        this._handles = this._handles.add(this.element.find(".ui-resizable-handle"));
         this._handles.disableSelection();
 
-        this._handles.on( "mouseover", function() {
-          if ( !that.resizing ) {
-            if ( this.className ) {
-              axis = this.className.match( /ui-resizable-(se|sw|ne|nw|n|e|s|w)/i );
+        this._handles.on("mouseover", function () {
+          if (!that.resizing) {
+            if (this.className) {
+              axis = this.className.match(/ui-resizable-(se|sw|ne|nw|n|e|s|w)/i);
             }
-            that.axis = axis && axis[ 1 ] ? axis[ 1 ] : "se";
+            that.axis = axis && axis[1] ? axis[1] : "se";
           }
-        } );
+        });
 
-        if ( o.autoHide ) {
+        if (o.autoHide) {
           this._handles.hide();
-          this._addClass( "ui-resizable-autohide" );
+          this._addClass("ui-resizable-autohide");
         }
       },
 
-      _removeHandles: function() {
+      _removeHandles: function () {
         this._handles.remove();
       },
 
-      _mouseCapture: function( event ) {
+      _mouseCapture: function (event) {
         let i, handle,
           capture = false;
 
-        for ( i in this.handles ) {
-          handle = $( this.handles[ i ] )[ 0 ];
-          if ( handle === event.target || $.contains( handle, event.target ) ) {
+        for (i in this.handles) {
+          handle = $(this.handles[i])[0];
+          if (handle === event.target || $.contains(handle, event.target)) {
             capture = true;
           }
         }
@@ -3376,7 +3377,7 @@ export function WmksLib($) {
         return !this.options.disabled && capture;
       },
 
-      _mouseStart: function( event ) {
+      _mouseStart: function (event) {
 
         let curleft, curtop, cursor,
           o = this.options,
@@ -3386,12 +3387,12 @@ export function WmksLib($) {
 
         this._renderProxy();
 
-        curleft = this._num( this.helper.css( "left" ) );
-        curtop = this._num( this.helper.css( "top" ) );
+        curleft = this._num(this.helper.css("left"));
+        curtop = this._num(this.helper.css("top"));
 
-        if ( o.containment ) {
-          curleft += $( o.containment ).scrollLeft() || 0;
-          curtop += $( o.containment ).scrollTop() || 0;
+        if (o.containment) {
+          curleft += $(o.containment).scrollLeft() || 0;
+          curtop += $(o.containment).scrollTop() || 0;
         }
 
         this.offset = this.helper.offset();
@@ -3401,17 +3402,17 @@ export function WmksLib($) {
           width: this.helper.width(),
           height: this.helper.height()
         } : {
-          width: el.width(),
-          height: el.height()
-        };
+            width: el.width(),
+            height: el.height()
+          };
 
         this.originalSize = this._helper ? {
           width: el.outerWidth(),
           height: el.outerHeight()
         } : {
-          width: el.width(),
-          height: el.height()
-        };
+            width: el.width(),
+            height: el.height()
+          };
 
         this.sizeDiff = {
           width: el.outerWidth() - el.width(),
@@ -3421,102 +3422,102 @@ export function WmksLib($) {
         this.originalPosition = { left: curleft, top: curtop };
         this.originalMousePosition = { left: event.pageX, top: event.pageY };
 
-        this.aspectRatio = ( typeof o.aspectRatio === "number" ) ?
+        this.aspectRatio = (typeof o.aspectRatio === "number") ?
           o.aspectRatio :
-          ( ( this.originalSize.width / this.originalSize.height ) || 1 );
+          ((this.originalSize.width / this.originalSize.height) || 1);
 
-        cursor = $( ".ui-resizable-" + this.axis ).css( "cursor" );
-        $( "body" ).css( "cursor", cursor === "auto" ? this.axis + "-resize" : cursor );
+        cursor = $(".ui-resizable-" + this.axis).css("cursor");
+        $("body").css("cursor", cursor === "auto" ? this.axis + "-resize" : cursor);
 
-        this._addClass( "ui-resizable-resizing" );
-        this._propagate( "start", event );
+        this._addClass("ui-resizable-resizing");
+        this._propagate("start", event);
         return true;
       },
 
-      _mouseDrag: function( event ) {
+      _mouseDrag: function (event) {
 
         let data, props,
           smp = this.originalMousePosition,
           a = this.axis,
-          dx = ( event.pageX - smp.left ) || 0,
-          dy = ( event.pageY - smp.top ) || 0,
-          trigger = this._change[ a ];
+          dx = (event.pageX - smp.left) || 0,
+          dy = (event.pageY - smp.top) || 0,
+          trigger = this._change[a];
 
         this._updatePrevProperties();
 
-        if ( !trigger ) {
+        if (!trigger) {
           return false;
         }
 
-        data = trigger.apply( this, [ event, dx, dy ] );
+        data = trigger.apply(this, [event, dx, dy]);
 
-        this._updateVirtualBoundaries( event.shiftKey );
-        if ( this._aspectRatio || event.shiftKey ) {
-          data = this._updateRatio( data, event );
+        this._updateVirtualBoundaries(event.shiftKey);
+        if (this._aspectRatio || event.shiftKey) {
+          data = this._updateRatio(data, event);
         }
 
-        data = this._respectSize( data, event );
+        data = this._respectSize(data, event);
 
-        this._updateCache( data );
+        this._updateCache(data);
 
-        this._propagate( "resize", event );
+        this._propagate("resize", event);
 
         props = this._applyChanges();
 
-        if ( !this._helper && this._proportionallyResizeElements.length ) {
+        if (!this._helper && this._proportionallyResizeElements.length) {
           this._proportionallyResize();
         }
 
-        if ( !$.isEmptyObject( props ) ) {
+        if (!$.isEmptyObject(props)) {
           this._updatePrevProperties();
-          this._trigger( "resize", event, this.ui() );
+          this._trigger("resize", event, this.ui());
           this._applyChanges();
         }
 
         return false;
       },
 
-      _mouseStop: function( event ) {
+      _mouseStop: function (event) {
 
         this.resizing = false;
         let pr, ista, soffseth, soffsetw, s, left, top,
           o = this.options, that = this;
 
-        if ( this._helper ) {
+        if (this._helper) {
 
           pr = this._proportionallyResizeElements;
-          ista = pr.length && ( /textarea/i ).test( pr[ 0 ].nodeName );
-          soffseth = ista && this._hasScroll( pr[ 0 ], "left" ) ? 0 : that.sizeDiff.height;
+          ista = pr.length && (/textarea/i).test(pr[0].nodeName);
+          soffseth = ista && this._hasScroll(pr[0], "left") ? 0 : that.sizeDiff.height;
           soffsetw = ista ? 0 : that.sizeDiff.width;
 
           s = {
-            width: ( that.helper.width()  - soffsetw ),
-            height: ( that.helper.height() - soffseth )
+            width: (that.helper.width() - soffsetw),
+            height: (that.helper.height() - soffseth)
           };
-          left = ( parseFloat( that.element.css( "left" ) ) +
-            ( that.position.left - that.originalPosition.left ) ) || null;
-          top = ( parseFloat( that.element.css( "top" ) ) +
-            ( that.position.top - that.originalPosition.top ) ) || null;
+          left = (parseFloat(that.element.css("left")) +
+            (that.position.left - that.originalPosition.left)) || null;
+          top = (parseFloat(that.element.css("top")) +
+            (that.position.top - that.originalPosition.top)) || null;
 
-          if ( !o.animate ) {
-            this.element.css( $.extend( s, { top: top, left: left } ) );
+          if (!o.animate) {
+            this.element.css($.extend(s, { top: top, left: left }));
           }
 
-          that.helper.height( that.size.height );
-          that.helper.width( that.size.width );
+          that.helper.height(that.size.height);
+          that.helper.width(that.size.width);
 
-          if ( this._helper && !o.animate ) {
+          if (this._helper && !o.animate) {
             this._proportionallyResize();
           }
         }
 
-        $( "body" ).css( "cursor", "auto" );
+        $("body").css("cursor", "auto");
 
-        this._removeClass( "ui-resizable-resizing" );
+        this._removeClass("ui-resizable-resizing");
 
-        this._propagate( "stop", event );
+        this._propagate("stop", event);
 
-        if ( this._helper ) {
+        if (this._helper) {
           this.helper.remove();
         }
 
@@ -3524,7 +3525,7 @@ export function WmksLib($) {
 
       },
 
-      _updatePrevProperties: function() {
+      _updatePrevProperties: function () {
         this.prevPosition = {
           top: this.position.top,
           left: this.position.left
@@ -3535,177 +3536,177 @@ export function WmksLib($) {
         };
       },
 
-      _applyChanges: function() {
+      _applyChanges: function () {
         let props: any = {};
 
-        if ( this.position.top !== this.prevPosition.top ) {
+        if (this.position.top !== this.prevPosition.top) {
           props.top = this.position.top + "px";
         }
-        if ( this.position.left !== this.prevPosition.left ) {
+        if (this.position.left !== this.prevPosition.left) {
           props.left = this.position.left + "px";
         }
-        if ( this.size.width !== this.prevSize.width ) {
+        if (this.size.width !== this.prevSize.width) {
           props.width = this.size.width + "px";
         }
-        if ( this.size.height !== this.prevSize.height ) {
+        if (this.size.height !== this.prevSize.height) {
           props.height = this.size.height + "px";
         }
 
-        this.helper.css( props );
+        this.helper.css(props);
 
         return props;
       },
 
-      _updateVirtualBoundaries: function( forceAspectRatio ) {
+      _updateVirtualBoundaries: function (forceAspectRatio) {
         let pMinWidth, pMaxWidth, pMinHeight, pMaxHeight, b,
           o = this.options;
 
         b = {
-          minWidth: this._isNumber( o.minWidth ) ? o.minWidth : 0,
-          maxWidth: this._isNumber( o.maxWidth ) ? o.maxWidth : Infinity,
-          minHeight: this._isNumber( o.minHeight ) ? o.minHeight : 0,
-          maxHeight: this._isNumber( o.maxHeight ) ? o.maxHeight : Infinity
+          minWidth: this._isNumber(o.minWidth) ? o.minWidth : 0,
+          maxWidth: this._isNumber(o.maxWidth) ? o.maxWidth : Infinity,
+          minHeight: this._isNumber(o.minHeight) ? o.minHeight : 0,
+          maxHeight: this._isNumber(o.maxHeight) ? o.maxHeight : Infinity
         };
 
-        if ( this._aspectRatio || forceAspectRatio ) {
+        if (this._aspectRatio || forceAspectRatio) {
           pMinWidth = b.minHeight * this.aspectRatio;
           pMinHeight = b.minWidth / this.aspectRatio;
           pMaxWidth = b.maxHeight * this.aspectRatio;
           pMaxHeight = b.maxWidth / this.aspectRatio;
 
-          if ( pMinWidth > b.minWidth ) {
+          if (pMinWidth > b.minWidth) {
             b.minWidth = pMinWidth;
           }
-          if ( pMinHeight > b.minHeight ) {
+          if (pMinHeight > b.minHeight) {
             b.minHeight = pMinHeight;
           }
-          if ( pMaxWidth < b.maxWidth ) {
+          if (pMaxWidth < b.maxWidth) {
             b.maxWidth = pMaxWidth;
           }
-          if ( pMaxHeight < b.maxHeight ) {
+          if (pMaxHeight < b.maxHeight) {
             b.maxHeight = pMaxHeight;
           }
         }
         this._vBoundaries = b;
       },
 
-      _updateCache: function( data ) {
+      _updateCache: function (data) {
         this.offset = this.helper.offset();
-        if ( this._isNumber( data.left ) ) {
+        if (this._isNumber(data.left)) {
           this.position.left = data.left;
         }
-        if ( this._isNumber( data.top ) ) {
+        if (this._isNumber(data.top)) {
           this.position.top = data.top;
         }
-        if ( this._isNumber( data.height ) ) {
+        if (this._isNumber(data.height)) {
           this.size.height = data.height;
         }
-        if ( this._isNumber( data.width ) ) {
+        if (this._isNumber(data.width)) {
           this.size.width = data.width;
         }
       },
 
-      _updateRatio: function( data ) {
+      _updateRatio: function (data) {
 
         let cpos = this.position,
           csize = this.size,
           a = this.axis;
 
-        if ( this._isNumber( data.height ) ) {
-          data.width = ( data.height * this.aspectRatio );
-        } else if ( this._isNumber( data.width ) ) {
-          data.height = ( data.width / this.aspectRatio );
+        if (this._isNumber(data.height)) {
+          data.width = (data.height * this.aspectRatio);
+        } else if (this._isNumber(data.width)) {
+          data.height = (data.width / this.aspectRatio);
         }
 
-        if ( a === "sw" ) {
-          data.left = cpos.left + ( csize.width - data.width );
+        if (a === "sw") {
+          data.left = cpos.left + (csize.width - data.width);
           data.top = null;
         }
-        if ( a === "nw" ) {
-          data.top = cpos.top + ( csize.height - data.height );
-          data.left = cpos.left + ( csize.width - data.width );
+        if (a === "nw") {
+          data.top = cpos.top + (csize.height - data.height);
+          data.left = cpos.left + (csize.width - data.width);
         }
 
         return data;
       },
 
-      _respectSize: function( data ) {
+      _respectSize: function (data) {
 
         let o = this._vBoundaries,
           a = this.axis,
-          ismaxw = this._isNumber( data.width ) && o.maxWidth && ( o.maxWidth < data.width ),
-          ismaxh = this._isNumber( data.height ) && o.maxHeight && ( o.maxHeight < data.height ),
-          isminw = this._isNumber( data.width ) && o.minWidth && ( o.minWidth > data.width ),
-          isminh = this._isNumber( data.height ) && o.minHeight && ( o.minHeight > data.height ),
+          ismaxw = this._isNumber(data.width) && o.maxWidth && (o.maxWidth < data.width),
+          ismaxh = this._isNumber(data.height) && o.maxHeight && (o.maxHeight < data.height),
+          isminw = this._isNumber(data.width) && o.minWidth && (o.minWidth > data.width),
+          isminh = this._isNumber(data.height) && o.minHeight && (o.minHeight > data.height),
           dw = this.originalPosition.left + this.originalSize.width,
           dh = this.originalPosition.top + this.originalSize.height,
-          cw = /sw|nw|w/.test( a ), ch = /nw|ne|n/.test( a );
-        if ( isminw ) {
+          cw = /sw|nw|w/.test(a), ch = /nw|ne|n/.test(a);
+        if (isminw) {
           data.width = o.minWidth;
         }
-        if ( isminh ) {
+        if (isminh) {
           data.height = o.minHeight;
         }
-        if ( ismaxw ) {
+        if (ismaxw) {
           data.width = o.maxWidth;
         }
-        if ( ismaxh ) {
+        if (ismaxh) {
           data.height = o.maxHeight;
         }
 
-        if ( isminw && cw ) {
+        if (isminw && cw) {
           data.left = dw - o.minWidth;
         }
-        if ( ismaxw && cw ) {
+        if (ismaxw && cw) {
           data.left = dw - o.maxWidth;
         }
-        if ( isminh && ch ) {
+        if (isminh && ch) {
           data.top = dh - o.minHeight;
         }
-        if ( ismaxh && ch ) {
+        if (ismaxh && ch) {
           data.top = dh - o.maxHeight;
         }
 
         // Fixing jump error on top/left - bug #2330
-        if ( !data.width && !data.height && !data.left && data.top ) {
+        if (!data.width && !data.height && !data.left && data.top) {
           data.top = null;
-        } else if ( !data.width && !data.height && !data.top && data.left ) {
+        } else if (!data.width && !data.height && !data.top && data.left) {
           data.left = null;
         }
 
         return data;
       },
 
-      _getPaddingPlusBorderDimensions: function( element ) {
+      _getPaddingPlusBorderDimensions: function (element) {
         let i = 0,
           widths = [],
           borders = [
-            element.css( "borderTopWidth" ),
-            element.css( "borderRightWidth" ),
-            element.css( "borderBottomWidth" ),
-            element.css( "borderLeftWidth" )
+            element.css("borderTopWidth"),
+            element.css("borderRightWidth"),
+            element.css("borderBottomWidth"),
+            element.css("borderLeftWidth")
           ],
           paddings = [
-            element.css( "paddingTop" ),
-            element.css( "paddingRight" ),
-            element.css( "paddingBottom" ),
-            element.css( "paddingLeft" )
+            element.css("paddingTop"),
+            element.css("paddingRight"),
+            element.css("paddingBottom"),
+            element.css("paddingLeft")
           ];
 
-        for ( ; i < 4; i++ ) {
-          widths[ i ] = ( parseFloat( borders[ i ] ) || 0 );
-          widths[ i ] += ( parseFloat( paddings[ i ] ) || 0 );
+        for (; i < 4; i++) {
+          widths[i] = (parseFloat(borders[i]) || 0);
+          widths[i] += (parseFloat(paddings[i]) || 0);
         }
 
         return {
-          height: widths[ 0 ] + widths[ 2 ],
-          width: widths[ 1 ] + widths[ 3 ]
+          height: widths[0] + widths[2],
+          width: widths[1] + widths[3]
         };
       },
 
-      _proportionallyResize: function() {
+      _proportionallyResize: function () {
 
-        if ( !this._proportionallyResizeElements.length ) {
+        if (!this._proportionallyResizeElements.length) {
           return;
         }
 
@@ -3713,46 +3714,46 @@ export function WmksLib($) {
           i = 0,
           element = this.helper || this.element;
 
-        for ( ; i < this._proportionallyResizeElements.length; i++ ) {
+        for (; i < this._proportionallyResizeElements.length; i++) {
 
-          prel = this._proportionallyResizeElements[ i ];
+          prel = this._proportionallyResizeElements[i];
 
           // TODO: Seems like a bug to cache this.outerDimensions
           // considering that we are in a loop.
-          if ( !this.outerDimensions ) {
-            this.outerDimensions = this._getPaddingPlusBorderDimensions( prel );
+          if (!this.outerDimensions) {
+            this.outerDimensions = this._getPaddingPlusBorderDimensions(prel);
           }
 
-          prel.css( {
-            height: ( element.height() - this.outerDimensions.height ) || 0,
-            width: ( element.width() - this.outerDimensions.width ) || 0
-          } );
+          prel.css({
+            height: (element.height() - this.outerDimensions.height) || 0,
+            width: (element.width() - this.outerDimensions.width) || 0
+          });
 
         }
 
       },
 
-      _renderProxy: function() {
+      _renderProxy: function () {
 
         let el = this.element, o = this.options;
         this.elementOffset = el.offset();
 
-        if ( this._helper ) {
+        if (this._helper) {
 
-          this.helper = this.helper || $( "<div style='overflow:hidden;'></div>" );
+          this.helper = this.helper || $("<div style='overflow:hidden;'></div>");
 
-          this._addClass( this.helper, this._helper );
-          this.helper.css( {
+          this._addClass(this.helper, this._helper);
+          this.helper.css({
             width: this.element.outerWidth(),
             height: this.element.outerHeight(),
             position: "absolute",
             left: this.elementOffset.left + "px",
             top: this.elementOffset.top + "px",
             zIndex: ++o.zIndex //TODO: Don't modify option
-          } );
+          });
 
           this.helper
-            .appendTo( "body" )
+            .appendTo("body")
             .disableSelection();
 
         } else {
@@ -3762,46 +3763,46 @@ export function WmksLib($) {
       },
 
       _change: {
-        e: function( event, dx ) {
+        e: function (event, dx) {
           return { width: this.originalSize.width + dx };
         },
-        w: function( event, dx ) {
+        w: function (event, dx) {
           let cs = this.originalSize, sp = this.originalPosition;
           return { left: sp.left + dx, width: cs.width - dx };
         },
-        n: function( event, dx, dy ) {
+        n: function (event, dx, dy) {
           let cs = this.originalSize, sp = this.originalPosition;
           return { top: sp.top + dy, height: cs.height - dy };
         },
-        s: function( event, dx, dy ) {
+        s: function (event, dx, dy) {
           return { height: this.originalSize.height + dy };
         },
-        se: function( event, dx, dy ) {
-          return $.extend( this._change.s.apply( this, arguments ),
-            this._change.e.apply( this, [ event, dx, dy ] ) );
+        se: function (event, dx, dy) {
+          return $.extend(this._change.s.apply(this, arguments),
+            this._change.e.apply(this, [event, dx, dy]));
         },
-        sw: function( event, dx, dy ) {
-          return $.extend( this._change.s.apply( this, arguments ),
-            this._change.w.apply( this, [ event, dx, dy ] ) );
+        sw: function (event, dx, dy) {
+          return $.extend(this._change.s.apply(this, arguments),
+            this._change.w.apply(this, [event, dx, dy]));
         },
-        ne: function( event, dx, dy ) {
-          return $.extend( this._change.n.apply( this, arguments ),
-            this._change.e.apply( this, [ event, dx, dy ] ) );
+        ne: function (event, dx, dy) {
+          return $.extend(this._change.n.apply(this, arguments),
+            this._change.e.apply(this, [event, dx, dy]));
         },
-        nw: function( event, dx, dy ) {
-          return $.extend( this._change.n.apply( this, arguments ),
-            this._change.w.apply( this, [ event, dx, dy ] ) );
+        nw: function (event, dx, dy) {
+          return $.extend(this._change.n.apply(this, arguments),
+            this._change.w.apply(this, [event, dx, dy]));
         }
       },
 
-      _propagate: function( n, event ) {
-        $.ui.plugin.call( this, n, [ event, this.ui() ] );
-        ( n !== "resize" && this._trigger( n, event, this.ui() ) );
+      _propagate: function (n, event) {
+        $.ui.plugin.call(this, n, [event, this.ui()]);
+        (n !== "resize" && this._trigger(n, event, this.ui()));
       },
 
       plugins: {},
 
-      ui: function() {
+      ui: function () {
         return {
           originalElement: this.originalElement,
           element: this.element,
@@ -3813,77 +3814,77 @@ export function WmksLib($) {
         };
       }
 
-    } );
+    });
 
     /*
      * Resizable Extensions
      */
 
-    $.ui.plugin.add( "resizable", "animate", {
+    $.ui.plugin.add("resizable", "animate", {
 
-      stop: function( event ) {
-        let that = $( this ).resizable( "instance" ),
+      stop: function (event) {
+        let that = $(this).resizable("instance"),
           o = that.options,
           pr = that._proportionallyResizeElements,
-          ista = pr.length && ( /textarea/i ).test( pr[ 0 ].nodeName ),
-          soffseth = ista && that._hasScroll( pr[ 0 ], "left" ) ? 0 : that.sizeDiff.height,
+          ista = pr.length && (/textarea/i).test(pr[0].nodeName),
+          soffseth = ista && that._hasScroll(pr[0], "left") ? 0 : that.sizeDiff.height,
           soffsetw = ista ? 0 : that.sizeDiff.width,
           style = {
-            width: ( that.size.width - soffsetw ),
-            height: ( that.size.height - soffseth )
+            width: (that.size.width - soffsetw),
+            height: (that.size.height - soffseth)
           },
-          left = ( parseFloat( that.element.css( "left" ) ) +
-            ( that.position.left - that.originalPosition.left ) ) || null,
-          top = ( parseFloat( that.element.css( "top" ) ) +
-            ( that.position.top - that.originalPosition.top ) ) || null;
+          left = (parseFloat(that.element.css("left")) +
+            (that.position.left - that.originalPosition.left)) || null,
+          top = (parseFloat(that.element.css("top")) +
+            (that.position.top - that.originalPosition.top)) || null;
 
         that.element.animate(
-          $.extend( style, top && left ? { top: top, left: left } : {} ), {
-            duration: o.animateDuration,
-            easing: o.animateEasing,
-            step: function() {
+          $.extend(style, top && left ? { top: top, left: left } : {}), {
+          duration: o.animateDuration,
+          easing: o.animateEasing,
+          step: function () {
 
-              let data = {
-                width: parseFloat( that.element.css( "width" ) ),
-                height: parseFloat( that.element.css( "height" ) ),
-                top: parseFloat( that.element.css( "top" ) ),
-                left: parseFloat( that.element.css( "left" ) )
-              };
+            let data = {
+              width: parseFloat(that.element.css("width")),
+              height: parseFloat(that.element.css("height")),
+              top: parseFloat(that.element.css("top")),
+              left: parseFloat(that.element.css("left"))
+            };
 
-              if ( pr && pr.length ) {
-                $( pr[ 0 ] ).css( { width: data.width, height: data.height } );
-              }
-
-              // Propagating resize, and updating values for each animation step
-              that._updateCache( data );
-              that._propagate( "resize", event );
-
+            if (pr && pr.length) {
+              $(pr[0]).css({ width: data.width, height: data.height });
             }
+
+            // Propagating resize, and updating values for each animation step
+            that._updateCache(data);
+            that._propagate("resize", event);
+
           }
+        }
         );
       }
 
-    } );
+    });
 
-    $.ui.plugin.add( "resizable", "containment", {
+    $.ui.plugin.add("resizable", "containment", {
 
-      start: function() {
+      start: function () {
         let element, p, co, ch, cw, width, height,
-          that = $( this ).resizable( "instance" ),
+          that = $(this).resizable("instance"),
           o = that.options,
           el = that.element,
           oc = o.containment,
-          ce = ( oc instanceof $ ) ?
-            oc.get( 0 ) :
-            ( /parent/.test( oc ) ) ? el.parent().get( 0 ) : oc;
+          ce = (oc instanceof $) ?
+            oc.get(0) :
+            (/parent/.test(oc)) ? el.parent().get(0) : oc;
 
-        if ( !ce ) {
+        if (!ce) {
           return;
         }
 
-        that.containerElement = $( ce );
+        that.containerElement = $(ce);
 
-        if ( /document/.test( oc ) || oc === document ) {
+        if (/document/.test(oc) || oc === document) {
           that.containerOffset = {
             left: 0,
             top: 0
@@ -3894,32 +3895,32 @@ export function WmksLib($) {
           };
 
           that.parentData = {
-            element: $( document ),
+            element: $(document),
             left: 0,
             top: 0,
-            width: $( document ).width(),
+            width: $(document).width(),
             // @ts-ignore
-            height: $( document ).height() || document.body.parentNode.scrollHeight
+            height: $(document).height() || document.body.parentNode.scrollHeight
           };
         } else {
-          element = $( ce );
+          element = $(ce);
           p = [];
-          $( [ "Top", "Right", "Left", "Bottom" ] ).each( function( i, name ) {
-            p[ i ] = that._num( element.css( "padding" + name ) );
-          } );
+          $(["Top", "Right", "Left", "Bottom"]).each(function (i, name) {
+            p[i] = that._num(element.css("padding" + name));
+          });
 
           that.containerOffset = element.offset();
           that.containerPosition = element.position();
           that.containerSize = {
-            height: ( element.innerHeight() - p[ 3 ] ),
-            width: ( element.innerWidth() - p[ 1 ] )
+            height: (element.innerHeight() - p[3]),
+            width: (element.innerWidth() - p[1])
           };
 
           co = that.containerOffset;
           ch = that.containerSize.height;
           cw = that.containerSize.width;
-          width = ( that._hasScroll ( ce, "left" ) ? ce.scrollWidth : cw );
-          height = ( that._hasScroll ( ce ) ? ce.scrollHeight : ch ) ;
+          width = (that._hasScroll(ce, "left") ? ce.scrollWidth : cw);
+          height = (that._hasScroll(ce) ? ce.scrollHeight : ch);
 
           that.parentData = {
             element: ce,
@@ -3931,9 +3932,9 @@ export function WmksLib($) {
         }
       },
 
-      resize: function( event ) {
+      resize: function (event) {
         let woset, hoset, isParent, isOffsetRelative,
-          that = $( this ).resizable( "instance" ),
+          that = $(this).resizable("instance"),
           o = that.options,
           co = that.containerOffset,
           cp = that.position,
@@ -3945,40 +3946,40 @@ export function WmksLib($) {
           ce = that.containerElement,
           continueResize = true;
 
-        if ( ce[ 0 ] !== document && ( /static/ ).test( ce.css( "position" ) ) ) {
+        if (ce[0] !== document && (/static/).test(ce.css("position"))) {
           cop = co;
         }
 
-        if ( cp.left < ( that._helper ? co.left : 0 ) ) {
+        if (cp.left < (that._helper ? co.left : 0)) {
           that.size.width = that.size.width +
-            ( that._helper ?
-              ( that.position.left - co.left ) :
-              ( that.position.left - cop.left ) );
+            (that._helper ?
+              (that.position.left - co.left) :
+              (that.position.left - cop.left));
 
-          if ( pRatio ) {
+          if (pRatio) {
             that.size.height = that.size.width / that.aspectRatio;
             continueResize = false;
           }
           that.position.left = o.helper ? co.left : 0;
         }
 
-        if ( cp.top < ( that._helper ? co.top : 0 ) ) {
+        if (cp.top < (that._helper ? co.top : 0)) {
           that.size.height = that.size.height +
-            ( that._helper ?
-              ( that.position.top - co.top ) :
-              that.position.top );
+            (that._helper ?
+              (that.position.top - co.top) :
+              that.position.top);
 
-          if ( pRatio ) {
+          if (pRatio) {
             that.size.width = that.size.height * that.aspectRatio;
             continueResize = false;
           }
           that.position.top = that._helper ? co.top : 0;
         }
 
-        isParent = that.containerElement.get( 0 ) === that.element.parent().get( 0 );
-        isOffsetRelative = /relative|absolute/.test( that.containerElement.css( "position" ) );
+        isParent = that.containerElement.get(0) === that.element.parent().get(0);
+        isOffsetRelative = /relative|absolute/.test(that.containerElement.css("position"));
 
-        if ( isParent && isOffsetRelative ) {
+        if (isParent && isOffsetRelative) {
           that.offset.left = that.parentData.left + that.position.left;
           that.offset.top = that.parentData.top + that.position.top;
         } else {
@@ -3986,33 +3987,33 @@ export function WmksLib($) {
           that.offset.top = that.element.offset().top;
         }
 
-        woset = Math.abs( that.sizeDiff.width +
-          ( that._helper ?
+        woset = Math.abs(that.sizeDiff.width +
+          (that._helper ?
             that.offset.left - cop.left :
-            ( that.offset.left - co.left ) ) );
+            (that.offset.left - co.left)));
 
-        hoset = Math.abs( that.sizeDiff.height +
-          ( that._helper ?
+        hoset = Math.abs(that.sizeDiff.height +
+          (that._helper ?
             that.offset.top - cop.top :
-            ( that.offset.top - co.top ) ) );
+            (that.offset.top - co.top)));
 
-        if ( woset + that.size.width >= that.parentData.width ) {
+        if (woset + that.size.width >= that.parentData.width) {
           that.size.width = that.parentData.width - woset;
-          if ( pRatio ) {
+          if (pRatio) {
             that.size.height = that.size.width / that.aspectRatio;
             continueResize = false;
           }
         }
 
-        if ( hoset + that.size.height >= that.parentData.height ) {
+        if (hoset + that.size.height >= that.parentData.height) {
           that.size.height = that.parentData.height - hoset;
-          if ( pRatio ) {
+          if (pRatio) {
             that.size.width = that.size.height * that.aspectRatio;
             continueResize = false;
           }
         }
 
-        if ( !continueResize ) {
+        if (!continueResize) {
           that.position.left = that.prevPosition.left;
           that.position.top = that.prevPosition.top;
           that.size.width = that.prevSize.width;
@@ -4020,92 +4021,92 @@ export function WmksLib($) {
         }
       },
 
-      stop: function() {
-        let that = $( this ).resizable( "instance" ),
+      stop: function () {
+        let that = $(this).resizable("instance"),
           o = that.options,
           co = that.containerOffset,
           cop = that.containerPosition,
           ce = that.containerElement,
-          helper = $( that.helper ),
+          helper = $(that.helper),
           ho = helper.offset(),
           w = helper.outerWidth() - that.sizeDiff.width,
           h = helper.outerHeight() - that.sizeDiff.height;
 
-        if ( that._helper && !o.animate && ( /relative/ ).test( ce.css( "position" ) ) ) {
-          $( this ).css( {
+        if (that._helper && !o.animate && (/relative/).test(ce.css("position"))) {
+          $(this).css({
             left: ho.left - cop.left - co.left,
             width: w,
             height: h
-          } );
+          });
         }
 
-        if ( that._helper && !o.animate && ( /static/ ).test( ce.css( "position" ) ) ) {
-          $( this ).css( {
+        if (that._helper && !o.animate && (/static/).test(ce.css("position"))) {
+          $(this).css({
             left: ho.left - cop.left - co.left,
             width: w,
             height: h
-          } );
+          });
         }
       }
-    } );
+    });
 
-    $.ui.plugin.add( "resizable", "alsoResize", {
+    $.ui.plugin.add("resizable", "alsoResize", {
 
-      start: function() {
-        let that = $( this ).resizable( "instance" ),
+      start: function () {
+        let that = $(this).resizable("instance"),
           o = that.options;
 
-        $( o.alsoResize ).each( function() {
-          let el = $( this );
-          el.data( "ui-resizable-alsoresize", {
-            width: parseFloat( el.width() ), height: parseFloat( el.height() ),
-            left: parseFloat( el.css( "left" ) ), top: parseFloat( el.css( "top" ) )
-          } );
-        } );
+        $(o.alsoResize).each(function () {
+          let el = $(this);
+          el.data("ui-resizable-alsoresize", {
+            width: parseFloat(el.width()), height: parseFloat(el.height()),
+            left: parseFloat(el.css("left")), top: parseFloat(el.css("top"))
+          });
+        });
       },
 
-      resize: function( event, ui ) {
-        let that = $( this ).resizable( "instance" ),
+      resize: function (event, ui) {
+        let that = $(this).resizable("instance"),
           o = that.options,
           os = that.originalSize,
           op = that.originalPosition,
           delta = {
-            height: ( that.size.height - os.height ) || 0,
-            width: ( that.size.width - os.width ) || 0,
-            top: ( that.position.top - op.top ) || 0,
-            left: ( that.position.left - op.left ) || 0
+            height: (that.size.height - os.height) || 0,
+            width: (that.size.width - os.width) || 0,
+            top: (that.position.top - op.top) || 0,
+            left: (that.position.left - op.left) || 0
           };
 
-        $( o.alsoResize ).each( function() {
-          let el = $( this ), start = $( this ).data( "ui-resizable-alsoresize" ), style = {},
-            css = el.parents( ui.originalElement[ 0 ] ).length ?
-              [ "width", "height" ] :
-              [ "width", "height", "top", "left" ];
+        $(o.alsoResize).each(function () {
+          let el = $(this), start = $(this).data("ui-resizable-alsoresize"), style = {},
+            css = el.parents(ui.originalElement[0]).length ?
+              ["width", "height"] :
+              ["width", "height", "top", "left"];
 
-          $.each( css, function( i, prop ) {
-            let sum = ( start[ prop ] || 0 ) + ( delta[ prop ] || 0 );
-            if ( sum && sum >= 0 ) {
-              style[ prop ] = sum || null;
+          $.each(css, function (i, prop) {
+            let sum = (start[prop] || 0) + (delta[prop] || 0);
+            if (sum && sum >= 0) {
+              style[prop] = sum || null;
             }
-          } );
+          });
 
-          el.css( style );
-        } );
+          el.css(style);
+        });
       },
 
-      stop: function() {
-        $( this ).removeData( "ui-resizable-alsoresize" );
+      stop: function () {
+        $(this).removeData("ui-resizable-alsoresize");
       }
-    } );
+    });
 
-    $.ui.plugin.add( "resizable", "ghost", {
+    $.ui.plugin.add("resizable", "ghost", {
 
-      start: function() {
+      start: function () {
 
-        let that = $( this ).resizable( "instance" ), cs = that.size;
+        let that = $(this).resizable("instance"), cs = that.size;
 
         that.ghost = that.originalElement.clone();
-        that.ghost.css( {
+        that.ghost.css({
           opacity: 0.25,
           display: "block",
           position: "relative",
@@ -4114,96 +4115,96 @@ export function WmksLib($) {
           margin: 0,
           left: 0,
           top: 0
-        } );
+        });
 
-        that._addClass( that.ghost, "ui-resizable-ghost" );
+        that._addClass(that.ghost, "ui-resizable-ghost");
 
         // DEPRECATED
         // TODO: remove after 1.12
-        if ( $.uiBackCompat !== false && typeof that.options.ghost === "string" ) {
+        if ($.uiBackCompat !== false && typeof that.options.ghost === "string") {
 
           // Ghost option
-          that.ghost.addClass( this.options.ghost );
+          that.ghost.addClass(this.options.ghost);
         }
 
-        that.ghost.appendTo( that.helper );
+        that.ghost.appendTo(that.helper);
 
       },
 
-      resize: function() {
-        let that = $( this ).resizable( "instance" );
-        if ( that.ghost ) {
-          that.ghost.css( {
+      resize: function () {
+        let that = $(this).resizable("instance");
+        if (that.ghost) {
+          that.ghost.css({
             position: "relative",
             height: that.size.height,
             width: that.size.width
-          } );
+          });
         }
       },
 
-      stop: function() {
-        let that = $( this ).resizable( "instance" );
-        if ( that.ghost && that.helper ) {
-          that.helper.get( 0 ).removeChild( that.ghost.get( 0 ) );
+      stop: function () {
+        let that = $(this).resizable("instance");
+        if (that.ghost && that.helper) {
+          that.helper.get(0).removeChild(that.ghost.get(0));
         }
       }
 
-    } );
+    });
 
-    $.ui.plugin.add( "resizable", "grid", {
+    $.ui.plugin.add("resizable", "grid", {
 
-      resize: function() {
+      resize: function () {
         let outerDimensions,
-          that = $( this ).resizable( "instance" ),
+          that = $(this).resizable("instance"),
           o = that.options,
           cs = that.size,
           os = that.originalSize,
           op = that.originalPosition,
           a = that.axis,
-          grid = typeof o.grid === "number" ? [ o.grid, o.grid ] : o.grid,
-          gridX = ( grid[ 0 ] || 1 ),
-          gridY = ( grid[ 1 ] || 1 ),
-          ox = Math.round( ( cs.width - os.width ) / gridX ) * gridX,
-          oy = Math.round( ( cs.height - os.height ) / gridY ) * gridY,
+          grid = typeof o.grid === "number" ? [o.grid, o.grid] : o.grid,
+          gridX = (grid[0] || 1),
+          gridY = (grid[1] || 1),
+          ox = Math.round((cs.width - os.width) / gridX) * gridX,
+          oy = Math.round((cs.height - os.height) / gridY) * gridY,
           newWidth = os.width + ox,
           newHeight = os.height + oy,
-          isMaxWidth = o.maxWidth && ( o.maxWidth < newWidth ),
-          isMaxHeight = o.maxHeight && ( o.maxHeight < newHeight ),
-          isMinWidth = o.minWidth && ( o.minWidth > newWidth ),
-          isMinHeight = o.minHeight && ( o.minHeight > newHeight );
+          isMaxWidth = o.maxWidth && (o.maxWidth < newWidth),
+          isMaxHeight = o.maxHeight && (o.maxHeight < newHeight),
+          isMinWidth = o.minWidth && (o.minWidth > newWidth),
+          isMinHeight = o.minHeight && (o.minHeight > newHeight);
 
         o.grid = grid;
 
-        if ( isMinWidth ) {
+        if (isMinWidth) {
           newWidth += gridX;
         }
-        if ( isMinHeight ) {
+        if (isMinHeight) {
           newHeight += gridY;
         }
-        if ( isMaxWidth ) {
+        if (isMaxWidth) {
           newWidth -= gridX;
         }
-        if ( isMaxHeight ) {
+        if (isMaxHeight) {
           newHeight -= gridY;
         }
 
-        if ( /^(se|s|e)$/.test( a ) ) {
+        if (/^(se|s|e)$/.test(a)) {
           that.size.width = newWidth;
           that.size.height = newHeight;
-        } else if ( /^(ne)$/.test( a ) ) {
+        } else if (/^(ne)$/.test(a)) {
           that.size.width = newWidth;
           that.size.height = newHeight;
           that.position.top = op.top - oy;
-        } else if ( /^(sw)$/.test( a ) ) {
+        } else if (/^(sw)$/.test(a)) {
           that.size.width = newWidth;
           that.size.height = newHeight;
           that.position.left = op.left - ox;
         } else {
-          if ( newHeight - gridY <= 0 || newWidth - gridX <= 0 ) {
-            outerDimensions = that._getPaddingPlusBorderDimensions( this );
+          if (newHeight - gridY <= 0 || newWidth - gridX <= 0) {
+            outerDimensions = that._getPaddingPlusBorderDimensions(this);
           }
 
-          if ( newHeight - gridY > 0 ) {
+          if (newHeight - gridY > 0) {
             that.size.height = newHeight;
             that.position.top = op.top - oy;
           } else {
@@ -4211,7 +4212,7 @@ export function WmksLib($) {
             that.size.height = newHeight;
             that.position.top = op.top + os.height - newHeight;
           }
-          if ( newWidth - gridX > 0 ) {
+          if (newWidth - gridX > 0) {
             that.size.width = newWidth;
             that.position.left = op.left - ox;
           } else {
@@ -4222,7 +4223,7 @@ export function WmksLib($) {
         }
       }
 
-    } );
+    });
 
     let widgetsResizable = $.ui.resizable;
 
@@ -4237,7 +4238,7 @@ export function WmksLib($) {
 
     let controlgroupCornerRegex = /ui-corner-([a-z]){2,6}/g;
 
-    let widgetsControlgroup = $.widget( "ui.controlgroup", {
+    let widgetsControlgroup = $.widget("ui.controlgroup", {
       version: "1.12.1",
       defaultElement: "<div>",
       options: {
@@ -4253,163 +4254,163 @@ export function WmksLib($) {
         }
       },
 
-      _create: function() {
+      _create: function () {
         this._enhance();
       },
 
       // To support the enhanced option in jQuery Mobile, we isolate DOM manipulation
-      _enhance: function() {
-        this.element.attr( "role", "toolbar" );
+      _enhance: function () {
+        this.element.attr("role", "toolbar");
         this.refresh();
       },
 
-      _destroy: function() {
-        this._callChildMethod( "destroy" );
-        this.childWidgets.removeData( "ui-controlgroup-data" );
-        this.element.removeAttr( "role" );
-        if ( this.options.items.controlgroupLabel ) {
+      _destroy: function () {
+        this._callChildMethod("destroy");
+        this.childWidgets.removeData("ui-controlgroup-data");
+        this.element.removeAttr("role");
+        if (this.options.items.controlgroupLabel) {
           this.element
-            .find( this.options.items.controlgroupLabel )
-            .find( ".ui-controlgroup-label-contents" )
+            .find(this.options.items.controlgroupLabel)
+            .find(".ui-controlgroup-label-contents")
             .contents().unwrap();
         }
       },
 
-      _initWidgets: function() {
+      _initWidgets: function () {
         let that = this,
           childWidgets = [];
 
         // First we iterate over each of the items options
-        $.each( this.options.items, function( widget, selector ) {
+        $.each(this.options.items, function (widget, selector) {
           let labels;
           let options = {};
 
           // Make sure the widget has a selector set
-          if ( !selector ) {
+          if (!selector) {
             return;
           }
 
-          if ( widget === "controlgroupLabel" ) {
-            labels = that.element.find( selector );
-            labels.each( function() {
-              let element = $( this );
+          if (widget === "controlgroupLabel") {
+            labels = that.element.find(selector);
+            labels.each(function () {
+              let element = $(this);
 
-              if ( element.children( ".ui-controlgroup-label-contents" ).length ) {
+              if (element.children(".ui-controlgroup-label-contents").length) {
                 return;
               }
               element.contents()
-                .wrapAll( "<span class='ui-controlgroup-label-contents'></span>" );
-            } );
-            that._addClass( labels, null, "ui-widget ui-widget-content ui-state-default" );
-            childWidgets = childWidgets.concat( labels.get() );
+                .wrapAll("<span class='ui-controlgroup-label-contents'></span>");
+            });
+            that._addClass(labels, null, "ui-widget ui-widget-content ui-state-default");
+            childWidgets = childWidgets.concat(labels.get());
             return;
           }
 
           // Make sure the widget actually exists
-          if ( !$.fn[ widget ] ) {
+          if (!$.fn[widget]) {
             return;
           }
 
           // We assume everything is in the middle to start because we can't determine
           // first / last elements until all enhancments are done.
-          if ( that[ "_" + widget + "Options" ] ) {
-            options = that[ "_" + widget + "Options" ]( "middle" );
+          if (that["_" + widget + "Options"]) {
+            options = that["_" + widget + "Options"]("middle");
           } else {
             options = { classes: {} };
           }
 
           // Find instances of this widget inside controlgroup and init them
           that.element
-            .find( selector )
-            .each( function() {
-              let element = $( this );
-              let instance = element[ widget ]( "instance" );
+            .find(selector)
+            .each(function () {
+              let element = $(this);
+              let instance = element[widget]("instance");
 
               // We need to clone the default options for this type of widget to avoid
               // polluting the variable options which has a wider scope than a single widget.
-              let instanceOptions = $.widget.extend( {}, options );
+              let instanceOptions = $.widget.extend({}, options);
 
               // If the button is the child of a spinner ignore it
               // TODO: Find a more generic solution
-              if ( widget === "button" && element.parent( ".ui-spinner" ).length ) {
+              if (widget === "button" && element.parent(".ui-spinner").length) {
                 return;
               }
 
               // Create the widget if it doesn't exist
-              if ( !instance ) {
-                instance = element[ widget ]()[ widget ]( "instance" );
+              if (!instance) {
+                instance = element[widget]()[widget]("instance");
               }
-              if ( instance ) {
+              if (instance) {
                 instanceOptions.classes =
-                  that._resolveClassesValues( instanceOptions.classes, instance );
+                  that._resolveClassesValues(instanceOptions.classes, instance);
               }
-              element[ widget ]( instanceOptions );
+              element[widget](instanceOptions);
 
               // Store an instance of the controlgroup to be able to reference
               // from the outermost element for changing options and refresh
-              let widgetElement = element[ widget ]( "widget" );
-              $.data( widgetElement[ 0 ], "ui-controlgroup-data",
-                instance ? instance : element[ widget ]( "instance" ) );
+              let widgetElement = element[widget]("widget");
+              $.data(widgetElement[0], "ui-controlgroup-data",
+                instance ? instance : element[widget]("instance"));
 
-              childWidgets.push( widgetElement[ 0 ] );
-            } );
-        } );
+              childWidgets.push(widgetElement[0]);
+            });
+        });
 
-        this.childWidgets = $( $.unique( childWidgets ) );
-        this._addClass( this.childWidgets, "ui-controlgroup-item" );
+        this.childWidgets = $($.unique(childWidgets));
+        this._addClass(this.childWidgets, "ui-controlgroup-item");
       },
 
-      _callChildMethod: function( method ) {
-        this.childWidgets.each( function() {
-          let element = $( this ),
-            data = element.data( "ui-controlgroup-data" );
-          if ( data && data[ method ] ) {
-            data[ method ]();
+      _callChildMethod: function (method) {
+        this.childWidgets.each(function () {
+          let element = $(this),
+            data = element.data("ui-controlgroup-data");
+          if (data && data[method]) {
+            data[method]();
           }
-        } );
+        });
       },
 
-      _updateCornerClass: function( element, position ) {
+      _updateCornerClass: function (element, position) {
         let remove = "ui-corner-top ui-corner-bottom ui-corner-left ui-corner-right ui-corner-all";
-        let add = this._buildSimpleOptions( position, "label" ).classes.label;
+        let add = this._buildSimpleOptions(position, "label").classes.label;
 
-        this._removeClass( element, null, remove );
-        this._addClass( element, null, add );
+        this._removeClass(element, null, remove);
+        this._addClass(element, null, add);
       },
 
-      _buildSimpleOptions: function( position, key ) {
+      _buildSimpleOptions: function (position, key) {
         let direction = this.options.direction === "vertical";
         let result = {
           classes: {}
         };
-        result.classes[ key ] = {
+        result.classes[key] = {
           "middle": "",
-          "first": "ui-corner-" + ( direction ? "top" : "left" ),
-          "last": "ui-corner-" + ( direction ? "bottom" : "right" ),
+          "first": "ui-corner-" + (direction ? "top" : "left"),
+          "last": "ui-corner-" + (direction ? "bottom" : "right"),
           "only": "ui-corner-all"
-        }[ position ];
+        }[position];
 
         return result;
       },
 
-      _spinnerOptions: function( position ) {
-        let options = this._buildSimpleOptions( position, "ui-spinner" );
+      _spinnerOptions: function (position) {
+        let options = this._buildSimpleOptions(position, "ui-spinner");
 
-        options.classes[ "ui-spinner-up" ] = "";
-        options.classes[ "ui-spinner-down" ] = "";
+        options.classes["ui-spinner-up"] = "";
+        options.classes["ui-spinner-down"] = "";
 
         return options;
       },
 
-      _buttonOptions: function( position ) {
-        return this._buildSimpleOptions( position, "ui-button" );
+      _buttonOptions: function (position) {
+        return this._buildSimpleOptions(position, "ui-button");
       },
 
-      _checkboxradioOptions: function( position ) {
-        return this._buildSimpleOptions( position, "ui-checkboxradio-label" );
+      _checkboxradioOptions: function (position) {
+        return this._buildSimpleOptions(position, "ui-checkboxradio-label");
       },
 
-      _selectmenuOptions: function( position ) {
+      _selectmenuOptions: function (position) {
         let direction = this.options.direction === "vertical";
         return {
           width: direction ? "auto" : false,
@@ -4419,87 +4420,87 @@ export function WmksLib($) {
               "ui-selectmenu-button-closed": ""
             },
             first: {
-              "ui-selectmenu-button-open": "ui-corner-" + ( direction ? "top" : "tl" ),
-              "ui-selectmenu-button-closed": "ui-corner-" + ( direction ? "top" : "left" )
+              "ui-selectmenu-button-open": "ui-corner-" + (direction ? "top" : "tl"),
+              "ui-selectmenu-button-closed": "ui-corner-" + (direction ? "top" : "left")
             },
             last: {
               "ui-selectmenu-button-open": direction ? "" : "ui-corner-tr",
-              "ui-selectmenu-button-closed": "ui-corner-" + ( direction ? "bottom" : "right" )
+              "ui-selectmenu-button-closed": "ui-corner-" + (direction ? "bottom" : "right")
             },
             only: {
               "ui-selectmenu-button-open": "ui-corner-top",
               "ui-selectmenu-button-closed": "ui-corner-all"
             }
 
-          }[ position ]
+          }[position]
         };
       },
 
-      _resolveClassesValues: function( classes, instance ) {
+      _resolveClassesValues: function (classes, instance) {
         let result = {};
-        $.each( classes, function( key ) {
-          let current = instance.options.classes[ key ] || "";
-          current = $.trim( current.replace( controlgroupCornerRegex, "" ) );
-          result[ key ] = ( current + " " + classes[ key ] ).replace( /\s+/g, " " );
-        } );
+        $.each(classes, function (key) {
+          let current = instance.options.classes[key] || "";
+          current = $.trim(current.replace(controlgroupCornerRegex, ""));
+          result[key] = (current + " " + classes[key]).replace(/\s+/g, " ");
+        });
         return result;
       },
 
-      _setOption: function( key, value ) {
-        if ( key === "direction" ) {
-          this._removeClass( "ui-controlgroup-" + this.options.direction );
+      _setOption: function (key, value) {
+        if (key === "direction") {
+          this._removeClass("ui-controlgroup-" + this.options.direction);
         }
 
-        this._super( key, value );
-        if ( key === "disabled" ) {
-          this._callChildMethod( value ? "disable" : "enable" );
+        this._super(key, value);
+        if (key === "disabled") {
+          this._callChildMethod(value ? "disable" : "enable");
           return;
         }
 
         this.refresh();
       },
 
-      refresh: function() {
+      refresh: function () {
         let children,
           that = this;
 
-        this._addClass( "ui-controlgroup ui-controlgroup-" + this.options.direction );
+        this._addClass("ui-controlgroup ui-controlgroup-" + this.options.direction);
 
-        if ( this.options.direction === "horizontal" ) {
-          this._addClass( null, "ui-helper-clearfix" );
+        if (this.options.direction === "horizontal") {
+          this._addClass(null, "ui-helper-clearfix");
         }
         this._initWidgets();
 
         children = this.childWidgets;
 
         // We filter here because we need to track all childWidgets not just the visible ones
-        if ( this.options.onlyVisible ) {
-          children = children.filter( ":visible" );
+        if (this.options.onlyVisible) {
+          children = children.filter(":visible");
         }
 
-        if ( children.length ) {
+        if (children.length) {
 
           // We do this last because we need to make sure all enhancment is done
           // before determining first and last
-          $.each( [ "first", "last" ], function( index, value ) {
-            let instance = children[ value ]().data( "ui-controlgroup-data" );
+          $.each(["first", "last"], function (index, value) {
+            let instance = children[value]().data("ui-controlgroup-data");
 
-            if ( instance && that[ "_" + instance.widgetName + "Options" ] ) {
-              let options = that[ "_" + instance.widgetName + "Options" ](
+            if (instance && that["_" + instance.widgetName + "Options"]) {
+              let options = that["_" + instance.widgetName + "Options"](
                 children.length === 1 ? "only" : value
               );
-              options.classes = that._resolveClassesValues( options.classes, instance );
-              instance.element[ instance.widgetName ]( options );
+              options.classes = that._resolveClassesValues(options.classes, instance);
+              instance.element[instance.widgetName](options);
             } else {
-              that._updateCornerClass( children[ value ](), value );
+              that._updateCornerClass(children[value](), value);
             }
-          } );
+          });
 
           // Finally call the refresh method on each of the child widgets.
-          this._callChildMethod( "refresh" );
+          this._callChildMethod("refresh");
         }
       }
-    } );
+    });
 
     /*!
      * jQuery UI Checkboxradio 1.12.1
@@ -4510,7 +4511,7 @@ export function WmksLib($) {
      * http://jquery.org/license
      */
 
-    $.widget( "ui.checkboxradio", [ $.ui.formResetMixin, {
+    $.widget("ui.checkboxradio", [$.ui.formResetMixin, {
       version: "1.12.1",
       options: {
         disabled: null,
@@ -4522,7 +4523,7 @@ export function WmksLib($) {
         }
       },
 
-      _getCreateOptions: function() {
+      _getCreateOptions: function () {
         let disabled, labels;
         let that = this;
         let options = this._super() || {};
@@ -4535,160 +4536,160 @@ export function WmksLib($) {
         labels = this.element.labels();
 
         // If there are multiple labels, use the last one
-        this.label = $( labels[ labels.length - 1 ] );
-        if ( !this.label.length ) {
-          $.error( "No label found for checkboxradio widget" );
+        this.label = $(labels[labels.length - 1]);
+        if (!this.label.length) {
+          $.error("No label found for checkboxradio widget");
         }
 
         this.originalLabel = "";
 
         // We need to get the label text but this may also need to make sure it does not contain the
         // input itself.
-        this.label.contents().not( this.element[ 0 ] ).each( function() {
+        this.label.contents().not(this.element[0]).each(function () {
 
           // The label contents could be text, html, or a mix. We concat each element to get a
           // string representation of the label, without the input as part of it.
-          that.originalLabel += this.nodeType === 3 ? $( this ).text() : this.outerHTML;
-        } );
+          that.originalLabel += this.nodeType === 3 ? $(this).text() : this.outerHTML;
+        });
 
         // Set the label option if we found label text
-        if ( this.originalLabel ) {
+        if (this.originalLabel) {
           options.label = this.originalLabel;
         }
 
-        disabled = this.element[ 0 ].disabled;
-        if ( disabled != null ) {
+        disabled = this.element[0].disabled;
+        if (disabled != null) {
           options.disabled = disabled;
         }
         return options;
       },
 
-      _create: function() {
-        let checked = this.element[ 0 ].checked;
+      _create: function () {
+        let checked = this.element[0].checked;
 
         this._bindFormResetHandler();
 
-        if ( this.options.disabled == null ) {
-          this.options.disabled = this.element[ 0 ].disabled;
+        if (this.options.disabled == null) {
+          this.options.disabled = this.element[0].disabled;
         }
 
-        this._setOption( "disabled", this.options.disabled );
-        this._addClass( "ui-checkboxradio", "ui-helper-hidden-accessible" );
-        this._addClass( this.label, "ui-checkboxradio-label", "ui-button ui-widget" );
+        this._setOption("disabled", this.options.disabled);
+        this._addClass("ui-checkboxradio", "ui-helper-hidden-accessible");
+        this._addClass(this.label, "ui-checkboxradio-label", "ui-button ui-widget");
 
-        if ( this.type === "radio" ) {
-          this._addClass( this.label, "ui-checkboxradio-radio-label" );
+        if (this.type === "radio") {
+          this._addClass(this.label, "ui-checkboxradio-radio-label");
         }
 
-        if ( this.options.label && this.options.label !== this.originalLabel ) {
+        if (this.options.label && this.options.label !== this.originalLabel) {
           this._updateLabel();
-        } else if ( this.originalLabel ) {
+        } else if (this.originalLabel) {
           this.options.label = this.originalLabel;
         }
 
         this._enhance();
 
-        if ( checked ) {
-          this._addClass( this.label, "ui-checkboxradio-checked", "ui-state-active" );
-          if ( this.icon ) {
-            this._addClass( this.icon, null, "ui-state-hover" );
+        if (checked) {
+          this._addClass(this.label, "ui-checkboxradio-checked", "ui-state-active");
+          if (this.icon) {
+            this._addClass(this.icon, null, "ui-state-hover");
           }
         }
 
-        this._on( {
+        this._on({
           change: "_toggleClasses",
-          focus: function() {
-            this._addClass( this.label, null, "ui-state-focus ui-visual-focus" );
+          focus: function () {
+            this._addClass(this.label, null, "ui-state-focus ui-visual-focus");
           },
-          blur: function() {
-            this._removeClass( this.label, null, "ui-state-focus ui-visual-focus" );
+          blur: function () {
+            this._removeClass(this.label, null, "ui-state-focus ui-visual-focus");
           }
-        } );
+        });
       },
 
-      _readType: function() {
-        let nodeName = this.element[ 0 ].nodeName.toLowerCase();
-        this.type = this.element[ 0 ].type;
-        if ( nodeName !== "input" || !/radio|checkbox/.test( this.type ) ) {
-          $.error( "Can't create checkboxradio on element.nodeName=" + nodeName +
-            " and element.type=" + this.type );
+      _readType: function () {
+        let nodeName = this.element[0].nodeName.toLowerCase();
+        this.type = this.element[0].type;
+        if (nodeName !== "input" || !/radio|checkbox/.test(this.type)) {
+          $.error("Can't create checkboxradio on element.nodeName=" + nodeName +
+            " and element.type=" + this.type);
         }
       },
 
       // Support jQuery Mobile enhanced option
-      _enhance: function() {
-        this._updateIcon( this.element[ 0 ].checked );
+      _enhance: function () {
+        this._updateIcon(this.element[0].checked);
       },
 
-      widget: function() {
+      widget: function () {
         return this.label;
       },
 
-      _getRadioGroup: function() {
+      _getRadioGroup: function () {
         let group;
-        let name = this.element[ 0 ].name;
-        let nameSelector = "input[name='" + $.ui.escapeSelector( name ) + "']";
+        let name = this.element[0].name;
+        let nameSelector = "input[name='" + $.ui.escapeSelector(name) + "']";
 
-        if ( !name ) {
-          return $( [] );
+        if (!name) {
+          return $([]);
         }
 
-        if ( this.form.length ) {
-          group = $( this.form[ 0 ].elements ).filter( nameSelector );
+        if (this.form.length) {
+          group = $(this.form[0].elements).filter(nameSelector);
         } else {
 
           // Not inside a form, check all inputs that also are not inside a form
-          group = $( nameSelector ).filter( function() {
-            return $( this ).form().length === 0;
-          } );
+          group = $(nameSelector).filter(function () {
+            return $(this).form().length === 0;
+          });
         }
 
-        return group.not( this.element );
+        return group.not(this.element);
       },
 
-      _toggleClasses: function() {
-        let checked = this.element[ 0 ].checked;
-        this._toggleClass( this.label, "ui-checkboxradio-checked", "ui-state-active", checked );
+      _toggleClasses: function () {
+        let checked = this.element[0].checked;
+        this._toggleClass(this.label, "ui-checkboxradio-checked", "ui-state-active", checked);
 
-        if ( this.options.icon && this.type === "checkbox" ) {
-          this._toggleClass( this.icon, null, "ui-icon-check ui-state-checked", checked )
-            ._toggleClass( this.icon, null, "ui-icon-blank", !checked );
+        if (this.options.icon && this.type === "checkbox") {
+          this._toggleClass(this.icon, null, "ui-icon-check ui-state-checked", checked)
+            ._toggleClass(this.icon, null, "ui-icon-blank", !checked);
         }
 
-        if ( this.type === "radio" ) {
+        if (this.type === "radio") {
           this._getRadioGroup()
-            .each( function() {
-              let instance = $( this ).checkboxradio( "instance" );
+            .each(function () {
+              let instance = $(this).checkboxradio("instance");
 
-              if ( instance ) {
-                instance._removeClass( instance.label,
-                  "ui-checkboxradio-checked", "ui-state-active" );
+              if (instance) {
+                instance._removeClass(instance.label,
+                  "ui-checkboxradio-checked", "ui-state-active");
               }
-            } );
+            });
         }
       },
 
-      _destroy: function() {
+      _destroy: function () {
         this._unbindFormResetHandler();
 
-        if ( this.icon ) {
+        if (this.icon) {
           this.icon.remove();
           this.iconSpace.remove();
         }
       },
 
-      _setOption: function( key, value ) {
+      _setOption: function (key, value) {
 
         // We don't allow the value to be set to nothing
-        if ( key === "label" && !value ) {
+        if (key === "label" && !value) {
           return;
         }
 
-        this._super( key, value );
+        this._super(key, value);
 
-        if ( key === "disabled" ) {
-          this._toggleClass( this.label, null, "ui-state-disabled", value );
-          this.element[ 0 ].disabled = value;
+        if (key === "disabled") {
+          this._toggleClass(this.label, null, "ui-state-disabled", value);
+          this.element[0].disabled = value;
 
           // Don't refresh when setting disabled
           return;
@@ -4696,65 +4697,65 @@ export function WmksLib($) {
         this.refresh();
       },
 
-      _updateIcon: function( checked ) {
+      _updateIcon: function (checked) {
         let toAdd = "ui-icon ui-icon-background ";
 
-        if ( this.options.icon ) {
-          if ( !this.icon ) {
-            this.icon = $( "<span>" );
-            this.iconSpace = $( "<span> </span>" );
-            this._addClass( this.iconSpace, "ui-checkboxradio-icon-space" );
+        if (this.options.icon) {
+          if (!this.icon) {
+            this.icon = $("<span>");
+            this.iconSpace = $("<span> </span>");
+            this._addClass(this.iconSpace, "ui-checkboxradio-icon-space");
           }
 
-          if ( this.type === "checkbox" ) {
+          if (this.type === "checkbox") {
             toAdd += checked ? "ui-icon-check ui-state-checked" : "ui-icon-blank";
-            this._removeClass( this.icon, null, checked ? "ui-icon-blank" : "ui-icon-check" );
+            this._removeClass(this.icon, null, checked ? "ui-icon-blank" : "ui-icon-check");
           } else {
             toAdd += "ui-icon-blank";
           }
-          this._addClass( this.icon, "ui-checkboxradio-icon", toAdd );
-          if ( !checked ) {
-            this._removeClass( this.icon, null, "ui-icon-check ui-state-checked" );
+          this._addClass(this.icon, "ui-checkboxradio-icon", toAdd);
+          if (!checked) {
+            this._removeClass(this.icon, null, "ui-icon-check ui-state-checked");
           }
-          this.icon.prependTo( this.label ).after( this.iconSpace );
-        } else if ( this.icon !== undefined ) {
+          this.icon.prependTo(this.label).after(this.iconSpace);
+        } else if (this.icon !== undefined) {
           this.icon.remove();
           this.iconSpace.remove();
           delete this.icon;
         }
       },
 
-      _updateLabel: function() {
+      _updateLabel: function () {
 
         // Remove the contents of the label ( minus the icon, icon space, and input )
-        let contents = this.label.contents().not( this.element[ 0 ] );
-        if ( this.icon ) {
-          contents = contents.not( this.icon[ 0 ] );
+        let contents = this.label.contents().not(this.element[0]);
+        if (this.icon) {
+          contents = contents.not(this.icon[0]);
         }
-        if ( this.iconSpace ) {
-          contents = contents.not( this.iconSpace[ 0 ] );
+        if (this.iconSpace) {
+          contents = contents.not(this.iconSpace[0]);
         }
         contents.remove();
 
-        this.label.append( this.options.label );
+        this.label.append(this.options.label);
       },
 
-      refresh: function() {
-        let checked = this.element[ 0 ].checked,
-          isDisabled = this.element[ 0 ].disabled;
+      refresh: function () {
+        let checked = this.element[0].checked,
+          isDisabled = this.element[0].disabled;
 
-        this._updateIcon( checked );
-        this._toggleClass( this.label, "ui-checkboxradio-checked", "ui-state-active", checked );
-        if ( this.options.label !== null ) {
+        this._updateIcon(checked);
+        this._toggleClass(this.label, "ui-checkboxradio-checked", "ui-state-active", checked);
+        if (this.options.label !== null) {
           this._updateLabel();
         }
 
-        if ( isDisabled !== this.options.disabled ) {
-          this._setOptions( { "disabled": isDisabled } );
+        if (isDisabled !== this.options.disabled) {
+          this._setOptions({ "disabled": isDisabled });
         }
       }
 
-    } ] );
+    }]);
 
     let widgetsCheckboxradio = $.ui.checkboxradio;
 
@@ -4768,7 +4769,7 @@ export function WmksLib($) {
      * http://jquery.org/license
      */
 
-    $.widget( "ui.button", {
+    $.widget("ui.button", {
       version: "1.12.1",
       defaultElement: "<button>",
       options: {
@@ -4782,241 +4783,241 @@ export function WmksLib($) {
         showLabel: true
       },
 
-      _getCreateOptions: function() {
+      _getCreateOptions: function () {
         let disabled,
 
           // This is to support cases like in jQuery Mobile where the base widget does have
           // an implementation of _getCreateOptions
           options = this._super() || {};
 
-        this.isInput = this.element.is( "input" );
+        this.isInput = this.element.is("input");
 
-        disabled = this.element[ 0 ].disabled;
-        if ( disabled != null ) {
+        disabled = this.element[0].disabled;
+        if (disabled != null) {
           options.disabled = disabled;
         }
 
         this.originalLabel = this.isInput ? this.element.val() : this.element.html();
-        if ( this.originalLabel ) {
+        if (this.originalLabel) {
           options.label = this.originalLabel;
         }
 
         return options;
       },
 
-      _create: function() {
-        if ( !this.option.showLabel && !this.options.icon ) {
+      _create: function () {
+        if (!this.option.showLabel && !this.options.icon) {
           this.options.showLabel = true;
         }
 
         // We have to check the option again here even though we did in _getCreateOptions,
         // because null may have been passed on init which would override what was set in
         // _getCreateOptions
-        if ( this.options.disabled == null ) {
-          this.options.disabled = this.element[ 0 ].disabled || false;
+        if (this.options.disabled == null) {
+          this.options.disabled = this.element[0].disabled || false;
         }
 
-        this.hasTitle = !!this.element.attr( "title" );
+        this.hasTitle = !!this.element.attr("title");
 
         // Check to see if the label needs to be set or if its already correct
-        if ( this.options.label && this.options.label !== this.originalLabel ) {
-          if ( this.isInput ) {
-            this.element.val( this.options.label );
+        if (this.options.label && this.options.label !== this.originalLabel) {
+          if (this.isInput) {
+            this.element.val(this.options.label);
           } else {
-            this.element.html( this.options.label );
+            this.element.html(this.options.label);
           }
         }
-        this._addClass( "ui-button", "ui-widget" );
-        this._setOption( "disabled", this.options.disabled );
+        this._addClass("ui-button", "ui-widget");
+        this._setOption("disabled", this.options.disabled);
         this._enhance();
 
-        if ( this.element.is( "a" ) ) {
-          this._on( {
-            "keyup": function( event ) {
-              if ( event.keyCode === $.ui.keyCode.SPACE ) {
+        if (this.element.is("a")) {
+          this._on({
+            "keyup": function (event) {
+              if (event.keyCode === $.ui.keyCode.SPACE) {
                 event.preventDefault();
 
                 // Support: PhantomJS <= 1.9, IE 8 Only
                 // If a native click is available use it so we actually cause navigation
                 // otherwise just trigger a click event
-                if ( this.element[ 0 ].click ) {
-                  this.element[ 0 ].click();
+                if (this.element[0].click) {
+                  this.element[0].click();
                 } else {
-                  this.element.trigger( "click" );
+                  this.element.trigger("click");
                 }
               }
             }
-          } );
+          });
         }
       },
 
-      _enhance: function() {
-        if ( !this.element.is( "button" ) ) {
-          this.element.attr( "role", "button" );
+      _enhance: function () {
+        if (!this.element.is("button")) {
+          this.element.attr("role", "button");
         }
 
-        if ( this.options.icon ) {
-          this._updateIcon( "icon", this.options.icon );
+        if (this.options.icon) {
+          this._updateIcon("icon", this.options.icon);
           this._updateTooltip();
         }
       },
 
-      _updateTooltip: function() {
-        this.title = this.element.attr( "title" );
+      _updateTooltip: function () {
+        this.title = this.element.attr("title");
 
-        if ( !this.options.showLabel && !this.title ) {
-          this.element.attr( "title", this.options.label );
+        if (!this.options.showLabel && !this.title) {
+          this.element.attr("title", this.options.label);
         }
       },
 
-      _updateIcon: function( option, value ) {
+      _updateIcon: function (option, value) {
         let icon = option !== "iconPosition",
           position = icon ? this.options.iconPosition : value,
           displayBlock = position === "top" || position === "bottom";
 
         // Create icon
-        if ( !this.icon ) {
-          this.icon = $( "<span>" );
+        if (!this.icon) {
+          this.icon = $("<span>");
 
-          this._addClass( this.icon, "ui-button-icon", "ui-icon" );
+          this._addClass(this.icon, "ui-button-icon", "ui-icon");
 
-          if ( !this.options.showLabel ) {
-            this._addClass( "ui-button-icon-only" );
+          if (!this.options.showLabel) {
+            this._addClass("ui-button-icon-only");
           }
-        } else if ( icon ) {
+        } else if (icon) {
 
           // If we are updating the icon remove the old icon class
-          this._removeClass( this.icon, null, this.options.icon );
+          this._removeClass(this.icon, null, this.options.icon);
         }
 
         // If we are updating the icon add the new icon class
-        if ( icon ) {
-          this._addClass( this.icon, null, value );
+        if (icon) {
+          this._addClass(this.icon, null, value);
         }
 
-        this._attachIcon( position );
+        this._attachIcon(position);
 
         // If the icon is on top or bottom we need to add the ui-widget-icon-block class and remove
         // the iconSpace if there is one.
-        if ( displayBlock ) {
-          this._addClass( this.icon, null, "ui-widget-icon-block" );
-          if ( this.iconSpace ) {
+        if (displayBlock) {
+          this._addClass(this.icon, null, "ui-widget-icon-block");
+          if (this.iconSpace) {
             this.iconSpace.remove();
           }
         } else {
 
           // Position is beginning or end so remove the ui-widget-icon-block class and add the
           // space if it does not exist
-          if ( !this.iconSpace ) {
-            this.iconSpace = $( "<span> </span>" );
-            this._addClass( this.iconSpace, "ui-button-icon-space" );
+          if (!this.iconSpace) {
+            this.iconSpace = $("<span> </span>");
+            this._addClass(this.iconSpace, "ui-button-icon-space");
           }
-          this._removeClass( this.icon, null, "ui-wiget-icon-block" );
-          this._attachIconSpace( position );
+          this._removeClass(this.icon, null, "ui-wiget-icon-block");
+          this._attachIconSpace(position);
         }
       },
 
-      _destroy: function() {
-        this.element.removeAttr( "role" );
+      _destroy: function () {
+        this.element.removeAttr("role");
 
-        if ( this.icon ) {
+        if (this.icon) {
           this.icon.remove();
         }
-        if ( this.iconSpace ) {
+        if (this.iconSpace) {
           this.iconSpace.remove();
         }
-        if ( !this.hasTitle ) {
-          this.element.removeAttr( "title" );
+        if (!this.hasTitle) {
+          this.element.removeAttr("title");
         }
       },
 
-      _attachIconSpace: function( iconPosition ) {
-        this.icon[ /^(?:end|bottom)/.test( iconPosition ) ? "before" : "after" ]( this.iconSpace );
+      _attachIconSpace: function (iconPosition) {
+        this.icon[/^(?:end|bottom)/.test(iconPosition) ? "before" : "after"](this.iconSpace);
       },
 
-      _attachIcon: function( iconPosition ) {
-        this.element[ /^(?:end|bottom)/.test( iconPosition ) ? "append" : "prepend" ]( this.icon );
+      _attachIcon: function (iconPosition) {
+        this.element[/^(?:end|bottom)/.test(iconPosition) ? "append" : "prepend"](this.icon);
       },
 
-      _setOptions: function( options ) {
+      _setOptions: function (options) {
         let newShowLabel = options.showLabel === undefined ?
           this.options.showLabel :
           options.showLabel,
           newIcon = options.icon === undefined ? this.options.icon : options.icon;
 
-        if ( !newShowLabel && !newIcon ) {
+        if (!newShowLabel && !newIcon) {
           options.showLabel = true;
         }
-        this._super( options );
+        this._super(options);
       },
 
-      _setOption: function( key, value ) {
-        if ( key === "icon" ) {
-          if ( value ) {
-            this._updateIcon( key, value );
-          } else if ( this.icon ) {
+      _setOption: function (key, value) {
+        if (key === "icon") {
+          if (value) {
+            this._updateIcon(key, value);
+          } else if (this.icon) {
             this.icon.remove();
-            if ( this.iconSpace ) {
+            if (this.iconSpace) {
               this.iconSpace.remove();
             }
           }
         }
 
-        if ( key === "iconPosition" ) {
-          this._updateIcon( key, value );
+        if (key === "iconPosition") {
+          this._updateIcon(key, value);
         }
 
         // Make sure we can't end up with a button that has neither text nor icon
-        if ( key === "showLabel" ) {
-          this._toggleClass( "ui-button-icon-only", null, !value );
+        if (key === "showLabel") {
+          this._toggleClass("ui-button-icon-only", null, !value);
           this._updateTooltip();
         }
 
-        if ( key === "label" ) {
-          if ( this.isInput ) {
-            this.element.val( value );
+        if (key === "label") {
+          if (this.isInput) {
+            this.element.val(value);
           } else {
 
             // If there is an icon, append it, else nothing then append the value
             // this avoids removal of the icon when setting label text
-            this.element.html( value );
-            if ( this.icon ) {
-              this._attachIcon( this.options.iconPosition );
-              this._attachIconSpace( this.options.iconPosition );
+            this.element.html(value);
+            if (this.icon) {
+              this._attachIcon(this.options.iconPosition);
+              this._attachIconSpace(this.options.iconPosition);
             }
           }
         }
 
-        this._super( key, value );
+        this._super(key, value);
 
-        if ( key === "disabled" ) {
-          this._toggleClass( null, "ui-state-disabled", value );
-          this.element[ 0 ].disabled = value;
-          if ( value ) {
+        if (key === "disabled") {
+          this._toggleClass(null, "ui-state-disabled", value);
+          this.element[0].disabled = value;
+          if (value) {
             this.element.blur();
           }
         }
       },
 
-      refresh: function() {
+      refresh: function () {
 
         // Make sure to only check disabled if its an element that supports this otherwise
         // check for the disabled class to determine state
-        let isDisabled = this.element.is( "input, button" ) ?
-          this.element[ 0 ].disabled : this.element.hasClass( "ui-button-disabled" );
+        let isDisabled = this.element.is("input, button") ?
+          this.element[0].disabled : this.element.hasClass("ui-button-disabled");
 
-        if ( isDisabled !== this.options.disabled ) {
-          this._setOptions( { disabled: isDisabled } );
+        if (isDisabled !== this.options.disabled) {
+          this._setOptions({ disabled: isDisabled });
         }
 
         this._updateTooltip();
       }
-    } );
+    });
 
-    if ( $.uiBackCompat !== false ) {
+    if ($.uiBackCompat !== false) {
 
       // Text and Icons options
-      $.widget( "ui.button", $.ui.button, {
+      $.widget("ui.button", $.ui.button, {
         options: {
           text: true,
           icons: {
@@ -5025,88 +5026,88 @@ export function WmksLib($) {
           }
         },
 
-        _create: function() {
-          if ( this.options.showLabel && !this.options.text ) {
+        _create: function () {
+          if (this.options.showLabel && !this.options.text) {
             this.options.showLabel = this.options.text;
           }
-          if ( !this.options.showLabel && this.options.text ) {
+          if (!this.options.showLabel && this.options.text) {
             this.options.text = this.options.showLabel;
           }
-          if ( !this.options.icon && ( this.options.icons.primary ||
-            this.options.icons.secondary ) ) {
-            if ( this.options.icons.primary ) {
+          if (!this.options.icon && (this.options.icons.primary ||
+            this.options.icons.secondary)) {
+            if (this.options.icons.primary) {
               this.options.icon = this.options.icons.primary;
             } else {
               this.options.icon = this.options.icons.secondary;
               this.options.iconPosition = "end";
             }
-          } else if ( this.options.icon ) {
+          } else if (this.options.icon) {
             this.options.icons.primary = this.options.icon;
           }
           this._super();
         },
 
-        _setOption: function( key, value ) {
-          if ( key === "text" ) {
-            this._super( "showLabel", value );
+        _setOption: function (key, value) {
+          if (key === "text") {
+            this._super("showLabel", value);
             return;
           }
-          if ( key === "showLabel" ) {
+          if (key === "showLabel") {
             this.options.text = value;
           }
-          if ( key === "icon" ) {
+          if (key === "icon") {
             this.options.icons.primary = value;
           }
-          if ( key === "icons" ) {
-            if ( value.primary ) {
-              this._super( "icon", value.primary );
-              this._super( "iconPosition", "beginning" );
-            } else if ( value.secondary ) {
-              this._super( "icon", value.secondary );
-              this._super( "iconPosition", "end" );
+          if (key === "icons") {
+            if (value.primary) {
+              this._super("icon", value.primary);
+              this._super("iconPosition", "beginning");
+            } else if (value.secondary) {
+              this._super("icon", value.secondary);
+              this._super("iconPosition", "end");
             }
           }
-          this._superApply( arguments );
+          this._superApply(arguments);
         }
-      } );
+      });
 
-      $.fn.button = ( function( orig ) {
-        return function() {
-          if ( !this.length || ( this.length && this[ 0 ].tagName !== "INPUT" ) ||
-            ( this.length && this[ 0 ].tagName === "INPUT" && (
-              this.attr( "type" ) !== "checkbox" && this.attr( "type" ) !== "radio"
-            ) ) ) {
-            return orig.apply( this, arguments );
+      $.fn.button = (function (orig) {
+        return function () {
+          if (!this.length || (this.length && this[0].tagName !== "INPUT") ||
+            (this.length && this[0].tagName === "INPUT" && (
+              this.attr("type") !== "checkbox" && this.attr("type") !== "radio"
+            ))) {
+            return orig.apply(this, arguments);
           }
-          if ( !$.ui.checkboxradio ) {
-            $.error( "Checkboxradio widget missing" );
+          if (!$.ui.checkboxradio) {
+            $.error("Checkboxradio widget missing");
           }
-          if ( arguments.length === 0 ) {
-            return this.checkboxradio( {
+          if (arguments.length === 0) {
+            return this.checkboxradio({
               "icon": false
-            } );
+            });
           }
-          return this.checkboxradio.apply( this, arguments );
+          return this.checkboxradio.apply(this, arguments);
         };
-      } )( $.fn.button );
+      })($.fn.button);
 
-      $.fn.buttonset = function() {
-        if ( !$.ui.controlgroup ) {
-          $.error( "Controlgroup widget missing" );
+      $.fn.buttonset = function () {
+        if (!$.ui.controlgroup) {
+          $.error("Controlgroup widget missing");
         }
-        if ( arguments[ 0 ] === "option" && arguments[ 1 ] === "items" && arguments[ 2 ] ) {
-          return this.controlgroup.apply( this,
-            [ arguments[ 0 ], "items.button", arguments[ 2 ] ] );
+        if (arguments[0] === "option" && arguments[1] === "items" && arguments[2]) {
+          return this.controlgroup.apply(this,
+            [arguments[0], "items.button", arguments[2]]);
         }
-        if ( arguments[ 0 ] === "option" && arguments[ 1 ] === "items" ) {
-          return this.controlgroup.apply( this, [ arguments[ 0 ], "items.button" ] );
+        if (arguments[0] === "option" && arguments[1] === "items") {
+          return this.controlgroup.apply(this, [arguments[0], "items.button"]);
         }
-        if ( typeof arguments[ 0 ] === "object" && arguments[ 0 ].items ) {
-          arguments[ 0 ].items = {
-            button: arguments[ 0 ].items
+        if (typeof arguments[0] === "object" && arguments[0].items) {
+          arguments[0].items = {
+            button: arguments[0].items
           };
         }
-        return this.controlgroup.apply( this, arguments );
+        return this.controlgroup.apply(this, arguments);
       };
     }
 
@@ -5122,7 +5123,7 @@ export function WmksLib($) {
      * http://jquery.org/license
      */
 
-    $.widget( "ui.dialog", {
+    $.widget("ui.dialog", {
       version: "1.12.1",
       options: {
         appendTo: "body",
@@ -5149,10 +5150,10 @@ export function WmksLib($) {
           collision: "fit",
 
           // Ensure the titlebar is always visible
-          using: function( pos ) {
-            let topOffset = $( this ).css( pos ).offset().top;
-            if ( topOffset < 0 ) {
-              $( this ).css( "top", pos.top - topOffset );
+          using: function (pos) {
+            let topOffset = $(this).css(pos).offset().top;
+            if (topOffset < 0) {
+              $(this).css("top", pos.top - topOffset);
             }
           }
         },
@@ -5191,25 +5192,25 @@ export function WmksLib($) {
         minWidth: true
       },
 
-      _create: function() {
+      _create: function () {
         this.originalCss = {
-          display: this.element[ 0 ].style.display,
-          width: this.element[ 0 ].style.width,
-          minHeight: this.element[ 0 ].style.minHeight,
-          maxHeight: this.element[ 0 ].style.maxHeight,
-          height: this.element[ 0 ].style.height
+          display: this.element[0].style.display,
+          width: this.element[0].style.width,
+          minHeight: this.element[0].style.minHeight,
+          maxHeight: this.element[0].style.maxHeight,
+          height: this.element[0].style.height
         };
         this.originalPosition = {
           parent: this.element.parent(),
-          index: this.element.parent().children().index( this.element )
+          index: this.element.parent().children().index(this.element)
         };
-        this.originalTitle = this.element.attr( "title" );
-        if ( this.options.title == null && this.originalTitle != null ) {
+        this.originalTitle = this.element.attr("title");
+        if (this.options.title == null && this.originalTitle != null) {
           this.options.title = this.originalTitle;
         }
 
         // Dialogs can't be disabled
-        if ( this.options.disabled ) {
+        if (this.options.disabled) {
           this.options.disabled = false;
         }
 
@@ -5217,18 +5218,18 @@ export function WmksLib($) {
 
         this.element
           .show()
-          .removeAttr( "title" )
-          .appendTo( this.uiDialog );
+          .removeAttr("title")
+          .appendTo(this.uiDialog);
 
-        this._addClass( "ui-dialog-content", "ui-widget-content" );
+        this._addClass("ui-dialog-content", "ui-widget-content");
 
         this._createTitlebar();
         this._createButtonPane();
 
-        if ( this.options.draggable && $.fn.draggable ) {
+        if (this.options.draggable && $.fn.draggable) {
           this._makeDraggable();
         }
-        if ( this.options.resizable && $.fn.resizable ) {
+        if (this.options.resizable && $.fn.resizable) {
           this._makeResizable();
         }
 
@@ -5237,21 +5238,21 @@ export function WmksLib($) {
         this._trackFocus();
       },
 
-      _init: function() {
-        if ( this.options.autoOpen ) {
+      _init: function () {
+        if (this.options.autoOpen) {
           this.open();
         }
       },
 
-      _appendTo: function() {
+      _appendTo: function () {
         let element = this.options.appendTo;
-        if ( element && ( element.jquery || element.nodeType ) ) {
-          return $( element );
+        if (element && (element.jquery || element.nodeType)) {
+          return $(element);
         }
-        return this.document.find( element || "body" ).eq( 0 );
+        return this.document.find(element || "body").eq(0);
       },
 
-      _destroy: function() {
+      _destroy: function () {
         let next,
           originalPosition = this.originalPosition;
 
@@ -5260,38 +5261,38 @@ export function WmksLib($) {
 
         this.element
           .removeUniqueId()
-          .css( this.originalCss )
+          .css(this.originalCss)
 
           // Without detaching first, the following becomes really slow
           .detach();
 
         this.uiDialog.remove();
 
-        if ( this.originalTitle ) {
-          this.element.attr( "title", this.originalTitle );
+        if (this.originalTitle) {
+          this.element.attr("title", this.originalTitle);
         }
 
-        next = originalPosition.parent.children().eq( originalPosition.index );
+        next = originalPosition.parent.children().eq(originalPosition.index);
 
         // Don't try to place the dialog next to itself (#8613)
-        if ( next.length && next[ 0 ] !== this.element[ 0 ] ) {
-          next.before( this.element );
+        if (next.length && next[0] !== this.element[0]) {
+          next.before(this.element);
         } else {
-          originalPosition.parent.append( this.element );
+          originalPosition.parent.append(this.element);
         }
       },
 
-      widget: function() {
+      widget: function () {
         return this.uiDialog;
       },
 
       disable: $.noop,
       enable: $.noop,
 
-      close: function( event ) {
+      close: function (event) {
         let that = this;
 
-        if ( !this._isOpen || this._trigger( "beforeClose", event ) === false ) {
+        if (!this._isOpen || this._trigger("beforeClose", event) === false) {
           return;
         }
 
@@ -5300,83 +5301,83 @@ export function WmksLib($) {
         this._destroyOverlay();
         this._untrackInstance();
 
-        if ( !this.opener.filter( ":focusable" ).trigger( "focus" ).length ) {
+        if (!this.opener.filter(":focusable").trigger("focus").length) {
 
           // Hiding a focused element doesn't trigger blur in WebKit
           // so in case we have nothing to focus on, explicitly blur the active element
           // https://bugs.webkit.org/show_bug.cgi?id=47182
-          $.ui.safeBlur( $.ui.safeActiveElement( this.document[ 0 ] ) );
+          $.ui.safeBlur($.ui.safeActiveElement(this.document[0]));
         }
 
-        this._hide( this.uiDialog, this.options.hide, function() {
-          that._trigger( "close", event );
-        } );
+        this._hide(this.uiDialog, this.options.hide, function () {
+          that._trigger("close", event);
+        });
       },
 
-      isOpen: function() {
+      isOpen: function () {
         return this._isOpen;
       },
 
-      moveToTop: function() {
+      moveToTop: function () {
         this._moveToTop();
       },
 
-      _moveToTop: function( event, silent ) {
+      _moveToTop: function (event, silent) {
         let moved = false,
-          zIndices = this.uiDialog.siblings( ".ui-front:visible" ).map( function() {
-            return +$( this ).css( "z-index" );
-          } ).get(),
-          zIndexMax = Math.max.apply( null, zIndices );
+          zIndices = this.uiDialog.siblings(".ui-front:visible").map(function () {
+            return +$(this).css("z-index");
+          }).get(),
+          zIndexMax = Math.max.apply(null, zIndices);
 
-        if ( zIndexMax >= +this.uiDialog.css( "z-index" ) ) {
-          this.uiDialog.css( "z-index", zIndexMax + 1 );
+        if (zIndexMax >= +this.uiDialog.css("z-index")) {
+          this.uiDialog.css("z-index", zIndexMax + 1);
           moved = true;
         }
 
-        if ( moved && !silent ) {
-          this._trigger( "focus", event );
+        if (moved && !silent) {
+          this._trigger("focus", event);
         }
         return moved;
       },
 
-      open: function() {
+      open: function () {
         let that = this;
-        if ( this._isOpen ) {
-          if ( this._moveToTop() ) {
+        if (this._isOpen) {
+          if (this._moveToTop()) {
             this._focusTabbable();
           }
           return;
         }
 
         this._isOpen = true;
-        this.opener = $( $.ui.safeActiveElement( this.document[ 0 ] ) );
+        this.opener = $($.ui.safeActiveElement(this.document[0]));
 
         this._size();
         this._position();
         this._createOverlay();
-        this._moveToTop( null, true );
+        this._moveToTop(null, true);
 
         // Ensure the overlay is moved to the top with the dialog, but only when
         // opening. The overlay shouldn't move after the dialog is open so that
         // modeless dialogs opened after the modal dialog stack properly.
-        if ( this.overlay ) {
-          this.overlay.css( "z-index", this.uiDialog.css( "z-index" ) - 1 );
+        if (this.overlay) {
+          this.overlay.css("z-index", this.uiDialog.css("z-index") - 1);
         }
 
-        this._show( this.uiDialog, this.options.show, function() {
+        this._show(this.uiDialog, this.options.show, function () {
           that._focusTabbable();
-          that._trigger( "focus" );
-        } );
+          that._trigger("focus");
+        });
 
         // Track the dialog immediately upon openening in case a focus event
         // somehow occurs outside of the dialog before an element inside the
         // dialog is focused (#10152)
         this._makeFocusTarget();
 
-        this._trigger( "open" );
+        this._trigger("open");
       },
 
-      _focusTabbable: function() {
+      _focusTabbable: function () {
 
         // Set focus to the first match:
         // 1. An element that was focused previously
@@ -5386,173 +5387,173 @@ export function WmksLib($) {
         // 5. The close button
         // 6. The dialog itself
         let hasFocus = this._focusedElement;
-        if ( !hasFocus ) {
-          hasFocus = this.element.find( "[autofocus]" );
+        if (!hasFocus) {
+          hasFocus = this.element.find("[autofocus]");
         }
-        if ( !hasFocus.length ) {
-          hasFocus = this.element.find( ":tabbable" );
+        if (!hasFocus.length) {
+          hasFocus = this.element.find(":tabbable");
         }
-        if ( !hasFocus.length ) {
-          hasFocus = this.uiDialogButtonPane.find( ":tabbable" );
+        if (!hasFocus.length) {
+          hasFocus = this.uiDialogButtonPane.find(":tabbable");
         }
-        if ( !hasFocus.length ) {
-          hasFocus = this.uiDialogTitlebarClose.filter( ":tabbable" );
+        if (!hasFocus.length) {
+          hasFocus = this.uiDialogTitlebarClose.filter(":tabbable");
         }
-        if ( !hasFocus.length ) {
+        if (!hasFocus.length) {
           hasFocus = this.uiDialog;
         }
-        hasFocus.eq( 0 ).trigger( "focus" );
+        hasFocus.eq(0).trigger("focus");
       },
 
-      _keepFocus: function( event ) {
+      _keepFocus: function (event) {
         function checkFocus() {
-          let activeElement = $.ui.safeActiveElement( this.document[ 0 ] ),
-            isActive = this.uiDialog[ 0 ] === activeElement ||
-              $.contains( this.uiDialog[ 0 ], activeElement );
-          if ( !isActive ) {
+          let activeElement = $.ui.safeActiveElement(this.document[0]),
+            isActive = this.uiDialog[0] === activeElement ||
+              $.contains(this.uiDialog[0], activeElement);
+          if (!isActive) {
             this._focusTabbable();
           }
         }
         event.preventDefault();
-        checkFocus.call( this );
+        checkFocus.call(this);
 
         // support: IE
         // IE <= 8 doesn't prevent moving focus even with event.preventDefault()
         // so we check again later
-        this._delay( checkFocus );
+        this._delay(checkFocus);
       },
 
-      _createWrapper: function() {
-        this.uiDialog = $( "<div>" )
+      _createWrapper: function () {
+        this.uiDialog = $("<div>")
           .hide()
-          .attr( {
+          .attr({
 
             // Setting tabIndex makes the div focusable
             tabIndex: -1,
             role: "dialog"
-          } )
-          .appendTo( this._appendTo() );
+          })
+          .appendTo(this._appendTo());
 
-        this._addClass( this.uiDialog, "ui-dialog", "ui-widget ui-widget-content ui-front" );
-        this._on( this.uiDialog, {
-          keydown: function( event ) {
-            if ( this.options.closeOnEscape && !event.isDefaultPrevented() && event.keyCode &&
-              event.keyCode === $.ui.keyCode.ESCAPE ) {
+        this._addClass(this.uiDialog, "ui-dialog", "ui-widget ui-widget-content ui-front");
+        this._on(this.uiDialog, {
+          keydown: function (event) {
+            if (this.options.closeOnEscape && !event.isDefaultPrevented() && event.keyCode &&
+              event.keyCode === $.ui.keyCode.ESCAPE) {
               event.preventDefault();
-              this.close( event );
+              this.close(event);
               return;
             }
 
             // Prevent tabbing out of dialogs
-            if ( event.keyCode !== $.ui.keyCode.TAB || event.isDefaultPrevented() ) {
+            if (event.keyCode !== $.ui.keyCode.TAB || event.isDefaultPrevented()) {
               return;
             }
-            let tabbables = this.uiDialog.find( ":tabbable" ),
-              first = tabbables.filter( ":first" ),
-              last = tabbables.filter( ":last" );
+            let tabbables = this.uiDialog.find(":tabbable"),
+              first = tabbables.filter(":first"),
+              last = tabbables.filter(":last");
 
-            if ( ( event.target === last[ 0 ] || event.target === this.uiDialog[ 0 ] ) &&
-              !event.shiftKey ) {
-              this._delay( function() {
-                first.trigger( "focus" );
-              } );
+            if ((event.target === last[0] || event.target === this.uiDialog[0]) &&
+              !event.shiftKey) {
+              this._delay(function () {
+                first.trigger("focus");
+              });
               event.preventDefault();
-            } else if ( ( event.target === first[ 0 ] ||
-              event.target === this.uiDialog[ 0 ] ) && event.shiftKey ) {
-              this._delay( function() {
-                last.trigger( "focus" );
-              } );
+            } else if ((event.target === first[0] ||
+              event.target === this.uiDialog[0]) && event.shiftKey) {
+              this._delay(function () {
+                last.trigger("focus");
+              });
               event.preventDefault();
             }
           },
-          mousedown: function( event ) {
-            if ( this._moveToTop( event ) ) {
+          mousedown: function (event) {
+            if (this._moveToTop(event)) {
               this._focusTabbable();
             }
           }
-        } );
+        });
 
         // We assume that any existing aria-describedby attribute means
         // that the dialog content is marked up properly
         // otherwise we brute force the content as the description
-        if ( !this.element.find( "[aria-describedby]" ).length ) {
-          this.uiDialog.attr( {
-            "aria-describedby": this.element.uniqueId().attr( "id" )
-          } );
+        if (!this.element.find("[aria-describedby]").length) {
+          this.uiDialog.attr({
+            "aria-describedby": this.element.uniqueId().attr("id")
+          });
         }
       },
 
-      _createTitlebar: function() {
+      _createTitlebar: function () {
         let uiDialogTitle;
 
-        this.uiDialogTitlebar = $( "<div>" );
-        this._addClass( this.uiDialogTitlebar,
-          "ui-dialog-titlebar", "ui-widget-header ui-helper-clearfix" );
-        this._on( this.uiDialogTitlebar, {
-          mousedown: function( event ) {
+        this.uiDialogTitlebar = $("<div>");
+        this._addClass(this.uiDialogTitlebar,
+          "ui-dialog-titlebar", "ui-widget-header ui-helper-clearfix");
+        this._on(this.uiDialogTitlebar, {
+          mousedown: function (event) {
 
             // Don't prevent click on close button (#8838)
             // Focusing a dialog that is partially scrolled out of view
             // causes the browser to scroll it into view, preventing the click event
-            if ( !$( event.target ).closest( ".ui-dialog-titlebar-close" ) ) {
+            if (!$(event.target).closest(".ui-dialog-titlebar-close")) {
 
               // Dialog isn't getting focus when dragging (#8063)
-              this.uiDialog.trigger( "focus" );
+              this.uiDialog.trigger("focus");
             }
           }
-        } );
+        });
 
         // Support: IE
         // Use type="button" to prevent enter keypresses in textboxes from closing the
         // dialog in IE (#9312)
-        this.uiDialogTitlebarClose = $( "<button type='button'></button>" )
-          .button( {
-            label: $( "<a>" ).text( this.options.closeText ).html(),
+        this.uiDialogTitlebarClose = $("<button type='button'></button>")
+          .button({
+            label: $("<a>").text(this.options.closeText).html(),
             icon: "ui-icon-closethick",
             showLabel: false
-          } )
-          .appendTo( this.uiDialogTitlebar );
+          })
+          .appendTo(this.uiDialogTitlebar);
 
-        this._addClass( this.uiDialogTitlebarClose, "ui-dialog-titlebar-close" );
-        this._on( this.uiDialogTitlebarClose, {
-          click: function( event ) {
+        this._addClass(this.uiDialogTitlebarClose, "ui-dialog-titlebar-close");
+        this._on(this.uiDialogTitlebarClose, {
+          click: function (event) {
             event.preventDefault();
-            this.close( event );
+            this.close(event);
           }
-        } );
+        });
 
-        uiDialogTitle = $( "<span>" ).uniqueId().prependTo( this.uiDialogTitlebar );
-        this._addClass( uiDialogTitle, "ui-dialog-title" );
-        this._title( uiDialogTitle );
+        uiDialogTitle = $("<span>").uniqueId().prependTo(this.uiDialogTitlebar);
+        this._addClass(uiDialogTitle, "ui-dialog-title");
+        this._title(uiDialogTitle);
 
-        this.uiDialogTitlebar.prependTo( this.uiDialog );
+        this.uiDialogTitlebar.prependTo(this.uiDialog);
 
-        this.uiDialog.attr( {
-          "aria-labelledby": uiDialogTitle.attr( "id" )
-        } );
+        this.uiDialog.attr({
+          "aria-labelledby": uiDialogTitle.attr("id")
+        });
       },
 
-      _title: function( title ) {
-        if ( this.options.title ) {
-          title.text( this.options.title );
+      _title: function (title) {
+        if (this.options.title) {
+          title.text(this.options.title);
         } else {
-          title.html( "&#160;" );
+          title.html("&#160;");
         }
       },
 
-      _createButtonPane: function() {
-        this.uiDialogButtonPane = $( "<div>" );
-        this._addClass( this.uiDialogButtonPane, "ui-dialog-buttonpane",
-          "ui-widget-content ui-helper-clearfix" );
+      _createButtonPane: function () {
+        this.uiDialogButtonPane = $("<div>");
+        this._addClass(this.uiDialogButtonPane, "ui-dialog-buttonpane",
+          "ui-widget-content ui-helper-clearfix");
 
-        this.uiButtonSet = $( "<div>" )
-          .appendTo( this.uiDialogButtonPane );
-        this._addClass( this.uiButtonSet, "ui-dialog-buttonset" );
+        this.uiButtonSet = $("<div>")
+          .appendTo(this.uiDialogButtonPane);
+        this._addClass(this.uiButtonSet, "ui-dialog-buttonset");
 
         this._createButtons();
       },
 
-      _createButtons: function() {
+      _createButtons: function () {
         let that = this,
           buttons = this.options.buttons;
 
@@ -5560,19 +5561,19 @@ export function WmksLib($) {
         this.uiDialogButtonPane.remove();
         this.uiButtonSet.empty();
 
-        if ( $.isEmptyObject( buttons ) || ( $.isArray( buttons ) && !buttons.length ) ) {
-          this._removeClass( this.uiDialog, "ui-dialog-buttons" );
+        if ($.isEmptyObject(buttons) || ($.isArray(buttons) && !buttons.length)) {
+          this._removeClass(this.uiDialog, "ui-dialog-buttons");
           return;
         }
 
-        $.each( buttons, function( name, props ) {
+        $.each(buttons, function (name, props) {
           let click, buttonOptions;
-          props = $.isFunction( props ) ?
+          props = $.isFunction(props) ?
             { click: props, text: name } :
             props;
 
           // Default to a non-submitting button
-          props = $.extend( { type: "button" }, props );
+          props = $.extend({ type: "button" }, props);
 
           // Change the context for the click callback to be the main element
           click = props.click;
@@ -5593,74 +5594,74 @@ export function WmksLib($) {
 
           // Deprecated options
           delete props.icons;
-          if ( typeof props.text === "boolean" ) {
+          if (typeof props.text === "boolean") {
             delete props.text;
           }
 
-          $( "<button></button>", props )
-            .button( buttonOptions )
-            .appendTo( that.uiButtonSet )
-            .on( "click", function() {
-              click.apply( that.element[ 0 ], arguments );
-            } );
-        } );
-        this._addClass( this.uiDialog, "ui-dialog-buttons" );
-        this.uiDialogButtonPane.appendTo( this.uiDialog );
+          $("<button></button>", props)
+            .button(buttonOptions)
+            .appendTo(that.uiButtonSet)
+            .on("click", function () {
+              click.apply(that.element[0], arguments);
+            });
+        });
+        this._addClass(this.uiDialog, "ui-dialog-buttons");
+        this.uiDialogButtonPane.appendTo(this.uiDialog);
       },
 
-      _makeDraggable: function() {
+      _makeDraggable: function () {
         let that = this,
           options = this.options;
 
-        function filteredUi( ui ) {
+        function filteredUi(ui) {
           return {
             position: ui.position,
             offset: ui.offset
           };
         }
 
-        this.uiDialog.draggable( {
+        this.uiDialog.draggable({
           cancel: ".ui-dialog-content, .ui-dialog-titlebar-close",
           handle: ".ui-dialog-titlebar",
           containment: "document",
-          start: function( event, ui ) {
-            that._addClass( $( this ), "ui-dialog-dragging" );
+          start: function (event, ui) {
+            that._addClass($(this), "ui-dialog-dragging");
             that._blockFrames();
-            that._trigger( "dragStart", event, filteredUi( ui ) );
+            that._trigger("dragStart", event, filteredUi(ui));
           },
-          drag: function( event, ui ) {
-            that._trigger( "drag", event, filteredUi( ui ) );
+          drag: function (event, ui) {
+            that._trigger("drag", event, filteredUi(ui));
           },
-          stop: function( event, ui ) {
+          stop: function (event, ui) {
             let left = ui.offset.left - that.document.scrollLeft(),
               top = ui.offset.top - that.document.scrollTop();
 
             options.position = {
               my: "left top",
-              at: "left" + ( left >= 0 ? "+" : "" ) + left + " " +
-                "top" + ( top >= 0 ? "+" : "" ) + top,
+              at: "left" + (left >= 0 ? "+" : "") + left + " " +
+                "top" + (top >= 0 ? "+" : "") + top,
               of: that.window
             };
-            that._removeClass( $( this ), "ui-dialog-dragging" );
+            that._removeClass($(this), "ui-dialog-dragging");
             that._unblockFrames();
-            that._trigger( "dragStop", event, filteredUi( ui ) );
+            that._trigger("dragStop", event, filteredUi(ui));
           }
-        } );
+        });
       },
 
-      _makeResizable: function() {
+      _makeResizable: function () {
         let that = this,
           options = this.options,
           handles = options.resizable,
 
           // .ui-resizable has position: relative defined in the stylesheet
           // but dialogs have to use absolute or fixed positioning
-          position = this.uiDialog.css( "position" ),
+          position = this.uiDialog.css("position"),
           resizeHandles = typeof handles === "string" ?
             handles :
             "n,e,s,w,se,sw,ne,nw";
 
-        function filteredUi( ui ) {
+        function filteredUi(ui) {
           return {
             originalPosition: ui.originalPosition,
             originalSize: ui.originalSize,
@@ -5669,7 +5670,7 @@ export function WmksLib($) {
           };
         }
 
-        this.uiDialog.resizable( {
+        this.uiDialog.resizable({
           cancel: ".ui-dialog-content",
           containment: "document",
           alsoResize: this.element,
@@ -5678,15 +5679,15 @@ export function WmksLib($) {
           minWidth: options.minWidth,
           minHeight: this._minHeight(),
           handles: resizeHandles,
-          start: function( event, ui ) {
-            that._addClass( $( this ), "ui-dialog-resizing" );
+          start: function (event, ui) {
+            that._addClass($(this), "ui-dialog-resizing");
             that._blockFrames();
-            that._trigger( "resizeStart", event, filteredUi( ui ) );
+            that._trigger("resizeStart", event, filteredUi(ui));
           },
-          resize: function( event, ui ) {
-            that._trigger( "resize", event, filteredUi( ui ) );
+          resize: function (event, ui) {
+            that._trigger("resize", event, filteredUi(ui));
           },
-          stop: function( event, ui ) {
+          stop: function (event, ui) {
             let offset = that.uiDialog.offset(),
               left = offset.left - that.document.scrollLeft(),
               top = offset.top - that.document.scrollTop();
@@ -5695,161 +5696,161 @@ export function WmksLib($) {
             options.width = that.uiDialog.width();
             options.position = {
               my: "left top",
-              at: "left" + ( left >= 0 ? "+" : "" ) + left + " " +
-                "top" + ( top >= 0 ? "+" : "" ) + top,
+              at: "left" + (left >= 0 ? "+" : "") + left + " " +
+                "top" + (top >= 0 ? "+" : "") + top,
               of: that.window
             };
-            that._removeClass( $( this ), "ui-dialog-resizing" );
+            that._removeClass($(this), "ui-dialog-resizing");
             that._unblockFrames();
-            that._trigger( "resizeStop", event, filteredUi( ui ) );
+            that._trigger("resizeStop", event, filteredUi(ui));
           }
-        } )
-          .css( "position", position );
+        })
+          .css("position", position);
       },
 
-      _trackFocus: function() {
-        this._on( this.widget(), {
-          focusin: function( event ) {
+      _trackFocus: function () {
+        this._on(this.widget(), {
+          focusin: function (event) {
             this._makeFocusTarget();
-            this._focusedElement = $( event.target );
+            this._focusedElement = $(event.target);
           }
-        } );
+        });
       },
 
-      _makeFocusTarget: function() {
+      _makeFocusTarget: function () {
         this._untrackInstance();
-        this._trackingInstances().unshift( this );
+        this._trackingInstances().unshift(this);
       },
 
-      _untrackInstance: function() {
+      _untrackInstance: function () {
         let instances = this._trackingInstances(),
-          exists = $.inArray( this, instances );
-        if ( exists !== -1 ) {
-          instances.splice( exists, 1 );
+          exists = $.inArray(this, instances);
+        if (exists !== -1) {
+          instances.splice(exists, 1);
         }
       },
 
-      _trackingInstances: function() {
-        let instances = this.document.data( "ui-dialog-instances" );
-        if ( !instances ) {
+      _trackingInstances: function () {
+        let instances = this.document.data("ui-dialog-instances");
+        if (!instances) {
           instances = [];
-          this.document.data( "ui-dialog-instances", instances );
+          this.document.data("ui-dialog-instances", instances);
         }
         return instances;
       },
 
-      _minHeight: function() {
+      _minHeight: function () {
         let options = this.options;
 
         return options.height === "auto" ?
           options.minHeight :
-          Math.min( options.minHeight, options.height );
+          Math.min(options.minHeight, options.height);
       },
 
-      _position: function() {
+      _position: function () {
 
         // Need to show the dialog to get the actual offset in the position plugin
-        let isVisible = this.uiDialog.is( ":visible" );
-        if ( !isVisible ) {
+        let isVisible = this.uiDialog.is(":visible");
+        if (!isVisible) {
           this.uiDialog.show();
         }
-        this.uiDialog.position( this.options.position );
-        if ( !isVisible ) {
+        this.uiDialog.position(this.options.position);
+        if (!isVisible) {
           this.uiDialog.hide();
         }
       },
 
-      _setOptions: function( options ) {
+      _setOptions: function (options) {
         let that = this,
           resize = false,
           resizableOptions = {};
 
-        $.each( options, function( key, value ) {
-          that._setOption( key, value );
+        $.each(options, function (key, value) {
+          that._setOption(key, value);
 
-          if ( key in that.sizeRelatedOptions ) {
+          if (key in that.sizeRelatedOptions) {
             resize = true;
           }
-          if ( key in that.resizableRelatedOptions ) {
-            resizableOptions[ key ] = value;
+          if (key in that.resizableRelatedOptions) {
+            resizableOptions[key] = value;
           }
-        } );
+        });
 
-        if ( resize ) {
+        if (resize) {
           this._size();
           this._position();
         }
-        if ( this.uiDialog.is( ":data(ui-resizable)" ) ) {
-          this.uiDialog.resizable( "option", resizableOptions );
+        if (this.uiDialog.is(":data(ui-resizable)")) {
+          this.uiDialog.resizable("option", resizableOptions);
         }
       },
 
-      _setOption: function( key, value ) {
+      _setOption: function (key, value) {
         let isDraggable, isResizable,
           uiDialog = this.uiDialog;
 
-        if ( key === "disabled" ) {
+        if (key === "disabled") {
           return;
         }
 
-        this._super( key, value );
+        this._super(key, value);
 
-        if ( key === "appendTo" ) {
-          this.uiDialog.appendTo( this._appendTo() );
+        if (key === "appendTo") {
+          this.uiDialog.appendTo(this._appendTo());
         }
 
-        if ( key === "buttons" ) {
+        if (key === "buttons") {
           this._createButtons();
         }
 
-        if ( key === "closeText" ) {
-          this.uiDialogTitlebarClose.button( {
+        if (key === "closeText") {
+          this.uiDialogTitlebarClose.button({
 
             // Ensure that we always pass a string
-            label: $( "<a>" ).text( "" + this.options.closeText ).html()
-          } );
+            label: $("<a>").text("" + this.options.closeText).html()
+          });
         }
 
-        if ( key === "draggable" ) {
-          isDraggable = uiDialog.is( ":data(ui-draggable)" );
-          if ( isDraggable && !value ) {
-            uiDialog.draggable( "destroy" );
+        if (key === "draggable") {
+          isDraggable = uiDialog.is(":data(ui-draggable)");
+          if (isDraggable && !value) {
+            uiDialog.draggable("destroy");
           }
 
-          if ( !isDraggable && value ) {
+          if (!isDraggable && value) {
             this._makeDraggable();
           }
         }
 
-        if ( key === "position" ) {
+        if (key === "position") {
           this._position();
         }
 
-        if ( key === "resizable" ) {
+        if (key === "resizable") {
 
           // currently resizable, becoming non-resizable
-          isResizable = uiDialog.is( ":data(ui-resizable)" );
-          if ( isResizable && !value ) {
-            uiDialog.resizable( "destroy" );
+          isResizable = uiDialog.is(":data(ui-resizable)");
+          if (isResizable && !value) {
+            uiDialog.resizable("destroy");
           }
 
           // Currently resizable, changing handles
-          if ( isResizable && typeof value === "string" ) {
-            uiDialog.resizable( "option", "handles", value );
+          if (isResizable && typeof value === "string") {
+            uiDialog.resizable("option", "handles", value);
           }
 
           // Currently non-resizable, becoming resizable
-          if ( !isResizable && value !== false ) {
+          if (!isResizable && value !== false) {
             this._makeResizable();
           }
         }
 
-        if ( key === "title" ) {
-          this._title( this.uiDialogTitlebar.find( ".ui-dialog-title" ) );
+        if (key === "title") {
+          this._title(this.uiDialogTitlebar.find(".ui-dialog-title"));
         }
       },
 
-      _size: function() {
+      _size: function () {
 
         // If the user has resized the dialog, the .ui-dialog and .ui-dialog-content
         // divs will both have width and height set, so we need to reset them
@@ -5857,159 +5858,159 @@ export function WmksLib($) {
           options = this.options;
 
         // Reset content sizing
-        this.element.show().css( {
+        this.element.show().css({
           width: "auto",
           minHeight: 0,
           maxHeight: "none",
           height: 0
-        } );
+        });
 
-        if ( options.minWidth > options.width ) {
+        if (options.minWidth > options.width) {
           options.width = options.minWidth;
         }
 
         // Reset wrapper sizing
         // determine the height of all the non-content elements
-        nonContentHeight = this.uiDialog.css( {
+        nonContentHeight = this.uiDialog.css({
           height: "auto",
           width: options.width
-        } )
+        })
           .outerHeight();
-        minContentHeight = Math.max( 0, options.minHeight - nonContentHeight );
+        minContentHeight = Math.max(0, options.minHeight - nonContentHeight);
         maxContentHeight = typeof options.maxHeight === "number" ?
-          Math.max( 0, options.maxHeight - nonContentHeight ) :
+          Math.max(0, options.maxHeight - nonContentHeight) :
           "none";
 
-        if ( options.height === "auto" ) {
-          this.element.css( {
+        if (options.height === "auto") {
+          this.element.css({
             minHeight: minContentHeight,
             maxHeight: maxContentHeight,
             height: "auto"
-          } );
+          });
         } else {
-          this.element.height( Math.max( 0, options.height - nonContentHeight ) );
+          this.element.height(Math.max(0, options.height - nonContentHeight));
         }
 
-        if ( this.uiDialog.is( ":data(ui-resizable)" ) ) {
-          this.uiDialog.resizable( "option", "minHeight", this._minHeight() );
+        if (this.uiDialog.is(":data(ui-resizable)")) {
+          this.uiDialog.resizable("option", "minHeight", this._minHeight());
         }
       },
 
-      _blockFrames: function() {
-        this.iframeBlocks = this.document.find( "iframe" ).map( function() {
-          let iframe = $( this );
+      _blockFrames: function () {
+        this.iframeBlocks = this.document.find("iframe").map(function () {
+          let iframe = $(this);
 
-          return $( "<div>" )
-            .css( {
+          return $("<div>")
+            .css({
               position: "absolute",
               width: iframe.outerWidth(),
               height: iframe.outerHeight()
-            } )
-            .appendTo( iframe.parent() )
-            .offset( iframe.offset() )[ 0 ];
-        } );
+            })
+            .appendTo(iframe.parent())
+            .offset(iframe.offset())[0];
+        });
       },
 
-      _unblockFrames: function() {
-        if ( this.iframeBlocks ) {
+      _unblockFrames: function () {
+        if (this.iframeBlocks) {
           this.iframeBlocks.remove();
           delete this.iframeBlocks;
         }
       },
 
-      _allowInteraction: function( event ) {
-        if ( $( event.target ).closest( ".ui-dialog" ).length ) {
+      _allowInteraction: function (event) {
+        if ($(event.target).closest(".ui-dialog").length) {
           return true;
         }
 
         // TODO: Remove hack when datepicker implements
         // the .ui-front logic (#8989)
-        return !!$( event.target ).closest( ".ui-datepicker" ).length;
+        return !!$(event.target).closest(".ui-datepicker").length;
       },
 
-      _createOverlay: function() {
-        if ( !this.options.modal ) {
+      _createOverlay: function () {
+        if (!this.options.modal) {
           return;
         }
 
         // We use a delay in case the overlay is created from an
         // event that we're going to be cancelling (#2804)
         let isOpening = true;
-        this._delay( function() {
+        this._delay(function () {
           isOpening = false;
-        } );
+        });
 
-        if ( !this.document.data( "ui-dialog-overlays" ) ) {
+        if (!this.document.data("ui-dialog-overlays")) {
 
           // Prevent use of anchors and inputs
           // Using _on() for an event handler shared across many instances is
           // safe because the dialogs stack and must be closed in reverse order
-          this._on( this.document, {
-            focusin: function( event ) {
-              if ( isOpening ) {
+          this._on(this.document, {
+            focusin: function (event) {
+              if (isOpening) {
                 return;
               }
 
-              if ( !this._allowInteraction( event ) ) {
+              if (!this._allowInteraction(event)) {
                 event.preventDefault();
-                this._trackingInstances()[ 0 ]._focusTabbable();
+                this._trackingInstances()[0]._focusTabbable();
               }
             }
-          } );
+          });
         }
 
-        this.overlay = $( "<div>" )
-          .appendTo( this._appendTo() );
+        this.overlay = $("<div>")
+          .appendTo(this._appendTo());
 
-        this._addClass( this.overlay, null, "ui-widget-overlay ui-front" );
-        this._on( this.overlay, {
+        this._addClass(this.overlay, null, "ui-widget-overlay ui-front");
+        this._on(this.overlay, {
           mousedown: "_keepFocus"
-        } );
-        this.document.data( "ui-dialog-overlays",
-          ( this.document.data( "ui-dialog-overlays" ) || 0 ) + 1 );
+        });
+        this.document.data("ui-dialog-overlays",
+          (this.document.data("ui-dialog-overlays") || 0) + 1);
       },
 
-      _destroyOverlay: function() {
-        if ( !this.options.modal ) {
+      _destroyOverlay: function () {
+        if (!this.options.modal) {
           return;
         }
 
-        if ( this.overlay ) {
-          let overlays = this.document.data( "ui-dialog-overlays" ) - 1;
+        if (this.overlay) {
+          let overlays = this.document.data("ui-dialog-overlays") - 1;
 
-          if ( !overlays ) {
-            this._off( this.document, "focusin" );
-            this.document.removeData( "ui-dialog-overlays" );
+          if (!overlays) {
+            this._off(this.document, "focusin");
+            this.document.removeData("ui-dialog-overlays");
           } else {
-            this.document.data( "ui-dialog-overlays", overlays );
+            this.document.data("ui-dialog-overlays", overlays);
           }
 
           this.overlay.remove();
           this.overlay = null;
         }
       }
-    } );
+    });
 
-    if ( $.uiBackCompat !== false ) {
+    if ($.uiBackCompat !== false) {
 
       // Backcompat for dialogClass option
-      $.widget( "ui.dialog", $.ui.dialog, {
+      $.widget("ui.dialog", $.ui.dialog, {
         options: {
           dialogClass: ""
         },
-        _createWrapper: function() {
+        _createWrapper: function () {
           this._super();
-          this.uiDialog.addClass( this.options.dialogClass );
+          this.uiDialog.addClass(this.options.dialogClass);
         },
-        _setOption: function( key, value ) {
-          if ( key === "dialogClass" ) {
+        _setOption: function (key, value) {
+          if (key === "dialogClass") {
             this.uiDialog
-              .removeClass( this.options.dialogClass )
-              .addClass( value );
+              .removeClass(this.options.dialogClass)
+              .addClass(value);
           }
-          this._superApply( arguments );
+          this._superApply(arguments);
         }
-      } );
+      });
     }
 
     let widgetsDialog = $.ui.dialog;
@@ -6040,12 +6041,12 @@ export function WmksLib($) {
     return tmp.join('').substr(0, length);
   }
 
-  function arrayFromString (str, useUint8Array?) {
+  function arrayFromString(str, useUint8Array?) {
     let length = str.length;
     let array = useUint8Array ? new Uint8Array(length) : new Array(length);
     let i;
 
-    for (i = 0; i+7 < length; i += 8) {
+    for (i = 0; i + 7 < length; i += 8) {
       array[i] = str.charCodeAt(i);
       array[i + 1] = str.charCodeAt(i + 1);
       array[i + 2] = str.charCodeAt(i + 2);
@@ -6064,19 +6065,19 @@ export function WmksLib($) {
   }
 
   let Base64 = {
-    decodeToArray: function(data, useUint8Array) {
+    decodeToArray: function (data, useUint8Array) {
       return arrayFromString(window.atob(data), useUint8Array);
     },
 
-    decodeToString: function(data) {
+    decodeToString: function (data) {
       return window.atob(data);
     },
 
-    encodeFromArray: function(data) {
+    encodeFromArray: function (data) {
       return window.btoa(stringFromArray(data));
     },
 
-    encodeFromString: function(data) {
+    encodeFromString: function (data) {
       return window.btoa(data);
     }
   };
@@ -6085,29 +6086,29 @@ export function WmksLib($) {
    * Convenience functions for building an array of bytes
    * (for sending messages to servers or handling image formats).
    */
-  Array.prototype.push8 = function(aByte) {
+  Array.prototype.push8 = function (aByte) {
     this.push(aByte & 0xFF);
   };
 
-  Array.prototype.push16 = function(aWord) {
+  Array.prototype.push16 = function (aWord) {
     this.push((aWord >> 8) & 0xFF,
-      (aWord     ) & 0xFF);
+      (aWord) & 0xFF);
   };
 
-  Array.prototype.push32 = function(aLongWord) {
+  Array.prototype.push32 = function (aLongWord) {
     this.push((aLongWord >> 24) & 0xFF,
       (aLongWord >> 16) & 0xFF,
-      (aLongWord >>  8) & 0xFF,
-      (aLongWord      ) & 0xFF);
+      (aLongWord >> 8) & 0xFF,
+      (aLongWord) & 0xFF);
   };
 
-  Array.prototype.push16le = function(aWord) {
-    this.push((aWord     ) & 0xff,
+  Array.prototype.push16le = function (aWord) {
+    this.push((aWord) & 0xff,
       (aWord >> 8) & 0xff);
   };
 
-  Array.prototype.push32le = function(aLongWord) {
-    this.push((aLongWord     ) & 0xff,
+  Array.prototype.push32le = function (aLongWord) {
+    this.push((aLongWord) & 0xff,
       (aLongWord >> 8) & 0xff,
       (aLongWord >> 16) & 0xff,
       (aLongWord >> 24) & 0xff);
@@ -6128,7 +6129,7 @@ export function WmksLib($) {
 
     // Pushes the current image to the cache if it is not full,
     // and then deletes the image.
-    const _getImageFromCache = function() {
+    const _getImageFromCache = function () {
       if (_cacheArray.length > 0) {
         return _cacheArray.shift();
       } else {
@@ -6139,7 +6140,7 @@ export function WmksLib($) {
     //  This private function takes an array containing a single image and
     //  deletes the image. The reason for using an array containing the image
     //  instead of 'delete image' call is to comply with javascript strict mode.
-    const _deleteImage = function(imgArray) {
+    const _deleteImage = function (imgArray) {
       delete imgArray[0];
       imgArray[0] = null;
       imgArray = null;
@@ -6148,7 +6149,7 @@ export function WmksLib($) {
     // Private function that resets event handlers if any. Sets src to an
     // empty image. Pushes the current image to the cache if it is not full,
     // else deletes the image.
-    const _cacheImageOrDelete = function(image) {
+    const _cacheImageOrDelete = function (image) {
 
       // Reset onload and onerror event handlers if any.
       image.onload = image.onerror = null;
@@ -6167,14 +6168,14 @@ export function WmksLib($) {
 
     // Public function that invokes a private function _getImageFromCache()
     //  to get an image.
-    this.getImage = function() {
+    this.getImage = function () {
       return _getImageFromCache()
     };
 
     // Public function that invokes a private function _cacheImageOrDelete()
     // to add the image to a cache when the cache is not full or delete the
     // image.
-    this.releaseImage = function(image) {
+    this.releaseImage = function (image) {
       if (!image) {
         return;
       }
@@ -6202,19 +6203,19 @@ export function WmksLib($) {
 
   MP4Decoder.instanceNumber = 0;
   MP4Decoder.byteStreamFormat = 'video/mp4; codecs="avc1.640030"';
-  MP4Decoder.prototype.toString = function() {
+  MP4Decoder.prototype.toString = function () {
     return this._name;
   };
 
   /**
    *  Generate a Media Source object and associate it with video DOM element.
    */
-  MP4Decoder.prototype.init = function(mediaPlayer, urlObject , mediaSourceObject , DoneCb, ErrorCb) {
+  MP4Decoder.prototype.init = function (mediaPlayer, urlObject, mediaSourceObject, DoneCb, ErrorCb) {
     const self = this;
     // @ts-ignore
-    const URL = urlObject  || window.URL || window.webkitURL;
+    const URL = urlObject || window.URL || window.webkitURL;
     // @ts-ignore
-    const MediaSource = mediaSourceObject  || window.MediaSource || window.WebKitMediaSource;
+    const MediaSource = mediaSourceObject || window.MediaSource || window.WebKitMediaSource;
 
     this.reset();
 
@@ -6226,10 +6227,10 @@ export function WmksLib($) {
     // Attach a media source object to HTMLMediaElement.
     this._mediaPlayer.src = URL.createObjectURL(this._mediaSource);
 
-    this._mediaSource.addEventListener('sourceopen', function(e) {
+    this._mediaSource.addEventListener('sourceopen', function (e) {
       return self._onMediaSourceOpen(e);
     }, false);
-    this._mediaSource.addEventListener('webkitsourceopen', function(e) {
+    this._mediaSource.addEventListener('webkitsourceopen', function (e) {
       return self._onMediaSourceOpen(e);
     }, false);
   };
@@ -6239,7 +6240,7 @@ export function WmksLib($) {
    * attach it to media source object. If there is any MP4 data in the buffer,
    * add it to source buffer so that media source can play it.
    */
-  MP4Decoder.prototype._onMediaSourceOpen = function(e) {
+  MP4Decoder.prototype._onMediaSourceOpen = function (e) {
     const self = this;
 
     WMKS.LOGGER.log(this + " media source status is changed to open.");
@@ -6248,7 +6249,7 @@ export function WmksLib($) {
       return;
     }
     this._sourceBuffer = this._mediaSource.addSourceBuffer(MP4Decoder.byteStreamFormat);
-    this._sourceBuffer.addEventListener("updateend", function() {
+    this._sourceBuffer.addEventListener("updateend", function () {
       if (self._tempQueue.length === 0) return;
       if (self._tempQueue[0].method === "add" && self._decodeDoneCb) {
         self._doneRequest++;
@@ -6263,7 +6264,7 @@ export function WmksLib($) {
     * Listen to update event. It will fire after current buffer data is
     * handled by media source object.
     */
-    this._sourceBuffer.addEventListener("error", function(a) {
+    this._sourceBuffer.addEventListener("error", function (a) {
       WMKS.LOGGER.error(self + " error code is " + a)
     });
 
@@ -6274,7 +6275,7 @@ export function WmksLib($) {
   /**
    * Append all the data in our temp buffer to sourceBuffer object.
    */
-  MP4Decoder.prototype._flushPayloads = function() {
+  MP4Decoder.prototype._flushPayloads = function () {
     let bufferStart = 0;
     let bufferEnd = 0;
     let bufferTime = 0;
@@ -6295,7 +6296,7 @@ export function WmksLib($) {
           bufferTime = this._mediaPlayer.currentTime - .5;
           WMKS.LOGGER.log(this + " status:  start " + bufferStart + " end " + bufferEnd + " with current time " + this._mediaPlayer.currentTime);
 
-          if (bufferTime > bufferStart){
+          if (bufferTime > bufferStart) {
             WMKS.LOGGER.log(this + " start to remove from " + bufferStart + " to " + bufferTime);
             this._sourceBuffer.remove(bufferStart, bufferTime);
           } else {
@@ -6309,7 +6310,7 @@ export function WmksLib($) {
           const self = this;
           WMKS.LOGGER.log(this + " browser is full.");
 
-          setTimeout(function() {
+          setTimeout(function () {
             self._tempQueue.unshift({
               method: "remove"
             });
@@ -6333,7 +6334,7 @@ export function WmksLib($) {
   /**
    * Reset all the resources used by MP4 Decoder object.
    */
-  MP4Decoder.prototype.reset = function() {
+  MP4Decoder.prototype.reset = function () {
     WMKS.LOGGER.log(this + " is reset.");
     if (this._mediaSource) {
       if (this._sourceBuffer) {
@@ -6368,7 +6369,7 @@ export function WmksLib($) {
    * Append MP4 data to media source object. If media source is not ready, put
    * it into temporary buffer.
    */
-  MP4Decoder.prototype.appendData = function(a) {
+  MP4Decoder.prototype.appendData = function (a) {
     if (this._isError) {
       WMKS.LOGGER.log(this + " is in error state.");
       if (this._decodeDoneCb) this._decodeDoneCb();
@@ -6417,20 +6418,20 @@ export function WmksLib($) {
     * RX/TX queue management
     *
     */
-    legacyFunctions._receiveQueueBytesUnread = function() {
+    legacyFunctions._receiveQueueBytesUnread = function () {
       return this._legacyReceiveQueue.length - this._legacyReceiveQueueIndex;
     };
 
-    legacyFunctions._receiveQueueConsumeBytes = function(nr) {
+    legacyFunctions._receiveQueueConsumeBytes = function (nr) {
       this._legacyReceiveQueueIndex += nr;
     };
 
-    legacyFunctions._receiveQueueReset = function() {
+    legacyFunctions._receiveQueueReset = function () {
       this._legacyReceiveQueue = '';
       this._legacyReceiveQueueIndex = 0;
     };
 
-    legacyFunctions._readString = function(stringLength) {
+    legacyFunctions._readString = function (stringLength) {
       let string = this._legacyReceiveQueue.slice(this._legacyReceiveQueueIndex, this._legacyReceiveQueueIndex + stringLength);
       this._legacyReceiveQueueIndex += stringLength;
       return string;
@@ -6439,7 +6440,7 @@ export function WmksLib($) {
     // Pops the first 'stringLength' bytes from the front of the read buffer
     // and parses the string for unicode. If it finds unicode, it converts them
     // to unicode and returns the unicode string.
-    legacyFunctions._readStringUTF8 = function(stringLength) {
+    legacyFunctions._readStringUTF8 = function (stringLength) {
       let c;
       let c1;
       let c2;
@@ -6454,18 +6455,18 @@ export function WmksLib($) {
           valArray.push(c);
           i++;
         } else if (c < 224) {
-          c1 = this._legacyReceiveQueue.charCodeAt(i+1) & 63;
+          c1 = this._legacyReceiveQueue.charCodeAt(i + 1) & 63;
           valArray.push(((c & 31) << 6) | c1);
           i += 2;
         } else if (c < 240) {
-          c1 = this._legacyReceiveQueue.charCodeAt(i+1) & 63;
-          c2 = this._legacyReceiveQueue.charCodeAt(i+2) & 63;
+          c1 = this._legacyReceiveQueue.charCodeAt(i + 1) & 63;
+          c2 = this._legacyReceiveQueue.charCodeAt(i + 2) & 63;
           valArray.push(((c & 15) << 12) | (c1 << 6) | c2);
           i += 3;
         } else {
-          c1 = this._legacyReceiveQueue.charCodeAt(i+1) & 63;
-          c2 = this._legacyReceiveQueue.charCodeAt(i+2) & 63;
-          c3 = this._legacyReceiveQueue.charCodeAt(i+3) & 63;
+          c1 = this._legacyReceiveQueue.charCodeAt(i + 1) & 63;
+          c2 = this._legacyReceiveQueue.charCodeAt(i + 2) & 63;
+          c3 = this._legacyReceiveQueue.charCodeAt(i + 3) & 63;
           valArray.push(((c & 7) << 18) | (c1 << 12) | (c2 << 6) | c3);
           i += 4;
         }
@@ -6477,14 +6478,14 @@ export function WmksLib($) {
     };
 
     // Pops the first byte from the front of the receive buffer.
-    legacyFunctions._readByte = function() {
+    legacyFunctions._readByte = function () {
       let aByte = this._legacyReceiveQueue.charCodeAt(this._legacyReceiveQueueIndex);
       this._legacyReceiveQueueIndex += 1;
       return aByte;
     };
 
     // Pops the first 'length' bytes from the front of the receive buffer.
-    legacyFunctions._readBytes = function(length) {
+    legacyFunctions._readBytes = function (length) {
       let result;
       let i;
 
@@ -6499,7 +6500,7 @@ export function WmksLib($) {
     };
 
     // Sends a string to the server, using the appropriate encoding.
-    legacyFunctions._sendString = function(stringValue) {
+    legacyFunctions._sendString = function (stringValue) {
       if (!this._websocket) {
         return;
       }
@@ -6508,14 +6509,14 @@ export function WmksLib($) {
     };
 
     // Sends the array 'bytes' of data bytes to the server.
-    legacyFunctions._sendBytes = function(bytes) {
+    legacyFunctions._sendBytes = function (bytes) {
       this._sendString(stringFromArray(bytes));
     };
 
     // Sends the server a list of supported image encodings.
     // This is a temporary override to disabled encTightDiffComp
     //  until it can be better tested and potentially updated.
-    legacyFunctions._sendClientEncodingsMsg = function() {
+    legacyFunctions._sendClientEncodingsMsg = function () {
       let i;
       let encodings = [/* this.encTightDiffComp, */
         this.encTightPNG,
@@ -6555,21 +6556,21 @@ export function WmksLib($) {
       this._sendBytes(message);
     };
 
-    legacyFunctions._readTightData = function(rect) {
+    legacyFunctions._readTightData = function (rect) {
       /*
        * Skip the preamble and read the actual JPEG data.
        */
       let type = (rect.subEncoding === this.subEncPNG) ? 'image/png' : 'image/jpeg';
       let data = this._readString(this.nextBytes);
       // @ts-ignore
-      let URL  = window.URL || window.webkitURL;
+      let URL = window.URL || window.webkitURL;
       let self = this;
 
       if (this._useImageBitmaps) {
         data = arrayFromString(data, !0);
         createImageBitmap(new Blob([data], {
           type: type
-        })).then(function(image) {
+        })).then(function (image) {
           rect.image = image;
           self.onDecodeComplete();
         })
@@ -6592,7 +6593,7 @@ export function WmksLib($) {
           data = arrayFromString(data, true);
 
           rect.image.onload = this.onDecodeObjectURLComplete;
-          rect.image.src = URL.createObjectURL(new Blob([data], {type: type}));
+          rect.image.src = URL.createObjectURL(new Blob([data], { type: type }));
         } else {
           data = Base64.encodeFromString(data);
 
@@ -6616,7 +6617,7 @@ export function WmksLib($) {
     // required in each case to send a message of a specific size on
     // connection establishment.  We are lucky that the two messages
     // are of different sizes.
-    legacyFunctions._peekFirstMessage = function() {
+    legacyFunctions._peekFirstMessage = function () {
       this.usedVNCHandshake = (this._receiveQueueBytesUnread() === 12);
       if (this.usedVNCHandshake) {
         this._setReadCB(12, this._handleProtocolVersionMsg);
@@ -6630,7 +6631,7 @@ export function WmksLib($) {
       vncDecoder._originalFunctions = vncDecoder._originalFunctions || {};
 
       for (let functionName in legacyFunctions) {
-        if (legacyFunctions.hasOwnProperty(functionName)){
+        if (legacyFunctions.hasOwnProperty(functionName)) {
           if (!vncDecoder._originalFunctions[functionName]) {
             //Save reference to original
             vncDecoder._originalFunctions[functionName] = vncDecoder[functionName];
@@ -6647,13 +6648,13 @@ export function WmksLib($) {
       }  //never replaced
 
       for (var functionName in vncDecoder._originalFunctions) {
-        if(vncDecoder._originalFunctions.hasOwnProperty(functionName)){
+        if (vncDecoder._originalFunctions.hasOwnProperty(functionName)) {
           vncDecoder[functionName] = vncDecoder._originalFunctions[functionName];
         }
       }
     }
 
-    self.wsOpen = function(evt) {
+    self.wsOpen = function (evt) {
 
       self._state = self.VNC_ACTIVE_STATE;
       if (this.protocol !== 'uint8utf8' && this.protocol !== 'binary' && this.protocol !== 'vmware-vvc') {
@@ -6675,7 +6676,7 @@ export function WmksLib($) {
 
       if (self.useLegacy) {
         replaceFunctions(self);
-      } else{
+      } else {
         restoreFunctions(self);
       }
 
@@ -6686,7 +6687,7 @@ export function WmksLib($) {
     };
 
     let wsMessageOriginal = self.wsMessage;
-    self.wsMessage = function(evt) {
+    self.wsMessage = function (evt) {
       if (!self.useLegacy) { return wsMessageOriginal.apply(this, arguments); }
 
       if (self._legacyReceiveQueueIndex > self._legacyReceiveQueue.length) {
@@ -6752,16 +6753,16 @@ export function WmksLib($) {
   * for mouse wheel events across browsers when it comes to variables and
   * values, and it's nearly impossible to normalize.
   */
-  (function() {
+  (function () {
 
     // @ts-ignore
-    let WHEEL_EVENTS = ( 'onwheel' in document || document.documentMode >= 9 ) ?
+    let WHEEL_EVENTS = ('onwheel' in document || document.documentMode >= 9) ?
       ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'];
-    let toFix  = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'];
+    let toFix = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'];
 
-    if ( $.event.fixHooks ) {
-      for ( let i = toFix.length; i; ) {
-        $.event.fixHooks[ toFix[--i] ] = $.event.mouseHooks;
+    if ($.event.fixHooks) {
+      for (let i = toFix.length; i;) {
+        $.event.fixHooks[toFix[--i]] = $.event.mouseHooks;
       }
     }
 
@@ -6773,23 +6774,23 @@ export function WmksLib($) {
       let dispatch = $.event.dispatch || $.event.handle;
 
       // Old school scrollwheel delta
-      if ( 'detail'      in event ) { deltaY = event.detail * -1;      }
-      if ( 'wheelDelta'  in event ) { deltaY = event.wheelDelta;       }
-      if ( 'wheelDeltaY' in event ) { deltaY = event.wheelDeltaY;      }
-      if ( 'wheelDeltaX' in event ) { deltaX = event.wheelDeltaX * -1; }
+      if ('detail' in event) { deltaY = event.detail * -1; }
+      if ('wheelDelta' in event) { deltaY = event.wheelDelta; }
+      if ('wheelDeltaY' in event) { deltaY = event.wheelDeltaY; }
+      if ('wheelDeltaX' in event) { deltaX = event.wheelDeltaX * -1; }
 
       // Firefox < 17 horizontal scrolling related to DOMMouseScroll event
-      if ( 'axis' in event && event.axis === event.HORIZONTAL_AXIS ) {
+      if ('axis' in event && event.axis === event.HORIZONTAL_AXIS) {
         deltaX = deltaY * -1;
         deltaY = 0;
       }
 
       // New school wheel delta (wheel event)
-      if ( 'deltaY' in event ) { deltaY = event.deltaY * -1; }
-      if ( 'deltaX' in event ) { deltaX = event.deltaX;      }
+      if ('deltaY' in event) { deltaY = event.deltaY * -1; }
+      if ('deltaX' in event) { deltaX = event.deltaX; }
 
       // No change actually happened, no reason to go any further
-      if ( deltaY === 0 && deltaX === 0 ) { return; }
+      if (deltaY === 0 && deltaX === 0) { return; }
 
       event = $.event.fix(event);
       event.type = 'mousewheel';
@@ -6803,7 +6804,7 @@ export function WmksLib($) {
     // Provides a "mousewheel" event in jQuery that can be binded to a callback.
     // This handles the different browser events for wheel movements.
     $.event.special.mousewheel = {
-      setup: function() {
+      setup: function () {
         if (this.addEventListener) {
           let i;
 
@@ -6815,7 +6816,7 @@ export function WmksLib($) {
         }
       },
 
-      tearDown: function() {
+      tearDown: function () {
         if (this.removeEventListener) {
           let i;
 
@@ -6852,14 +6853,14 @@ export function WmksLib($) {
    *    4. Log only when requested log level is above or equal to LOG_LEVEL value.
    *    5. Dynamically set logging levels.
    */
-  WMKS.LOGGER = new function() {
+  WMKS.LOGGER = new function () {
     'use strict';
 
     this.LEVEL = {
       TRACE: 0,
       DEBUG: 1,
-      INFO:  2,
-      WARN:  3,
+      INFO: 2,
+      WARN: 3,
       ERROR: 4
     };
 
@@ -6868,11 +6869,11 @@ export function WmksLib($) {
     let _logLevelDesc = [' [Trace] ', ' [Debug] ', ' [Info ] ', ' [Warn ] ', ' [Error] '];
 
     // Logging functions for different log levels.
-    this.trace = function(args) { this.log(args, this.LEVEL.TRACE); };
-    this.debug = function(args) { this.log(args, this.LEVEL.DEBUG); };
-    this.info =  function(args) { this.log(args, this.LEVEL.INFO);  };
-    this.warn =  function(args) { this.log(args, this.LEVEL.WARN);  };
-    this.error = function(args) { this.log(args, this.LEVEL.ERROR); };
+    this.trace = function (args) { this.log(args, this.LEVEL.TRACE); };
+    this.debug = function (args) { this.log(args, this.LEVEL.DEBUG); };
+    this.info = function (args) { this.log(args, this.LEVEL.INFO); };
+    this.warn = function (args) { this.log(args, this.LEVEL.WARN); };
+    this.error = function (args) { this.log(args, this.LEVEL.ERROR); };
 
     /*
      *---------------------------------------------------------------------------
@@ -6889,14 +6890,14 @@ export function WmksLib($) {
      */
 
     this.log =
-      (typeof console === 'undefined' || typeof console.log === 'undefined')?
+      (typeof console === 'undefined' || typeof console.log === 'undefined') ?
         $.noop :
-        function(logData, level) {
+        function (logData, level) {
           level = (level === undefined) ? this.LEVEL.INFO : level;
           if (level >= _logLevel && logData) {
             // ISO format has ms precision, but lacks IE9 support.
             // Hence use UTC format for IE9.
-            console.log((WMKS.BROWSER.isIE()?
+            console.log((WMKS.BROWSER.isIE() ?
               new Date().toUTCString() : new Date().toISOString())
               + _logLevelDesc[level] + logData);
           }
@@ -6913,7 +6914,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.setLogLevel = function(newLevel) {
+    this.setLogLevel = function (newLevel) {
       if (typeof newLevel === 'number' && newLevel >= 0 && newLevel < _logLevelDesc.length) {
         _logLevel = newLevel;
       } else {
@@ -6941,17 +6942,17 @@ export function WmksLib($) {
    *      - Major and minor version of the browser as a float.
    *        e.g For Chrome 35.6.1234 this would be 35.6
    */
-  WMKS.BROWSER = new function() {
+  WMKS.BROWSER = new function () {
     let ua = navigator.userAgent.toLowerCase();
     let vs = navigator.appVersion.toString();
-    let trueFunc = function() { return true; };
-    let falseFunc = function() { return false; };
+    let trueFunc = function () { return true; };
+    let falseFunc = function () { return false; };
 
     // In the wake of $.browser being deprecated, use the following:
-    this.isIE = (ua.indexOf('msie') !== -1 || ua.indexOf('trident') !== -1 || ua.indexOf('edge') !== -1)?
+    this.isIE = (ua.indexOf('msie') !== -1 || ua.indexOf('trident') !== -1 || ua.indexOf('edge') !== -1) ?
       trueFunc : falseFunc;
 
-    this.isOpera = (ua.indexOf('opera/') !== -1)? trueFunc : falseFunc;
+    this.isOpera = (ua.indexOf('opera/') !== -1) ? trueFunc : falseFunc;
     this.isWebkit = this.isChrome = this.isSafari = this.isBB = falseFunc;
 
     // Check for webkit engine.
@@ -6973,53 +6974,53 @@ export function WmksLib($) {
     this.isGecko = (!this.isWebkit() && !this.isIE() && ua.indexOf('gecko') !== -1)
       ? trueFunc : falseFunc;
 
-    this.isFirefox = (ua.indexOf('firefox') !== -1 || ua.indexOf('iceweasel') !== -1)?
+    this.isFirefox = (ua.indexOf('firefox') !== -1 || ua.indexOf('iceweasel') !== -1) ?
       trueFunc : falseFunc;
 
     // Flag indicating low bandwidth, not screen size.
-    this.isLowBandwidth = (ua.indexOf('mobile') !== -1)? trueFunc : falseFunc;
+    this.isLowBandwidth = (ua.indexOf('mobile') !== -1) ? trueFunc : falseFunc;
 
     // Detect specific mobile devices. These are *not* guaranteed to also set
     // isLowBandwidth. Some however do when presenting over WiFi, etc.
     this.isIOS = ((ua.indexOf('iphone') !== -1) || (ua.indexOf('ipod') !== -1) ||
-      (ua.indexOf('ipad') !== -1))? trueFunc : falseFunc;
+      (ua.indexOf('ipad') !== -1)) ? trueFunc : falseFunc;
 
     /* typically also sets isLinux */
-    this.isAndroid = (ua.indexOf('android') !== -1)? trueFunc : falseFunc;
+    this.isAndroid = (ua.indexOf('android') !== -1) ? trueFunc : falseFunc;
 
     // Detect IE mobile versions.
-    this.isIEMobile = (ua.indexOf('IEMobile') !== -1)? trueFunc : falseFunc;
+    this.isIEMobile = (ua.indexOf('IEMobile') !== -1) ? trueFunc : falseFunc;
 
     // Flag indicating that touch feature exists. (Ex: includes Win8 touch laptops)
     this.hasTouchInput = ('ontouchstart' in window
       || navigator.maxTouchPoints
-      || navigator.msMaxTouchPoints)? trueFunc : falseFunc;
+      || navigator.msMaxTouchPoints) ? trueFunc : falseFunc;
 
     // TODO: Include windows/BB phone as touchDevice.
-    this.isTouchDevice = (this.isIOS() || this.isAndroid() || this.isBB())?
+    this.isTouchDevice = (this.isIOS() || this.isAndroid() || this.isBB()) ?
       trueFunc : falseFunc;
 
     // PC OS detection.
-    this.isChromeOS = (ua.indexOf('cros') !== -1)? trueFunc : falseFunc;
-    this.isWindows = (ua.indexOf('windows') !== -1)? trueFunc : falseFunc;
-    this.isLinux = (ua.indexOf('linux') !== -1)? trueFunc : falseFunc;
-    this.isMacOS = (ua.indexOf('macos') !== -1 || ua.indexOf('macintosh') > -1)?
+    this.isChromeOS = (ua.indexOf('cros') !== -1) ? trueFunc : falseFunc;
+    this.isWindows = (ua.indexOf('windows') !== -1) ? trueFunc : falseFunc;
+    this.isLinux = (ua.indexOf('linux') !== -1) ? trueFunc : falseFunc;
+    this.isMacOS = (ua.indexOf('macos') !== -1 || ua.indexOf('macintosh') > -1) ?
       trueFunc : falseFunc;
 
-    let getValue = function(regex, index) {
+    let getValue = function (regex, index) {
       let match = ua.match(regex);
       return (match && match.length > index && match[index]) || '';
     };
-    this.version = { full : "" };
-    if(this.isSafari()) {
+    this.version = { full: "" };
+    if (this.isSafari()) {
       this.version.full = getValue(/Version[ \/]([0-9.]+)/i, 1);
-    } else if(this.isChrome()) {
+    } else if (this.isChrome()) {
       this.version.full = getValue(/Chrome\/([0-9.]+)/i, 1);
-    } else if(this.isFirefox()) {
+    } else if (this.isFirefox()) {
       this.version.full = getValue(/(?:Firefox|Iceweasel)[ \/]([0-9.]+)/i, 1);
-    } else if(this.isOpera()) {
+    } else if (this.isOpera()) {
       this.version.full = getValue(/Version[ \/]([0-9.]+)/i, 1) || getValue(/(?:opera|opr)[\s\/]([0-9.]+)/i, 1);
-    } else if(this.isIE()) {
+    } else if (this.isIE()) {
       this.version.full = getValue(/(?:\b(MS)?IE\s+|\bTrident\/7\.0;.*\s+rv:|\bEdge\/)([0-9.]+)/i, 2);
     }
     let versionParts = this.version.full.split('.');
@@ -7039,13 +7040,13 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.isCanvasSupported = function() {
+    this.isCanvasSupported = function () {
       try {
         let canvas = document.createElement('canvas');
         let result = !!canvas.getContext; // convert to Boolean, invert again.
         canvas = null; // was never added to DOM, don't need to remove
         return result;
-      } catch(e) {
+      } catch (e) {
         return false;
       }
     };
@@ -7059,15 +7060,15 @@ export function WmksLib($) {
   WMKS.CONST = {
     // Touch events can use the following keycodes to mimic mouse events.
     CLICK: {
-      left:       0x1,
-      middle:     0x2,
-      right:      0x4
+      left: 0x1,
+      middle: 0x2,
+      right: 0x4
     },
 
     FORCE_RAW_KEY_CODE: {
-      8:          true,    // backspace
-      9:          true,    // tab
-      13:         true     // newline
+      8: true,    // backspace
+      9: true,    // tab
+      13: true     // newline
     }
   };
 
@@ -7079,7 +7080,7 @@ export function WmksLib($) {
      * This function creates a canvas element and adds the absolute
      * position css to it if the input flag is set.
      */
-    createCanvas: function(addAbsolutePosition) {
+    createCanvas: function (addAbsolutePosition) {
       let css: any = {};
       if (addAbsolutePosition) {
         css.position = 'absolute';
@@ -7091,7 +7092,7 @@ export function WmksLib($) {
      * This function creates a video element and adds the absolute
      * position css to it if the input flag is set.
      */
-    createVideo: function(addAbsolutePosition) {
+    createVideo: function (addAbsolutePosition) {
       let css: any = {};
       if (addAbsolutePosition) {
         css.position = 'absolute';
@@ -7103,7 +7104,7 @@ export function WmksLib($) {
      * Gets the length of the line that starts at (0, 0) and ends at
      * (dx, dy) and returns the floating point number.
      */
-    getLineLength: function(dx, dy) {
+    getLineLength: function (dx, dy) {
       return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
     },
 
@@ -7111,14 +7112,14 @@ export function WmksLib($) {
      * Indicates if high-resolution mode is available for this browser. Checks
      * for a higher devicePixelRatio on the browser.
      */
-    isHighResolutionSupported: function() {
+    isHighResolutionSupported: function () {
       return window.devicePixelRatio && window.devicePixelRatio > 1;
     },
 
     /**
      * Utility function to inform if the browser is in full-screen mode.
      */
-    isFullscreenNow: function() {
+    isFullscreenNow: function () {
       // @ts-ignore
       return document.fullscreenElement || document.mozFullScreenElement || document.msFullscreenElement || document.webkitFullscreenElement ? true : false;
     },
@@ -7130,7 +7131,7 @@ export function WmksLib($) {
      * Fullscreen mode is disabled on Safari as it does not support keyboard
      * input in fullscreen for "security reasons". See bug 1296505.
      */
-    isFullscreenEnabled: function() {
+    isFullscreenEnabled: function () {
       // @ts-ignore
       return !WMKS.BROWSER.isSafari() && (document.fullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled || document.webkitFullscreenEnabled) ? true : false;
     },
@@ -7139,7 +7140,7 @@ export function WmksLib($) {
      * This function toggles the fullscreen mode for this browser if it is
      * supported. If not, it just ignores the request.
      */
-    toggleFullScreen: function(showFullscreen, element?) {
+    toggleFullScreen: function (showFullscreen, element?) {
       let currentState = WMKS.UTIL.isFullscreenNow();
       let ele = element || document.documentElement;
 
@@ -7166,7 +7167,7 @@ export function WmksLib($) {
           // @ts-ignore
           document.webkitCancelFullScreen();
           // @ts-ignore
-        } else if(document.msExitFullscreen) {
+        } else if (document.msExitFullscreen) {
           // @ts-ignore
           document.msExitFullscreen();
         }
@@ -7191,7 +7192,7 @@ export function WmksLib($) {
    * Given a buffer of bytes and its size, initialize a BitBuf
    * object for reading from or writing to that buffer.
    */
-  WMKS.BitBuf = function(buffer, size) {
+  WMKS.BitBuf = function (buffer, size) {
     "use strict";
     this._buf = buffer;
     this._size = size;
@@ -7207,7 +7208,7 @@ export function WmksLib($) {
    * Helper for readBits() which reads a number of bits from the
    * current active byte and returns them to the caller.
    */
-  WMKS.BitBuf.prototype.readBits0 = function(val, nr) {
+  WMKS.BitBuf.prototype.readBits0 = function (val, nr) {
     "use strict";
     let mask;
 
@@ -7218,7 +7219,7 @@ export function WmksLib($) {
 
     mask = ~(0xff >> nr);        /* ones in the lower 'nr' bits */
     val <<= nr;                  /* move output value up to make space */
-    val |= (this._thisByte & mask) >> (8-nr);
+    val |= (this._thisByte & mask) >> (8 - nr);
     this._thisByte <<= nr;
     this._thisByte &= 0xff;
     this._thisByteBits -= nr;
@@ -7229,7 +7230,7 @@ export function WmksLib($) {
   /**
    * Read and return the specified number of bits from the BitBuf.
    */
-  WMKS.BitBuf.prototype.readBits = function(nr) {
+  WMKS.BitBuf.prototype.readBits = function (nr) {
     "use strict";
     let origNr = nr;
     let val = 0;
@@ -7264,7 +7265,7 @@ export function WmksLib($) {
    * result will be greater than or equal to one, and is
    * constrained to fit in a 32-bit integer.
    */
-  WMKS.BitBuf.prototype.readEliasGamma = function() {
+  WMKS.BitBuf.prototype.readEliasGamma = function () {
     "use strict";
     let l = 0;
     let value;
@@ -7273,7 +7274,7 @@ export function WmksLib($) {
     let origbit = this._thisByteBits;
 
     while (!this._overflow &&
-    (bit = this.readBits(1)) == 0) {
+      (bit = this.readBits(1)) == 0) {
       l++;
     }
 
@@ -7294,7 +7295,7 @@ export function WmksLib($) {
    *  non-native code constructor we can use to stub out in Jasmine (a
    *  testing framework).
    */
-  WMKS.WebSocket = function(url, protocol) {
+  WMKS.WebSocket = function (url, protocol) {
     // @ts-ignore
     return new window.WebSocket(url, protocol);
   };
@@ -7302,7 +7303,7 @@ export function WmksLib($) {
   /**
    * WebMKS VNC decoder prototype.
    */
-  WMKS.VNCDecoder = function(opts) {
+  WMKS.VNCDecoder = function (opts) {
     this.options = $.extend({}, this.options, opts);
     $.extend(this, {
       useVMWRequestResolution: !1,
@@ -7444,7 +7445,7 @@ export function WmksLib($) {
 
     // Pushes the current image to the cache if it is not full,
     // and then deletes the image. Reset destX, destY before image recycle.
-    this._releaseImage = function(image) {
+    this._releaseImage = function (image) {
       if (this._imageManager) this._imageManager.releaseImage(image);
     };
 
@@ -7466,39 +7467,39 @@ export function WmksLib($) {
       enableVMWSessionClose: !1,
       retryConnectionInterval: -1,
       sendRelativeMouseEvent: !1,
-      onConnecting: function() {
+      onConnecting: function () {
       },
-      onConnected: function() {
+      onConnected: function () {
       },
-      onBeforeDisconnected: function() {
+      onBeforeDisconnected: function () {
       },
-      onDisconnected: function() {
+      onDisconnected: function () {
       },
-      onAuthenticationFailed: function() {
+      onAuthenticationFailed: function () {
       },
-      onError: function(a) {
+      onError: function (a) {
       },
-      onProtocolError: function() {
+      onProtocolError: function () {
       },
-      onNewDesktopSize: function(a, b) {
+      onNewDesktopSize: function (a, b) {
       },
-      onKeyboardLEDsChanged: function(a) {
+      onKeyboardLEDsChanged: function (a) {
       },
-      onCursorStateChanged: function(a) {
+      onCursorStateChanged: function (a) {
       },
-      onHeartbeat: function(a) {
+      onHeartbeat: function (a) {
       },
-      onUpdateCopyPasteUI: function(a, b) {
+      onUpdateCopyPasteUI: function (a, b) {
       },
-      onCopy: function(a) {
+      onCopy: function (a) {
       },
-      onSetReconnectToken: function(a) {
+      onSetReconnectToken: function (a) {
       },
-      onAudio: function(a) {
+      onAudio: function (a) {
       },
-      onAudioMixer: function(a) {
+      onAudioMixer: function (a) {
       },
-      onEncodingChanged: function(a) {
+      onEncodingChanged: function (a) {
       },
       cacheSizeKB: 102400,
       cacheSizeEntries: 1024
@@ -7630,25 +7631,25 @@ export function WmksLib($) {
     resolutionDelay: 300 // milliseconds
   });
   // TODO
-  WMKS.VNCDecoder.prototype.fail = function(a) {
+  WMKS.VNCDecoder.prototype.fail = function (a) {
     return WMKS.LOGGER.log(a), this.disconnect(), null
   };
-  WMKS.VNCDecoder.prototype._assumeServerIsVMware = function() {
+  WMKS.VNCDecoder.prototype._assumeServerIsVMware = function () {
     if (!this.usedVNCHandshake) return;
     this.useVMWKeyEvent = !0
   };
-  WMKS.VNCDecoder.prototype._receiveQueueBytesUnread = function() {
+  WMKS.VNCDecoder.prototype._receiveQueueBytesUnread = function () {
     "use strict";
     return this._receiveQueueLength - this._receiveQueueIndex;
   };
-  WMKS.VNCDecoder.prototype._receiveQueueConsumeBytes = function(a) {
+  WMKS.VNCDecoder.prototype._receiveQueueConsumeBytes = function (a) {
     this._receiveQueueIndex += a;
     while (this._receiveQueueIndex > 0 && this._receiveQueue[0].data.byteLength <= this._receiveQueueIndex) this._receiveQueueLength -= this._receiveQueue[0].data.byteLength, this._receiveQueueIndex -= this._receiveQueue[0].data.byteLength, this._receiveQueue.shift()
   };
-  WMKS.VNCDecoder.prototype._receiveQueueReset = function() {
+  WMKS.VNCDecoder.prototype._receiveQueueReset = function () {
     this._receiveQueue = [], this._receiveQueueLength = 0, this._receiveQueueIndex = 0
   };
-  WMKS.VNCDecoder.prototype._readBytes = function(a) {
+  WMKS.VNCDecoder.prototype._readBytes = function (a) {
     "use strict";
     if (this._receiveQueueIndex + a <= this._receiveQueue[0].data.byteLength) {
       let b = new Uint8Array(this._receiveQueue[0].data, this._receiveQueueIndex, a);
@@ -7663,21 +7664,21 @@ export function WmksLib($) {
     }
     return b
   };
-  WMKS.VNCDecoder.prototype._readByte = function() {
+  WMKS.VNCDecoder.prototype._readByte = function () {
     "use strict";
     let a = this._readBytes(1);
     return a[0]
   };
-  WMKS.VNCDecoder.prototype._skipBytes = function(a) {
+  WMKS.VNCDecoder.prototype._skipBytes = function (a) {
     "use strict";
-      this._receiveQueueConsumeBytes(a)
+    this._receiveQueueConsumeBytes(a)
   };
-  WMKS.VNCDecoder.prototype._readString = function(b) {
+  WMKS.VNCDecoder.prototype._readString = function (b) {
     "use strict";
     let c = this._readBytes(b);
     return stringFromArray(c)
   };
-  WMKS.VNCDecoder.prototype._readStringUTF8 = function(a) {
+  WMKS.VNCDecoder.prototype._readStringUTF8 = function (a) {
     "use strict";
     let b, c, d, e, f = [],
       g = 0,
@@ -7685,21 +7686,21 @@ export function WmksLib($) {
     while (g < a) b = h[g], b < 128 ? (f.push(b), g++) : b < 224 ? (c = h[g + 1] & 63, f.push((b & 31) << 6 | c), g += 2) : b < 240 ? (c = h[g + 1] & 63, d = h[g + 2] & 63, f.push((b & 15) << 12 | c << 6 | d), g += 3) : (c = h[g + 1] & 63, d = h[g + 2] & 63, e = h[g + 3] & 63, f.push((b & 7) << 18 | c << 12 | d << 6 | e), g += 4);
     return String.fromCharCode.apply(String, f)
   };
-  WMKS.VNCDecoder.prototype._readInt16 = function() {
+  WMKS.VNCDecoder.prototype._readInt16 = function () {
     "use strict";
     let a = this._readBytes(2);
     return (a[0] << 8) + a[1]
   };
-  WMKS.VNCDecoder.prototype._readInt32 = function() {
+  WMKS.VNCDecoder.prototype._readInt32 = function () {
     "use strict";
     let a = this._readBytes(4);
     return (a[0] << 24) + (a[1] << 16) + (a[2] << 8) + a[3]
   };
-  WMKS.VNCDecoder.prototype._sendString = function(a) {
+  WMKS.VNCDecoder.prototype._sendString = function (a) {
     "use strict";
-      this._sendBytes(arrayFromString(a))
+    this._sendBytes(arrayFromString(a))
   };
-  WMKS.VNCDecoder.prototype._sendBytes = function(a) {
+  WMKS.VNCDecoder.prototype._sendBytes = function (a) {
     "use strict";
     if (!this._websocket) return;
     let b = new ArrayBuffer(a.length),
@@ -7708,10 +7709,10 @@ export function WmksLib($) {
     for (d = 0; d < a.length; d++) c[d] = a[d];
     this._websocket.send(b)
   };
-  WMKS.VNCDecoder.prototype._setReadCB = function(a, b, c) {
+  WMKS.VNCDecoder.prototype._setReadCB = function (a, b, c) {
     this.nextBytes = a, this.nextFn = b, this.nextArg = c
   };
-  WMKS.VNCDecoder.prototype._sendMouseEvent = function() {
+  WMKS.VNCDecoder.prototype._sendMouseEvent = function () {
     if (this.options.sendRelativeMouseEvent) {
       let a = [];
       a.push8(this.msgVMWClientMessage), a.push8(this.msgVMWPointerEvent2), a.push16(19), a.push8(0), a.push32(this._mouseX), a.push32(this._mouseY), a.push32(this._mouseButtonMask), a.push8(0), a.push8(0), this._sendBytes(a), this._mouseActive = !1
@@ -7720,18 +7721,18 @@ export function WmksLib($) {
       a.push8(this.msgPointerEvent), a.push8(this._mouseButtonMask), a.push16(this._mouseX), a.push16(this._mouseY), this._sendBytes(a), this._mouseActive = !1
     }
   };
-  WMKS.VNCDecoder.prototype._sendResolutionRequest = function() {
+  WMKS.VNCDecoder.prototype._sendResolutionRequest = function () {
     let a = [];
     a.push8(this.msgVMWClientMessage), a.push8(5), a.push16(8), a.push16(this.requestedWidth), a.push16(this.requestedHeight), this._sendBytes(a)
   };
-  WMKS.VNCDecoder.prototype._sendTopologyRequest = function(a) {
+  WMKS.VNCDecoder.prototype._sendTopologyRequest = function (a) {
     let b = [],
       c = 0;
     b.push8(this.msgVMWClientMessage), b.push8(10), b.push16(6 + 20 * a.length), b.push16(a.length);
     for (c = 0; c < a.length; c++) b.push32(a[c].left), b.push32(a[c].top), b.push32(a[c].requestedWidth), b.push32(a[c].requestedHeight), b.push32(0);
     this._sendBytes(b)
   };
-  WMKS.VNCDecoder.prototype._sendClientEncodingsMsg = function() {
+  WMKS.VNCDecoder.prototype._sendClientEncodingsMsg = function () {
     let a,
       b = [this.encTightDiffComp, this.encTightPNG, this.encDesktopSize, this.encVMWDefineCursor, this.encVMWCursorState, this.encVMWCursorPosition, this.encVMWTypematicInfo, this.encVMWLEDState, this.encVMWServerPush2, this.encVMWServerCaps, this.encTightJpegQuality10, this.encVMWFrameStamp, this.encUpdateCache];
     this.options.mediaPlayer && b.unshift(this.encH264MP4), this.options.enableRawH264 && b.unshift(this.encH264RectEnc), this.options.enableTopologyChange && b.unshift(this.encToppologyChangeEnc), this.options.enableH264Multimon && b.unshift(this.encH264MultimonEnc), this._canvas[1] && (b = [this.encOffscreenCopyRect].concat(b)), b = [this.encCopyRect].concat(b);
@@ -7740,11 +7741,11 @@ export function WmksLib($) {
     for (a = 0; a < b.length; a += 1) c.push32(b[a]);
     this._sendBytes(c)
   };
-  WMKS.VNCDecoder.prototype._sendFBUpdateRequestMsg = function(a) {
+  WMKS.VNCDecoder.prototype._sendFBUpdateRequestMsg = function (a) {
     let b = [];
     b.push8(this.msgFBUpdateRequest), b.push8(a), b.push16(0), b.push16(0), b.push16(this._FBWidth), b.push16(this._FBHeight), this._sendBytes(b)
   };
-  WMKS.VNCDecoder.prototype._sendAck = function(a) {
+  WMKS.VNCDecoder.prototype._sendAck = function (a) {
     let b = this.updateReqId || 1,
       c;
     if (this.useVMWAck) {
@@ -7753,11 +7754,11 @@ export function WmksLib($) {
       e.push8(this.msgVMWClientMessage), e.push8(4), e.push16(8), e.push8(b), e.push8(0), e.push16(d), this._sendBytes(e)
     } else this._sendFBUpdateRequestMsg(b)
   };
-  WMKS.VNCDecoder.prototype._sendAudioAck = function(a, b) {
+  WMKS.VNCDecoder.prototype._sendAudioAck = function (a, b) {
     let c = [];
     c.push8(this.msgVMWClientMessage), c.push8(this.msgVMWAudioAck), c.push16(12), c.push32(a), c.push32(b), this._sendBytes(c)
   };
-  WMKS.VNCDecoder.prototype._changeCursor = function(a, b, d, e, f, g) {
+  WMKS.VNCDecoder.prototype._changeCursor = function (a, b, d, e, f, g) {
     let h = [],
       i = f * g * 4,
       j = Math.ceil(f * g / 8),
@@ -7777,30 +7778,30 @@ export function WmksLib($) {
     let p = "data:image/x-icon;base64," + Base64.encodeFromArray(h);
     this._currentCursorURI = "url(" + p + ") " + d + " " + e + ", default", this._updateCanvasCursor()
   };
-  WMKS.VNCDecoder.prototype._readOffscreenCopyRect = function(a) {
+  WMKS.VNCDecoder.prototype._readOffscreenCopyRect = function (a) {
     a.srcBuffer = this._readByte(), a.dstBuffer = this._readByte(), a.srcX = this._readInt16(), a.srcY = this._readInt16(), this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readUpdateCacheData = function(a) {
+  WMKS.VNCDecoder.prototype._readUpdateCacheData = function (a) {
     "use strict";
-      a.data = this._readBytes(a.dataLength),
+    a.data = this._readBytes(a.dataLength),
       this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readUpdateCacheInitData = function(a) {
+  WMKS.VNCDecoder.prototype._readUpdateCacheInitData = function (a) {
     "use strict";
-      this._skipBytes(4),
+    this._skipBytes(4),
       this._skipBytes(4),
       a.updateCacheEntries = this._readInt16(),
       this._skipBytes(4),
       this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readUpdateCacheRect = function(a) {
+  WMKS.VNCDecoder.prototype._readUpdateCacheRect = function (a) {
     "use strict";
-      a.opcode = this._readByte(),
+    a.opcode = this._readByte(),
       a.slot = this._readInt16(),
       a.dataLength = this._readInt16(),
       a.opcode != this.updateCacheOpInit ? this._setReadCB(a.dataLength, this._readUpdateCacheData, a) : this._setReadCB(a.dataLength, this._readUpdateCacheInitData, a)
   };
-  WMKS.VNCDecoder.prototype._readVMWDefineCursorData = function(a) {
+  WMKS.VNCDecoder.prototype._readVMWDefineCursorData = function (a) {
     let b, c, d = [],
       e = [],
       f = [],
@@ -7817,60 +7818,60 @@ export function WmksLib($) {
     } else a.cursorType === 1 && a.pixelslength > 0 && (e = this._readBytes(a.pixelslength), a.pixelslength == 4 && e[3] == 0 && (e[3] = 1));
     this._changeCursor(e, f, a.x, a.y, a.width, a.height), this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readVMWDefineCursor = function(a) {
+  WMKS.VNCDecoder.prototype._readVMWDefineCursor = function (a) {
     a.cursorType = this._readByte(), this._skipBytes(1), a.pixelslength = 4 * a.width * a.height, a.cursorType === 0 ? a.masklength = a.pixelslength : a.masklength = 0, this._setReadCB(a.pixelslength + a.masklength, this._readVMWDefineCursorData, a)
   };
-  WMKS.VNCDecoder.prototype._updateCanvasCursor = function() {
+  WMKS.VNCDecoder.prototype._updateCanvasCursor = function () {
     let a, b;
     this._cursorVisible ? WMKS.BROWSER.isIE() ? a = "default" : a = this._currentCursorURI : WMKS.BROWSER.isFirefox() && WMKS.BROWSER.isMacOS() ? a = "none, !important" : a = "none", b = this._mediaPlayer || this._canvas[0], b.style.cursor !== a && (b.style.cursor = a)
   };
-  WMKS.VNCDecoder.prototype._readVMWCursorState = function(a) {
+  WMKS.VNCDecoder.prototype._readVMWCursorState = function (a) {
     let b = this._readInt16();
     this._cursorVisible = !!(b & 1), this._updateCanvasCursor(), this.options.onCursorStateChanged(this._cursorVisible), this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readVMWCursorPosition = function(a) {
+  WMKS.VNCDecoder.prototype._readVMWCursorPosition = function (a) {
     WMKS.VNCDecoder.cursorPosition = a, this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readTypematicInfo = function(a) {
+  WMKS.VNCDecoder.prototype._readTypematicInfo = function (a) {
     this.typematicState = this._readInt16(), this.typematicPeriod = this._readInt32(), this.typematicDelay = this._readInt32(), this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readLEDState = function(a) {
+  WMKS.VNCDecoder.prototype._readLEDState = function (a) {
     this._keyboardLEDs = this._readInt32(), this.options.onKeyboardLEDsChanged(this._keyboardLEDs), this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readFrameStamp = function(a) {
+  WMKS.VNCDecoder.prototype._readFrameStamp = function (a) {
     this._frameTimestampLo = this._readInt32(), this._frameTimestampHi = this._readInt32(), this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._fillRectWithColor = function(a, b, c, d, e, f) {
+  WMKS.VNCDecoder.prototype._fillRectWithColor = function (a, b, c, d, e, f) {
     let g;
     g = "rgb(" + f[0] + "," + f[1] + "," + f[2] + ")", a.fillStyle = g, a.fillRect(b, c, d, e)
   };
-  WMKS.VNCDecoder.prototype._blitImageString = function(a, b, c, d, e, f) {
+  WMKS.VNCDecoder.prototype._blitImageString = function (a, b, c, d, e, f) {
     let g, h, i;
     g = a.createImageData(d, e), i = g.data;
     for (h = 0; h < d * e * 4; h += 4) i[h] = f.charCodeAt(h + 2), i[h + 1] = f.charCodeAt(h + 1), i[h + 2] = f.charCodeAt(h + 0), i[h + 3] = 255;
     a.putImageData(g, b, c)
   };
-  WMKS.VNCDecoder.prototype._copyRectGetPut = function(srcIndex, srcX, srcY, width, height, dstIndex, dstX, dstY) {
+  WMKS.VNCDecoder.prototype._copyRectGetPut = function (srcIndex, srcX, srcY, width, height, dstIndex, dstX, dstY) {
     let img;
     img = this._canvas[srcIndex].ctx.getImageData(srcX, srcY, width, height);
 
     this._canvas[dstIndex].ctx.putImageData(img, dstX, dstY);
     img = undefined;
   };
-  WMKS.VNCDecoder.prototype._copyRectDrawImage = function(a, b, c, d, e, f, g, h) {
+  WMKS.VNCDecoder.prototype._copyRectDrawImage = function (a, b, c, d, e, f, g, h) {
     this._canvas[f].ctx.drawImage(this._canvas[a], b, c, d, e, g, h, d, e)
   };
-  WMKS.VNCDecoder.prototype._copyRectDrawImageTemp = function(a, b, c, d, e, f, g, h) {
+  WMKS.VNCDecoder.prototype._copyRectDrawImageTemp = function (a, b, c, d, e, f, g, h) {
     this._copyRectDrawImage(a, b, c, d, e, 2, b, c), this._copyRectDrawImage(2, b, c, d, e, f, g, h)
   };
-  WMKS.VNCDecoder.prototype._lighten = function(a, b, c, d, e) {
+  WMKS.VNCDecoder.prototype._lighten = function (a, b, c, d, e) {
     "use strict";
-      this._canvas[0].ctx.globalCompositeOperation = "lighten",
+    this._canvas[0].ctx.globalCompositeOperation = "lighten",
       this._canvas[0].ctx.fillStyle = e,
       this._canvas[0].ctx.fillRect(a, b, c, d),
       this._canvas[0].ctx.globalCompositeOperation = "source-over"
   };
-  WMKS.VNCDecoder.prototype._decodeDiffComp = function(a, b) {
+  WMKS.VNCDecoder.prototype._decodeDiffComp = function (a, b) {
     "use strict";
     let c = 0,
       d = 0,
@@ -7893,7 +7894,7 @@ export function WmksLib($) {
     }
     return e.subarray(0, c)
   };
-  WMKS.VNCDecoder.prototype._readTightData = function(a) {
+  WMKS.VNCDecoder.prototype._readTightData = function (a) {
     let b = this._readBytes(this.nextBytes),
       // @ts-ignore
       d = window.URL || window.webkitURL,
@@ -7902,50 +7903,50 @@ export function WmksLib($) {
     a.subEncoding === this.subEncDiffJpeg && (b = this._decodeDiffComp(b, this._lastJpegData)), a.subEncoding !== this.subEncPNG ? (this._lastJpegData = b, f = "image/jpeg") : f = "image/png", this._useImageBitmaps ? createImageBitmap(new Blob([b], {
       type: f
     }))
-      .then(function(b) {
+      .then(function (b) {
         a.image = b, e.onDecodeComplete()
       }) : (a.image = this._imageManager.getImage(), a.image.width = a.width, a.image.height = a.height, d && !(WMKS.BROWSER.isChrome() && WMKS.BROWSER.version.major >= 50) ? (a.image.onload = this.onDecodeObjectURLComplete, a.image.src = d.createObjectURL(new Blob([b], {
-      type: f
-    }))) : (b = Base64.encodeFromArray(b), a.image.onload = this.onDecodeComplete, a.image.src = "data:" + f + ";base64," + b)), this._nextRect()
+        type: f
+      }))) : (b = Base64.encodeFromArray(b), a.image.onload = this.onDecodeComplete, a.image.src = "data:" + f + ";base64," + b)), this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readTightPNG = function(a) {
+  WMKS.VNCDecoder.prototype._readTightPNG = function (a) {
     a.subEncoding = this._readByte(), a.subEncoding &= this.subEncMask, this._mediaPlayer && this.options.onEncodingChanged("TightPNG");
     if (a.subEncoding === this.subEncFill) a.color = [], a.color[0] = this._readByte(), a.color[1] = this._readByte(), a.color[2] = this._readByte(), a.color[3] = 255, this.rectsDecoded++, this._nextRect();
     else {
       let b = 1,
         c = this._readByte();
       c & 128 && (b = 2, c &= -129, c += this._readByte() << 7, c & 16384 &&
-      (b = 3, c &= -16385, c += this._readByte() << 14)), this._setReadCB(c, this._readTightData, a)
+        (b = 3, c &= -16385, c += this._readByte() << 14)), this._setReadCB(c, this._readTightData, a)
     }
   };
-  WMKS.VNCDecoder.prototype._readH264MP4Rect = function(a) {
+  WMKS.VNCDecoder.prototype._readH264MP4Rect = function (a) {
     let b = this._readInt16(),
       c = this._readInt16(),
       d = this._readInt32();
     b === 1 && (WMKS.LOGGER.log("MP4 encoding is selected and stream is reset."), this.options.onEncodingChanged("MP4"), this._mp4Decoder.init(this._mediaPlayer, undefined, undefined, this.onDecodeComplete, this.onDecodeMP4Error)), this._setReadCB(d, this._readH264MP4Data, a)
   };
-  WMKS.VNCDecoder.prototype._readH264MP4Data = function(a) {
+  WMKS.VNCDecoder.prototype._readH264MP4Data = function (a) {
     this._mp4Decoder.appendData(this._readBytes(this.nextBytes)), this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readH264Rect = function(a) {
+  WMKS.VNCDecoder.prototype._readH264Rect = function (a) {
     let b = this._readInt16(),
       c = this._readInt16(),
       d = this._readInt32();
     b === 1 && (WMKS.LOGGER.log("Raw H264 encoding is selected and stream is reset."), this.options.onEncodingChanged("RawH264")), this._setReadCB(d, this._readH264Data, a)
   };
-  WMKS.VNCDecoder.prototype._readH264Data = function(a) {
+  WMKS.VNCDecoder.prototype._readH264Data = function (a) {
     this._readBytes(this.nextBytes), this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readCopyRect = function(a) {
+  WMKS.VNCDecoder.prototype._readCopyRect = function (a) {
     a.srcX = this._readInt16(), a.srcY = this._readInt16(), this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readRaw = function(a) {
+  WMKS.VNCDecoder.prototype._readRaw = function (a) {
     a.imageString = this._readString(this.nextBytes), this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readDesktopSize = function(a) {
+  WMKS.VNCDecoder.prototype._readDesktopSize = function (a) {
     this._FBWidth = a.width, this._FBHeight = a.height, this.options.onNewDesktopSize(this._FBWidth, this._FBHeight), this._nextRect()
   };
-  WMKS.VNCDecoder.prototype._readRect = function() {
+  WMKS.VNCDecoder.prototype._readRect = function () {
     let a = this.rectsRead;
     this.rect[a] = {}, this.rect[a].x = this._readInt16(), this.rect[a].y = this._readInt16(), this.rect[a].width = this._readInt16(), this.rect[a].height = this._readInt16(), this.rect[a].encoding = this._readInt32(), this.rect[a].encoding !== this.encTightPNG && this.rect[a].encoding !== this.encH264MP4 && this.rectsDecoded++;
     switch (this.rect[a].encoding) {
@@ -7995,13 +7996,13 @@ export function WmksLib($) {
         return this.fail("Disconnected: unsupported encoding " + this.rect[a].encoding)
     }
   };
-  WMKS.VNCDecoder.prototype._evictUpdateCacheEntry = function(a) {
+  WMKS.VNCDecoder.prototype._evictUpdateCacheEntry = function (a) {
     "use strict";
     this.updateCache[a].image !== null && this._releaseImage(this.updateCache[a].image),
       this.updateCache[a] = {},
       this.updateCache[a].image = null
   };
-  WMKS.VNCDecoder.prototype._executeUpdateCacheInit = function(a) {
+  WMKS.VNCDecoder.prototype._executeUpdateCacheInit = function (a) {
     "use strict";
     let b;
     for (b = 0; b < this.updateCacheEntries; b++) this._evictUpdateCacheEntry(b);
@@ -8009,13 +8010,13 @@ export function WmksLib($) {
     if (this.updateCacheEntries > this.options.cacheSizeEntries) return this.fail("Disconnected: requested cache too large");
     for (b = 0; b < this.updateCacheEntries; b++) this.updateCache[b] = {}, this.updateCache[b].image = null
   };
-  WMKS.VNCDecoder.prototype._updateCacheInsideBeginEnd = function() {
+  WMKS.VNCDecoder.prototype._updateCacheInsideBeginEnd = function () {
     return this.decodeToCacheEntry !== -1
   };
-  WMKS.VNCDecoder.prototype._updateCacheInitialized = function() {
+  WMKS.VNCDecoder.prototype._updateCacheInitialized = function () {
     return this.updateCacheSizeEntries !== 0
   };
-  WMKS.VNCDecoder.prototype._executeUpdateCacheBegin = function(a) {
+  WMKS.VNCDecoder.prototype._executeUpdateCacheBegin = function (a) {
     "use strict";
     let b, c, d, e, f;
     if (!this._updateCacheInitialized() || this._updateCacheInsideBeginEnd() || a.slot >= this.updateCacheEntries) return this.fail("Disconnected: requested cache slot too large");
@@ -8028,7 +8029,7 @@ export function WmksLib($) {
     } while (f < this.updateCacheEntries && !b.overflow);
     this.decodeToCacheEntry = a.slot, this._evictUpdateCacheEntry(a.slot), this.updateCache[this.decodeToCacheEntry].imageWidth = a.width, this.updateCache[this.decodeToCacheEntry].imageHeight = a.height
   };
-  WMKS.VNCDecoder.prototype._executeUpdateCacheEnd = function(a) {
+  WMKS.VNCDecoder.prototype._executeUpdateCacheEnd = function (a) {
     "use strict";
     let b = this.updateCache[this.decodeToCacheEntry],
       c, d, e = 0,
@@ -8045,7 +8046,7 @@ export function WmksLib($) {
     do d == 0 && (d = n.readEliasGamma(), c = !c), m = Math.min(k - i, g - e), m = Math.min(m, d), c && (this._canvas[0].ctx.drawImage(b.image, i * 16, j * 16, m * 16, 16, e * 16, f * 16, m * 16, 16), i += m, i == k && (i = 0, j++)), e += m, e == g && (e = 0, f++), d -= m; while (f < h && !n._overflow);
     this.decodeToCacheEntry = -1
   };
-  WMKS.VNCDecoder.prototype._executeUpdateCacheReplay = function(a) {
+  WMKS.VNCDecoder.prototype._executeUpdateCacheReplay = function (a) {
     "use strict";
     if (a.slot >= this.updateCacheEntries) return this.fail("Disconnected: requested cache slot invalid");
     let b = 0,
@@ -8066,12 +8067,12 @@ export function WmksLib($) {
     if (!this._updateCacheInitialized() || this._updateCacheInsideBeginEnd() || a.slot >= this.updateCacheEntries) return this.fail("");
     do o == 0 && (o = m.readEliasGamma(), n = !n), q == 0 && (q = l.readEliasGamma(), p = !p), f = d - b, f = Math.min(f, o), n && (f = Math.min(f, j - h), f = Math.min(f, q), p && this._canvas[0].ctx.drawImage(g.image, h * 16, i * 16, f * 16, 16, b * 16, c * 16, f * 16, 16), h += f, h == j && (h = 0, i++), q -= f), b += f, b == d && (b = 0, c++), o -= f; while (c < e && !l._overflow && !m._overflow)
   };
-  WMKS.VNCDecoder.prototype._handleVCDProxyVmxPathMessage = function() {
+  WMKS.VNCDecoder.prototype._handleVCDProxyVmxPathMessage = function () {
     let a = this._readString(17);
     if (a !== "connect info vmx\n") return this.fail("Invalid connection vmx request: " + a);
     this._sendString(this.options.VCDProxyHandshakeVmxPath), this._setReadCB(12, this._peekFirstMessage)
   };
-  WMKS.VNCDecoder.prototype._executeUpdateCache = function(a) {
+  WMKS.VNCDecoder.prototype._executeUpdateCache = function (a) {
     "use strict";
     switch (a.opcode) {
       case this.updateCacheOpInit:
@@ -8090,7 +8091,7 @@ export function WmksLib($) {
         return this.fail("Disconnected: requested cache opcode invalid")
     }
   };
-  WMKS.VNCDecoder.prototype._executeRectSingle = function(a) {
+  WMKS.VNCDecoder.prototype._executeRectSingle = function (a) {
     let b = this._canvas[0].ctx;
     switch (a.encoding) {
       case this.encRaw:
@@ -8117,7 +8118,7 @@ export function WmksLib($) {
       default:
     }
   };
-  WMKS.VNCDecoder.prototype._executeRects = function() {
+  WMKS.VNCDecoder.prototype._executeRects = function () {
     let a;
     if (this._state !== this.FBU_DECODING_STATE) return this.fail("wrong state: " + this._state);
     if (this.rectsDecoded !== this.rects || this.rectsRead !== this.rects) return this.fail("messed up state");
@@ -8128,20 +8129,20 @@ export function WmksLib($) {
     let c = this;
     this._state = this.FBU_RESTING_STATE, this._getNextServerMessage(), this._msgTimer = setTimeout(this.msgTimeout, 1)
   };
-  WMKS.VNCDecoder.prototype._nextRect = function() {
+  WMKS.VNCDecoder.prototype._nextRect = function () {
     this.rectsRead++, this.rectsRead < this.rects ? this._setReadCB(12, this._readRect) : (this._state = this.FBU_DECODING_STATE, this.rectsDecoded === this.rects && this._executeRects())
   };
-  WMKS.VNCDecoder.prototype._gobble = function(a) {
+  WMKS.VNCDecoder.prototype._gobble = function (a) {
     this._skipBytes(this.nextBytes), a()
   };
-  WMKS.VNCDecoder.prototype._getNextServerMessage = function() {
+  WMKS.VNCDecoder.prototype._getNextServerMessage = function () {
     this._setReadCB(1, this._handleServerMsg)
   };
-  WMKS.VNCDecoder.prototype._framebufferUpdate = function() {
+  WMKS.VNCDecoder.prototype._framebufferUpdate = function () {
     this.updateReqId = this._readByte(), this.rects = this._readInt16(), this.rectsRead = 0, this.rectsDecoded = 0, this.decodeStart = (new Date)
       .getTime(), this._setReadCB(12, this._readRect)
   };
-  WMKS.VNCDecoder.prototype._handleServerInitializedMsg = function() {
+  WMKS.VNCDecoder.prototype._handleServerInitializedMsg = function () {
     let a = this;
     this._FBWidth = this._readInt16(), this._FBHeight = this._readInt16();
     let b = this._readByte(),
@@ -8157,21 +8158,21 @@ export function WmksLib($) {
     this.options.onNewDesktopSize(this._FBWidth, this._FBHeight), this._copyRectBlit = this._copyRectDrawImageTemp, this._copyRectOffscreenBlit = this._copyRectDrawImage;
     if (e) this._FBBytesPerPixel = 4, this._FBDepth = 3;
     else return this.fail("no colormap support");
-    let j = function() {
+    let j = function () {
       a._FBName = a._readString(i), a._sendClientEncodingsMsg(), a._sendFBUpdateRequestMsg(0), WMKS.LOGGER.log("Connected " + (a._encrypted ? "(encrypted)" : "(unencrypted)") + " to: " + a._FBName), a._serverInitialized = !0, a._getNextServerMessage()
     };
     this._setReadCB(i, j)
   };
-  WMKS.VNCDecoder.prototype._peekFirstMessage = function() {
+  WMKS.VNCDecoder.prototype._peekFirstMessage = function () {
     this.usedVNCHandshake = this._receiveQueue[0].data.byteLength == 12, this.usedVNCHandshake ? this._setReadCB(12, this._handleProtocolVersionMsg) : this._setReadCB(24, this._handleServerInitializedMsg)
   };
-  WMKS.VNCDecoder.prototype._handleSecurityResultMsg = function() {
+  WMKS.VNCDecoder.prototype._handleSecurityResultMsg = function () {
     let a = this,
-      b, c = function() {
+      b, c = function () {
         let c = a._readString(b);
         return a.options.onAuthenticationFailed(), a.fail(c)
       },
-      d = function() {
+      d = function () {
         b = a._readInt32(), a._setReadCB(b, c)
       };
     switch (this._readInt32()) {
@@ -8187,17 +8188,17 @@ export function WmksLib($) {
         return this.fail("Bogus security result")
     }
   };
-  WMKS.VNCDecoder.prototype._handleSecurityMsg = function() {
+  WMKS.VNCDecoder.prototype._handleSecurityMsg = function () {
     let a = 0,
       b, c, d = this,
-      e = function() {
+      e = function () {
         let a = this._readString(c);
         return d.options.onAuthenticationFailed(), d.fail(a)
       },
-      f = function() {
+      f = function () {
         c = d._readInt32(), d._setReadCB(c, e)
       },
-      g = function() {
+      g = function () {
         let c = d._readBytes(b);
         WMKS.LOGGER.log("Server security types: " + c);
         for (var e = 0; e < c.length; e += 1) c && c[e] < 3 && (a = c[e]);
@@ -8208,26 +8209,26 @@ export function WmksLib($) {
       };
     b = this._readByte(), b === 0 ? this._setReadCB(4, f) : this._setReadCB(b, g)
   };
-  WMKS.VNCDecoder.prototype._handleProtocolVersionMsg = function() {
+  WMKS.VNCDecoder.prototype._handleProtocolVersionMsg = function () {
     let a = this._readString(12);
     if (a !== "RFB 003.008\n") return this.fail("Invalid Version packet: " + a);
     this._sendString("RFB 003.008\n"), this._setReadCB(1, this._handleSecurityMsg)
   };
-  WMKS.VNCDecoder.prototype._sendClientCaps = function() {
+  WMKS.VNCDecoder.prototype._sendClientCaps = function () {
     if (this._serverInitialized) {
       let a = [],
         b = this.clientCapHeartbeat | this.clientCapAudioAck | this.clientCapSetReconnectToken;
       this.options.enableVorbisAudioClips ? b |= this.clientCapVorbisAudioClips : this.options.enableOpusAudioClips ? b |= this.clientCapOpusAudioClips : this.options.enableAacAudioClips && (b |= this.clientCapAacAudioClips), this.options.enableVMWSessionClose && (b |= this.clientCapSessionClose), this.options.enableVMWAudioMixer && (b |= this.clientCapUseAudioMixer), this.serverSupportsMKSVChanClipboard && this.vvcSession && (b |= this.clientCapUseMKSVChanClipboard), a.push8(this.msgVMWClientMessage), a.push8(3), a.push16(8), a.push32(b), this._sendBytes(a)
     }
   };
-  WMKS.VNCDecoder.prototype._sendSessionClose = function(a) {
+  WMKS.VNCDecoder.prototype._sendSessionClose = function (a) {
     if (this._serverInitialized && this.useVMWSessionClose && this.options.enableVMWSessionClose) {
       WMKS.LOGGER.log("Send session close to server.");
       let b = [];
       b.push8(this.msgVMWClientMessage), b.push8(this.msgVMWSessionClose), b.push16(8), b.push32(a), this._sendBytes(b)
     }
   };
-  WMKS.VNCDecoder.prototype._sendUpdateCacheInfo = function() {
+  WMKS.VNCDecoder.prototype._sendUpdateCacheInfo = function () {
     "use strict";
     let a = [],
       b = this.updateCacheCapReplay | this.updateCacheCapDisableOffscreenSurface,
@@ -8235,7 +8236,7 @@ export function WmksLib($) {
       d = this.options.cacheSizeKB;
     WMKS.LOGGER.trace("sendUpdateCacheInfo"), a.push8(this.msgVMWClientMessage), a.push8(11), a.push16(14), a.push32(b), a.push16(c), a.push32(d), this._sendBytes(a)
   };
-  WMKS.VNCDecoder.prototype._handleServerCapsMsg = function() {
+  WMKS.VNCDecoder.prototype._handleServerCapsMsg = function () {
     let a = this._readInt32();
     this.useVMWKeyEvent = !!(a & this.serverCapKeyEvent), this.allowVMWKeyEvent2UnicodeAndRaw = this.options.useUnicodeKeyboardInput && !!(a & this.serverCapKeyEvent2Unicode) && !!(a & this.serverCapKeyEvent2JSKeyCode), this.useVMWAck = !!(a & this.serverCapUpdateAck), this.useVMWRequestResolution = !!(a & this.serverCapRequestResolution), this.useVMWRequestMultiMon = !!(a & this.serverCapMultiMon), this.useVMWAudioAck = !!(a & this.serverCapAudioAck), this.useVMWSessionClose = !!(a & this.serverCapSessionClose), this.serverSupportsMKSVChanClipboard = !!(a & this.serverCapHasMKSVChanClipboard), this.useVMWRequestResolution && this.requestedWidth > 0 && this.requestedHeight > 0 && this.onRequestResolution(this.requestedWidth, this.requestedHeight), a & this.serverCapClientCaps && this._sendClientCaps(), a & this.serverCapUpdateCacheInfo && this._sendUpdateCacheInfo();
     if (a & this.serverCapDisablingCopyUI || a & this.serverCapDisablingPasteUI) {
@@ -8245,15 +8246,15 @@ export function WmksLib($) {
     }
     this._getNextServerMessage()
   };
-  WMKS.VNCDecoder.prototype._handleServerHeartbeatMsg = function() {
+  WMKS.VNCDecoder.prototype._handleServerHeartbeatMsg = function () {
     let a = this._readInt16();
     this.options.onHeartbeat(a), this._getNextServerMessage()
   };
-  WMKS.VNCDecoder.prototype._handleSessionCloseMsg = function() {
+  WMKS.VNCDecoder.prototype._handleSessionCloseMsg = function () {
     let a = this._readInt32();
     this.options.onBeforeDisconnected(a), this._getNextServerMessage()
   };
-  WMKS.VNCDecoder.prototype._handleAudioMixer = function() {
+  WMKS.VNCDecoder.prototype._handleAudioMixer = function () {
     let a = this._readInt32(),
       b = this._readInt32(),
       c = this._readInt32(),
@@ -8265,11 +8266,11 @@ export function WmksLib($) {
       flags: d
     }) : WMKS.LOGGER.warn("Ignoring audio mixer message for an unsupported  channelId = " + a + " msgType = " + b + " data = " + c + " flags = " + d), this._getNextServerMessage()
   };
-  WMKS.VNCDecoder.prototype._handleServerSetReconnectTokenMsg = function(a) {
+  WMKS.VNCDecoder.prototype._handleServerSetReconnectTokenMsg = function (a) {
     let b = this._readString(a);
     this.options.onSetReconnectToken(b), this._getNextServerMessage()
   };
-  WMKS.VNCDecoder.prototype._handleServerAudioMsg = function() {
+  WMKS.VNCDecoder.prototype._handleServerAudioMsg = function () {
     let a = this._readInt32(),
       b = this._readInt32(),
       c = this._readInt32(),
@@ -8293,14 +8294,14 @@ export function WmksLib($) {
       };
     this._setReadCB(a, this._handleServerAudioMsgData, i)
   };
-  WMKS.VNCDecoder.prototype._handleServerAudioMsgData = function(a) {
+  WMKS.VNCDecoder.prototype._handleServerAudioMsgData = function (a) {
     a.length > 0 ? (a.data = this._readBytes(a.length), this.useVMWAudioAck && (a.flags == 0 || a.flags & this.audioflagRequestAck) && this._sendAudioAck(a.audioTimestampLo, a.audioTimestampHi), this.options.onAudio(a)) : WMKS.LOGGER.info("Audio data length is 0."), this._getNextServerMessage()
   };
-  WMKS.VNCDecoder.prototype._handleServerCutText = function(a) {
+  WMKS.VNCDecoder.prototype._handleServerCutText = function (a) {
     let b = this._readStringUTF8(a);
     this.options.onCopy(b), this._getNextServerMessage()
   };
-  WMKS.VNCDecoder.prototype._handleServerMsg = function() {
+  WMKS.VNCDecoder.prototype._handleServerMsg = function () {
     let a, b, c, d, e, f = this,
       g = this._readByte();
     switch (g) {
@@ -8308,7 +8309,7 @@ export function WmksLib($) {
         this._setReadCB(3, this._framebufferUpdate);
         break;
       case this.msgSetColorMapEntries:
-        let h = function() {
+        let h = function () {
           f._skipBytes(3);
           let a = f._readInt16();
           f._setReadCB(6 * a, f._gobble, f._getNextServerMessage)
@@ -8319,13 +8320,13 @@ export function WmksLib($) {
         this._getNextServerMessage();
         break;
       case this.msgServerCutText:
-        let i = function() {
+        let i = function () {
           f._readBytes(3), a = f._readInt32(), a > 0 ? f._setReadCB(a, f._handleServerCutText, a) : f._getNextServerMessage()
         };
         this._setReadCB(8, i);
         break;
       case this.msgVMWSrvMessage:
-        let j = function() {
+        let j = function () {
           let a = f._readByte(),
             b = f._readInt16();
           if (a === this.msgVMWSrvMessage_ServerCaps) {
@@ -8355,7 +8356,7 @@ export function WmksLib($) {
         return this.options.onProtocolError(), this.fail("Disconnected: illegal server message type " + g)
     }
   };
-  WMKS.VNCDecoder.prototype._processMessages = function() {
+  WMKS.VNCDecoder.prototype._processMessages = function () {
     while (this._state === this.VNC_ACTIVE_STATE && this._receiveQueueBytesUnread() >= this.nextBytes) {
       let a = this.nextBytes,
         b = this._receiveQueueBytesUnread();
@@ -8364,95 +8365,95 @@ export function WmksLib($) {
       if (a < b - c) return this.fail("decode overrun " + a + " vs " + (b - c))
     }
   };
-  WMKS.VNCDecoder.prototype.onMouseMove = function(a, b) {
+  WMKS.VNCDecoder.prototype.onMouseMove = function (a, b) {
     this._mouseX = a, this._mouseY = b, this._serverInitialized && (this._mouseActive = !0, this._mouseTimer === null && (this._sendMouseEvent(), this._mouseTimer = setTimeout(this.mouseTimeout, this.mouseTimeResolution)))
   };
-  WMKS.VNCDecoder.prototype.onMouseButton = function(a, b, c, d) {
+  WMKS.VNCDecoder.prototype.onMouseButton = function (a, b, c, d) {
     this._mouseX = a, this._mouseY = b, c ? this._mouseButtonMask |= d : this._mouseButtonMask &= ~d, this._serverInitialized && (this._mouseActive = !0, this._sendMouseEvent())
   };
-  WMKS.VNCDecoder.prototype.onKeyVScan = function(a, b) {
+  WMKS.VNCDecoder.prototype.onKeyVScan = function (a, b) {
     if (this._serverInitialized) {
       let c = [];
       c.push8(this.msgVMWClientMessage), c.push8(this.msgVMWKeyEvent), c.push16(8), c.push16(a), c.push8(b), c.push8(0), this._sendBytes(c)
     }
   };
-  WMKS.VNCDecoder.prototype.onVMWKeyUnicode = function(a, b, c) {
+  WMKS.VNCDecoder.prototype.onVMWKeyUnicode = function (a, b, c) {
     if (this._serverInitialized) {
       let d = [];
       d.push8(this.msgVMWClientMessage), d.push8(this.msgVMWKeyEvent2), d.push16(10), d.push32(a), d.push8(b), d.push8(c), this._sendBytes(d)
     }
   };
-  WMKS.VNCDecoder.prototype.onMouseWheel = function(a, b, c, d) {
+  WMKS.VNCDecoder.prototype.onMouseWheel = function (a, b, c, d) {
     if (this._serverInitialized) {
       let e = [];
       e.push8(this.msgVMWClientMessage), e.push8(this.msgVMWPointerEvent2), e.push16(19), e.push8(1), e.push32(a), e.push32(b), e.push32(0), e.push8(d), e.push8(c), this._sendBytes(e)
     }
   };
-  WMKS.VNCDecoder.prototype.onRequestResolution = function(a, b) {
+  WMKS.VNCDecoder.prototype.onRequestResolution = function (a, b) {
     this._serverInitialized && this.useVMWRequestResolution && (a !== this.requestedWidth || b !== this.requestedHeight) && (this.resolutionRequestActive = !0, clearTimeout(this.resolutionTimer), this.resolutionTimer = setTimeout(this.resolutionTimeout, this.resolutionDelay), this.requestedWidth = a, this.requestedHeight = b)
   };
-  WMKS.VNCDecoder.prototype.onRequestTopology = function(a) {
+  WMKS.VNCDecoder.prototype.onRequestTopology = function (a) {
     this._serverInitialized && this.useVMWRequestMultiMon && (WMKS.LOGGER.log("Calling _sendTopologyRequest with arg:" + a), WMKS.LOGGER.log(a), console.log(a), this._sendTopologyRequest(a))
   };
-  WMKS.VNCDecoder.prototype.disconnect = function() {
+  WMKS.VNCDecoder.prototype.disconnect = function () {
     "use strict";
     this._state !== this.DISCONNECTED && (this._state = this.DISCONNECTED, this._mp4Decoder && (this._mp4Decoder.reset(), this._mp4Decoder = null), this._receiveQueueReset(), this.rects = 0, this._receivedFirstUpdate = !1, this._websocket && (this._sendSessionClose(23), this._websocket.onopen = null, this._websocket.onclose = null, this._websocket.onmessage = null, this._websocket.onerror = null, this._websocket.close(), delete this._websocket), this._serverInitialized = !1)
   };
-  WMKS.VNCDecoder.prototype.connect = function(a) {
+  WMKS.VNCDecoder.prototype.connect = function (a) {
     let b = this;
-    this.setRenderCanvas(this.options.canvas), this._mediaPlayer = this.options.mediaPlayer, this.onDecodeComplete = function() {
+    this.setRenderCanvas(this.options.canvas), this._mediaPlayer = this.options.mediaPlayer, this.onDecodeComplete = function () {
       b.rectsDecoded++, b.rectsDecoded === b.rects && b.rectsRead === b.rects && (b._state = b.FBU_DECODING_STATE, b._executeRects())
-    }, this.onDecodeObjectURLComplete = function() {
+    }, this.onDecodeObjectURLComplete = function () {
       URL.revokeObjectURL(this.src), b.onDecodeComplete()
-    }, this.onDecodeMP4Error = function() {
+    }, this.onDecodeMP4Error = function () {
       let a = b.options.mediaPlayer;
       WMKS.LOGGER.log("Resetting stream request is sent."), b.options.mediaPlayer = null, b._sendClientEncodingsMsg(), b.options.mediaPlayer = a, b._sendClientEncodingsMsg()
-    }, this.msgTimeout = function() {
+    }, this.msgTimeout = function () {
       b._state = b.VNC_ACTIVE_STATE, b._processMessages()
-    }, this.mouseTimeout = function() {
+    }, this.mouseTimeout = function () {
       b._mouseTimer = null, b._mouseActive && (b._sendMouseEvent(), b._mouseTimer = setTimeout(b.mouseTimeout, b.mouseTimeResolution))
-    }, this.resolutionTimeout = function() {
+    }, this.resolutionTimeout = function () {
       b.resolutionRequestActive && (b._sendResolutionRequest(), b.resolutionRequestActive = !1)
-    }, this.options.VCDProxyHandshakeVmxPath ? this._setReadCB(17, this._handleVCDProxyVmxPathMessage) : this._setReadCB(12, this._peekFirstMessage), this._url = a, this._receiveQueueReset(), this.wsOpen = function(a) {
+    }, this.options.VCDProxyHandshakeVmxPath ? this._setReadCB(17, this._handleVCDProxyVmxPathMessage) : this._setReadCB(12, this._peekFirstMessage), this._url = a, this._receiveQueueReset(), this.wsOpen = function (a) {
       b._state = b.VNC_ACTIVE_STATE;
       if (this.protocol !== "binary" && this.protocol !== "vmware-vvc") return this.fail("no agreement on protocol");
       this.protocol === "vmware-vvc" && (b._setupVVC(), WMKS.LOGGER.log("WebSocket is using VMware Virtual Channels"), this.protocol = "binary"), this.protocol === "binary" && (this.binaryType = "arraybuffer", WMKS.LOGGER.log("WebSocket HAS binary support")), b.options.onConnecting(b.vvc, b.vvcSession), WMKS.LOGGER.log("WebSocket created protocol: " + this.protocol)
-    }, this.wsClose = function(a) {
+    }, this.wsClose = function (a) {
       b.options.onDisconnected(a.reason, a.code)
-    }, this.wsMessage = function(a) {
+    }, this.wsMessage = function (a) {
       if (typeof a.data != "string") b._receiveQueue.push(a), b._receiveQueueLength += a.data.byteLength;
       else return b.fail("non-binary message");
       b._processMessages()
-    }, this.wsError = function(a) {
+    }, this.wsError = function (a) {
       b.options.onError(a)
-    }, this.protocolList = ["binary"], this.options.enableVVC && this.protocolList.push("vmware-vvc"), this._setupConnection = function() {
+    }, this.protocolList = ["binary"], this.options.enableVVC && this.protocolList.push("vmware-vvc"), this._setupConnection = function () {
       b._websocket = WMKS.WebSocket(b._url, b.protocolList), b._websocket.onopen = b.wsOpen, b._websocket.onclose = b.wsClose, b._websocket.onmessage = b.wsMessage, b._websocket.onerror = b.wsError
-    }, this._setupVVC = function() {
-      b.vvc = new VVC(), b.vvcSession = b.vvc.openSession(b._websocket), b.vvcSession.onerror = function(a) {
+    }, this._setupVVC = function () {
+      b.vvc = new VVC(), b.vvcSession = b.vvc.openSession(b._websocket), b.vvcSession.onerror = function (a) {
         b.vvcSession.close()
-      }, b.vvcSession.ontransportclose = function(a) {
+      }, b.vvcSession.ontransportclose = function (a) {
         b.wsClose(a)
-      }, b.vvcSession.ontransporterror = function(a) {
+      }, b.vvcSession.ontransporterror = function (a) {
         b.wsError(a)
       };
       let a = b.vvc.createListener(b.vvcSession, "blast-*");
-      a.onpeeropen = function(a, c) {
-        c.name === "blast-mks" ? (c.onclose = function(c) {
+      a.onpeeropen = function (a, c) {
+        c.name === "blast-mks" ? (c.onclose = function (c) {
           a.close(), b._websocket = null, b.disconnect()
-        }, c.onerror = function(c) {
+        }, c.onerror = function (c) {
           a.close(), b._websocket = null, b.disconnect()
-        }, b._websocket = c, c.onmessage = b.wsMessage, a.acceptChannel(c)) : c.name === "blast-audio" && (c.onclose = function(b) {
+        }, b._websocket = c, c.onmessage = b.wsMessage, a.acceptChannel(c)) : c.name === "blast-audio" && (c.onclose = function (b) {
           a.close()
-        }, c.onerror = function(b) {
+        }, c.onerror = function (b) {
           a.close()
         }, c.onmessage = b.wsMessage, a.acceptChannel(c))
       }
-    }, this._retryConnectionTimeout = function() {
-      b._state === b.DISCONNECTED && (WMKS.LOGGER.log("Connection timeout. Retrying now."), b._websocket && (b._websocket.onclose = function() {
+    }, this._retryConnectionTimeout = function () {
+      b._state === b.DISCONNECTED && (WMKS.LOGGER.log("Connection timeout. Retrying now."), b._websocket && (b._websocket.onclose = function () {
       }, b._websocket.close(), b._websocket = null), b._setupConnection()), b._retryConnectionTimer = null
     }, this.options.enableUint8Utf8 && addUint8Utf8(this), this._setupConnection(), this.options.retryConnectionInterval > 0 && (WMKS.LOGGER.log("Check connection status after " + this.options.retryConnectionInterval + "ms."), this._retryConnectionTimer = setTimeout(this._retryConnectionTimeout, this.options.retryConnectionInterval))
   };
-  WMKS.VNCDecoder.prototype.setRenderCanvas = function(a) {
+  WMKS.VNCDecoder.prototype.setRenderCanvas = function (a) {
     this._canvas[0] = a, this._canvas[0].ctx = a.getContext("2d");
     if (!this._canvas[0].ctx.createImageData) throw "no canvas imagedata support"
   };
@@ -8525,7 +8526,7 @@ export function WmksLib($) {
   // Map of all ANSI special symbols
   WMKS.CONST.KB.ANSISpecialSymbols = WMKS.CONST.KB.ANSIShiftSymbols + WMKS.CONST.KB.ANSINoShiftSymbols;
 
-  WMKS.KeyboardManager = function(options) {
+  WMKS.KeyboardManager = function (options) {
     'use strict';
     if (!options || !options.vncDecoder) {
       return null;
@@ -8557,7 +8558,7 @@ export function WmksLib($) {
       rightWindowsDown: false,
       // modified keyCode map.
       modifiedKeyMap: {
-        Pause : 19 // The keyCode of Pause key should be 19
+        Pause: 19 // The keyCode of Pause key should be 19
       },
       modifiedKey: null,
 
@@ -8568,7 +8569,7 @@ export function WmksLib($) {
        * Otherwise, some key release events are not captured when
        * the browser loses focuse. In consequence, the states are incorrect.
        */
-      reset: function() {
+      reset: function () {
         this.windowsOn = false;
         this.leftWindowsDown = false;
         this.rightWindowsDown = false;
@@ -8580,7 +8581,7 @@ export function WmksLib($) {
        *
        * Handles Windows keydown and keyup event.
        */
-      keyboardHandler: function(e) {
+      keyboardHandler: function (e) {
         if (e.keyCode === WMKS.CONST.KB.WindowsKeys.left) {
           // Left Windows key is down or up.
           this.leftWindowsDown = e.type === 'keydown';
@@ -8604,7 +8605,7 @@ export function WmksLib($) {
        * Invoked by _extractKeyCodeFromEvent. Modify some keyCode value
        * when Windows key is held.
        */
-      modifyKey: function(keyCode) {
+      modifyKey: function (keyCode) {
         /*
          * Fix bug 1436247 - Windows+Pause doesn't work
          * The keyCode of Pause key should be 19. However, when Ctrl key is pressed,
@@ -8646,7 +8647,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._extractKeyCodeFromEvent = function(e) {
+    this._extractKeyCodeFromEvent = function (e) {
       let keyCode = 0, isUnicode = false;
 
       if (e.keyCode) {
@@ -8677,7 +8678,7 @@ export function WmksLib($) {
          * See bug 1166133.
           */
         keyCode = 0;
-      }else {
+      } else {
         /*
          * On browser except firefox in Japanese, for the special key left to 1 key, the keyCode of
          * onKeyUp and keyDown is 0, and there is no value in key property.
@@ -8721,7 +8722,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.onKeyDown = function(e) {
+    this.onKeyDown = function (e) {
       let keyCodeRes,
         keyCode = 0,
         isUnicode = false,
@@ -8785,7 +8786,7 @@ export function WmksLib($) {
         clearTimeout(this.keyDownKeyTimer);
       }
 
-      this.keyDownKeyTimer = setTimeout(function() {
+      this.keyDownKeyTimer = setTimeout(function () {
         // WMKS.LOGGER.log('timeout, sending raw keyCode=' + keyCode);
         self.sendKey(keyCode, false, false);
         self.keyDownKeyTimer = null;
@@ -8823,7 +8824,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._handleControlKeys = function(keyCode) {
+    this._handleControlKeys = function (keyCode) {
       // let isCapsOn = this._vncDecoder._keyboardLEDs & 4;
       // WMKS.LOGGER.log('Led: ' + led + ', Caps: ' + isCapsOn);
 
@@ -8859,7 +8860,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._syncModifiers = function(e) {
+    this._syncModifiers = function (e) {
       let thisMod, thisVal, i, idx;
       // This must be in the order of WMKS.CONST.KB.Modifiers
       let vals = [e.shiftKey, e.ctrlKey, e.altKey, e.metaKey, false];
@@ -8889,7 +8890,7 @@ export function WmksLib($) {
 
         if (e.ctrlKey === true) {
           // Ctrl key is down.
-          if (this._windowsKeyManager.leftWindowsDown  ||
+          if (this._windowsKeyManager.leftWindowsDown ||
             this.activeModifiers.indexOf(WMKS.CONST.KB.WindowsKeys.left) !== -1) {
             // Left Windows key is down.
             vals[1] = false;  // turn off Ctrl
@@ -8939,7 +8940,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.cancelModifiers = function(applyToSoftKB) {
+    this.cancelModifiers = function (applyToSoftKB) {
       let i;
       /*
        * On blur events invoke cancelModifiers for desktop browsers. This is not
@@ -8975,7 +8976,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.updateModifiers = function(modKey, isUp) {
+    this.updateModifiers = function (modKey, isUp) {
       this.sendKey(modKey, isUp, false);
       if (isUp) {
         this.activeModifiers.splice(this.activeModifiers.indexOf(modKey), 1);
@@ -8996,7 +8997,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.onKeyPress = function(e) {
+    this.onKeyPress = function (e) {
       let keyCode,
         isRaw = false,
         shiftMismatch = false,
@@ -9064,7 +9065,7 @@ export function WmksLib($) {
           if (e.originalEvent.keyIdentifier === "" && this.keyDownIdentifier) {
             // Parse Unicode as hex
             key = String.fromCharCode(parseInt(this.keyDownIdentifier.replace("U+", ""), 16));
-          } else if(e.originalEvent.keyIdentifier) {
+          } else if (e.originalEvent.keyIdentifier) {
             // Parse Unicode as hex
             key = String.fromCharCode(parseInt(e.originalEvent.keyIdentifier.replace("U+", ""), 16));
           }
@@ -9126,7 +9127,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.onKeyUp = function(e) {
+    this.onKeyUp = function (e) {
       let keyCode, keyCodeRes, unicode, raw, isUnicode = false;
 
       if (e.preventDefault) {
@@ -9196,7 +9197,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.onKeyUpSoftKb = function(e) {
+    this.onKeyUpSoftKb = function (e) {
       // for all browsers on soft keyboard.
       e.stopPropagation();
       e.preventDefault();
@@ -9215,7 +9216,7 @@ export function WmksLib($) {
      *
      *---------------------------------------------------------------------------
      */
-    this.onKeyDownSoftKb = function(e) {
+    this.onKeyDownSoftKb = function (e) {
       let keyCode = e.keyCode || e.which;
 
       if (keyCode && WMKS.CONST.KB.SoftKBRawKeyCodes.indexOf(keyCode) !== -1) {
@@ -9249,7 +9250,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.onKeyPressSoftKb = function(e) {
+    this.onKeyPressSoftKb = function (e) {
       let keyCode = e.keyCode || e.which;
       if (WMKS.BROWSER.isAndroid() && WMKS.BROWSER.isChrome()) {
         // Android on Chrome, special case, ignore it.
@@ -9291,7 +9292,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.onInputTextSoftKb = function(e) {
+    this.onInputTextSoftKb = function (e) {
       // We have received speech-to-text input or something.
       let input = $(e.target),
         val = input.val(),
@@ -9353,7 +9354,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.processInputString = function(str, processNewline) {
+    this.processInputString = function (str, processNewline) {
       let i, key;
       for (i = 0; i < str.length; i++) {
         if (processNewline && str.charAt(i) === '\n') {
@@ -9399,7 +9400,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.handleSoftKb = function(key, isUnicode) {
+    this.handleSoftKb = function (key, isUnicode) {
       let implicitShift, shiftSentAlready;
 
       /*
@@ -9453,7 +9454,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.isBrowserCapsLockOn = function(keyCode, isUnicode, shiftKeyDown) {
+    this.isBrowserCapsLockOn = function (keyCode, isUnicode, shiftKeyDown) {
       return !WMKS.BROWSER.isTouchDevice()
         && isUnicode
         && ((WMKS.CONST.KB.UnicodeOnly[keyCode] && shiftKeyDown)
@@ -9479,7 +9480,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.sendKey = function(key, isUp, isUnicode) {
+    this.sendKey = function (key, isUp, isUnicode) {
       // Check if VMW key event can be used to send key inputs.
       if (!this._vncDecoder.useVMWKeyEvent) {
         return;
@@ -9517,7 +9518,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._sendVScanCode = function(key, isUp, isUnicode) {
+    this._sendVScanCode = function (key, isUp, isUnicode) {
       let vScanCode = null;
       if (isUnicode || key === 13) {
         vScanCode = this.UnicodeToVScanMap[key];
@@ -9544,7 +9545,7 @@ export function WmksLib($) {
         // performMapping keyCode to VMware VScanCode and send it.
         this._vncDecoder.onKeyVScan(vScanCode, !isUp);
       } else {
-        WMKS.LOGGER.debug('unknown key: ' + key + (isUp? '-up' : '-d'));
+        WMKS.LOGGER.debug('unknown key: ' + key + (isUp ? '-up' : '-d'));
       }
     };
 
@@ -9562,7 +9563,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.clearState = function() {
+    this.clearState = function () {
       // Clear any keyboard specific state that's held.
 
       // Clear modifiers.
@@ -9590,7 +9591,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.enableWindowsKey = function(value) {
+    this.enableWindowsKey = function (value) {
       this._windowsKeyManager.enabled = value;
     };
 
@@ -9605,7 +9606,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.setIgnoredRawKeyCodes = function(value) {
+    this.setIgnoredRawKeyCodes = function (value) {
       this.ignoredRawKeyCodes = value;
     };
 
@@ -9623,7 +9624,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._isUnicodeInputSupported = function() {
+    this._isUnicodeInputSupported = function () {
       return this._vncDecoder.allowVMWKeyEvent2UnicodeAndRaw;
     };
   };
@@ -9644,118 +9645,118 @@ export function WmksLib($) {
   WMKS.CONST.KB.UnicodeOnly = {
 
     // Space, enter, backspace
-    32 : 0x39,
-    13 : 0x1c,
+    32: 0x39,
+    13: 0x1c,
     //8 : 0x0e,
 
     // Keys a-z
-    97  : 0x1e,
-    98  : 0x30,
-    99  : 0x2e,
-    100 : 0x20,
-    101 : 0x12,
-    102 : 0x21,
-    103 : 0x22,
-    104 : 0x23,
-    105 : 0x17,
-    106 : 0x24,
-    107 : 0x25,
-    108 : 0x26,
-    109 : 0x32,
-    110 : 0x31,
-    111 : 0x18,
-    112 : 0x19,
-    113 : 0x10,
-    114 : 0x13,
-    115 : 0x1f,
-    116 : 0x14,
-    117 : 0x16,
-    118 : 0x2f,
-    119 : 0x11,
-    120 : 0x2d,
-    121 : 0x15,
-    122 : 0x2c,
+    97: 0x1e,
+    98: 0x30,
+    99: 0x2e,
+    100: 0x20,
+    101: 0x12,
+    102: 0x21,
+    103: 0x22,
+    104: 0x23,
+    105: 0x17,
+    106: 0x24,
+    107: 0x25,
+    108: 0x26,
+    109: 0x32,
+    110: 0x31,
+    111: 0x18,
+    112: 0x19,
+    113: 0x10,
+    114: 0x13,
+    115: 0x1f,
+    116: 0x14,
+    117: 0x16,
+    118: 0x2f,
+    119: 0x11,
+    120: 0x2d,
+    121: 0x15,
+    122: 0x2c,
 
     // keyboard number keys (across the top) 1,2,3... -> 0
-    49 : 0x02,
-    50 : 0x03,
-    51 : 0x04,
-    52 : 0x05,
-    53 : 0x06,
-    54 : 0x07,
-    55 : 0x08,
-    56 : 0x09,
-    57 : 0x0a,
-    48 : 0x0b,
+    49: 0x02,
+    50: 0x03,
+    51: 0x04,
+    52: 0x05,
+    53: 0x06,
+    54: 0x07,
+    55: 0x08,
+    56: 0x09,
+    57: 0x0a,
+    48: 0x0b,
 
     // Symbol keys ; = , - . / ` [ \ ] '
-    59 : 0x27, // ;
-    61 : 0x0d, // =
-    44 : 0x33, // ,
-    45 : 0x0c, // -
-    46 : 0x34, // .
-    47 : 0x35, // /
-    96 : 0x29, // `
-    91 : 0x1a, // [
-    92 : 0x2b, // \
-    93 : 0x1b, // ]
-    39 : 0x28  // '
+    59: 0x27, // ;
+    61: 0x0d, // =
+    44: 0x33, // ,
+    45: 0x0c, // -
+    46: 0x34, // .
+    47: 0x35, // /
+    96: 0x29, // `
+    91: 0x1a, // [
+    92: 0x2b, // \
+    93: 0x1b, // ]
+    39: 0x28  // '
 
   };
 
   WMKS.CONST.KB.UnicodeWithShift = {
     // Keys A-Z
-    65 : 0x001e,
-    66 : 0x0030,
-    67 : 0x002e,
-    68 : 0x0020,
-    69 : 0x0012,
-    70 : 0x0021,
-    71 : 0x0022,
-    72 : 0x0023,
-    73 : 0x0017,
-    74 : 0x0024,
-    75 : 0x0025,
-    76 : 0x0026,
-    77 : 0x0032,
-    78 : 0x0031,
-    79 : 0x0018,
-    80 : 0x0019,
-    81 : 0x0010,
-    82 : 0x0013,
-    83 : 0x001f,
-    84 : 0x0014,
-    85 : 0x0016,
-    86 : 0x002f,
-    87 : 0x0011,
-    88 : 0x002d,
-    89 : 0x0015,
-    90 : 0x002c,
+    65: 0x001e,
+    66: 0x0030,
+    67: 0x002e,
+    68: 0x0020,
+    69: 0x0012,
+    70: 0x0021,
+    71: 0x0022,
+    72: 0x0023,
+    73: 0x0017,
+    74: 0x0024,
+    75: 0x0025,
+    76: 0x0026,
+    77: 0x0032,
+    78: 0x0031,
+    79: 0x0018,
+    80: 0x0019,
+    81: 0x0010,
+    82: 0x0013,
+    83: 0x001f,
+    84: 0x0014,
+    85: 0x0016,
+    86: 0x002f,
+    87: 0x0011,
+    88: 0x002d,
+    89: 0x0015,
+    90: 0x002c,
 
     // Represents number 1, 2, ... 0 with Shift.
-    33 : 0x0002, // !
-    64 : 0x0003, // @
-    35 : 0x0004, // #
-    36 : 0x0005, // $
-    37 : 0x0006, // %
-    94 : 0x0007, // ^
-    38 : 0x0008, // &
-    42 : 0x0009, // *
-    40 : 0x000a, // (
-    41 : 0x000b, // )
+    33: 0x0002, // !
+    64: 0x0003, // @
+    35: 0x0004, // #
+    36: 0x0005, // $
+    37: 0x0006, // %
+    94: 0x0007, // ^
+    38: 0x0008, // &
+    42: 0x0009, // *
+    40: 0x000a, // (
+    41: 0x000b, // )
 
     // Symbol keys with shift ----->  ; = , - . / ` [ \ ] '
-    58  : 0x0027, // :
-    43  : 0x000d, // +
-    60  : 0x0033, // <
-    95  : 0x000c, // _
-    62  : 0x0034, // >
-    63  : 0x0035, // ?
-    126 : 0x0029, // ~
-    123 : 0x001a, // {
-    124 : 0x002b, // |
-    125 : 0x001b, // }
-    34  : 0x0028  // "
+    58: 0x0027, // :
+    43: 0x000d, // +
+    60: 0x0033, // <
+    95: 0x000c, // _
+    62: 0x0034, // >
+    63: 0x0035, // ?
+    126: 0x0029, // ~
+    123: 0x001a, // {
+    124: 0x002b, // |
+    125: 0x001b, // }
+    34: 0x0028  // "
   };
 
   WMKS.CONST.KB.VScanMap["en-US"] = $.extend({}, WMKS.CONST.KB.UnicodeOnly, WMKS.CONST.KB.UnicodeWithShift);
@@ -9770,13 +9771,13 @@ export function WmksLib($) {
     jsScanCode: 0,
     vScanCode: 0
   };
-  WMKS.keyboardUtils.keyDownUpInfo = function(a) {
+  WMKS.keyboardUtils.keyDownUpInfo = function (a) {
     let b = a || window.event,
       c = this._keyInfoTemplate;
     if (b.type === "keydown" || b.type === "keyup") c.jsScanCode = b.keyCode, c.vScanCode = this._jsToVScanTable[c.jsScanCode], WMKS.BROWSER.isIE() && WMKS.BROWSER.version.major <= 10 && c.jsScanCode == 13 && (c.vScanCode = 28);
     return c
   };
-  WMKS.keyboardUtils.keyPressInfo = function(a) {
+  WMKS.keyboardUtils.keyPressInfo = function (a) {
     let b = a || window.event,
       c = 0;
     if (b.type === "keypress") {
@@ -10101,10 +10102,10 @@ export function WmksLib($) {
     92: 123,
     0: 125
   };
-  WMKS.keyboardMapper = function(a) {
+  WMKS.keyboardMapper = function (a) {
     return a.vncDecoder ? (this._vncDecoder = a.vncDecoder, this._keysDownVScan = [], this._keysDownUnicode = [], this.VSCAN_CAPS_LOCK_KEY = 58, this.VSCAN_CMD_KEY = 347, this._typematicKeyVScan = 0, this._typematicDelayTimer = null, this) : null
   };
-  WMKS.keyboardMapper.prototype.doKeyVScan = function(a, b) {
+  WMKS.keyboardMapper.prototype.doKeyVScan = function (a, b) {
     if (!this._vncDecoder.useVMWKeyEvent) return;
     if (a === this.VSCAN_CAPS_LOCK_KEY && navigator.platform.indexOf("Mac") !== -1) {
       this._vncDecoder.onKeyVScan(a, 1), this._vncDecoder.onKeyVScan(a, 0);
@@ -10118,7 +10119,7 @@ export function WmksLib($) {
     }
     this._vncDecoder.onKeyVScan(a, b)
   };
-  WMKS.keyboardMapper.prototype.doKeyUnicode = function(a, b) {
+  WMKS.keyboardMapper.prototype.doKeyUnicode = function (a, b) {
     if (!this._vncDecoder.useVMWKeyEvent) return;
     if (b) this._keysDownUnicode.push(a);
     else {
@@ -10128,30 +10129,30 @@ export function WmksLib($) {
     let d = this._tableUnicodeToVScan[a];
     d && (b ? this.beginTypematic(d & 511) : this.cancelTypematic(d & 511), this._vncDecoder.onKeyVScan(d & 511, b))
   };
-  WMKS.keyboardMapper.prototype.doReleaseAll = function() {
+  WMKS.keyboardMapper.prototype.doReleaseAll = function () {
     let a;
     for (a = 0; a < this._keysDownUnicode.length; a++) this.doKeyUnicode(this._keysDownUnicode[a], 0);
     this._keysDownUnicode.length > 0 && console.log("Warning: Could not release all Unicode keys.");
     for (a = 0; a < this._keysDownVScan.length; a++) this.cancelTypematic(this._keysDownVScan[a]), this._vncDecoder.onKeyVScan(this._keysDownVScan[a], 0);
     this._keysDownVScan = []
   };
-  WMKS.keyboardMapper.prototype.beginTypematic = function(a) {
+  WMKS.keyboardMapper.prototype.beginTypematic = function (a) {
     if (this._keysDownVScan.indexOf(this.VSCAN_CMD_KEY) >= 0) return;
     this.cancelTypematicDelay(), this.cancelTypematicPeriod(), this._vncDecoder.typematicState === 1 && this.startTypematicDelay(a)
   };
-  WMKS.keyboardMapper.prototype.cancelTypematic = function(a) {
+  WMKS.keyboardMapper.prototype.cancelTypematic = function (a) {
     this._typematicKeyVScan === a && (this.cancelTypematicDelay(), this.cancelTypematicPeriod())
   };
-  WMKS.keyboardMapper.prototype.cancelTypematicDelay = function() {
+  WMKS.keyboardMapper.prototype.cancelTypematicDelay = function () {
     this._typematicDelayTimer !== null && clearTimeout(this._typematicDelayTimer), this._typematicDelayTimer = null
   };
-  WMKS.keyboardMapper.prototype.cancelTypematicPeriod = function() {
+  WMKS.keyboardMapper.prototype.cancelTypematicPeriod = function () {
     this._typematicPeriodTimer !== null && clearInterval(this._typematicPeriodTimer), this._typematicPeriodTimer = null
   };
-  WMKS.keyboardMapper.prototype.startTypematicDelay = function(a) {
+  WMKS.keyboardMapper.prototype.startTypematicDelay = function (a) {
     let b = this;
-    this._typematicKeyVScan = a, this._typematicDelayTimer = setTimeout(function() {
-      b._typematicPeriodTimer = setInterval(function() {
+    this._typematicKeyVScan = a, this._typematicDelayTimer = setTimeout(function () {
+      b._typematicPeriodTimer = setInterval(function () {
         b._vncDecoder.onKeyVScan(b._typematicKeyVScan, 1)
       }, b._vncDecoder.typematicPeriod / 1e3)
     }, this._vncDecoder.typematicDelay / 1e3)
@@ -10269,37 +10270,37 @@ export function WmksLib($) {
    */
   WMKS.CONST.TOUCH = {
     FEATURE: {                             // List of optional touch features.
-      SoftKeyboard:     0,
-      ExtendedKeypad:   1,
-      Trackpad:         2
+      SoftKeyboard: 0,
+      ExtendedKeypad: 1,
+      Trackpad: 2
     },
     // Tolerances for touch control
     tapMoveCorrectionDistancePx: 10,
     additionalTouchIgnoreGapMs: 1200,
-    touchMoveSampleMinCount:   2,
-    minKeyboardToggleTime:     50,         // Minimum time between keyboard toggles.
-    leftDragDelayMs:           300,
+    touchMoveSampleMinCount: 2,
+    minKeyboardToggleTime: 50,         // Minimum time between keyboard toggles.
+    leftDragDelayMs: 300,
     OP: {                                  // Touch event/gesture types.
-      none:                   'none',
-      scroll:                 'scroll',
-      drag:                   'drag',
-      move:                   'move',
-      tap_twice:              'double-click',
-      tap_1finger:            'click',
-      tap_3finger:            'tap-3f'
+      none: 'none',
+      scroll: 'scroll',
+      drag: 'drag',
+      move: 'move',
+      tap_twice: 'double-click',
+      tap_1finger: 'click',
+      tap_3finger: 'tap-3f'
     },
     SCROLL: {
-      minDeltaDistancePx:     20          // Min distance to scroll before sending a scroll message.
+      minDeltaDistancePx: 20          // Min distance to scroll before sending a scroll message.
     },
     DOUBLE_TAP: {                          // Constants for tolerance between double taps.
-      tapGapInTime:           250,        // Allowed ms delay b/w the 2 taps.
-      tapGapBonusTime:        200,        // Allowed extra ms delay based on tapGapBonus4TimeRatio value wrt tap proximity.
-      tapGapBonus4TimeRatio:  0.4,        // Allowed ratio of tap proximity b/w taps vs tapGapInTime to activate tapGapBonusTime.
-      tapGapInDistance:       40          // Allowed px distance b/w the 2 taps.
+      tapGapInTime: 250,        // Allowed ms delay b/w the 2 taps.
+      tapGapBonusTime: 200,        // Allowed extra ms delay based on tapGapBonus4TimeRatio value wrt tap proximity.
+      tapGapBonus4TimeRatio: 0.4,        // Allowed ratio of tap proximity b/w taps vs tapGapInTime to activate tapGapBonusTime.
+      tapGapInDistance: 40          // Allowed px distance b/w the 2 taps.
     }
   };
 
-  WMKS.TouchHandler = function(options) {
+  WMKS.TouchHandler = function (options) {
     'use strict';
     if (!options || !options.canvas ||
       !options.widgetProto || !options.keyboardManager) {
@@ -10320,28 +10321,28 @@ export function WmksLib($) {
     // Timers
     let _dragTimer = null;
     let _TAP_STATE = {               // Touch state machine.
-        currentTouchFingers: -1,   // Indicates number of touch fingers
-        firstTouch: null,
-        currentTouch: null,
-        touchArray: [],
-        tapStartTime: null,        // Used to detect double tap
-        touchMoveCount: 0,
-        skipScrollCount: 0,
-        scrollCount: 0,
-        zoomCount: 0,
-        opType: WMKS.CONST.TOUCH.OP.none
-      };
+      currentTouchFingers: -1,   // Indicates number of touch fingers
+      firstTouch: null,
+      currentTouch: null,
+      touchArray: [],
+      tapStartTime: null,        // Used to detect double tap
+      touchMoveCount: 0,
+      skipScrollCount: 0,
+      scrollCount: 0,
+      zoomCount: 0,
+      opType: WMKS.CONST.TOUCH.OP.none
+    };
 
     // List of jQuery objects that are used frequently.
     let _ELEMENTS = {
-      inputProxy        : null,
-      cursorIcon        : null,
-      clickFeedback     : null,
-      dragFeedback      : null,
-      pulseFeedback     : null,
-      scrollFeedback    : null,
-      keypad            : null,
-      trackpad          : null
+      inputProxy: null,
+      cursorIcon: null,
+      clickFeedback: null,
+      dragFeedback: null,
+      pulseFeedback: null,
+      scrollFeedback: null,
+      keypad: null,
+      trackpad: null
     };
 
     /*
@@ -10367,7 +10368,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._verifyQuickTouches = function(e, dist, touchMoveCount) {
+    this._verifyQuickTouches = function (e, dist, touchMoveCount) {
       // Only make use of this state if the opType is not defined, there
       // is a change in scale, this is the first touchmove and the distance b/w
       // firsttouch and the touchmove's event location is really huge.
@@ -10394,7 +10395,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._initDragEventAndSendFeedback = function(firstTouch) {
+    this._initDragEventAndSendFeedback = function (firstTouch) {
       if (_TAP_STATE.opType === WMKS.CONST.TOUCH.OP.drag) {
         // Send the left mousedown at the touch location & send drag feedback
         let pos = this._applyZoomCorrectionToTouchXY(firstTouch);
@@ -10417,7 +10418,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._initTwoFingerTouch = function(firstTouch, secondTouch) {
+    this._initTwoFingerTouch = function (firstTouch, secondTouch) {
       /* WMKS.LOGGER.debug('Touch1: ' + firstTouch.screenX + ','
          + firstTouch.screenY + ' touch 2: ' + secondTouch.screenX + ','
          + secondTouch.screenY + ' opType: ' + _TAP_STATE.opType); */
@@ -10453,7 +10454,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._sendScrollEventMessage = function(touch) {
+    this._sendScrollEventMessage = function (touch) {
       let dx = 0, dy = 0, deltaX, deltaY, wheelDeltas, firstPos;
       if (_TAP_STATE.opType === WMKS.CONST.TOUCH.OP.scroll) {
         deltaX = touch.clientX - _TAP_STATE.currentTouch.clientX;
@@ -10492,7 +10493,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._calculateMouseWheelDeltas = function(deltaX, deltaY) {
+    this._calculateMouseWheelDeltas = function (deltaX, deltaY) {
       let dx = 0,
         dy = 0,
         absDeltaX = Math.abs(deltaX),
@@ -10532,7 +10533,7 @@ export function WmksLib($) {
         dy = dy * -1;
       }
 
-      return {wheelDeltaX : dx, wheelDeltaY : dy};
+      return { wheelDeltaX: dx, wheelDeltaY: dy };
     };
 
     /*
@@ -10546,7 +10547,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._updatePreScrollState = function(touch) {
+    this._updatePreScrollState = function (touch) {
       let deltaY = touch.clientY - _TAP_STATE.currentTouch.clientY;
       _TAP_STATE.scrollCount++;
       if (deltaY < 0) {
@@ -10567,7 +10568,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._sendResidualScrollEventMessage = function() {
+    this._sendResidualScrollEventMessage = function () {
       // Detech if there is a leftover scroll event to be sent.
       if (_TAP_STATE.skipScrollCount !== 0 && _TAP_STATE.currentTouch) {
         let pos, sendScroll;
@@ -10606,7 +10607,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._isDoubleTap = function(event, now) {
+    this._isDoubleTap = function (event, now) {
       let dist, duration;
       // Check if this is the second tap and there is a time delay from the first.
       if (_TAP_STATE.currentTouch === null || _TAP_STATE.tapStartTime === null
@@ -10668,7 +10669,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._onTouchStart = function(e) {
+    this._onTouchStart = function (e) {
       let pos, timeGap, self = this, now = $.now();
 
       // WMKS.LOGGER.debug('Start#: ' + e.targetTouches.length);
@@ -10705,7 +10706,7 @@ export function WmksLib($) {
           clearTimeout(_dragTimer);
         }
 
-        _dragTimer = setTimeout(function() {
+        _dragTimer = setTimeout(function () {
           _dragTimer = null;
 
           // Update opType and init the drag event.
@@ -10790,7 +10791,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._onTouchMove = function(e) {
+    this._onTouchMove = function (e) {
       let dist, pos;
 
       // Reset the drag timer if there is one.
@@ -10867,7 +10868,7 @@ export function WmksLib($) {
         // e.targetTouches.length = 1 based on above condition check.
         dist = WMKS.UTIL.TOUCH.touchDistance(e.targetTouches[0], _TAP_STATE.currentTouch);
         // If we have quick fingers convert into 2 finger touch gesture.
-        if(this._verifyQuickTouches(e, dist, _TAP_STATE.touchMoveCount)) {
+        if (this._verifyQuickTouches(e, dist, _TAP_STATE.touchMoveCount)) {
           // Initialize setup for 2 finger gestures.
           this._initTwoFingerTouch(WMKS.UTIL.TOUCH.copyTouch(_TAP_STATE.firstTouch),
             WMKS.UTIL.TOUCH.copyTouch(e.targetTouches[0]));
@@ -10876,7 +10877,7 @@ export function WmksLib($) {
           _TAP_STATE.opType = WMKS.CONST.TOUCH.OP.scroll;
           return false;
         }
-        else if (dist < WMKS.CONST.TOUCH.tapMoveCorrectionDistancePx){
+        else if (dist < WMKS.CONST.TOUCH.tapMoveCorrectionDistancePx) {
           // If move is within a threshold, its may be a click by wobbly fingers.
           // Left click should not becomes a pan if within the threshold.
           return true;
@@ -10975,7 +10976,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._onTouchEnd = function(e) {
+    this._onTouchEnd = function (e) {
       let pos, touches;
 
       // Reset the drag timer if there is one.
@@ -10995,7 +10996,7 @@ export function WmksLib($) {
         }
 
         // Check against the known opTypes and at the last the unknown ones.
-        switch(_TAP_STATE.opType) {
+        switch (_TAP_STATE.opType) {
           case WMKS.CONST.TOUCH.OP.scroll:
             // WMKS.LOGGER.debug('scroll complete, send residual scroll & clear state.');
             this._sendResidualScrollEventMessage(e);
@@ -11061,7 +11062,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._resetTouchState = function(keepLastTouchState) {
+    this._resetTouchState = function (keepLastTouchState) {
       if (!keepLastTouchState) {
         _TAP_STATE.tapStartTime = null;
         _TAP_STATE.currentTouch = null;
@@ -11087,7 +11088,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._sendTwoTouchEvent = function(firstTouch, secondTouch, button) {
+    this._sendTwoTouchEvent = function (firstTouch, secondTouch, button) {
       // Send modifier keys as well if any to support inputs like 'ctrl click'
       let pos = this._applyZoomCorrectionToTouchXY(firstTouch);
       _widget.sendMouseButtonMessage(pos, true, button);
@@ -11102,7 +11103,7 @@ export function WmksLib($) {
         _widget.sendMouseButtonMessage(pos, false, button);
 
         // Send the double click feedback with a throbbing effect (use showTwice).
-        this._showFeedback(_ELEMENTS.clickFeedback, firstTouch, {showTwice: true});
+        this._showFeedback(_ELEMENTS.clickFeedback, firstTouch, { showTwice: true });
       } else {
         pos = this._applyZoomCorrectionToTouchXY(secondTouch);
         _widget.sendMouseButtonMessage(pos, false, button);
@@ -11123,7 +11124,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.addToRepositionQueue = function(element) {
+    this.addToRepositionQueue = function (element) {
       if (element) {
         _repositionElements.push(element);
       }
@@ -11155,7 +11156,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.widgetRepositionOnRotation = function(widget) {
+    this.widgetRepositionOnRotation = function (widget) {
       let w, h, size, screenW, screenH, hasPositionChanged = false;
 
       if (!WMKS.BROWSER.isTouchDevice()) {
@@ -11208,7 +11209,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._repositionFloatingElementsOnRotation = function(e) {
+    this._repositionFloatingElementsOnRotation = function (e) {
       let self = this,
         canvasOffset = _canvas.offset();
       // Move them inside the canvas region if they are outside.
@@ -11224,7 +11225,7 @@ export function WmksLib($) {
       _ELEMENTS.scrollFeedback.offset(canvasOffset);
 
       // Now handle the list of elements added via addToRepositionQueue()
-      $.each(_repositionElements, function(i, element) {
+      $.each(_repositionElements, function (i, element) {
         // Just to be safe, we try this out here.
         try {
           // WMKS.LOGGER.info('reposition req: ' + element.attr('id')
@@ -11247,17 +11248,17 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._onOrientationChange = function(e) {
+    this._onOrientationChange = function (e) {
       let self = this;
 
       if (this._isInputInFocus()) {
         // Listen to resize event.
-        $(window).one('resize', function(e) {
+        $(window).one('resize', function (e) {
           /*
            * Trigger orientationchange event to adjust the screen size.
            * When the keyboard is opened, resize happens after orientationchange.
            */
-          setTimeout(function() {
+          setTimeout(function () {
             $(window).trigger('orientationchange');
             // Reposition widgets and icons.
             self._repositionFloatingElementsOnRotation();
@@ -11277,7 +11278,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._applyZoomCorrectionToTouchXY = function(touch) {
+    this._applyZoomCorrectionToTouchXY = function (touch) {
       if (touch === null) {
         WMKS.LOGGER.warn('Unexpected: touch is null.');
         return null;
@@ -11310,7 +11311,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._showFeedback = function(feedback,touch, inputArgs) {
+    this._showFeedback = function (feedback, touch, inputArgs) {
       let multiplier, padLeft, padTop, args = inputArgs || {};
       if (!touch || !feedback) {
         WMKS.LOGGER.trace('No touch value / feedback object, skip feedback.');
@@ -11335,11 +11336,11 @@ export function WmksLib($) {
        */
       feedback.removeClass('animate-feedback-indicator animate-double-feedback-indicator');
       if (args.showTwice) {
-        setTimeout(function() {
+        setTimeout(function () {
           feedback.addClass('animate-double-feedback-indicator');
         }, 0);
       } else {
-        setTimeout(function() {
+        setTimeout(function () {
           feedback.addClass('animate-feedback-indicator');
         }, 0);
       }
@@ -11357,9 +11358,9 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.moveCursor = function(pageX, pageY) {
+    this.moveCursor = function (pageX, pageY) {
       if (_ELEMENTS.cursorIcon) {
-        _ELEMENTS.cursorIcon.css({'left': pageX, 'top': pageY});
+        _ELEMENTS.cursorIcon.css({ 'left': pageX, 'top': pageY });
       }
     };
 
@@ -11373,7 +11374,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.setCursorVisibility = function(visible) {
+    this.setCursorVisibility = function (visible) {
       if (_ELEMENTS.cursorIcon) {
         if (visible) {
           _ELEMENTS.cursorIcon.show();
@@ -11395,7 +11396,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._sendKeyInput = function(key) {
+    this._sendKeyInput = function (key) {
       _widget.sendKeyInput(key);
     };
 
@@ -11413,7 +11414,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.onCaretPositionChanged = function(pos) {
+    this.onCaretPositionChanged = function (pos) {
       let offsetX, offsetY;
 
       if (_ELEMENTS.inputProxy) {
@@ -11428,7 +11429,7 @@ export function WmksLib($) {
           offsetY = window.pageYOffset;
         }
 
-        _ELEMENTS.inputProxy.offset({left: offsetX, top: offsetY});
+        _ELEMENTS.inputProxy.offset({ left: offsetX, top: offsetY });
         // WMKS.LOGGER.warn('left: ' + _ELEMENTS.inputProxy.offset().left
         //   + ', top: ' + _ELEMENTS.inputProxy.offset().left);
       }
@@ -11446,7 +11447,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._keyboardDisplay = function(show) {
+    this._keyboardDisplay = function (show) {
       // WMKS.LOGGER.debug('kb show: ' + (show? 'true' : 'false'));
 
       if (show) {
@@ -11458,7 +11459,7 @@ export function WmksLib($) {
           _ELEMENTS.inputProxy.attr('readonly', true)
             .attr('disabled', true);
           // Reset the readonly and disabled property values after some time.
-          setTimeout(function() {
+          setTimeout(function () {
             _ELEMENTS.inputProxy.attr('readonly', false)
               .attr('disabled', false);
             _canvas.focus();
@@ -11486,7 +11487,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._isInputInFocus = function() {
+    this._isInputInFocus = function () {
       return (document.activeElement.id === 'input-proxy');
     };
 
@@ -11501,7 +11502,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._onInputFocus = function(e) {
+    this._onInputFocus = function (e) {
       this._sendUpdatedKeyboardState(true);
       // Hide this while we're typing otherwise we'll see a blinking caret.
       e.stopPropagation();
@@ -11519,7 +11520,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._onInputBlur = function(e) {
+    this._onInputBlur = function (e) {
       this._sendUpdatedKeyboardState(false);
       e.stopPropagation();
       return true;
@@ -11536,7 +11537,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this._sendUpdatedKeyboardState = function(kbState) {
+    this._sendUpdatedKeyboardState = function (kbState) {
       _KEYBOARD.visible = kbState;
       _KEYBOARD.lastToggleTime = $.now();
       // Trigger keyboard toggle callback function.
@@ -11561,7 +11562,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.toggleKeyboard = function(options) {
+    this.toggleKeyboard = function (options) {
       if (!WMKS.BROWSER.isTouchDevice()) {
         WMKS.LOGGER.warn('Mobile keyboard not supported, this is not a touch device.');
         return;
@@ -11604,7 +11605,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.toggleTrackpad = function(options) {
+    this.toggleTrackpad = function (options) {
       if (!WMKS.BROWSER.isTouchDevice()) {
         WMKS.LOGGER.warn('Trackpad not supported. Not a touch device.');
         return;
@@ -11630,7 +11631,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.toggleExtendedKeypad = function(options) {
+    this.toggleExtendedKeypad = function (options) {
       if (!WMKS.BROWSER.isTouchDevice()) {
         WMKS.LOGGER.warn('Extended keypad not supported. Not a touch device.');
         return;
@@ -11656,7 +11657,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.installTouchHandlers = function() {
+    this.installTouchHandlers = function () {
       let self = this,
         container = _canvas.parent();
 
@@ -11667,24 +11668,24 @@ export function WmksLib($) {
 
       // Set css values to disable unwanted default browser behavior.
       _canvas.css({
-        '-webkit-user-select':     'none',  /* disable cut-copy-paste */
-        '-webkit-touch-callout':   'none'   /* disable callout, image save panel */
+        '-webkit-user-select': 'none',  /* disable cut-copy-paste */
+        '-webkit-touch-callout': 'none'   /* disable callout, image save panel */
       });
 
       _canvas
-        .bind('touchmove.wmks', function(e) {
+        .bind('touchmove.wmks', function (e) {
           return self._onTouchMove(e.originalEvent);
         })
-        .bind('touchstart.wmks', function(e) {
+        .bind('touchstart.wmks', function (e) {
           return self._onTouchStart(e.originalEvent);
         })
-        .bind('touchend.wmks', function(e) {
+        .bind('touchend.wmks', function (e) {
           return self._onTouchEnd(e.originalEvent);
         })
-        .bind('orientationchange.wmks', function(event) {
+        .bind('orientationchange.wmks', function (event) {
           return self._onOrientationChange(event);
         })
-        .bind('orientationchange.wmks.elements', function(e) {
+        .bind('orientationchange.wmks.elements', function (e) {
           // Handler for repositioning cursor, feedback icons, input textbox
           // and elements added externally.
           self._repositionFloatingElementsOnRotation(e);
@@ -11714,13 +11715,13 @@ export function WmksLib($) {
        */
       container
         .find('.feedback-container')
-        .bind('touchmove.wmks', function(e) {
+        .bind('touchmove.wmks', function (e) {
           return self._onTouchMove(e.originalEvent);
         })
-        .bind('touchstart.wmks', function(e) {
+        .bind('touchstart.wmks', function (e) {
           return self._onTouchStart(e.originalEvent);
         })
-        .bind('touchend.wmks', function(e) {
+        .bind('touchend.wmks', function (e) {
           return self._onTouchEnd(e.originalEvent);
         });
     };
@@ -11735,7 +11736,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.disconnectEvents = function() {
+    this.disconnectEvents = function () {
       if (!_canvas) {
         return;
       }
@@ -11762,7 +11763,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.initializeMobileFeature = function(type) {
+    this.initializeMobileFeature = function (type) {
       if (!WMKS.BROWSER.isTouchDevice()) {
         // Not a touch device, and hence will not initialize keyboard.
         return;
@@ -11776,7 +11777,7 @@ export function WmksLib($) {
 
         case WMKS.CONST.TOUCH.FEATURE.ExtendedKeypad:
           _ELEMENTS.keypad = new WMKS.extendedKeypad({
-            widget : _widget,
+            widget: _widget,
             parentElement: _canvas.parent(),
             keyboardManager: _keyboardManager
           });
@@ -11805,7 +11806,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.initSoftKeyboard = function() {
+    this.initSoftKeyboard = function () {
       let self = this,
         kbHandler = _keyboardManager;
 
@@ -11826,29 +11827,31 @@ export function WmksLib($) {
       let inputDiv = $('<input type="text"/>')
         .val(WMKS.CONST.KB.keyInputDefaultValue)
         .attr({
-          'id':                   'input-proxy',
-          'autocorrect':          'off',    /* disable auto correct */
-          'autocapitalize':       'off' })  /* disable capitalizing 1st char in a word */
+          'id': 'input-proxy',
+          'autocorrect': 'off',    /* disable auto correct */
+          'autocapitalize': 'off'
+        })  /* disable capitalizing 1st char in a word */
         .css({
-          'font-size':            '1px',    /* make the caret really small */
-          'width':                '1px',    /* Non-zero facilitates keyboard launch */
-          'height':               '1px',
-          'background-color':     'transparent',    /* removes textbox background */
-          'color':                'transparent',    /* removes caret color */
-          'box-shadow':           0,        /* remove box shadow */
-          'outline':              'none',   /* remove orange outline - android chrome */
-          'border':               0,        /* remove border */
-          'padding':              0,        /* remove padding */
-          'left':                 -1,       /* start outside the visible region */
-          'top':                  -1,
-          'overflow':             'hidden',
-          'position':             'absolute' })
-        .bind('blur',     function(e) { return self._onInputBlur(e); })
-        .bind('focus',    function(e) { return self._onInputFocus(e); })
-        .bind('input',    function(e) { return kbHandler.onInputTextSoftKb(e); })
-        .bind('keydown',  function(e) { return kbHandler.onKeyDownSoftKb(e); })
-        .bind('keyup',    function(e) { return kbHandler.onKeyUpSoftKb(e); })
-        .bind('keypress', function(e) { return kbHandler.onKeyPressSoftKb(e); })
+          'font-size': '1px',    /* make the caret really small */
+          'width': '1px',    /* Non-zero facilitates keyboard launch */
+          'height': '1px',
+          'background-color': 'transparent',    /* removes textbox background */
+          'color': 'transparent',    /* removes caret color */
+          'box-shadow': 0,        /* remove box shadow */
+          'outline': 'none',   /* remove orange outline - android chrome */
+          'border': 0,        /* remove border */
+          'padding': 0,        /* remove padding */
+          'left': -1,       /* start outside the visible region */
+          'top': -1,
+          'overflow': 'hidden',
+          'position': 'absolute'
+        })
+        .bind('blur', function (e) { return self._onInputBlur(e); })
+        .bind('focus', function (e) { return self._onInputFocus(e); })
+        .bind('input', function (e) { return kbHandler.onInputTextSoftKb(e); })
+        .bind('keydown', function (e) { return kbHandler.onKeyDownSoftKb(e); })
+        .bind('keyup', function (e) { return kbHandler.onKeyUpSoftKb(e); })
+        .bind('keypress', function (e) { return kbHandler.onKeyPressSoftKb(e); })
         .appendTo('body');
 
       if (WMKS.BROWSER.isIOS()) {
@@ -11871,7 +11874,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.removeMobileFeature = function(type) {
+    this.removeMobileFeature = function (type) {
       switch (type) {
         case WMKS.CONST.TOUCH.FEATURE.Trackpad:
           if (_ELEMENTS.trackpad) {
@@ -11917,7 +11920,7 @@ export function WmksLib($) {
      *---------------------------------------------------------------------------
      */
 
-    this.destroy = function() {
+    this.destroy = function () {
       this.disconnectEvents();
       this.removeMobileFeature(WMKS.CONST.TOUCH.FEATURE.SoftKeyboard);
       this.removeMobileFeature(WMKS.CONST.TOUCH.FEATURE.ExtendedKeypad);
@@ -11943,12 +11946,12 @@ export function WmksLib($) {
   WMKS.UTIL.TOUCH = {
 
     // Returns true if the device is in landscape orientation.
-    isLandscapeOrientation: function() {
+    isLandscapeOrientation: function () {
       return (window.orientation === 90 || window.orientation === -90);
     },
 
     // Returns true if the device is in landscape orientation.
-    isPortraitOrientation: function() {
+    isPortraitOrientation: function () {
       return (window.orientation === 0 || window.orientation === 180);
     },
 
@@ -11956,7 +11959,7 @@ export function WmksLib($) {
     // element which multiplied to its width and height and added to the
     // current location offset, will give the desired location as defined by
     // the position string.
-    getRelativePositionMultiplier: function(position) {
+    getRelativePositionMultiplier: function (position) {
       let wMultiply = -0.5, hMultiply = -0.5;
       if (!!position) {
         // Check for left or right positioning.
@@ -11973,26 +11976,26 @@ export function WmksLib($) {
         }
       }
       // Return json response containing width and height multipliers.
-      return {'width': wMultiply, 'height': hMultiply};
+      return { 'width': wMultiply, 'height': hMultiply };
     },
 
     // Convenience function to compare two touches and see if they correspond
     // to precisely the same point.
-    touchEqual: function(thisTouch, thatTouch) {
+    touchEqual: function (thisTouch, thatTouch) {
       return (thisTouch.screenX === thatTouch.screenX &&
         thisTouch.screenY === thatTouch.screenY);
     },
 
     // Convenience function to get the pixel distance between two touches,
     // in screen pixels.
-    touchDistance: function(thisTouch, thatTouch) {
+    touchDistance: function (thisTouch, thatTouch) {
       return WMKS.UTIL.getLineLength((thatTouch.screenX - thisTouch.screenX),
         (thatTouch.screenY - thisTouch.screenY));
     },
 
     // Convenience function to compute the angle created b/w 2 lines. Each of
     // the two lines are defined by two touch points.
-    touchAngleBwLines: function(l1p1, l1p2, l2p1, l2p2) {
+    touchAngleBwLines: function (l1p1, l1p2, l2p1, l2p2) {
       let a1 = Math.atan2(l1p1.screenY - l1p2.screenY, l1p1.screenX - l1p2.screenX);
       let a2 = Math.atan2(l2p1.screenY - l2p2.screenY, l2p1.screenX - l2p2.screenX);
       return a1 - a2;
@@ -12001,20 +12004,20 @@ export function WmksLib($) {
     // Since touches are Objects, they need to be deep-copied. Note that we
     // only copy the elements that we use for our own purposes, there are
     // probably more.
-    copyTouch: function(aTouch) {
+    copyTouch: function (aTouch) {
       return {
         'screenX': aTouch.screenX,
         'screenY': aTouch.screenY,
         'clientX': aTouch.clientX,
         'clientY': aTouch.clientY,
-        'pageX'  : aTouch.pageX,
-        'pageY'  : aTouch.pageY
+        'pageX': aTouch.pageX,
+        'pageY': aTouch.pageY
       };
     },
 
     // Returns the touch event that contains the leftmost screen coords.
-    leftmostOf: function(thisTouch, thatTouch) {
-      return (thisTouch.screenX < thatTouch.screenX)? thisTouch : thatTouch;
+    leftmostOf: function (thisTouch, thatTouch) {
+      return (thisTouch.screenX < thatTouch.screenX) ? thisTouch : thatTouch;
     }
   };
 
@@ -12049,13 +12052,13 @@ export function WmksLib($) {
     keyboardLayoutId: "en-US",
     sendRelativeMouseEvent: !1
   };
-  WMKS.widgetProto._updatePixelRatio = function() {
+  WMKS.widgetProto._updatePixelRatio = function () {
     this.options.useNativePixels ? this._pixelRatio = window.devicePixelRatio || 1 : this._pixelRatio = 1
   };
-  WMKS.widgetProto._updateMobileFeature = function(a, b) {
+  WMKS.widgetProto._updateMobileFeature = function (a, b) {
     a ? this._touchHandler.initializeMobileFeature(b) : this._touchHandler.removeMobileFeature(b)
   };
-  WMKS.widgetProto._setOption = function(a, b) {
+  WMKS.widgetProto._setOption = function (a, b) {
     $.Widget.prototype._setOption.apply(this, arguments);
     switch (a) {
       case "fitToParent":
@@ -12104,7 +12107,7 @@ export function WmksLib($) {
         this._vncDecoder.options.sendRelativeMouseEvent = b
     }
   };
-  WMKS.widgetProto.getCanvasPosition = function(a, b) {
+  WMKS.widgetProto.getCanvasPosition = function (a, b) {
     let c, d, e, f;
     if (isNaN(a) || isNaN(b)) return {
       x: 0,
@@ -12118,7 +12121,7 @@ export function WmksLib($) {
       y: h
     }
   };
-  WMKS.widgetProto.getRelativeMouseCanvasPosition = function(a) {
+  WMKS.widgetProto.getRelativeMouseCanvasPosition = function (a) {
     let b, c, d, e = a.x,
       f = a.y;
     if (isNaN(e) || isNaN(f)) return {
@@ -12134,18 +12137,18 @@ export function WmksLib($) {
       y: h
     }
   };
-  WMKS.widgetProto.getEventPosition = function(a) {
+  WMKS.widgetProto.getEventPosition = function (a) {
     let b, c;
     if (a.pageX || a.pageY) b = a.pageX, c = a.pageY;
     else if (a.clientX || a.clientY) b = a.clientX + document.body.scrollLeft + document.documentElement.scrollLeft, c = a.clientY + document.body.scrollTop + document.documentElement.scrollTop;
     return this.getCanvasPosition(b, c)
   };
-  WMKS.widgetProto._isCanvasMouseEvent = function(a) {
+  WMKS.widgetProto._isCanvasMouseEvent = function (a) {
     let b = a || window.event,
       c = b.target || b.srcElement;
     return this._mouseDownBMask !== 0 ? !0 : c === this._canvas[0] || this._video && c === this._video[0] || c === $("#relativePadSurface")
   };
-  WMKS.widgetProto._onMouseButton = function(a, b) {
+  WMKS.widgetProto._onMouseButton = function (a, b) {
     if (this._vncDecoder && this._isCanvasMouseEvent(a)) {
       let c = a || window.event,
         d = this.getEventPosition(c),
@@ -12153,10 +12156,10 @@ export function WmksLib($) {
       return c.which ? WMKS.BROWSER.isMacOS() && WMKS.BROWSER.isGecko() && c.ctrlKey && c.button === 2 ? (WMKS.LOGGER.trace("FF on OSX: Rewrite Ctrl+Right-click as Ctrl+Left-click."), e = 1) : e = 1 << c.button : e = (c.button & 1) << 0 | (c.button & 2) << 1 | (c.button & 4) >> 1, this.sendMouseButtonMessage(d, b, e)
     }
   };
-  WMKS.widgetProto.sendMouseButtonMessage = function(a, b, c) {
+  WMKS.widgetProto.sendMouseButtonMessage = function (a, b, c) {
     return this._vncDecoder && (b ? this._mouseDownBMask |= c : this._mouseDownBMask &= ~c, (this._mousePosGuest.x !== a.x || this._mousePosGuest.y !== a.y) && this.sendMouseMoveMessage(a), this._vncDecoder.onMouseButton(a.x, a.y, b, c)), !0
   };
-  WMKS.widgetProto._onMouseWheel = function(a) {
+  WMKS.widgetProto._onMouseWheel = function (a) {
     if (this._vncDecoder && this._isCanvasMouseEvent(a)) {
       let b = a || window.event,
         c = this.getEventPosition(b),
@@ -12165,10 +12168,10 @@ export function WmksLib($) {
       return this.options.reverseScrollY && (e *= -1), this.sendScrollMessage(c, d, e), a.stopPropagation(), a.preventDefault(), !1
     }
   };
-  WMKS.widgetProto.sendScrollMessage = function(a, b, c) {
+  WMKS.widgetProto.sendScrollMessage = function (a, b, c) {
     this._vncDecoder && this._vncDecoder.onMouseWheel(a.x, a.y, b, c)
   };
-  WMKS.widgetProto._onMouseMove = function(a) {
+  WMKS.widgetProto._onMouseMove = function (a) {
     if (this._vncDecoder && this._isCanvasMouseEvent(a)) {
       let b = a || window.event,
         c = this.getEventPosition(b);
@@ -12176,103 +12179,103 @@ export function WmksLib($) {
     }
     return !0
   };
-  WMKS.widgetProto.sendMouseMoveMessage = function(a) {
+  WMKS.widgetProto.sendMouseMoveMessage = function (a) {
     this._vncDecoder && (this._vncDecoder.onMouseMove(a.x, a.y), this._mousePosGuest = a, this._touchHandler && this._touchHandler.onCaretPositionChanged(a))
   };
-  WMKS.widgetProto._onBlur = function(a) {
+  WMKS.widgetProto._onBlur = function (a) {
     return this.connected && (this._keyboardManager.cancelModifiers(), this._vncDecoder.onMouseButton(this._mousePosGuest.x, this._mousePosGuest.y, 0, this._mouseDownBMask), this._mouseDownBMask = 0), !0
   };
-  WMKS.widgetProto._onPaste = function(a) {
+  WMKS.widgetProto._onPaste = function (a) {
     let b = a.originalEvent,
       c = this;
     if (b && b.clipboardData) {
       let d = b.clipboardData.items;
       if (d)
-        for (var e = 0; e < d.length; e++) d[e].kind === "string" && d[e].type === "text/plain" && d[e].getAsString(function(a) {
+        for (var e = 0; e < d.length; e++) d[e].kind === "string" && d[e].type === "text/plain" && d[e].getAsString(function (a) {
           c._keyboardManager.processInputString(a)
         })
     }
     return !0
   };
-  WMKS.widgetProto.disconnectEvents = function() {
+  WMKS.widgetProto.disconnectEvents = function () {
     this.element.unbind("contextmenu.wmks")
       .unbind("keydown.wmks")
       .unbind("keypress.wmks")
       .unbind("keyup.wmks")
       .unbind("mousedown.wmks")
       .unbind("mousewheel.wmks"), this.element.unbind("mousemove.wmks")
-      .unbind("mouseup.wmks")
-      .unbind("blur.wmks"), $(window)
-      .unbind("blur.wmks"), this._touchHandler && this._touchHandler.disconnectEvents()
+        .unbind("mouseup.wmks")
+        .unbind("blur.wmks"), $(window)
+          .unbind("blur.wmks"), this._touchHandler && this._touchHandler.disconnectEvents()
   };
-  WMKS.widgetProto.connectEvents = function() {
+  WMKS.widgetProto.connectEvents = function () {
     let a = this;
-    this.element.bind("blur.wmks", function(b) {
+    this.element.bind("blur.wmks", function (b) {
       return a._onBlur(b)
-    }), this.element.bind("contextmenu.wmks", function(a) {
+    }), this.element.bind("contextmenu.wmks", function (a) {
       return !1
     })
-      .bind("keydown.wmks", function(b) {
+      .bind("keydown.wmks", function (b) {
         return a.updateUserActivity(), a._keyboardManager.onKeyDown(b)
       })
-      .bind("keypress.wmks", function(b) {
+      .bind("keypress.wmks", function (b) {
         return a._keyboardManager.onKeyPress(b)
       })
-      .bind("keyup.wmks", function(b) {
+      .bind("keyup.wmks", function (b) {
         return a.updateUserActivity(), a._keyboardManager.onKeyUp(b)
       }), $(window)
-      .bind("blur.wmks", function(b) {
-        return a._onBlur(b)
-      })
-      .bind("mousemove.wmks", function(b) {
-        a.updateUserActivity();
-        if (a.options.sendRelativeMouseEvent) return;
-        return a._onMouseMove(b)
-      })
-      .bind("mousewheel.wmks", function(b) {
-        a.updateUserActivity();
-        if (a.options.sendRelativeMouseEvent) return;
-        return a._onMouseWheel(b)
-      })
-      .bind("mouseup.wmks", function(b) {
-        a.updateUserActivity();
-        if (a.options.sendRelativeMouseEvent) return;
-        return a._onMouseButton(b, 0)
-      })
-      .bind("mousedown.wmks", function(b) {
-        a.updateUserActivity();
-        if (a.options.sendRelativeMouseEvent) return;
-        return a._onMouseButton(b, 1)
-      }), this._touchHandler && this._touchHandler.installTouchHandlers(), this._relativeMouseHandler && this._relativeMouseHandler.installMouseHandlers()
+        .bind("blur.wmks", function (b) {
+          return a._onBlur(b)
+        })
+        .bind("mousemove.wmks", function (b) {
+          a.updateUserActivity();
+          if (a.options.sendRelativeMouseEvent) return;
+          return a._onMouseMove(b)
+        })
+        .bind("mousewheel.wmks", function (b) {
+          a.updateUserActivity();
+          if (a.options.sendRelativeMouseEvent) return;
+          return a._onMouseWheel(b)
+        })
+        .bind("mouseup.wmks", function (b) {
+          a.updateUserActivity();
+          if (a.options.sendRelativeMouseEvent) return;
+          return a._onMouseButton(b, 0)
+        })
+        .bind("mousedown.wmks", function (b) {
+          a.updateUserActivity();
+          if (a.options.sendRelativeMouseEvent) return;
+          return a._onMouseButton(b, 1)
+        }), this._touchHandler && this._touchHandler.installTouchHandlers(), this._relativeMouseHandler && this._relativeMouseHandler.installMouseHandlers()
   };
-  WMKS.widgetProto.maxFitWidth = function() {
+  WMKS.widgetProto.maxFitWidth = function () {
     return this.element[0].scrollWidth * this._pixelRatio
   };
-  WMKS.widgetProto.maxFitHeight = function() {
+  WMKS.widgetProto.maxFitHeight = function () {
     return this.element[0].scrollHeight * this._pixelRatio
   };
-  WMKS.widgetProto.hideKeyboard = function(a?) {
+  WMKS.widgetProto.hideKeyboard = function (a?) {
     a = a || {}, a.show = !1, this.toggleKeyboard(a)
   };
-  WMKS.widgetProto.showKeyboard = function(a?) {
+  WMKS.widgetProto.showKeyboard = function (a?) {
     a = a || {}, a.show = !0, this.toggleKeyboard(a)
   };
-  WMKS.widgetProto.toggleKeyboard = function(a) {
+  WMKS.widgetProto.toggleKeyboard = function (a) {
     this.options.allowMobileKeyboardInput && this._touchHandler && this._touchHandler.toggleKeyboard(a)
   };
-  WMKS.widgetProto.toggleTrackpad = function(a) {
+  WMKS.widgetProto.toggleTrackpad = function (a) {
     this.options.allowMobileTrackpad && this._touchHandler && this._touchHandler.toggleTrackpad(a)
   };
-  WMKS.widgetProto.toggleRelativePad = function(a) {
+  WMKS.widgetProto.toggleRelativePad = function (a) {
     this._relativeMouseHandler && this._relativeMouseHandler.toggleRelativePad(a)
   };
-  WMKS.widgetProto.toggleExtendedKeypad = function(a) {
+  WMKS.widgetProto.toggleExtendedKeypad = function (a) {
     this.options.allowMobileExtendedKeypad && this._touchHandler && this._touchHandler.toggleExtendedKeypad(a)
   };
-  WMKS.widgetProto.sendInputString = function(a) {
+  WMKS.widgetProto.sendInputString = function (a) {
     this._keyboardManager.processInputString(a, !0)
   };
-  WMKS.widgetProto.sendKeyCodes = function(a) {
+  WMKS.widgetProto.sendKeyCodes = function (a) {
     let b, c = [];
     for (b = 0; b < a.length; b++) {
       let d = a[b];
@@ -12280,22 +12283,22 @@ export function WmksLib($) {
     }
     for (b = c.length - 1; b >= 0; b--) this._keyboardManager.sendKey(c[b], !0, !1)
   };
-  WMKS.widgetProto.rescale = function() {
+  WMKS.widgetProto.rescale = function () {
     this.rescaleOrResize(!0)
   };
-  WMKS.widgetProto.updateFitGuestSize = function(a) {
+  WMKS.widgetProto.updateFitGuestSize = function (a) {
     let b = this.element.width() * this._pixelRatio,
       c = this.element.height() * this._pixelRatio;
     if (!this.options.fitGuest || a && this._guestWidth === b && this._guestWidth === c) return;
     this._vncDecoder.onRequestResolution(b, c)
   };
-  WMKS.widgetProto.updateTopology = function(a) {
+  WMKS.widgetProto.updateTopology = function (a) {
     let b;
     if (!this.options.fitGuest) return;
     for (b = 0; b < a.length; b++) a[b].left = a[b].left * this._pixelRatio, a[b].top = a[b].top * this._pixelRatio, a[b].requestedWidth = a[b].requestedWidth * this._pixelRatio, a[b].requestedHeight = a[b].requestedHeight * this._pixelRatio;
     this._vncDecoder.onRequestTopology(a)
   };
-  WMKS.widgetProto.rescaleOrResize = function(a) {
+  WMKS.widgetProto.rescaleOrResize = function (a) {
     let b = 1,
       c = 0,
       d = 0,
@@ -12321,19 +12324,19 @@ export function WmksLib($) {
       })
     }
   };
-  WMKS.widgetProto.setVCDProxyHandshakeVmxPath = function(a) {
+  WMKS.widgetProto.setVCDProxyHandshakeVmxPath = function (a) {
     this.options.VCDProxyHandshakeVmxPath = a, this._vncDecoder && this._vncDecoder.options && (this._vncDecoder.options.VCDProxyHandshakeVmxPath = a)
   };
-  WMKS.widgetProto.disconnect = function() {
+  WMKS.widgetProto.disconnect = function () {
     this._vncDecoder.disconnect(), this.disconnectEvents(), this._keyboardManager.cancelModifiers()
   };
-  WMKS.widgetProto.connect = function(a) {
+  WMKS.widgetProto.connect = function (a) {
     this.disconnect(), this._vncDecoder.connect(a), this.connectEvents()
   };
-  WMKS.widgetProto.destroy = function() {
+  WMKS.widgetProto.destroy = function () {
     this.disconnect(), this.element.removeClass("wmks"), this._touchHandler.destroy(), this._touchHandler = null, this._relativeMouseHandler.destroy(), this._relativeMouseHandler = null, this._canvas.remove(), this._video && this._video.remove(), this._backCanvas && this._backCanvas.remove(), this._blitTempCanvas && this._blitTempCanvas.remove(), $.Widget.prototype.destroy.call(this)
   };
-  WMKS.widgetProto.requestElementReposition = function(a, b) {
+  WMKS.widgetProto.requestElementReposition = function (a, b) {
     if (this._touchHandler) {
       if (b) {
         this._touchHandler.addToRepositionQueue(a);
@@ -12342,10 +12345,10 @@ export function WmksLib($) {
       this._touchHandler.widgetRepositionOnRotation(a)
     }
   };
-  WMKS.widgetProto.updateUserActivity = function() {
+  WMKS.widgetProto.updateUserActivity = function () {
     this._trigger("useractivity", 0, $.now())
   };
-  WMKS.widgetProto._create = function() {
+  WMKS.widgetProto._create = function () {
     let a = this;
     this._mouseDownBMask = 0, this._mousePosGuest = {
       x: 0,
@@ -12355,8 +12358,8 @@ export function WmksLib($) {
         id: "mainCanvas",
         tabindex: 1
       }), this._backCanvas = WMKS.UTIL.createCanvas(!0), this._blitTempCanvas = WMKS.UTIL.createCanvas(!0), this.element.addClass("wmks")
-      .append(this._canvas), this.options.enableMP4 && (this._video = WMKS.UTIL.createVideo(!0), this.element.append(this._video));
-    let b = function(b) {
+        .append(this._canvas), this.options.enableMP4 && (this._video = WMKS.UTIL.createVideo(!0), this.element.append(this._video));
+    let b = function (b) {
       return typeof a._canvas[0].style[b] != "undefined" ? b : null
     };
     this.transform = b("transform") || b("WebkitTransform") || b("MozTransform") || b("msTransform") || b("OTransform"), this._vncDecoder = new WMKS.VNCDecoder({
@@ -12379,78 +12382,78 @@ export function WmksLib($) {
       enableRawH264: this.options.enableRawH264,
       enableTopologyChange: this.options.enableTopologyChange,
       enableH264Multimon: this.options.enableH264Multimon,
-      onConnecting: function(b, c) {
+      onConnecting: function (b, c) {
         a._trigger("connecting", 0, {
           vvc: b,
           vvcSession: c
         })
       },
-      onConnected: function() {
+      onConnected: function () {
         a.connected = !0, a._trigger("connected"), a._keyboardManager.clearState(), a.rescaleOrResize(!0)
       },
-      onBeforeDisconnected: function(b) {
+      onBeforeDisconnected: function (b) {
         a._trigger("beforedisconnected", 0, b)
       },
-      onDisconnected: function(b, c) {
+      onDisconnected: function (b, c) {
         a.connected = !1, a._trigger("disconnected", 0, {
           reason: b,
           code: c
         })
       },
-      onAuthenticationFailed: function() {
+      onAuthenticationFailed: function () {
         a._trigger("authenticationFailed")
       },
-      onError: function(b) {
+      onError: function (b) {
         a._trigger("error", 0, b)
       },
-      onProtocolError: function() {
+      onProtocolError: function () {
         a._trigger("protocolError")
       },
-      onNewDesktopSize: function(b, c) {
+      onNewDesktopSize: function (b, c) {
         a._guestWidth = b, a._guestHeight = c;
         let d: any = {
-            width: b,
-            height: c
-          },
+          width: b,
+          height: c
+        },
           e = {
             width: b / a._pixelRatio,
             height: c / a._pixelRatio
           };
         a._canvas.attr(d)
           .css(e), d.y = c, a._backCanvas.attr(d)
-          .css(e), a._blitTempCanvas.attr(d)
-          .css(e), a._video && a._video.attr(d)
-          .css(e), a._trigger("resolutionchanged", null, d), a.rescaleOrResize(!1)
+            .css(e), a._blitTempCanvas.attr(d)
+              .css(e), a._video && a._video.attr(d)
+                .css(e), a._trigger("resolutionchanged", null, d), a.rescaleOrResize(!1)
       },
-      onEncodingChanged: function(b) {
+      onEncodingChanged: function (b) {
         b === "TightPNG" && !a.isCanvasActive ? (WMKS.LOGGER.info("Activate canvas element since we use TightPNG encoding."), a.isCanvasActive = !0, a._video && a._video.hide(), a._canvas.show()) : b === "MP4" && a.isCanvasActive ? (WMKS.LOGGER.info("Activate video element since we use MP4 encoding."), a._video ? (a.isCanvasActive = !1, a._canvas.hide(), a._video.show()) : WMKS.LOGGER.error("Video element doesn't exist.")) : b === "RawH264" && a.isCanvasActive && WMKS.LOGGER.info("Activate video element since we use raw H264 encoding.")
       },
-      onKeyboardLEDsChanged: function(b) {
+      onKeyboardLEDsChanged: function (b) {
         a._trigger("keyboardLEDsChanged", 0, b)
       },
-      onCursorStateChanged: function(b) {
+      onCursorStateChanged: function (b) {
         a._touchHandler && a._touchHandler.setCursorVisibility(b)
       },
-      onHeartbeat: function(b) {
+      onHeartbeat: function (b) {
         a._trigger("heartbeat", 0, b)
       },
-      onUpdateCopyPasteUI: function(b, c) {
+      onUpdateCopyPasteUI: function (b, c) {
         let d = {
           noCopyUI: b,
           noPasteUI: c
         };
         a._trigger("updateCopyPasteUI", 0, d)
       },
-      onCopy: function(b) {
+      onCopy: function (b) {
         return typeof b != "string" ? (WMKS.LOGGER.debug("data format is not string, ignore."), !1) : (a._trigger("copy", 0, b), !0)
       },
-      onSetReconnectToken: function(b) {
+      onSetReconnectToken: function (b) {
         a._trigger("reconnecttoken", 0, b)
       },
-      onAudio: function(b) {
+      onAudio: function (b) {
         a._trigger("audio", 0, [b])
       },
-      onAudioMixer: function(b) {
+      onAudioMixer: function (b) {
         a._trigger("audiomixer", 0, b)
       }
     }), this._keyboardManager = new WMKS.KeyboardManager({
@@ -12464,14 +12467,14 @@ export function WmksLib($) {
       widgetProto: this,
       canvas: this._canvas,
       keyboardManager: this._keyboardManager,
-      onToggle: function(b) {
+      onToggle: function (b) {
         a._trigger("toggle", 0, b)
       }
     }), this._relativeMouseHandler = new WMKS.RelativeMouseHandler({
       widgetProto: this,
       canvas: this._canvas,
       keyboardManager: this._keyboardManager,
-      onToggle: function(b) {
+      onToggle: function (b) {
         a._trigger("toggle", 0, b), a._setOption("sendRelativeMouseEvent", b[1]), a._relativeMouseHandler.setCursorVisibility(b[1])
       }
     }), this._updatePixelRatio(), this.updateFitGuestSize(), this._relativeMouseHandler.initializeRelativeMouseFeature(), this._updateMobileFeature(this.options.allowMobileKeyboardInput, WMKS.CONST.TOUCH.FEATURE.SoftKeyboard), this._updateMobileFeature(this.options.allowMobileTrackpad, WMKS.CONST.TOUCH.FEATURE.Trackpad), this._updateMobileFeature(this.options.allowMobileExtendedKeypad, WMKS.CONST.TOUCH.FEATURE.ExtendedKeypad)
@@ -12480,157 +12483,157 @@ export function WmksLib($) {
   /**
    * The base controller of popup dialog.
    */
-  (function() {
-      'use strict';
+  (function () {
+    'use strict';
 
-      WMKS.dialogManager = function() {
-        this.dialog = null;
-        this.visible = false;
-        this.lastToggleTime = 0;
-        this.options = {
-          name: 'DIALOG_MGR',     // Should be inherited.
-          toggleCallback: function(name, toggleState) {},
-          /*
-           * The minimum wait time before toggle can repeat. This is useful to
-           * ensure we do not toggle twice due to our usage of the close event.
-           */
-          minToggleTime: 50
-        };
+    WMKS.dialogManager = function () {
+      this.dialog = null;
+      this.visible = false;
+      this.lastToggleTime = 0;
+      this.options = {
+        name: 'DIALOG_MGR',     // Should be inherited.
+        toggleCallback: function (name, toggleState) { },
+        /*
+         * The minimum wait time before toggle can repeat. This is useful to
+         * ensure we do not toggle twice due to our usage of the close event.
+         */
+        minToggleTime: 50
       };
+    };
 
-      // Set value of the specified option.
-      WMKS.dialogManager.prototype.setOption = function(key, value) {
-        this.options[key] = value;
+    // Set value of the specified option.
+    WMKS.dialogManager.prototype.setOption = function (key, value) {
+      this.options[key] = value;
 
-        return this;
-      };
+      return this;
+    };
 
-      // Set values of a set of options.
-      WMKS.dialogManager.prototype.setOptions = function(options) {
-        let key;
+    // Set values of a set of options.
+    WMKS.dialogManager.prototype.setOptions = function (options) {
+      let key;
 
-        for (key in options) {
-          this.setOption(key, options[key]);
-        }
+      for (key in options) {
+        this.setOption(key, options[key]);
+      }
 
-        return this;
-      };
+      return this;
+    };
 
-      // Create the dialog and initialize it.
-      WMKS.dialogManager.prototype.initialize = function(options) {
-        this.options = $.extend({},
-          this.options,
-          options);
+    // Create the dialog and initialize it.
+    WMKS.dialogManager.prototype.initialize = function (options) {
+      this.options = $.extend({},
+        this.options,
+        options);
 
-        this.dialog = this.create();
-        this.init();
-      };
+      this.dialog = this.create();
+      this.init();
+    };
 
-      // Remove the dialog functionality completely.
-      WMKS.dialogManager.prototype.destroy = function() {
-        if (!!this.dialog) {
-          this.disconnect();
-          this.remove();
-        }
-      };
+    // Remove the dialog functionality completely.
+    WMKS.dialogManager.prototype.destroy = function () {
+      if (!!this.dialog) {
+        this.disconnect();
+        this.remove();
+      }
+    };
 
-      // Construct the dialog.
-      WMKS.dialogManager.prototype.create = function() {
-        // For subclass to override.
-        return null;
-      };
+    // Construct the dialog.
+    WMKS.dialogManager.prototype.create = function () {
+      // For subclass to override.
+      return null;
+    };
 
-      // Initialize the dialog, e.g. register event handlers.
-      WMKS.dialogManager.prototype.init = function() {
-        // For subclass to override.
-      };
+    // Initialize the dialog, e.g. register event handlers.
+    WMKS.dialogManager.prototype.init = function () {
+      // For subclass to override.
+    };
 
-      // Cleanup data and events.
-      WMKS.dialogManager.prototype.disconnect = function() {
-        // For subclass to override.
-      };
+    // Cleanup data and events.
+    WMKS.dialogManager.prototype.disconnect = function () {
+      // For subclass to override.
+    };
 
-      // Destroy the dialog.
-      WMKS.dialogManager.prototype.remove = function() {
-        let dialog = this.dialog;
+    // Destroy the dialog.
+    WMKS.dialogManager.prototype.remove = function () {
+      let dialog = this.dialog;
 
-        if (!!dialog) {
-          // Destroy the dialog and remove it from DOM.
-          dialog
-            .dialog('destroy')
-            .remove();
-        }
-      };
+      if (!!dialog) {
+        // Destroy the dialog and remove it from DOM.
+        dialog
+          .dialog('destroy')
+          .remove();
+      }
+    };
 
-      // Show / hide the dialog. If the options comes with a launcher element
-      // then upon open / close, send an event to the launcher element.
-      WMKS.dialogManager.prototype.toggle = function(options) {
-        let dialog = this.dialog,
-          show = !this.visible,
-          isOpen;
+    // Show / hide the dialog. If the options comes with a launcher element
+    // then upon open / close, send an event to the launcher element.
+    WMKS.dialogManager.prototype.toggle = function (options) {
+      let dialog = this.dialog,
+        show = !this.visible,
+        isOpen;
 
-        if (!dialog) {
-          return;
-        }
+      if (!dialog) {
+        return;
+      }
 
-        if (!!options) {
-          this.setOptions(options);
-        }
+      if (!!options) {
+        this.setOptions(options);
+      }
 
-        isOpen = dialog.dialog('isOpen');
-        if (show === isOpen) {
-          return;
-        }
+      isOpen = dialog.dialog('isOpen');
+      if (show === isOpen) {
+        return;
+      }
 
-        if ($.now() - this.lastToggleTime < this.options.minToggleTime) {
-          // WMKS.LOGGER.debug('Ignore toggle time.');
-          return;
-        }
+      if ($.now() - this.lastToggleTime < this.options.minToggleTime) {
+        // WMKS.LOGGER.debug('Ignore toggle time.');
+        return;
+      }
 
-        if (isOpen) {
-          // Hide dialog.
-          this.close();
-        } else {
-          // Show dialog.
-          this.open();
-        }
-      };
-
-
-      // Helper function to maintain the state of the widget and last toggle
-      // time. If the toggleCallback option is set, we invoke a callback for the
-      // state change (dialog state: open / close)
-      WMKS.dialogManager.prototype.sendUpdatedState = function(state) {
-        this.visible = state;
-        this.lastToggleTime = $.now();
-
-        // Triggers the callback event to toggle the selection.
-        if ($.isFunction(this.options.toggleCallback)) {
-          this.options.toggleCallback.call(this, [this.options.name, state]);
-        }
-      };
+      if (isOpen) {
+        // Hide dialog.
+        this.close();
+      } else {
+        // Show dialog.
+        this.open();
+      }
+    };
 
 
-      // Show the dialog. Send update state.
-      WMKS.dialogManager.prototype.open = function() {
-        if (!!this.dialog) {
-          this.visible = !this.visible;
-          this.dialog.dialog('open');
-          this.sendUpdatedState(true);
-        }
-      };
+    // Helper function to maintain the state of the widget and last toggle
+    // time. If the toggleCallback option is set, we invoke a callback for the
+    // state change (dialog state: open / close)
+    WMKS.dialogManager.prototype.sendUpdatedState = function (state) {
+      this.visible = state;
+      this.lastToggleTime = $.now();
+
+      // Triggers the callback event to toggle the selection.
+      if ($.isFunction(this.options.toggleCallback)) {
+        this.options.toggleCallback.call(this, [this.options.name, state]);
+      }
+    };
 
 
-      // Hide the dialog. Send update state.
-      WMKS.dialogManager.prototype.close = function() {
-        if (!!this.dialog) {
-          this.visible = !this.visible;
-          this.dialog.dialog('close');
-          this.sendUpdatedState(false);
-        }
-      };
+    // Show the dialog. Send update state.
+    WMKS.dialogManager.prototype.open = function () {
+      if (!!this.dialog) {
+        this.visible = !this.visible;
+        this.dialog.dialog('open');
+        this.sendUpdatedState(true);
+      }
+    };
 
-    }());
+
+    // Hide the dialog. Send update state.
+    WMKS.dialogManager.prototype.close = function () {
+      if (!!this.dialog) {
+        this.visible = !this.visible;
+        this.dialog.dialog('close');
+        this.sendUpdatedState(false);
+      }
+    };
+
+  }());
 
   /**
    * The controller of extended keypad widget. This widget provides special
@@ -12639,11 +12642,11 @@ export function WmksLib($) {
    * Some of these keys include: Ctrl, Shift, Alt, Arrow keys, Page navigation
    * Win, function keys, etc.
    */
-  (function() {
+  (function () {
     'use strict';
 
     // Constructor of this class.
-    WMKS.extendedKeypad = function(params) {
+    WMKS.extendedKeypad = function (params) {
       if (!params || !params.widget || !params.keyboardManager) {
         return null;
       }
@@ -12670,7 +12673,7 @@ export function WmksLib($) {
 
     // This function creates the control pane dialog with the modifier
     // and extended keys.
-    WMKS.extendedKeypad.prototype.create = function() {
+    WMKS.extendedKeypad.prototype.create = function () {
       let self = this,
         ctrlPaneHolder = $('<div id="ctrlPanePopup"></div>');
       // Load the control pane popup with control icons and their key events.
@@ -12687,10 +12690,10 @@ export function WmksLib($) {
         autoOpen: false,
         closeOnEscape: true,
         resizable: false,
-        position: {my: 'center', at: 'center', of: this._parentElement},
+        position: { my: 'center', at: 'center', of: this._parentElement },
         zIndex: 1000,
         dialogClass: 'ctrl-pane-wrapper',
-        close: function(e) {
+        close: function (e) {
           /*
            * Clear all modifiers and the UI state so keys don't
            * stay 'down' when the ctrl pane is dismissed. PR: 983693
@@ -12705,7 +12708,7 @@ export function WmksLib($) {
           self.sendUpdatedState(false);
           return true;
         },
-        dragStop: function(e) {
+        dragStop: function (e) {
           self.positionFunctionKeys();
         }
       });
@@ -12715,10 +12718,10 @@ export function WmksLib($) {
 
     // This function initializes the control pane dialog with the necessary
     // event listeners.
-    WMKS.extendedKeypad.prototype.init = function() {
+    WMKS.extendedKeypad.prototype.init = function () {
       let self = this,
         ctrlPaneHolder = this.dialog,
-        keyInputHandler = function(e) {
+        keyInputHandler = function (e) {
           let key = parseInt($(this).attr('abkeycode'), 10);
           self._kbManager.handleSoftKb(key, false);
           return false;
@@ -12726,7 +12729,7 @@ export function WmksLib($) {
 
 
       // Initialize modifier key functionality.
-      ctrlPaneHolder.find('.ab-modifier-key').on('touchstart', function(e) {
+      ctrlPaneHolder.find('.ab-modifier-key').on('touchstart', function (e) {
         // compute if key is pressed now.
         let isDown = $(this).hasClass('ab-modifier-key-down');
         let key = parseInt($(this).attr('abkeycode'), 10);
@@ -12744,7 +12747,7 @@ export function WmksLib($) {
       });
 
       // Toggle function keys also toggles the key highlighting.
-      ctrlPaneHolder.find('#fnMasterKey').off('touchstart').on('touchstart', function(e) {
+      ctrlPaneHolder.find('#fnMasterKey').off('touchstart').on('touchstart', function (e) {
         self.toggleFunctionKeys();
         return false;
       });
@@ -12754,7 +12757,7 @@ export function WmksLib($) {
         .on('touchstart', keyInputHandler);
 
       // Provide a flip effect to the ctrl pane to show more keys.
-      ctrlPaneHolder.find('.ab-flip').off('touchstart').on('touchstart', function() {
+      ctrlPaneHolder.find('.ab-flip').off('touchstart').on('touchstart', function () {
         $(this).parents('.flip-container').toggleClass('perform-flip');
         // Hide the keypad if its open.
         self.toggleFunctionKeys(false);
@@ -12773,14 +12776,14 @@ export function WmksLib($) {
 
       // Handle orientation changes for ctrl pane & fnKeys.
       ctrlPaneHolder.parent().off('orientationchange.ctrlpane')
-        .on('orientationchange.ctrlpane', function() {
+        .on('orientationchange.ctrlpane', function () {
           self._widget.requestElementReposition($(this));
           self.positionFunctionKeys();
         });
     };
 
     // Cleanup data and events for control pane dialog.
-    WMKS.dialogManager.prototype.disconnect = function() {
+    WMKS.dialogManager.prototype.disconnect = function () {
       let ctrlPaneHolder = this.dialog;
 
       // Turn off all events.
@@ -12795,7 +12798,7 @@ export function WmksLib($) {
     };
 
     // Function to get the extended control keys layout.
-    WMKS.extendedKeypad.prototype.getControlPaneHtml = function() {
+    WMKS.extendedKeypad.prototype.getControlPaneHtml = function () {
       return '<div class="ctrl-pane flip-container">\
            <div class="flipper">\
               <div class="back">\
@@ -12840,8 +12843,8 @@ export function WmksLib($) {
     };
 
     // Function to get the extended functional keys layout.
-    WMKS.extendedKeypad.prototype.getFunctionKeyHtml = function() {
-      return'<div class="fnKey-pane-wrapper hide" id="fnKeyPad">\
+    WMKS.extendedKeypad.prototype.getFunctionKeyHtml = function () {
+      return '<div class="fnKey-pane-wrapper hide" id="fnKeyPad">\
             <div class="ctrl-pane">\
                <div class="key-group up-position">\
                  <div class="border-key-top-left">\
@@ -12877,7 +12880,7 @@ export function WmksLib($) {
     // process them.Must be called after onDocumentReady. We go through all the objects in
     // the DOM with the keyboard icon classes, and bind them to listeners which
     // process them.
-    WMKS.extendedKeypad.prototype.toggleCtrlPane = function() {
+    WMKS.extendedKeypad.prototype.toggleCtrlPane = function () {
       let ctrlPane = this.dialog;
       // Toggle ctrlPage widget.
       if (ctrlPane.dialog('isOpen')) {
@@ -12891,7 +12894,7 @@ export function WmksLib($) {
     // function keys to align with the ctrlPane. It also manages the
     // highlighting state for the function key master.
     // show - true indicates display function keys, false indicates otherwise.
-    WMKS.extendedKeypad.prototype.toggleFunctionKeys = function(show) {
+    WMKS.extendedKeypad.prototype.toggleFunctionKeys = function (show) {
       let fnKeyPad = $('#fnKeyPad');
       let showFunctionKeys = (show || (typeof show === 'undefined' && !fnKeyPad.is(':visible')));
 
@@ -12907,7 +12910,7 @@ export function WmksLib($) {
 
     // Position the function keys div relative to the ctrl pane. This function
     // is invoked upon orientation change or when the widget is shows.
-    WMKS.extendedKeypad.prototype.positionFunctionKeys = function() {
+    WMKS.extendedKeypad.prototype.positionFunctionKeys = function () {
       let fnKeys = $('#fnKeyPad');
       let crtlPaneWidget = $('#ctrlPaneWidget');
       // Place the function key if it's now visible
@@ -12918,14 +12921,14 @@ export function WmksLib($) {
          * If not enough room, flip to the other side.
          */
         fnKeys.position({
-          my:        'right bottom',
-          at:        'right top',
-          of:        crtlPaneWidget,
+          my: 'right bottom',
+          at: 'right top',
+          of: crtlPaneWidget,
           collision: 'flip'
         });
 
         // Adjust the inner border div size so it won't overlap with the outer border
-        $('#fnKeyInnerBorder').height(fnKeys.height()-2).width(fnKeys.width()-2);
+        $('#fnKeyInnerBorder').height(fnKeys.height() - 2).width(fnKeys.width() - 2);
 
         // Check if the function key has been flipped. If so, use the down-style
         let fnKeyBottom = fnKeys.offset().top + fnKeys.height();
@@ -12935,11 +12938,11 @@ export function WmksLib($) {
         // Move the function key above the ctrl key pane when shown below, and under if shown above
         let targetZOrder;
         if (isAbove) {
-          targetZOrder =  parseInt(crtlPaneWidget.css('z-index'), 10) - 1;
+          targetZOrder = parseInt(crtlPaneWidget.css('z-index'), 10) - 1;
           // Use different color for the inner border depending on the position
           $('#fnKeyInnerBorder').css('border-color', '#d5d5d5');
         } else {
-          targetZOrder =  parseInt($('#ctrlPaneWidget').css('z-index'), 10) + 1;
+          targetZOrder = parseInt($('#ctrlPaneWidget').css('z-index'), 10) + 1;
           $('#fnKeyInnerBorder').css('border-color', '#aaa');
         }
 
@@ -12949,7 +12952,7 @@ export function WmksLib($) {
     };
 
     // Helper function to adjust the functional key pad CSS based on the position
-    WMKS.extendedKeypad.prototype.adjustFunctionKeyStyle = function(isAbove) {
+    WMKS.extendedKeypad.prototype.adjustFunctionKeyStyle = function (isAbove) {
       let fnKeys = $('#fnKeyPad');
       let keyGroup = fnKeys.find('.key-group');
       if (isAbove) {
@@ -12978,21 +12981,21 @@ export function WmksLib($) {
   /**
    * The controller of trackpad widget.
    */
-  (function() {
+  (function () {
     'use strict';
 
     // Trackpad related constants.
     WMKS.CONST.TRACKPAD = {
       STATE: {
-        idle:         0,
-        tap:          1,
-        tap_2finger:  2,
-        drag:         3,
-        scroll:       4
+        idle: 0,
+        tap: 1,
+        tap_2finger: 2,
+        drag: 3,
+        scroll: 4
       }
     };
 
-    WMKS.trackpadManager = function(widget, canvas) {
+    WMKS.trackpadManager = function (widget, canvas) {
 
       // Call constructor so dialogManager's params are included here.
       WMKS.dialogManager.call(this);
@@ -13001,7 +13004,7 @@ export function WmksLib($) {
       this._canvas = canvas;
 
       // Initialize cursor state.
-      this._cursorPosGuest = {x : 0, y : 0};
+      this._cursorPosGuest = { x: 0, y: 0 };
       // Timer
       this._dragTimer = null;
       // Dragging is started by long tap or not.
@@ -13015,17 +13018,17 @@ export function WmksLib($) {
           name: 'TRACKPAD',
           speedControlMinMovePx: 5,
           // Speed control for trackpad and two finger scroll
-          accelerator:           10,
-          minSpeed:              1,
-          maxSpeed:              10
+          accelerator: 10,
+          minSpeed: 1,
+          maxSpeed: 10
         });
       WMKS.LOGGER.warn('trackpad : ' + this.options.name);
     };
 
-    WMKS.trackpadManager.prototype =  new WMKS.dialogManager();
+    WMKS.trackpadManager.prototype = new WMKS.dialogManager();
 
     //Function to get the trackpad html layout.
-    WMKS.trackpadManager.prototype.getTrackpadHtml = function() {
+    WMKS.trackpadManager.prototype.getTrackpadHtml = function () {
       return '<div id="trackpad" class="trackpad-container">\
                    <div class="left-border"></div>\
                    <div id="trackpadSurface" class="touch-area"></div>\
@@ -13042,7 +13045,7 @@ export function WmksLib($) {
 
     // This function initializes the trackpad dialog, toggle highlighting on close
     // handler.
-    WMKS.trackpadManager.prototype.create = function() {
+    WMKS.trackpadManager.prototype.create = function () {
       let dialog;
       let self = this;
 
@@ -13057,14 +13060,14 @@ export function WmksLib($) {
         autoOpen: false,
         closeOnEscape: true,
         resizable: false,
-        position: {my: 'center', at: 'center', of: this._canvas},
+        position: { my: 'center', at: 'center', of: this._canvas },
         zIndex: 1000,
         draggable: true,
         dialogClass: 'trackpad-wrapper',
-        close: function(e) {
+        close: function (e) {
           self.sendUpdatedState(false);
         },
-        create: function(e) {
+        create: function (e) {
           self.layout($(this).parent());
         }
       });
@@ -13073,7 +13076,7 @@ export function WmksLib($) {
     };
 
     // This function initializes the event handlers for the trackpad.
-    WMKS.trackpadManager.prototype.init = function() {
+    WMKS.trackpadManager.prototype.init = function () {
       let dialog = this.dialog;
       let self = this;
       let trackpad;
@@ -13091,37 +13094,37 @@ export function WmksLib($) {
       // Initialize event handlers for the trackpad.
       trackpad = dialog
         .find('#trackpadSurface')
-        .on('touchstart', function(e) {
+        .on('touchstart', function (e) {
           return self.trackpadTouchStart(e.originalEvent);
         })
-        .on('touchmove', function(e) {
+        .on('touchmove', function (e) {
           return self.trackpadTouchMove(e.originalEvent);
         })
-        .on('touchend', function(e) {
+        .on('touchend', function (e) {
           return self.trackpadTouchEnd(e.originalEvent);
         });
 
       left = dialog
         .find('#trackpadLeft')
-        .on('touchstart', function(e) {
+        .on('touchstart', function (e) {
           return self.trackpadClickStart(e, WMKS.CONST.CLICK.left);
         })
-        .on('touchend', function(e) {
+        .on('touchend', function (e) {
           return self.trackpadClickEnd(e, WMKS.CONST.CLICK.left);
         });
 
       right = dialog
         .find('#trackpadRight')
-        .on('touchstart', function(e) {
+        .on('touchstart', function (e) {
           return self.trackpadClickStart(e, WMKS.CONST.CLICK.right);
         })
-        .on('touchend', function(e) {
+        .on('touchend', function (e) {
           return self.trackpadClickEnd(e, WMKS.CONST.CLICK.right);
         });
     };
 
     // This function unbinds the event handlers for the trackpad.
-    WMKS.trackpadManager.prototype.disconnect = function() {
+    WMKS.trackpadManager.prototype.disconnect = function () {
       let dialog = this.dialog;
       let trackpad;
       let left;
@@ -13150,7 +13153,7 @@ export function WmksLib($) {
     };
 
     // Reposition the dialog in order to center it to the canvas.
-    WMKS.trackpadManager.prototype.layout = function(dialog) {
+    WMKS.trackpadManager.prototype.layout = function (dialog) {
       let canvas = this._canvas;
       let dialogParent;
       let canvasParent;
@@ -13172,7 +13175,7 @@ export function WmksLib($) {
 
     // Fires when either one of the virtual trackpad's buttons are clicked. Sends
     // a mousedown operation and adds the button highlight.
-    WMKS.trackpadManager.prototype.trackpadClickStart = function(e, buttonClick) {
+    WMKS.trackpadManager.prototype.trackpadClickStart = function (e, buttonClick) {
       if (buttonClick !== WMKS.CONST.CLICK.left &&
         buttonClick !== WMKS.CONST.CLICK.right) {
         WMKS.LOGGER.debug('assert: unknown button ' + buttonClick);
@@ -13189,7 +13192,7 @@ export function WmksLib($) {
 
     // Fires when either one of the virtual trackpad's buttons are released.
     // Sends a mouseup operation and removes the highlight on the button.
-    WMKS.trackpadManager.prototype.trackpadClickEnd = function(e, buttonClick) {
+    WMKS.trackpadManager.prototype.trackpadClickEnd = function (e, buttonClick) {
       if (buttonClick !== WMKS.CONST.CLICK.left &&
         buttonClick !== WMKS.CONST.CLICK.right) {
         WMKS.LOGGER.debug('assert: unknown button ' + buttonClick);
@@ -13206,7 +13209,7 @@ export function WmksLib($) {
 
     // Based on a current point and point history, gets the amount of distance
     // the mouse should move based on this data.
-    WMKS.trackpadManager.prototype.computeMovingDistance = function(x, y) {
+    WMKS.trackpadManager.prototype.computeMovingDistance = function (x, y) {
       let dx, dy, dist, speed;
 
       dx = this.getTrackpadSpeed(x,
@@ -13233,7 +13236,7 @@ export function WmksLib($) {
     // Performs a linear least squares operation to get the slope of the line
     // that best fits all four points. This slope is the current speed of the
     // trackpad, assuming equal time between samples.
-    WMKS.trackpadManager.prototype.getTrackpadSpeed = function(x0, x1, x2, x3) {
+    WMKS.trackpadManager.prototype.getTrackpadSpeed = function (x0, x1, x2, x3) {
       return x0 * 0.3 + x1 * 0.1 - x2 * 0.1 - x3 * 0.3;
     };
 
@@ -13241,7 +13244,7 @@ export function WmksLib($) {
     // number of touch fingers, assign the initial tap state. Subsequently
     // ontouchmove event we promote tap --> drag, tap_2finger --> scroll.
     // If the state was tap / tap_2finger, then its the default click event.
-    WMKS.trackpadManager.prototype.trackpadTouchStart = function(e) {
+    WMKS.trackpadManager.prototype.trackpadTouchStart = function (e) {
       let self = this;
 
       if (e.targetTouches.length > 2) {
@@ -13265,7 +13268,7 @@ export function WmksLib($) {
           this._dragTimer = null;
         }
 
-        this._dragTimer = setTimeout(function() {
+        this._dragTimer = setTimeout(function () {
           self._dragTimer = null;
 
           // Send the left mousedown at the location.
@@ -13284,7 +13287,7 @@ export function WmksLib($) {
     // However, if the touch moves outside the area while dragging, then set the
     // state back to the tap and clear up history in case user comes back into
     // the hot region.
-    WMKS.trackpadManager.prototype.trackpadTouchMove = function(e) {
+    WMKS.trackpadManager.prototype.trackpadTouchMove = function (e) {
       let pX;
       let pY;
       let newLocation;
@@ -13332,7 +13335,7 @@ export function WmksLib($) {
         this.history.shift();
 
         // Push a new history entry
-        this.history.push({x: pX, y: pY });
+        this.history.push({ x: pX, y: pY });
       } else if (this.state === WMKS.CONST.TRACKPAD.STATE.scroll) {
         // Sends the mouse scroll message.
         this.sendScrollMessageFromTrackpad(e.targetTouches[0]);
@@ -13342,12 +13345,12 @@ export function WmksLib($) {
       if (this.state === WMKS.CONST.TRACKPAD.STATE.tap) {
         this.state = WMKS.CONST.TRACKPAD.STATE.drag;
         // Make up history based on the current point if there isn't any yet.
-        this.history.push({x: pX, y: pY}, {x: pX, y: pY}, {x: pX, y: pY});
+        this.history.push({ x: pX, y: pY }, { x: pX, y: pY }, { x: pX, y: pY });
       } else if (this.state === WMKS.CONST.TRACKPAD.STATE.tap_2finger
         && e.targetTouches.length === 2) {
         this.state = WMKS.CONST.TRACKPAD.STATE.scroll;
         // Create a history entry based on the current point if there isn't any yet.
-        this.history[0] = {x: pX, y: pY};
+        this.history[0] = { x: pX, y: pY };
       }
       return false;
     };
@@ -13355,7 +13358,7 @@ export function WmksLib($) {
     // This function takes the new location and computes the destination mouse
     // cursor location. The computation is based on the acceleration to be used,
     // making sure the new location is within the screen area.
-    WMKS.trackpadManager.prototype.computeNewCursorLocation = function(pX, pY) {
+    WMKS.trackpadManager.prototype.computeNewCursorLocation = function (pX, pY) {
       let dist;
       let point = this.getMousePosition();
 
@@ -13382,7 +13385,7 @@ export function WmksLib($) {
     // Fires when a finger lifts off the trackpad's touch area. If the touch
     // action is currently marked as a tap, sends off the mousedown and mouseup
     // operations. Otherwise, simply resets the touch state machine.
-    WMKS.trackpadManager.prototype.trackpadTouchEnd = function(e) {
+    WMKS.trackpadManager.prototype.trackpadTouchEnd = function (e) {
       let pos;
 
       // Reset the drag timer if there is one.
@@ -13414,7 +13417,7 @@ export function WmksLib($) {
     };
 
     //Resets the virtual trackpad's state machine.
-    WMKS.trackpadManager.prototype.resetTrackpadState = function() {
+    WMKS.trackpadManager.prototype.resetTrackpadState = function () {
       this.state = WMKS.CONST.TRACKPAD.STATE.idle;
       this.history.length = 0;
       this._dragStartedByLongTap = false
@@ -13427,7 +13430,7 @@ export function WmksLib($) {
     // Check if the scroll distance is above the minimum threshold, if so, send
     // the scroll. And upon sending it, update the history with the last scroll
     // sent location.
-    WMKS.trackpadManager.prototype.sendScrollMessageFromTrackpad = function(curLocation) {
+    WMKS.trackpadManager.prototype.sendScrollMessageFromTrackpad = function (curLocation) {
       // This is a two finger scroll, are we going up or down?
       let dx = 0,
         dy = 0,
@@ -13460,7 +13463,7 @@ export function WmksLib($) {
     };
 
     // Get the current position of the mouse cursor.
-    WMKS.trackpadManager.prototype.getMousePosition = function() {
+    WMKS.trackpadManager.prototype.getMousePosition = function () {
       let pos = this._widget._mousePosGuest;
 
       if (pos.x === 0 && pos.y === 0) {
@@ -13483,7 +13486,7 @@ export function WmksLib($) {
   /**
    * A useful class for reading and writing binary data to and from a Uint8Array
    */
-  WMKS.Packet = function(buffer, length, byteOrder) {
+  WMKS.Packet = function (buffer, length, byteOrder) {
     /**
      * The length of the packet.
      * @type {Number}
@@ -13538,12 +13541,12 @@ export function WmksLib($) {
     NETWORK_ORDER: 2
   };
 
-  WMKS.Packet.createNewPacket = function(size, byteOrder) {
+  WMKS.Packet.createNewPacket = function (size, byteOrder) {
     size = size || 512;
     return new WMKS.Packet(new Uint8Array(size), 0, byteOrder);
   };
 
-  WMKS.Packet.createFromBuffer = function(buffer, byteOrder) {
+  WMKS.Packet.createFromBuffer = function (buffer, byteOrder) {
     if (buffer instanceof ArrayBuffer) {
       buffer = new Uint8Array(buffer);
     } else if (!(buffer instanceof Uint8Array)) {
@@ -13553,77 +13556,77 @@ export function WmksLib($) {
     return new WMKS.Packet(buffer, buffer.length, byteOrder);
   };
 
-  WMKS.Packet.createNewPacketBE = function(size) {
+  WMKS.Packet.createNewPacketBE = function (size) {
     return WMKS.Packet.createNewPacket(size, WMKS.Packet.BYTE_ORDER.BIG_ENDIAN);
   };
 
-  WMKS.Packet.createNewPacketLE = function(size) {
+  WMKS.Packet.createNewPacketLE = function (size) {
     return WMKS.Packet.createNewPacket(size, WMKS.Packet.BYTE_ORDER.LITTLE_ENDIAN);
   };
 
-  WMKS.Packet.createFromBufferBE = function(buffer) {
+  WMKS.Packet.createFromBufferBE = function (buffer) {
     return WMKS.Packet.createFromBuffer(buffer, WMKS.Packet.BYTE_ORDER.BIG_ENDIAN);
 
   };
 
-  WMKS.Packet.createFromBufferLE = function(buffer) {
+  WMKS.Packet.createFromBufferLE = function (buffer) {
     return WMKS.Packet.createFromBuffer(buffer, WMKS.Packet.BYTE_ORDER.LITTLE_ENDIAN);
   };
 
-  WMKS.Packet.prototype.reset = function() {
+  WMKS.Packet.prototype.reset = function () {
     this.length = 0;
     this._readPosition = 0;
   };
 
-  WMKS.Packet.prototype.getData = function() {
+  WMKS.Packet.prototype.getData = function () {
     return this._buffer.subarray(0, this.length);
   };
 
-  WMKS.Packet.prototype.bytesRemaining = function() {
+  WMKS.Packet.prototype.bytesRemaining = function () {
     return this.length - this._readPosition;
   };
 
-  WMKS.Packet.prototype.getDataAsArrayBuffer = function() {
+  WMKS.Packet.prototype.getDataAsArrayBuffer = function () {
     return this._buffer.buffer.slice(this._buffer.byteOffset, this._buffer.byteOffset + this.length);
   };
 
-  WMKS.Packet.prototype.writeUint8 = function(value) {
+  WMKS.Packet.prototype.writeUint8 = function (value) {
     this._ensureWriteableBytes(1);
     this.setUint8(this.length, value);
     this.length += 1;
   };
 
-  WMKS.Packet.prototype.writeUint16 = function(value) {
+  WMKS.Packet.prototype.writeUint16 = function (value) {
     this._ensureWriteableBytes(2);
     this.setUint16(this.length, value);
     this.length += 2;
   };
 
-  WMKS.Packet.prototype.writeUint32 = function(value) {
+  WMKS.Packet.prototype.writeUint32 = function (value) {
     this._ensureWriteableBytes(4);
     this.setUint32(this.length, value);
     this.length += 4;
   };
 
-  WMKS.Packet.prototype.writeInt8 = function(value) {
+  WMKS.Packet.prototype.writeInt8 = function (value) {
     this._ensureWriteableBytes(1);
     this.setInt8(this.length, value);
     this.length += 1;
   };
 
-  WMKS.Packet.prototype.writeInt16 = function(value) {
+  WMKS.Packet.prototype.writeInt16 = function (value) {
     this._ensureWriteableBytes(2);
     this.setInt16(this.length, value);
     this.length += 2;
   };
 
-  WMKS.Packet.prototype.writeInt32 = function(value) {
+  WMKS.Packet.prototype.writeInt32 = function (value) {
     this._ensureWriteableBytes(4);
     this.setInt32(this.length, value);
     this.length += 4;
   };
 
-  WMKS.Packet.prototype.writeStringASCII = function(value) {
+  WMKS.Packet.prototype.writeStringASCII = function (value) {
     let i;
     this._ensureWriteableBytes(value.length);
 
@@ -13632,7 +13635,7 @@ export function WmksLib($) {
     }
   };
 
-  WMKS.Packet.prototype.writeArray = function(value) {
+  WMKS.Packet.prototype.writeArray = function (value) {
     if (value && value.length) {
       this._ensureWriteableBytes(value.length);
       this._buffer.set(value, this.length);
@@ -13640,7 +13643,7 @@ export function WmksLib($) {
     }
   };
 
-  WMKS.Packet.prototype.readUint8 = function() {
+  WMKS.Packet.prototype.readUint8 = function () {
     let value;
 
     if (this._checkReadableBytes(1)) {
@@ -13651,7 +13654,7 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype.readUint16 = function() {
+  WMKS.Packet.prototype.readUint16 = function () {
     let value;
 
     if (this._checkReadableBytes(2)) {
@@ -13662,7 +13665,7 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype.readUint32 = function() {
+  WMKS.Packet.prototype.readUint32 = function () {
     let value;
 
     if (this._checkReadableBytes(4)) {
@@ -13673,7 +13676,7 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype.readInt8 = function() {
+  WMKS.Packet.prototype.readInt8 = function () {
     let value;
 
     if (this._checkReadableBytes(1)) {
@@ -13684,7 +13687,7 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype.readInt16 = function() {
+  WMKS.Packet.prototype.readInt16 = function () {
     let value;
 
     if (this._checkReadableBytes(2)) {
@@ -13695,7 +13698,7 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype.readInt32 = function() {
+  WMKS.Packet.prototype.readInt32 = function () {
     let value;
 
     if (this._checkReadableBytes(4)) {
@@ -13706,7 +13709,7 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype.readArray = function(length) {
+  WMKS.Packet.prototype.readArray = function (length) {
     let value;
 
     if (this._checkReadableBytes(length)) {
@@ -13721,7 +13724,7 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype.readStringASCII = function(length) {
+  WMKS.Packet.prototype.readStringASCII = function (length) {
     let value = this.readArray(length);
 
     if (value) {
@@ -13731,59 +13734,59 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype.setUint8 = function(position, value) {
+  WMKS.Packet.prototype.setUint8 = function (position, value) {
     this._buffer[position] = value & 0xff;
   };
 
-  WMKS.Packet.prototype.setUint16be = function(position, value) {
+  WMKS.Packet.prototype.setUint16be = function (position, value) {
     this._buffer[position + 1] = value & 0xff;
     this._buffer[position + 0] = (value >> 8) & 0xff;
   };
 
-  WMKS.Packet.prototype.setUint32be = function(position, value) {
+  WMKS.Packet.prototype.setUint32be = function (position, value) {
     this._buffer[position + 3] = value & 0xff;
     this._buffer[position + 2] = (value >> 8) & 0xff;
     this._buffer[position + 1] = (value >> 16) & 0xff;
     this._buffer[position + 0] = (value >> 24) & 0xff;
   };
 
-  WMKS.Packet.prototype.setUint16le = function(position, value) {
+  WMKS.Packet.prototype.setUint16le = function (position, value) {
     this._buffer[position + 0] = value & 0xff;
     this._buffer[position + 1] = (value >> 8) & 0xff;
   };
 
-  WMKS.Packet.prototype.setUint32le = function(position, value) {
+  WMKS.Packet.prototype.setUint32le = function (position, value) {
     this._buffer[position + 0] = value & 0xff;
     this._buffer[position + 1] = (value >> 8) & 0xff;
     this._buffer[position + 2] = (value >> 16) & 0xff;
     this._buffer[position + 3] = (value >> 24) & 0xff;
   };
 
-  WMKS.Packet.prototype.setInt8 = function(position, value) {
+  WMKS.Packet.prototype.setInt8 = function (position, value) {
     return this.setUint8(position, value);
   };
 
-  WMKS.Packet.prototype.setInt16be = function(position, value) {
+  WMKS.Packet.prototype.setInt16be = function (position, value) {
     return this.setUint16be(position, value);
   };
 
-  WMKS.Packet.prototype.setInt32be = function(position, value) {
+  WMKS.Packet.prototype.setInt32be = function (position, value) {
     return this.setUint32be(position, value);
   };
 
-  WMKS.Packet.prototype.setInt16le = function(position, value) {
+  WMKS.Packet.prototype.setInt16le = function (position, value) {
     return this.setUint16le(position, value);
   };
 
-  WMKS.Packet.prototype.setInt32le = function(position, value) {
+  WMKS.Packet.prototype.setInt32le = function (position, value) {
     return this.setUint32le(position, value);
   };
 
-  WMKS.Packet.prototype.getArray = function(start, length) {
+  WMKS.Packet.prototype.getArray = function (start, length) {
     return this._buffer.subarray(start, start + length);
   };
 
-  WMKS.Packet.prototype.getInt8 = function(position) {
+  WMKS.Packet.prototype.getInt8 = function (position) {
     let value = this._buffer[position];
 
     if (value & 0x80) {
@@ -13793,9 +13796,9 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype.getInt16be = function(position) {
+  WMKS.Packet.prototype.getInt16be = function (position) {
     let value;
-    value  = this._buffer[position + 1];
+    value = this._buffer[position + 1];
     value |= this._buffer[position + 0] << 8;
 
     if (value & 0x8000) {
@@ -13805,18 +13808,18 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype.getInt32be = function(position) {
+  WMKS.Packet.prototype.getInt32be = function (position) {
     let value;
-    value  = this._buffer[position + 3];
+    value = this._buffer[position + 3];
     value |= this._buffer[position + 2] << 8;
     value |= this._buffer[position + 1] << 16;
     value |= this._buffer[position + 0] << 24;
     return value;
   };
 
-  WMKS.Packet.prototype.getInt16le = function(position) {
+  WMKS.Packet.prototype.getInt16le = function (position) {
     let value;
-    value  = this._buffer[position + 0];
+    value = this._buffer[position + 0];
     value |= this._buffer[position + 1] << 8;
 
     if (value & 0x8000) {
@@ -13826,30 +13829,30 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype.getInt32le = function(position) {
+  WMKS.Packet.prototype.getInt32le = function (position) {
     let value;
-    value  = this._buffer[position + 0];
+    value = this._buffer[position + 0];
     value |= this._buffer[position + 1] << 8;
     value |= this._buffer[position + 2] << 16;
     value |= this._buffer[position + 3] << 24;
     return value;
   };
 
-  WMKS.Packet.prototype.getUint8 = function(position) {
+  WMKS.Packet.prototype.getUint8 = function (position) {
     let value = this._buffer[position];
     return value;
   };
 
-  WMKS.Packet.prototype.getUint16be = function(position) {
+  WMKS.Packet.prototype.getUint16be = function (position) {
     let value;
-    value  = this._buffer[position + 1];
+    value = this._buffer[position + 1];
     value |= this._buffer[position + 0] << 8;
     return value;
   };
 
-  WMKS.Packet.prototype.getUint32be = function(position) {
+  WMKS.Packet.prototype.getUint32be = function (position) {
     let value;
-    value  = this._buffer[position + 3];
+    value = this._buffer[position + 3];
     value |= this._buffer[position + 2] << 8;
     value |= this._buffer[position + 1] << 16;
     value |= this._buffer[position + 0] << 24;
@@ -13861,16 +13864,16 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype.getUint16le = function(position) {
+  WMKS.Packet.prototype.getUint16le = function (position) {
     let value;
-    value  = this._buffer[position + 0];
+    value = this._buffer[position + 0];
     value |= this._buffer[position + 1] << 8;
     return value;
   };
 
-  WMKS.Packet.prototype.getUint32le = function(position) {
+  WMKS.Packet.prototype.getUint32le = function (position) {
     let value;
-    value  = this._buffer[position + 0];
+    value = this._buffer[position + 0];
     value |= this._buffer[position + 1] << 8;
     value |= this._buffer[position + 2] << 16;
     value |= this._buffer[position + 3] << 24;
@@ -13882,7 +13885,7 @@ export function WmksLib($) {
     return value;
   };
 
-  WMKS.Packet.prototype._resizeBuffer = function(size) {
+  WMKS.Packet.prototype._resizeBuffer = function (size) {
     if (size > 0) {
       let buffer = new Uint8Array(size);
       buffer.set(this._buffer);
@@ -13890,7 +13893,7 @@ export function WmksLib($) {
     }
   };
 
-  WMKS.Packet.prototype._ensureWriteableBytes = function(length) {
+  WMKS.Packet.prototype._ensureWriteableBytes = function (length) {
     if (length > 0) {
       let reqLength = this.length + length;
       let newLength = this._buffer.length;
@@ -13905,7 +13908,7 @@ export function WmksLib($) {
     }
   };
 
-  WMKS.Packet.prototype._checkReadableBytes = function(length) {
+  WMKS.Packet.prototype._checkReadableBytes = function (length) {
     return this._readPosition + length <= this.length;
   };
 
@@ -13955,7 +13958,7 @@ export function WmksLib($) {
     OPEN_TIMEOUT: 9
   };
 
-  VVC.prototype.openSession = function(socket) {
+  VVC.prototype.openSession = function (socket) {
     let session;
 
     session = new VVCSession(this);
@@ -13965,7 +13968,7 @@ export function WmksLib($) {
     return session;
   };
 
-  VVC.prototype.closeSession = function(session) {
+  VVC.prototype.closeSession = function (session) {
     let index;
 
     if (!(session instanceof VVCSession)) {
@@ -13994,7 +13997,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVC.prototype.createListener = function(session, name) {
+  VVC.prototype.createListener = function (session, name) {
     let listener;
     let sessionListeners;
     let i;
@@ -14035,7 +14038,7 @@ export function WmksLib($) {
     return listener;
   };
 
-  VVC.prototype.closeListener = function(listener) {
+  VVC.prototype.closeListener = function (listener) {
     let index = this._listeners.indexOf(listener);
 
     if (!(listener instanceof VVCListener)) {
@@ -14065,7 +14068,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVC.prototype._findListenerByName = function(name) {
+  VVC.prototype._findListenerByName = function (name) {
     let listener;
     let i;
 
@@ -14080,7 +14083,7 @@ export function WmksLib($) {
     return null;
   };
 
-  VVC.prototype._findSessionListeners = function(session) {
+  VVC.prototype._findSessionListeners = function (session) {
     let listener;
     let i;
     let sessionListeners = [];
@@ -14099,7 +14102,7 @@ export function WmksLib($) {
   /**
    * Creates a new VVC Error object.
    */
-  let VVCError = function(status, where, msg) {
+  let VVCError = function (status, where, msg) {
     this.status = status;
     this.where = where;
     this.msg = msg;
@@ -14107,11 +14110,11 @@ export function WmksLib($) {
     return this;
   };
 
-  VVC.prototype.getLastError = function() {
+  VVC.prototype.getLastError = function () {
     return this._lastError
   };
 
-  VVC.prototype.setLastError = function(status, where, msg) {
+  VVC.prototype.setLastError = function (status, where, msg) {
     this._lastError = VVCError(status, where, msg);
 
     if (status !== VVC.STATUS.SUCCESS) {
@@ -14122,7 +14125,7 @@ export function WmksLib($) {
   /**
    * Represents a VVC channel which exposes a websocket-like API.
    */
-  let VVCChannel: any = function(session, id, name, priority, flags, timeout) {
+  let VVCChannel: any = function (session, id, name, priority, flags, timeout) {
     this.id = id;
     this.name = name;
     this.priority = priority || 0;
@@ -14150,18 +14153,18 @@ export function WmksLib($) {
     CLOSED: 6
   };
 
-  VVCChannel.prototype.send = function(data) {
+  VVCChannel.prototype.send = function (data) {
     return this._session.send(this, data)
   };
 
-  VVCChannel.prototype.close = function() {
+  VVCChannel.prototype.close = function () {
     return this._session.closeChannel(this)
   };
 
   /**
    * The control channel created and owned by a VVCSession.
    */
-  let VVCControlChannel: any  = function(channel) {
+  let VVCControlChannel: any = function (channel) {
     VVCChannel.call(this, channel, VVC.CONTROL_CHANNEL_ID, VVC.CONTROL_CHANNEL_NAME, 0, 0, 0);
 
     this.state = VVC.CHANNEL_STATE.OPEN;
@@ -14238,7 +14241,7 @@ export function WmksLib($) {
   VVC.CTRL_OP.NAME[VVC.CTRL_OP.RTT] = "VVC.CTRL_OP.RTT";
   VVC.CTRL_OP.NAME[VVC.CTRL_OP.RTT_ACK] = "VVC.CTRL_OP.RTT_ACK";
 
-  VVCControlChannel.prototype.sendInit = function(code) {
+  VVCControlChannel.prototype.sendInit = function (code) {
     let b;
     let c;
     let packet;
@@ -14286,12 +14289,12 @@ export function WmksLib($) {
     return this._sendControlPacket(packet)
   };
 
-  VVCControlChannel.prototype.sendRtt = function() {
+  VVCControlChannel.prototype.sendRtt = function () {
     this._rttSendTimeMS = Date.now();
     return this._sendControlPacket(this._createControlPacket(VVC.CTRL_OP.RTT))
   };
 
-  VVCControlChannel.prototype.sendRecvAck = function(bytes) {
+  VVCControlChannel.prototype.sendRecvAck = function (bytes) {
     let packet;
 
     while (bytes > 0xffff) {
@@ -14308,7 +14311,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCControlChannel.prototype.sendOpenChannel = function(channel, initialData) {
+  VVCControlChannel.prototype.sendOpenChannel = function (channel, initialData) {
     let packet;
     let initialDataLen = 0;
 
@@ -14344,7 +14347,7 @@ export function WmksLib($) {
     return this._sendControlPacket(packet);
   };
 
-  VVCControlChannel.prototype.sendOpenChannelAck = function(channel, status, initialData) {
+  VVCControlChannel.prototype.sendOpenChannelAck = function (channel, status, initialData) {
     let packet = this._createControlPacket(VVC.CTRL_OP.OPEN_CHAN_ACK);
     packet.writeUint32(channel.id);
     packet.writeUint32(status);
@@ -14359,25 +14362,25 @@ export function WmksLib($) {
     return this._sendControlPacket(packet);
   };
 
-  VVCControlChannel.prototype.sendCloseChannel = function(channel, reason) {
+  VVCControlChannel.prototype.sendCloseChannel = function (channel, reason) {
     let packet = this._createControlPacket(VVC.CTRL_OP.CLOSE_CHAN);
     packet.writeUint32(channel.id);
     packet.writeUint32(reason);
     return this._sendControlPacket(packet);
   };
 
-  VVCControlChannel.prototype.sendCloseChannelAck = function(channel, status) {
+  VVCControlChannel.prototype.sendCloseChannelAck = function (channel, status) {
     let packet = this._createControlPacket(VVC.CTRL_OP.CLOSE_CHAN_ACK);
     packet.writeUint32(channel.id);
     packet.writeUint32(status);
     return this._sendControlPacket(packet);
   };
 
-  VVCControlChannel.prototype.onmessage = function(evt) {
+  VVCControlChannel.prototype.onmessage = function (evt) {
     let packet = WMKS.Packet.createFromBuffer(evt.data);
     let opcode = packet.readUint8();
-    let flags  = packet.readUint8();
-    let param  = packet.readUint16();
+    let flags = packet.readUint8();
+    let param = packet.readUint16();
 
     switch (opcode) {
       case VVC.CTRL_OP.INIT:
@@ -14415,7 +14418,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCControlChannel.prototype._onRtt = function(packet) {
+  VVCControlChannel.prototype._onRtt = function (packet) {
     let ack;
 
     if (!this._checkErrorMinimumSize(VVC.CTRL_OP.RTT, packet)) {
@@ -14426,7 +14429,7 @@ export function WmksLib($) {
     return this._sendControlPacket(ack);
   };
 
-  VVCControlChannel.prototype._onRttAck = function(packet) {
+  VVCControlChannel.prototype._onRttAck = function (packet) {
     if (!this._checkErrorMinimumSize(VVC.CTRL_OP.RTT_ACK, packet)) {
       return false;
     }
@@ -14435,7 +14438,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCControlChannel.prototype._onRecvAck = function(packet, bytesReceived) {
+  VVCControlChannel.prototype._onRecvAck = function (packet, bytesReceived) {
     if (!this._checkErrorMinimumSize(VVC.CTRL_OP.RECV_ACK, packet)) {
       return false;
     }
@@ -14443,14 +14446,14 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCControlChannel.prototype._isVersionSupported = function(major, minor) {
+  VVCControlChannel.prototype._isVersionSupported = function (major, minor) {
     if (VVC.MAJOR_VER == major && VVC.MINOR_VER == minor) return !0;
     for (let c = 0; c < VVC.SUPPORTED_VER.length; ++c)
       if (VVC.SUPPORTED_VER[c].MAJOR == major && VVC.SUPPORTED_VER[c].MINOR == minor) return true;
     return false;
   };
 
-  VVCControlChannel.prototype._onInit = function(packet, opcode) {
+  VVCControlChannel.prototype._onInit = function (packet, opcode) {
     let major;
     let minor;
     let caps1;
@@ -14535,7 +14538,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCControlChannel.prototype._onOpenChannel = function(packet) {
+  VVCControlChannel.prototype._onOpenChannel = function (packet) {
     if (!this._checkErrorMinimumSize(VVC.CTRL_OP.OPEN_CHAN, packet)) {
       return false;
     }
@@ -14543,13 +14546,13 @@ export function WmksLib($) {
     let name;
     let initialData;
     let channel;
-    let id             = packet.readUint32();
-    let priority       = packet.readUint32();
-    let flags          = packet.readUint32();
-    let timeout        = packet.readUint32();
-    let reserved       = packet.readUint16();
-    let reserved2      = packet.readUint8();
-    let nameLen        = packet.readUint8();
+    let id = packet.readUint32();
+    let priority = packet.readUint32();
+    let flags = packet.readUint32();
+    let timeout = packet.readUint32();
+    let reserved = packet.readUint16();
+    let reserved2 = packet.readUint8();
+    let nameLen = packet.readUint8();
     let initialDataLen = packet.readUint32();
 
     if (!this._checkErrorMinimumSize(VVC.CTRL_OP.OPEN_CHAN, packet,
@@ -14566,7 +14569,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCControlChannel.prototype._onOpenChannelAck = function(packet) {
+  VVCControlChannel.prototype._onOpenChannelAck = function (packet) {
     let id;
     let status;
     let initialDataLen;
@@ -14594,7 +14597,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCControlChannel.prototype._onCloseChannel = function(packet) {
+  VVCControlChannel.prototype._onCloseChannel = function (packet) {
     let id;
     let reason;
 
@@ -14613,7 +14616,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCControlChannel.prototype._onCloseChannelAck = function(packet) {
+  VVCControlChannel.prototype._onCloseChannelAck = function (packet) {
     let id;
     let status;
 
@@ -14632,7 +14635,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCControlChannel.prototype._checkErrorMinimumSize = function(opcode, packet, extraSize) {
+  VVCControlChannel.prototype._checkErrorMinimumSize = function (opcode, packet, extraSize) {
     let packetSize = packet.length - 4;
     let expectSize = VVC.CTRL_OP.SIZE[opcode];
     extraSize = extraSize || 0;
@@ -14652,7 +14655,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCControlChannel.prototype._checkErrorRemainingSize = function(opcode, packet, c) {
+  VVCControlChannel.prototype._checkErrorRemainingSize = function (opcode, packet, c) {
     let bytesRemaining = packet.bytesRemaining();
 
     if (bytesRemaining < c) {
@@ -14665,7 +14668,7 @@ export function WmksLib($) {
     return true
   };
 
-  VVCControlChannel.prototype._checkErrorSessionState = function(opcode, state) {
+  VVCControlChannel.prototype._checkErrorSessionState = function (opcode, state) {
     let opname = VVC.CTRL_OP.NAME[opcode];
 
     if (this._session.state !== state) {
@@ -14681,8 +14684,8 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCControlChannel.prototype._checkErrorValidChannel = function(opcode, id, state) {
-    let opname  = VVC.CTRL_OP.NAME[opcode];
+  VVCControlChannel.prototype._checkErrorValidChannel = function (opcode, id, state) {
+    let opname = VVC.CTRL_OP.NAME[opcode];
     let channel = this._session.getChannel(id);
 
     if (id === VVC.CONTROL_CHANNEL_ID) {
@@ -14714,14 +14717,14 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCControlChannel.prototype._createControlPacket = function(code, flags, param) {
+  VVCControlChannel.prototype._createControlPacket = function (code, flags, param) {
     let packet = WMKS.Packet.createNewPacket();
 
     param = param || 0;
     flags = flags || 0;
 
     packet.control = {
-      code:  code,
+      code: code,
       flags: flags,
       param: param
     };
@@ -14733,7 +14736,7 @@ export function WmksLib($) {
     return packet;
   };
 
-  VVCControlChannel.prototype._sendControlPacket = function(packet) {
+  VVCControlChannel.prototype._sendControlPacket = function (packet) {
     if (packet.length > VVC.CTRL_HEADER_SIZE) {
       packet.control.flags |= VVC.CTRL_FLAG.ODAT;
       packet.control.param = packet.length - VVC.CTRL_HEADER_SIZE;
@@ -14749,7 +14752,7 @@ export function WmksLib($) {
    * A VVC listener provides callbacks to notifiy the user about events
    * on one or more VVC sessions.
    */
-  let VVCListener: any = function(vvcInstance, session, name) {
+  let VVCListener: any = function (vvcInstance, session, name) {
     this.name = name;
     this.session = session;
     this.state = VVC.LISTENER_STATE.ACTIVE;
@@ -14767,11 +14770,11 @@ export function WmksLib($) {
     CLOSING: 2
   };
 
-  VVCListener.prototype.close = function() {
+  VVCListener.prototype.close = function () {
     return this._vvcInstance.closeListener(this)
   };
 
-  VVCListener.prototype.matchName = function(name) {
+  VVCListener.prototype.matchName = function (name) {
     let wildcard = this.name.indexOf('*');
 
     if (wildcard !== -1) {
@@ -14781,7 +14784,7 @@ export function WmksLib($) {
     return this.name === name;
   };
 
-  let VVCProveChannel: any = function(channel) {
+  let VVCProveChannel: any = function (channel) {
     VVCChannel.call(this, channel, VVC.PROBE_CHANNEL_ID, VVC.PROBE_CHANNEL_NAME, 0, 0, 0);
     this.state = VVC.CHANNEL_STATE.OPEN;
   };
@@ -14793,7 +14796,7 @@ export function WmksLib($) {
   /**
    * A VVC session represents a physical connection to a remote server
    */
-  let VVCSession: any = function(vvcInstance, options?) {
+  let VVCSession: any = function (vvcInstance, options?) {
     let server = false;
 
     if (options) {
@@ -14810,30 +14813,30 @@ export function WmksLib($) {
 
     this.ontransporterror = null;
 
-    this._vvcInstance     = vvcInstance;
+    this._vvcInstance = vvcInstance;
 
-    this._server          = server;
+    this._server = server;
 
-    this._channels        = [];
+    this._channels = [];
 
-    this._channelIdCtrl   = this._server ? 1 : 2;
+    this._channelIdCtrl = this._server ? 1 : 2;
 
-    this._bytesRead       = 0;
+    this._bytesRead = 0;
 
-    this._bytesRequested  = VVC.CHUNK_COMMON_HEADER_SIZE;
+    this._bytesRequested = VVC.CHUNK_COMMON_HEADER_SIZE;
 
-    this._rttHistory      = [];
+    this._rttHistory = [];
 
     this._rttHistoryIndex = 0;
 
     this._chunk = {};
     this._chunk.channel = 0;
-    this._chunk.flags   = 0;
-    this._chunk.length  = 0;
+    this._chunk.flags = 0;
+    this._chunk.length = 0;
     this._chunk.ext = {};
-    this._chunk.ext.code   = 0;
-    this._chunk.ext.flags  = 0;
-    this._chunk.ext.param  = 0;
+    this._chunk.ext.code = 0;
+    this._chunk.ext.flags = 0;
+    this._chunk.ext.param = 0;
     this._chunk.ext.length = 0;
 
     this._buffers = {};
@@ -14882,16 +14885,16 @@ export function WmksLib($) {
     LARGE_CHANNEL_ID: 1
   };
 
-  VVCSession.prototype.close = function() {
+  VVCSession.prototype.close = function () {
     return this._vvcInstance.closeSession(this)
   };
 
-  VVCSession.prototype.openChannel = function(name, priority, flags, timeout, initialData) {
+  VVCSession.prototype.openChannel = function (name, priority, flags, timeout, initialData) {
     let channel;
 
-    priority    = priority || 0;
-    flags       = flags || 0;
-    timeout     = timeout || 0;
+    priority = priority || 0;
+    flags = flags || 0;
+    timeout = timeout || 0;
     initialData = initialData || null;
 
     if (!this._checkErrorNameLength('openChannel', name)) {
@@ -14917,8 +14920,8 @@ export function WmksLib($) {
     return channel;
   };
 
-  VVCSession.prototype.acceptChannel = function(channel, flags, initialData) {
-    flags       = flags || 0;
+  VVCSession.prototype.acceptChannel = function (channel, flags, initialData) {
+    flags = flags || 0;
     initialData = initialData || null;
 
     if (!this._checkErrorSessionState('acceptChannel',
@@ -14946,7 +14949,7 @@ export function WmksLib($) {
     return channel;
   };
 
-  VVCSession.prototype.rejectChannel = function(channel, initialData) {
+  VVCSession.prototype.rejectChannel = function (channel, initialData) {
     initialData = initialData || null;
 
     if (!this._checkErrorSessionState('rejectChannel',
@@ -14971,7 +14974,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCSession.prototype.closeChannel = function(channel) {
+  VVCSession.prototype.closeChannel = function (channel) {
     if (!this._checkErrorSessionState('closeChannel',
       VVC.SESSION_STATE.ESTABLISHED)) {
       return false;
@@ -14991,7 +14994,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCSession.prototype.addRttTime = function(rttMS) {
+  VVCSession.prototype.addRttTime = function (rttMS) {
     this._rttHistory[this._rttHistoryIndex] = rttMS;
     this._rttHistoryIndex++;
 
@@ -15000,7 +15003,7 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype.attachToWebSocket = function(socket) {
+  VVCSession.prototype.attachToWebSocket = function (socket) {
     let self = this;
 
     if (!(socket instanceof WebSocket)) {
@@ -15013,20 +15016,20 @@ export function WmksLib($) {
 
     this.socket = socket;
 
-    socket.onopen = function(evt) {
+    socket.onopen = function (evt) {
       this.binaryType = 'arraybuffer';
       self._onTransportOpen();
     };
 
-    socket.onclose = function(evt) {
+    socket.onclose = function (evt) {
       self._onTransportClose(evt);
     };
 
-    socket.onerror = function(evt) {
+    socket.onerror = function (evt) {
       self._onTransportError(evt);
     };
 
-    socket.onmessage = function(evt) {
+    socket.onmessage = function (evt) {
       if (!(evt.data instanceof ArrayBuffer)) {
         throw 'Expected ArrayBuffer from websocket';
       }
@@ -15043,18 +15046,18 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCSession.prototype._nextChannelId = function() {
+  VVCSession.prototype._nextChannelId = function () {
     let id = this._channelIdCtrl;
     this._channelIdCtrl += 2;
     return id;
   };
 
-  VVCSession.prototype.createChannel = function(id, name, priority, flags, timeout) {
+  VVCSession.prototype.createChannel = function (id, name, priority, flags, timeout) {
     let channel;
 
     priority = priority || 0;
-    timeout  = timeout || 0;
-    flags    = flags || 0;
+    timeout = timeout || 0;
+    flags = flags || 0;
 
     channel = new VVCChannel(this, id, name, priority, flags, timeout);
     this._channels[id] = channel;
@@ -15062,7 +15065,7 @@ export function WmksLib($) {
     return channel;
   };
 
-  VVCSession.prototype._releaseChannel = function(channel) {
+  VVCSession.prototype._releaseChannel = function (channel) {
     if (channel.state === VVC.CHANNEL_STATE.OPEN) {
       this._vvcInstance.setLastError(VVC.STATUS.PROTOCOL_ERROR,
         'VVCSession._releaseChannel',
@@ -15073,7 +15076,7 @@ export function WmksLib($) {
     delete this._buffers.data[channel.id];
   };
 
-  VVCSession.prototype.getChannel = function(id) {
+  VVCSession.prototype.getChannel = function (id) {
     if (!!this._channels[id]) {
       return this._channels[id];
     }
@@ -15081,7 +15084,7 @@ export function WmksLib($) {
     return null;
   };
 
-  VVCSession.prototype.onSessionError = function(status, where, message) {
+  VVCSession.prototype.onSessionError = function (status, where, message) {
     this.state = VVC.SESSION_STATE.ERROR;
     this._vvcInstance.setLastError(status, where, message);
 
@@ -15090,7 +15093,7 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype.onSessionClose = function() {
+  VVCSession.prototype.onSessionClose = function () {
     let channel;
     let closeChanReason;
     let i;
@@ -15123,7 +15126,7 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype.onConnect = function() {
+  VVCSession.prototype.onConnect = function () {
     let i;
     let listener;
     let listeners;
@@ -15140,7 +15143,7 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype.onPeerOpen = function(channel) {
+  VVCSession.prototype.onPeerOpen = function (channel) {
     let i;
     let listener;
     let listeners;
@@ -15158,7 +15161,7 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype.onChannelOpen = function(channel, status, initialData) {
+  VVCSession.prototype.onChannelOpen = function (channel, status, initialData) {
     if (status === VVC.OPEN_CHAN_STATUS.SUCCESS) {
       channel.state = VVC.CHANNEL_STATE.OPEN;
       if (channel.onopen) {
@@ -15171,13 +15174,13 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype.onChannelError = function(channel) {
+  VVCSession.prototype.onChannelError = function (channel) {
     if (channel.onerror) {
       channel.onerror(this._createEvent('error'));
     }
   };
 
-  VVCSession.prototype.onChannelMessage = function(channel, data) {
+  VVCSession.prototype.onChannelMessage = function (channel, data) {
     if (!channel) {
       this.onSessionError(VVC.STATUS.PROTOCOL_ERROR,
         'VVCSession.onChannelMessage',
@@ -15190,7 +15193,7 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype.onChannelClose = function(channel, reason) {
+  VVCSession.prototype.onChannelClose = function (channel, reason) {
     let code;
 
     if (reason === VVC.CLOSE_CHAN_REASON.NORMAL) {
@@ -15218,19 +15221,19 @@ export function WmksLib($) {
     this._releaseChannel(channel);
   };
 
-  VVCSession.prototype.createProbeChannel = function() {
+  VVCSession.prototype.createProbeChannel = function () {
     this.probeChannel = new VVCProveChannel(this);
     this._channels[this.probeChannel.id] = this.probeChannel;
     this._buffers.data[this.probeChannel.id] = [];
   };
 
-  VVCSession.prototype._createControlChannel = function() {
+  VVCSession.prototype._createControlChannel = function () {
     this.controlChannel = new VVCControlChannel(this);
     this._channels[this.controlChannel.id] = this.controlChannel;
     this._buffers.data[this.controlChannel.id] = [];
   };
 
-  VVCSession.prototype._onTransportOpen = function() {
+  VVCSession.prototype._onTransportOpen = function () {
     this._createControlChannel();
 
     // It is the clients responsibility to send the first control init message
@@ -15239,7 +15242,7 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype._onTransportClose = function(evt) {
+  VVCSession.prototype._onTransportClose = function (evt) {
     if (this.state === VVC.SESSION_STATE.ESTABLISHED) {
       this.onSessionError(VVC.TRANSPORT_ERROR,
         'VVCSession._onTransportClose',
@@ -15251,7 +15254,7 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype._onTransportError = function(evt) {
+  VVCSession.prototype._onTransportError = function (evt) {
     this.onSessionError(VVC.TRANSPORT_ERROR,
       'VVCSession._onTransportError',
       'An error occurred in the WebSocket.');
@@ -15261,7 +15264,7 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype._onTransportException = function(evt) {
+  VVCSession.prototype._onTransportException = function (evt) {
     this.onSessionError(VVC.TRANSPORT_ERROR,
       'VVCSession._onTransportException',
       'An exception occurred in the WebSocket.' + evt.message);
@@ -15271,7 +15274,7 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype._combineBuffers = function(buffers) {
+  VVCSession.prototype._combineBuffers = function (buffers) {
     let array;
     let buffer;
     let i;
@@ -15288,8 +15291,8 @@ export function WmksLib($) {
     }
 
     buffer = new ArrayBuffer(size);
-    array  = new Uint8Array(buffer);
-    size   = 0;
+    array = new Uint8Array(buffer);
+    size = 0;
 
     for (i = 0; i < buffers.length; ++i) {
       array.set(buffers[i], size);
@@ -15299,10 +15302,10 @@ export function WmksLib($) {
     return buffer;
   };
 
-  VVCSession.prototype._setReceiveState = function(state) {
+  VVCSession.prototype._setReceiveState = function (state) {
     this._receiveState = state;
 
-    switch(state) {
+    switch (state) {
       case VVC.SESSION_RECEIVE_STATE.COMMON_HEADER:
         this._bytesRequested = VVC.CHUNK_COMMON_HEADER_SIZE;
         this._bytesRead = 0;
@@ -15323,18 +15326,18 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype._onTransportRecv = function(data) {
+  VVCSession.prototype._onTransportRecv = function (data) {
     let buffer;
     let bytesNeeded;
     let bytesRead;
     let dataRead;
 
     bytesNeeded = this._bytesRequested - this._bytesRead;
-    bytesRead   = Math.min(data.length, bytesNeeded);
-    dataRead    = data.subarray(0, bytesRead);
-    buffer      = null;
+    bytesRead = Math.min(data.length, bytesNeeded);
+    dataRead = data.subarray(0, bytesRead);
+    buffer = null;
 
-    switch(this._receiveState) {
+    switch (this._receiveState) {
       case VVC.SESSION_RECEIVE_STATE.COMMON_HEADER:
       case VVC.SESSION_RECEIVE_STATE.LARGE_HEADER:
       case VVC.SESSION_RECEIVE_STATE.EXTENSION_HEADER:
@@ -15365,8 +15368,8 @@ export function WmksLib($) {
     switch (this._receiveState) {
       case VVC.SESSION_RECEIVE_STATE.COMMON_HEADER:
         this._chunk.channel = buffer.readUint8();
-        this._chunk.flags   = buffer.readUint8();
-        this._chunk.length  = buffer.readUint16() + 1;
+        this._chunk.flags = buffer.readUint8();
+        this._chunk.length = buffer.readUint16() + 1;
 
         if (this._chunk.flags & VVC.CHUNK_FLAG.LC) {
           this._setReceiveState(VVC.SESSION_RECEIVE_STATE.LARGE_HEADER);
@@ -15386,7 +15389,7 @@ export function WmksLib($) {
         }
         break;
       case VVC.SESSION_RECEIVE_STATE.EXTENSION_HEADER:
-        this._chunk.ext.code  = buffer.readUint8();
+        this._chunk.ext.code = buffer.readUint8();
         this._chunk.ext.flags = buffer.readUint8();
         this._chunk.ext.param = buffer.readUint16();
 
@@ -15419,7 +15422,7 @@ export function WmksLib($) {
     }
   };
 
-  VVCSession.prototype.send = function(channel, data) {
+  VVCSession.prototype.send = function (channel, data) {
     let header;
     let flags;
     let length;
@@ -15446,7 +15449,7 @@ export function WmksLib($) {
     header.writeUint8(channel.id);
 
     length = data.byteLength;
-    flags  = VVC.CHUNK_FLAG.FIN;
+    flags = VVC.CHUNK_FLAG.FIN;
 
     if (length > VVC.CHUNK_MAX_LEN) {
       header.writeUint8(VVC.CHUNK_FLAG.LC | flags);
@@ -15467,7 +15470,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCSession.prototype._createEvent = function(name, properties) {
+  VVCSession.prototype._createEvent = function (name, properties) {
     let evt = document.createEvent('Event');
     evt.initEvent(name, false, false);
 
@@ -15478,7 +15481,7 @@ export function WmksLib($) {
     return evt;
   };
 
-  VVCSession.prototype._checkErrorIsChannel = function(func, object) {
+  VVCSession.prototype._checkErrorIsChannel = function (func, object) {
     if (!(object instanceof VVCChannel)) {
       this._vvcInstance.setLastError(VVC.STATUS.INVALID_ARGS,
         'VVCSession.' + func,
@@ -15490,7 +15493,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCSession.prototype._checkErrorSessionState = function(func, state) {
+  VVCSession.prototype._checkErrorSessionState = function (func, state) {
     if (this.state !== state) {
       this._vvcInstance.setLastError(VVC.STATUS.INVALID_STATE,
         'VVCSession.' + func,
@@ -15502,7 +15505,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCSession.prototype._checkErrorChannelState = function(func, channel, state) {
+  VVCSession.prototype._checkErrorChannelState = function (func, channel, state) {
     if (channel.state !== state) {
       this._vvcInstance.setLastError(VVC.STATUS.INVALID_STATE,
         'VVCSession.' + func,
@@ -15514,7 +15517,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCSession.prototype._checkErrorNameLength = function(func, name) {
+  VVCSession.prototype._checkErrorNameLength = function (func, name) {
     if (name.length < VVC.MIN_CHANNEL_NAME_LEN ||
       name.length > VVC.MAX_CHANNEL_NAME_LEN) {
       this._vvcInstance.setLastError(VVC.STATUS.INVALID_ARGS,
@@ -15529,7 +15532,7 @@ export function WmksLib($) {
     return true;
   };
 
-  VVCSession.prototype._checkErrorInitialData = function(func, initialData) {
+  VVCSession.prototype._checkErrorInitialData = function (func, initialData) {
     if (initialData && !(initialData instanceof Uint8Array)) {
       this._vvcInstance.setLastError(VVC.STATUS.INVALID_ARGS,
         'VVCSession.' + func,
@@ -15551,7 +15554,7 @@ export function WmksLib($) {
   };
 
   // TODO
-  WMKS.RelativeMouseHandler = function(a) {
+  WMKS.RelativeMouseHandler = function (a) {
     "use strict";
     if (!a || !a.canvas || !a.widgetProto) return WMKS.LOGGER.warn("Invalid params set for RelativeMouseHandler."), null;
     let b = a.widgetProto,
@@ -15567,11 +15570,11 @@ export function WmksLib($) {
         keypad: null,
         relativePad: null
       };
-    this.toggleRelativePad = function(a) {
+    this.toggleRelativePad = function (a) {
       e.relativePad && (a = $.extend({}, a, {
         toggleCallback: d
       }), e.relativePad.toggle(a))
-    }, this.installMouseHandlers = function() {
+    }, this.installMouseHandlers = function () {
       let a = this,
         b = c.parent();
       c.css({
@@ -15580,28 +15583,28 @@ export function WmksLib($) {
       }), e.cursorIcon = $("<div/>")
         .addClass("feedback-container cursor-icon")
         .appendTo(b), e.clickFeedback = $("<div/>")
-        .addClass("feedback-container tap-icon")
-        .appendTo(b), e.dragFeedback = $("<div/>")
-        .addClass("feedback-container drag-icon")
-        .appendTo(b), e.pulseFeedback = $("<div/>")
-        .addClass("feedback-container pulse-icon")
-        .appendTo(b), e.scrollFeedback = $("<div/>")
-        .addClass("feedback-container scroll-icon")
-        .appendTo(b)
-    }, this.initializeRelativeMouseFeature = function() {
+          .addClass("feedback-container tap-icon")
+          .appendTo(b), e.dragFeedback = $("<div/>")
+            .addClass("feedback-container drag-icon")
+            .appendTo(b), e.pulseFeedback = $("<div/>")
+              .addClass("feedback-container pulse-icon")
+              .appendTo(b), e.scrollFeedback = $("<div/>")
+                .addClass("feedback-container scroll-icon")
+                .appendTo(b)
+    }, this.initializeRelativeMouseFeature = function () {
       e.relativePad = new WMKS.relativePadManager(b, c), e.relativePad.initialize()
-    }, this.moveCursor = function(a, b) {
+    }, this.moveCursor = function (a, b) {
       e.cursorIcon && e.cursorIcon.css({
         left: a,
         top: b
       })
-    }, this.setCursorVisibility = function(a) {
+    }, this.setCursorVisibility = function (a) {
       e.cursorIcon && (a ? e.cursorIcon.show() : e.cursorIcon.hide())
-    }, this.destroy = function() {
+    }, this.destroy = function () {
       b = null, c = null, e = null
     }
   };
-  (function() {
+  (function () {
     "use strict";
     WMKS.CONST.RELATIVEPAD = {
       STATE: {
@@ -15612,7 +15615,7 @@ export function WmksLib($) {
       }
     };
 
-    WMKS.relativePadManager = function(a, b) {
+    WMKS.relativePadManager = function (a, b) {
       WMKS.dialogManager.call(this), this._widget = a, this._canvas = b, this.state = WMKS.CONST.RELATIVEPAD.STATE.idle, this.history = [], $.extend(this.options, {
         name: "RELATIVEPAD",
         speedControlMinMovePx: 5,
@@ -15622,11 +15625,11 @@ export function WmksLib($) {
       }), WMKS.LOGGER.warn("relativepad : " + this.options.name)
     };
     WMKS.relativePadManager.prototype = new WMKS.dialogManager;
-    WMKS.relativePadManager.prototype.getTrackpadHtml = function() {
+    WMKS.relativePadManager.prototype.getTrackpadHtml = function () {
       let a = '<div id="relativePad" class="relativepad-container">                   <div class="left-border"></div>                   <div id="relativePadSurface" style="height:200px; border:1px solid black;"></div>                   <div class="right-border"></div>                   <div class="bottom-border">                      <div class="button-container">                         <div id="relativepadLeft" class="button-left"></div>                         <div id="relativepadRight" class="button-right"></div>                      </div>                   </div>               </div>';
       return a
     };
-    WMKS.relativePadManager.prototype.create = function() {
+    WMKS.relativePadManager.prototype.create = function () {
       let a, b = this;
       return !this._widget || !this._canvas ? (WMKS.LOGGER.debug("Trackpad dialog creation has been aborted. Widget or Canvas is not ready."), null) : (a = $(this.getTrackpadHtml()), a.dialog({
         autoOpen: !1,
@@ -15640,16 +15643,16 @@ export function WmksLib($) {
         zIndex: 1e3,
         draggable: !0,
         dialogClass: "relativepad-wrapper",
-        close: function(a) {
+        close: function (a) {
           b.sendUpdatedState(!1)
         },
-        create: function(a) {
+        create: function (a) {
           b.layout($(this)
             .parent())
         }
       }), a)
     };
-    WMKS.relativePadManager.prototype.init = function() {
+    WMKS.relativePadManager.prototype.init = function () {
       let a = this.dialog,
         b = this,
         c, d, e;
@@ -15658,20 +15661,20 @@ export function WmksLib($) {
         return
       }
       this._widget.requestElementReposition(a.parent(), !0), c = a.find("#relativePadSurface")
-        .on("mousemove", function(a) {
+        .on("mousemove", function (a) {
           return b.relativepadMouseMove(a.originalEvent)
         })
-        .on("mouseup", function(a) {
+        .on("mouseup", function (a) {
           return b.relativepadMouseClick(a, 0)
         })
-        .on("mousedown", function(a) {
+        .on("mousedown", function (a) {
           return b.relativepadMouseClick(a, 1)
         })
-        .on("contextmenu", function() {
+        .on("contextmenu", function () {
           return !1
         })
     };
-    WMKS.relativePadManager.prototype.disconnect = function() {
+    WMKS.relativePadManager.prototype.disconnect = function () {
       let a = this.dialog,
         b;
       if (!a) return;
@@ -15680,48 +15683,48 @@ export function WmksLib($) {
         .off("mouseup")
         .off("mousedown")
     };
-    WMKS.relativePadManager.prototype.layout = function(a) {
+    WMKS.relativePadManager.prototype.layout = function (a) {
       let b = this._canvas,
         c, d;
       if (!a || !b) return;
       c = a.parent(), d = b.parent(), c !== d && d.append(a)
     };
-    WMKS.relativePadManager.prototype.relativepadMouseMove = function(a) {
+    WMKS.relativePadManager.prototype.relativepadMouseMove = function (a) {
       let b, c, d, e, f = $(a.target),
         g = this._widget;
       return this.state === WMKS.CONST.RELATIVEPAD.STATE.idle ? !1 : (b = a.pageX, c = a.pageY, c < f.offset()
         .top || c > f.offset()
-        .top + f.height() || b < f.offset()
-        .left || b > f.offset()
-        .left + f.width() ? (this.state === WMKS.CONST.RELATIVEPAD.STATE.move && (this.state = WMKS.CONST.RELATIVEPAD.STATE.idle, this.history.length = 0), !1) : (this.state === WMKS.CONST.RELATIVEPAD.STATE.move && (d = this.computeNewCursorLocation(b, c), WMKS.VNCDecoder.cursorPosition && (e = this._widget.getRelativeMouseCanvasPosition(WMKS.VNCDecoder.cursorPosition), g._relativeMouseHandler.moveCursor(e.x, e.y)), g.sendMouseMoveMessage(d), this.history.shift(), this.history.push({
-        x: b,
-        y: c
-      })), this.state === WMKS.CONST.RELATIVEPAD.STATE.click && (this.state = WMKS.CONST.RELATIVEPAD.STATE.move, this.history.push({
-        x: b,
-        y: c
-      }, {
-        x: b,
-        y: c
-      }, {
-        x: b,
-        y: c
-      })), !1))
+          .top + f.height() || b < f.offset()
+            .left || b > f.offset()
+              .left + f.width() ? (this.state === WMKS.CONST.RELATIVEPAD.STATE.move && (this.state = WMKS.CONST.RELATIVEPAD.STATE.idle, this.history.length = 0), !1) : (this.state === WMKS.CONST.RELATIVEPAD.STATE.move && (d = this.computeNewCursorLocation(b, c), WMKS.VNCDecoder.cursorPosition && (e = this._widget.getRelativeMouseCanvasPosition(WMKS.VNCDecoder.cursorPosition), g._relativeMouseHandler.moveCursor(e.x, e.y)), g.sendMouseMoveMessage(d), this.history.shift(), this.history.push({
+                x: b,
+                y: c
+              })), this.state === WMKS.CONST.RELATIVEPAD.STATE.click && (this.state = WMKS.CONST.RELATIVEPAD.STATE.move, this.history.push({
+                x: b,
+                y: c
+              }, {
+                x: b,
+                y: c
+              }, {
+                x: b,
+                y: c
+              })), !1))
     };
-    WMKS.relativePadManager.prototype.computeNewCursorLocation = function(a, b) {
+    WMKS.relativePadManager.prototype.computeNewCursorLocation = function (a, b) {
       let c, d = {
         x: 0,
         y: 0
       };
       return c = WMKS.UTIL.getLineLength(a - this.history[2].x, b - this.history[2].y), isNaN(c) || c === 0 ? d : (c < this.options.speedControlMinMovePx ? (d.x = a - this.history[2].x, d.y = b - this.history[2].y) : (c = this.computeMovingDistance(a, b), d.x = Math.floor(c[0]), d.y = Math.floor(c[1])), d)
     };
-    WMKS.relativePadManager.prototype.computeMovingDistance = function(a, b) {
+    WMKS.relativePadManager.prototype.computeMovingDistance = function (a, b) {
       let c, d, e, f;
       return c = this.getTrackpadSpeed(a, this.history[0].x, this.history[1].x, this.history[2].x), d = this.getTrackpadSpeed(b, this.history[0].y, this.history[1].y, this.history[2].y), e = WMKS.UTIL.getLineLength(c, d), f = e * this.options.accelerator, f > this.options.maxSpeed ? f = this.options.maxSpeed : f < this.options.minSpeed && (f = this.options.minSpeed), [c * f, d * f]
     };
-    WMKS.relativePadManager.prototype.getTrackpadSpeed = function(a, b, c, d) {
+    WMKS.relativePadManager.prototype.getTrackpadSpeed = function (a, b, c, d) {
       return a * .3 + b * .1 - c * .1 - d * .3
     };
-    WMKS.relativePadManager.prototype.relativepadMouseClick = function(a, b) {
+    WMKS.relativePadManager.prototype.relativepadMouseClick = function (a, b) {
       if (this.state == WMKS.CONST.RELATIVEPAD.STATE.idle) {
         this.state = WMKS.CONST.RELATIVEPAD.STATE.click;
         return false;
@@ -15737,14 +15740,14 @@ export function WmksLib($) {
 
       return c.which ? c.which == 1 ? e = 1 : c.which == 2 ? e = 4 : c.which == 3 && (e = 2) : c.button == 0 ? e = 1 : c.button == 1 ? e = 4 : c.button == 2 && (e = 2), this._widget.sendMouseButtonMessage(d, b, e), this.resetRelativepadState(), !1
     };
-    WMKS.relativePadManager.prototype.resetRelativepadState = function() {
+    WMKS.relativePadManager.prototype.resetRelativepadState = function () {
       this.history.length = 0
     };
   }());
 
   $.widget("wmks.wmks", WMKS.widgetProto);
 
-  (function() {
+  (function () {
 
     /**
      * This file expanded the original WMKS.CONST, all constants used in
@@ -15808,217 +15811,217 @@ export function WmksLib($) {
      * map unicode to vscancode
      */
     WMKS.CONST.KB.VScanMap['ja-JP_106/109'] = {
-      32:57,
-      49:2, //1
-      33:2, //!
-      50:3, //2
-      34:3, //"
-      51:4, //3
-      35:4, //#
-      52:5, //4
-      36:5, //$
-      53:6, //5
-      37:6, //%
-      54:7, //6
-      38:7, //&
-      55:8, //7
-      39:8, //'
-      56:9, //8
-      40:9, //(
-      57:10, //9
-      41:10, //)
-      48:11, //0
-      45:12, //-
-      61:12, //=
-      94:13, //^
-      126:13, //~
-      157:125, //
-      113:16, //q
-      81:16, //Q
-      119:17, //w
-      87:17, //W
-      101:18, //e
-      69:18, //E
-      114:19, //r
-      82:19, //R
-      116:20, //t
-      84:20, //T
-      121:21, //y
-      89:21, //Y
-      117:22, //u
-      85:22, //U
-      105:23, //i
-      73:23, //I
-      111:24, //o
-      79:24, //O
-      112:25, //p
-      80:25, //P
-      64:26, //@
-      96:26, //`
-      91:27, //[
-      123:27, //{
-      93:43, //]
-      125:43, //}
-      97:30, //a
-      65:30, //A
-      115:31, //s
-      83:31, //S
-      100:32, //d
-      68:32, //D
-      102:33, //f
-      70:33, //F
-      103:34, //g
-      71:34, //G
-      104:35, //h
-      72:35, //H
-      106:36, //j
-      74:36, //J
-      107:37, //k
-      75:37, //K
-      108:38, //l
-      76:38, //L
-      59:39, //;
-      43:39, //+
-      58:40, //:
-      42:40, //*
-      122:44, //z
-      90:44, //Z
-      120:45, //x
-      88:45, //X
-      99:46, //c
-      67:46, //C
-      118:47, //v
-      86:47, //V
-      98:48, //b
-      66:48, //B
-      110:49, //n
-      78:49, //N
-      109:50, //m
-      77:50, //M
-      44:51, //,
-      60:51, //<
-      46:52, //.
-      62:52, //>
-      47:53, ///
-      63:53, //?
-      95:115, //_
-      92:125, //
-      13:28, //ENTER
-      165:125, //
-      124:125
+      32: 57,
+      49: 2, //1
+      33: 2, //!
+      50: 3, //2
+      34: 3, //"
+      51: 4, //3
+      35: 4, //#
+      52: 5, //4
+      36: 5, //$
+      53: 6, //5
+      37: 6, //%
+      54: 7, //6
+      38: 7, //&
+      55: 8, //7
+      39: 8, //'
+      56: 9, //8
+      40: 9, //(
+      57: 10, //9
+      41: 10, //)
+      48: 11, //0
+      45: 12, //-
+      61: 12, //=
+      94: 13, //^
+      126: 13, //~
+      157: 125, //
+      113: 16, //q
+      81: 16, //Q
+      119: 17, //w
+      87: 17, //W
+      101: 18, //e
+      69: 18, //E
+      114: 19, //r
+      82: 19, //R
+      116: 20, //t
+      84: 20, //T
+      121: 21, //y
+      89: 21, //Y
+      117: 22, //u
+      85: 22, //U
+      105: 23, //i
+      73: 23, //I
+      111: 24, //o
+      79: 24, //O
+      112: 25, //p
+      80: 25, //P
+      64: 26, //@
+      96: 26, //`
+      91: 27, //[
+      123: 27, //{
+      93: 43, //]
+      125: 43, //}
+      97: 30, //a
+      65: 30, //A
+      115: 31, //s
+      83: 31, //S
+      100: 32, //d
+      68: 32, //D
+      102: 33, //f
+      70: 33, //F
+      103: 34, //g
+      71: 34, //G
+      104: 35, //h
+      72: 35, //H
+      106: 36, //j
+      74: 36, //J
+      107: 37, //k
+      75: 37, //K
+      108: 38, //l
+      76: 38, //L
+      59: 39, //;
+      43: 39, //+
+      58: 40, //:
+      42: 40, //*
+      122: 44, //z
+      90: 44, //Z
+      120: 45, //x
+      88: 45, //X
+      99: 46, //c
+      67: 46, //C
+      118: 47, //v
+      86: 47, //V
+      98: 48, //b
+      66: 48, //B
+      110: 49, //n
+      78: 49, //N
+      109: 50, //m
+      77: 50, //M
+      44: 51, //,
+      60: 51, //<
+      46: 52, //.
+      62: 52, //>
+      47: 53, ///
+      63: 53, //?
+      95: 115, //_
+      92: 125, //
+      13: 28, //ENTER
+      165: 125, //
+      124: 125
     };
     WMKS.CONST.KB.VScanMap['de-DE'] = {
-      32:57,
-      176:41,
-      192:41,
-      94:41,
-      180:13,
-      49:2, //1
-      33:2, //!
-      50:3, //2
-      34:3, //"
-      51:4, //3
-      167:4, //§
-      52:5, //4
-      36:5, //$
-      53:6, //5
-      37:6, //%
-      54:7, //6
-      38:7, //&
-      55:8, //7
-      47:8, ///
-      56:9, //8
-      40:9, //(
-      57:10, //9
-      41:10, //)
-      48:11, //0
-      61:11, //=
-      223:12, //ß
-      63:12, //?
-      187:13, //´
-      113:16, //q
-      81:16, //Q
-      119:17, //w
-      87:17, //W
-      101:18, //e
-      69:18, //E
-      114:19, //r
-      82:19, //R
-      116:20, //t
-      84:20, //T
-      122:21, //z
-      90:21, //Z
-      117:22, //u
-      85:22, //<u
-      105:23, //i
-      73:23, //I
-      111:24, //o
-      79:24, //O
-      112:25, //p
-      80:25, //P
-      252:26, //ü
-      220:26, //Ü
-      43:27, //+
-      42:27, //*
-      35:43, //#
-      39:43, //'
-      97:30, //a
-      65:30, //A
-      115:31, //s
-      83:31, //S
-      100:32, //d
-      68:32, //D
-      102:33, //f
-      70:33, //F
-      103:34, //g
-      71:34, //G
-      104:35, //h
-      72:35, //H
-      106:36, //j
-      74:36, //J
-      107:37, //k
-      75:37, //K
-      108:38, //l
-      76:38, //L
-      246:39, //ö
-      214:39, //Ö
-      228:40, //ä
-      196:40, //Ä
-      121:44, // y
-      89:44, //Y
-      120:45, //x
-      88:45, //X
-      99:46, //c
-      67:46, //C
-      118:47, //v
-      86:47, //V
-      98:48, //b
-      66:48, //B
-      110:49, //n
-      78:49, //N
-      109:50, //m
-      77:50, //M
-      44:51, //,
-      59:51, //;
-      46:52, //.
-      58:52, //:
-      45:53, //-
-      95:53, //_
-      60:86, //<
-      62:86, //>
-      13:28, //ENTER
-      123:8, //{
-      91:9, //[
-      93:10, //]
-      125:11, //}
-      92:12, //\
-      126:27, //~
-      64:16, //@
-      8364:18, //
-      178:3, //2
-      179:4, //3
-      181:50, //
-      124:86 //|
+      32: 57,
+      176: 41,
+      192: 41,
+      94: 41,
+      180: 13,
+      49: 2, //1
+      33: 2, //!
+      50: 3, //2
+      34: 3, //"
+      51: 4, //3
+      167: 4, //§
+      52: 5, //4
+      36: 5, //$
+      53: 6, //5
+      37: 6, //%
+      54: 7, //6
+      38: 7, //&
+      55: 8, //7
+      47: 8, ///
+      56: 9, //8
+      40: 9, //(
+      57: 10, //9
+      41: 10, //)
+      48: 11, //0
+      61: 11, //=
+      223: 12, //ß
+      63: 12, //?
+      187: 13, //´
+      113: 16, //q
+      81: 16, //Q
+      119: 17, //w
+      87: 17, //W
+      101: 18, //e
+      69: 18, //E
+      114: 19, //r
+      82: 19, //R
+      116: 20, //t
+      84: 20, //T
+      122: 21, //z
+      90: 21, //Z
+      117: 22, //u
+      85: 22, //<u
+      105: 23, //i
+      73: 23, //I
+      111: 24, //o
+      79: 24, //O
+      112: 25, //p
+      80: 25, //P
+      252: 26, //ü
+      220: 26, //Ü
+      43: 27, //+
+      42: 27, //*
+      35: 43, //#
+      39: 43, //'
+      97: 30, //a
+      65: 30, //A
+      115: 31, //s
+      83: 31, //S
+      100: 32, //d
+      68: 32, //D
+      102: 33, //f
+      70: 33, //F
+      103: 34, //g
+      71: 34, //G
+      104: 35, //h
+      72: 35, //H
+      106: 36, //j
+      74: 36, //J
+      107: 37, //k
+      75: 37, //K
+      108: 38, //l
+      76: 38, //L
+      246: 39, //ö
+      214: 39, //Ö
+      228: 40, //ä
+      196: 40, //Ä
+      121: 44, // y
+      89: 44, //Y
+      120: 45, //x
+      88: 45, //X
+      99: 46, //c
+      67: 46, //C
+      118: 47, //v
+      86: 47, //V
+      98: 48, //b
+      66: 48, //B
+      110: 49, //n
+      78: 49, //N
+      109: 50, //m
+      77: 50, //M
+      44: 51, //,
+      59: 51, //;
+      46: 52, //.
+      58: 52, //:
+      45: 53, //-
+      95: 53, //_
+      60: 86, //<
+      62: 86, //>
+      13: 28, //ENTER
+      123: 8, //{
+      91: 9, //[
+      93: 10, //]
+      125: 11, //}
+      92: 12, //\
+      126: 27, //~
+      64: 16, //@
+      8364: 18, //
+      178: 3, //2
+      179: 4, //3
+      181: 50, //
+      124: 86 //|
     };
     WMKS.CONST.KB.VScanMap["it-IT"] = {
       32: 57,
@@ -17066,7 +17069,7 @@ export function WmksLib($) {
        * then still use the super class's _create() method for instantiation.
        */
 
-      _create: function() {
+      _create: function () {
 
         if (this.options.changeResolution) {
           this.options.fitGuest = true;
@@ -17094,9 +17097,9 @@ export function WmksLib($) {
        * jQuery-UI initialisation function, called by $.widget
        * Here initialize the attribute transformOrigin in cross browser environment.
        */
-      _init: function() {
+      _init: function () {
         let self = this;
-        let checkProperty = function(prop) {
+        let checkProperty = function (prop) {
           return typeof self._canvas[0].style[prop] !== 'undefined' ? prop : null;
         };
 
@@ -17122,7 +17125,7 @@ export function WmksLib($) {
        * the container's allocated size, then put the remote screen in the center
        * or left top of the container based on its value.
        */
-      rescaleOrResize: function(tryChangeResolution) {
+      rescaleOrResize: function (tryChangeResolution) {
         let newScale = 1.0;
         let x = 0;
         let y = 0;
@@ -17144,14 +17147,12 @@ export function WmksLib($) {
 
         if (this.transform !== null) {
 
-          if(this.options.rescale)
-          {
+          if (this.options.rescale) {
             let horizScale = parentWidth / width;
             let vertScale = parentHeight / height;
             newScale = Math.max(0.1, Math.min(horizScale, vertScale));
           }
-          if(this.options.position !== null)
-          {
+          if (this.options.position !== null) {
             switch (this.options.position) {
               case WMKS.CONST.Position.CENTER:
                 x = (parentWidth - width) / 2;
@@ -17172,7 +17173,7 @@ export function WmksLib($) {
           if (x !== this._x || y !== this._y) {
             this._x = x;
             this._y = y;
-            this._canvas.css({top: y, left: x});
+            this._canvas.css({ top: y, left: x });
           }
         } else {
           WMKS.LOGGER.warn("No scaling support");
@@ -17182,7 +17183,7 @@ export function WmksLib($) {
       /**
        * Changes a WMKS option.
        */
-      _setOption: function(key, value) {
+      _setOption: function (key, value) {
 
         // mixin the option to this.options
         $.Widget.prototype._setOption.apply(this, arguments);
@@ -17223,7 +17224,7 @@ export function WmksLib($) {
        * It will send the request about desired resolution (both width and height)
        * to the connect VM.
        */
-      setRemoteScreenSize: function(width, height) {
+      setRemoteScreenSize: function (width, height) {
         let newW = width * this._pixelRatio;
         let newH = height * this._pixelRatio;
 
@@ -17239,10 +17240,10 @@ export function WmksLib($) {
     /**
      * The CoreWMKS class defined all the Public API(22) provided by the wmks:
      */
-    WMKS.CoreWMKS = function(wmks) {
+    WMKS.CoreWMKS = function (wmks) {
       this.wmks = wmks;
       //different version jquery has different way to get the data
-      this.wmksData = wmks.data("nwmks") || wmks.data("wmks-nwmks") ;
+      this.wmksData = wmks.data("nwmks") || wmks.data("wmks-nwmks");
       this.oldCssText = "";
       this.connectionState = WMKS.CONST.ConnectionState.DISCONNECTED;
       this.eventHandlers = {};
@@ -17250,7 +17251,7 @@ export function WmksLib($) {
       let Event_Prefix = this.wmksData.widgetEventPrefix;
       let self = this;
 
-      let triggerEvents = function(eventName, event, data) {
+      let triggerEvents = function (eventName, event, data) {
         let handlerArray = self.eventHandlers[eventName];
         if (handlerArray && handlerArray.length > 0) {
           let len = handlerArray.length;
@@ -17263,7 +17264,7 @@ export function WmksLib($) {
       /* ----------------------- CONNECTION_STATE_CHANGE event ---------------------- */
       let connectEventsNameStr = [Event_Prefix + "connecting", Event_Prefix + "connected", Event_Prefix + "disconnected"].join(" ");
 
-      wmks.bind(connectEventsNameStr, function(event, data) {
+      wmks.bind(connectEventsNameStr, function (event, data) {
         data = data || {};
         let eventName = event.type;
         self.connectionState = eventName.substring(Event_Prefix.length, eventName.length);
@@ -17276,12 +17277,12 @@ export function WmksLib($) {
 
       /* ---------------------------- ERROR event ---------------------------------- */
 
-      let errorEventsNameStr = [Event_Prefix + "authenticationfailed", Event_Prefix + "error", Event_Prefix + "protocolerror" ].join(" ");
+      let errorEventsNameStr = [Event_Prefix + "authenticationfailed", Event_Prefix + "error", Event_Prefix + "protocolerror"].join(" ");
 
-      wmks.bind(errorEventsNameStr, function(event, data) {
+      wmks.bind(errorEventsNameStr, function (event, data) {
         let errorType;
         let cons = WMKS.CONST.ErrorType;
-        let type = event.type.substring(Event_Prefix.length,event.type.length);
+        let type = event.type.substring(Event_Prefix.length, event.type.length);
 
         data = data || {};
         switch (type) {
@@ -17303,21 +17304,20 @@ export function WmksLib($) {
 
 
       /* ---------------------- REMOTE_SCREEN_SIZE_CHANGE event -------------------- */
-      wmks.bind(Event_Prefix + "resolutionchanged", function(event, data) {
+      wmks.bind(Event_Prefix + "resolutionchanged", function (event, data) {
         triggerEvents(WMKS.CONST.Events.REMOTE_SCREEN_SIZE_CHANGE, event, data);
       });
 
       /* -------KEYBOARD_LEDS_CHANGE, HEARTBEAT,AUDIO,COPY,TOGGLE ----------------- */
       let eventsNameStr = [Event_Prefix + "keyboardledschanged",
-        Event_Prefix + "heartbeat",
-        Event_Prefix + "copy",
-        Event_Prefix + "audio",
-        Event_Prefix + "toggle"].join(" ");
-      wmks.bind(eventsNameStr, function(event, data) {
-        let type = event.type.substring(Event_Prefix.length,event.type.length);
-        if(type == "toggle")
-        {
-          data = {"type":arguments[1],"visibility":arguments[2]};
+      Event_Prefix + "heartbeat",
+      Event_Prefix + "copy",
+      Event_Prefix + "audio",
+      Event_Prefix + "toggle"].join(" ");
+      wmks.bind(eventsNameStr, function (event, data) {
+        let type = event.type.substring(Event_Prefix.length, event.type.length);
+        if (type == "toggle") {
+          data = { "type": arguments[1], "visibility": arguments[2] };
         }
         triggerEvents(type, event, data);
       });
@@ -17327,7 +17327,7 @@ export function WmksLib($) {
       // here the enterFullScreenHandler would be remove in the exitFullScreenHandler
       // cause the resize event maybe would be triggered for more than once,
       // and only the last one is the really fullscreen
-      let enterFullScreenHandler = function(e) {
+      let enterFullScreenHandler = function (e) {
 
         if (!WMKS.UTIL.isFullscreenNow()) return;
         //make the wmks can occupy the whole screen
@@ -17336,10 +17336,10 @@ export function WmksLib($) {
         self.wmksData.rescaleOrResize(true);
 
         // $(window).off("resize.nwmks", enterFullScreenHandler);
-        triggerEvents(WMKS.CONST.Events.FULL_SCREEN_CHANGE, e, {isFullScreen: true});
+        triggerEvents(WMKS.CONST.Events.FULL_SCREEN_CHANGE, e, { isFullScreen: true });
       };
 
-      let exitFullScreenHandler = function(e) {
+      let exitFullScreenHandler = function (e) {
 
         $(window).off("resize.wmks", enterFullScreenHandler);
 
@@ -17347,11 +17347,11 @@ export function WmksLib($) {
         self.wmksData.rescaleOrResize(true);
 
         $(window).off("resize.wmks", exitFullScreenHandler);
-        triggerEvents(WMKS.CONST.Events.FULL_SCREEN_CHANGE, e, {isFullScreen: false});
+        triggerEvents(WMKS.CONST.Events.FULL_SCREEN_CHANGE, e, { isFullScreen: false });
       };
 
       this.fullScreenChangeEventStr = ["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "MSFullscreenChange"].join(" ");
-      this.fullScreenChangeHandler = function(){
+      this.fullScreenChangeHandler = function () {
         if (!WMKS.UTIL.isFullscreenNow()) {
           $(window).off("resize.wmks", exitFullScreenHandler);
           $(window).on("resize.wmks", exitFullScreenHandler);
@@ -17364,7 +17364,7 @@ export function WmksLib($) {
        ************************************************************************/
       // put the public API method enterFullScreen and exitFullScreen
       // here, cause need to trigger the FULL_SCREEN_CHANGE event
-      WMKS.CoreWMKS.prototype.enterFullScreen = function() {
+      WMKS.CoreWMKS.prototype.enterFullScreen = function () {
 
         if (WMKS.UTIL.isFullscreenNow() || !WMKS.UTIL.isFullscreenEnabled())
           return;
@@ -17377,7 +17377,7 @@ export function WmksLib($) {
       };
 
 
-      WMKS.CoreWMKS.prototype.exitFullScreen = function() {
+      WMKS.CoreWMKS.prototype.exitFullScreen = function () {
 
         if (!WMKS.UTIL.isFullscreenNow())
           return;
@@ -17394,8 +17394,8 @@ export function WmksLib($) {
     // Attach the handler to the certain event for WMKS widget.
     // This can be called by consumers of WMKS to register  the
     // events to interact with the guest.
-    WMKS.CoreWMKS.prototype.register = function(eventType, handler) {
-      if(!eventType || !handler) return;
+    WMKS.CoreWMKS.prototype.register = function (eventType, handler) {
+      if (!eventType || !handler) return;
       //here maybe need to validate the eventName
       let handlersArray = this.eventHandlers[eventType];
       if (!handlersArray) {
@@ -17406,16 +17406,14 @@ export function WmksLib($) {
     };
 
     // Remove a previously-attached event handler for WMKS widget.
-    WMKS.CoreWMKS.prototype.unregister = function(eventType, handler) {
-      if(!eventType && !handler)
-      {
+    WMKS.CoreWMKS.prototype.unregister = function (eventType, handler) {
+      if (!eventType && !handler) {
         this.eventHandlers = {};
         return this;
       }
 
-      if(eventType && !handler)
-      {
-        delete  this.eventHandlers[eventType];
+      if (eventType && !handler) {
+        delete this.eventHandlers[eventType];
         return this;
       }
 
@@ -17428,20 +17426,20 @@ export function WmksLib($) {
             break;
           }
         }
-        if(handlersArray.length === 0)
-          delete  this.eventHandlers[eventType];
+        if (handlersArray.length === 0)
+          delete this.eventHandlers[eventType];
       }
       return this;
     };
 
     // This method retrieves the current version number of the WMKS SDK.
-    WMKS.CoreWMKS.prototype.getVersion = function() {
+    WMKS.CoreWMKS.prototype.getVersion = function () {
       return WMKS.version;
     };
 
     // This method retrieves the current connection state. Could be any value in
     // WMKS.CONST.ConnectionState
-    WMKS.CoreWMKS.prototype.getConnectionState = function() {
+    WMKS.CoreWMKS.prototype.getConnectionState = function () {
       return this.connectionState;
     };
 
@@ -17449,7 +17447,7 @@ export function WmksLib($) {
     //
     // Consumers should call this after they've created the WMKS by invoking the method
     // createWMKS(), and then ready to start displaying a stream from the VM.
-    WMKS.CoreWMKS.prototype.connect = function(url) {
+    WMKS.CoreWMKS.prototype.connect = function (url) {
       this.wmksData.connect(url);
     };
 
@@ -17457,7 +17455,7 @@ export function WmksLib($) {
     //
     // Consumers should call this when they are done with the WMKS
     // component. Destroying the WMKS will also result in a disconnect.
-    WMKS.CoreWMKS.prototype.disconnect = function() {
+    WMKS.CoreWMKS.prototype.disconnect = function () {
       this.wmksData.disconnect();
     };
 
@@ -17465,7 +17463,7 @@ export function WmksLib($) {
     //
     // This will disconnect the WMKS connection (if active) and remove
     // the widget from the associated element.
-    WMKS.CoreWMKS.prototype.destroy = function() {
+    WMKS.CoreWMKS.prototype.destroy = function () {
       if (this.wmksData) {
         clearTimeout(this.wmksData._vncDecoder.resolutionTimer);
         this.wmksData.destroy();
@@ -17483,13 +17481,13 @@ export function WmksLib($) {
     //
     // It will send the request about desired resolution (both width and height)
     // to the connect VM.
-    WMKS.CoreWMKS.prototype.setRemoteScreenSize = function(width, height) {
+    WMKS.CoreWMKS.prototype.setRemoteScreenSize = function (width, height) {
       this.wmksData.setRemoteScreenSize(width, height);
     };
 
     // This method retrieves the screen width and height in pixels of currently
     // connected VM.
-    WMKS.CoreWMKS.prototype.getRemoteScreenSize = function() {
+    WMKS.CoreWMKS.prototype.getRemoteScreenSize = function () {
       return {
         width: this.wmksData._guestWidth,
         height: this.wmksData._guestHeight
@@ -17509,7 +17507,7 @@ export function WmksLib($) {
     // 3) check position option: If the remote screen's size is not same with
     // the container's allocated size, then put the remote screen in the center
     // or left top of the container based on its value.
-    WMKS.CoreWMKS.prototype.updateScreen = function() {
+    WMKS.CoreWMKS.prototype.updateScreen = function () {
       this.wmksData.rescaleOrResize(true);
     };
 
@@ -17517,17 +17515,17 @@ export function WmksLib($) {
     //
     // Fullscreen mode is disabled on Safari as it does not support keyboard
     // input in fullscreen for "security reasons". See bug 1296505.
-    WMKS.CoreWMKS.prototype.canFullScreen = function() {
+    WMKS.CoreWMKS.prototype.canFullScreen = function () {
       return WMKS.UTIL.isFullscreenEnabled();
     };
 
     // Inform if the browser is in full-screen mode.
-    WMKS.CoreWMKS.prototype.isFullScreen = function() {
+    WMKS.CoreWMKS.prototype.isFullScreen = function () {
       return WMKS.UTIL.isFullscreenNow();
     };
 
     // Sends a unicode string as keyboard input to the server.
-    WMKS.CoreWMKS.prototype.sendInputString = function(str) {
+    WMKS.CoreWMKS.prototype.sendInputString = function (str) {
       this.wmksData.sendInputString(str);
     };
 
@@ -17551,44 +17549,44 @@ export function WmksLib($) {
     // [17, 18, 46]      Control-Alt-Del
     // [17, 18, 45]      Control-Alt-Ins
     // [17, -118]        Control-v (note the lowercase 'v')
-    WMKS.CoreWMKS.prototype.sendKeyCodes = function(keyCodes) {
+    WMKS.CoreWMKS.prototype.sendKeyCodes = function (keyCodes) {
       this.wmksData.sendKeyCodes(keyCodes);
     };
 
     // Send key combination Control-Alt-Del .
-    WMKS.CoreWMKS.prototype.sendCAD = function() {
+    WMKS.CoreWMKS.prototype.sendCAD = function () {
       this.wmksData.sendKeyCodes([17, 18, 46]);
     };
 
     // This method used to show the keyboard on the mobile device
-    WMKS.CoreWMKS.prototype.showKeyboard = function() {
+    WMKS.CoreWMKS.prototype.showKeyboard = function () {
       this.wmksData.showKeyboard();
     };
 
     // This method used to hide the keyboard on the mobile device
-    WMKS.CoreWMKS.prototype.hideKeyboard = function() {
+    WMKS.CoreWMKS.prototype.hideKeyboard = function () {
       this.wmksData.hideKeyboard();
     };
 
     // This method used to show/hide the extendedKeypad  on the mobile device
     // depend on the current visibility.
-    WMKS.CoreWMKS.prototype.toggleExtendedKeypad = function(options) {
+    WMKS.CoreWMKS.prototype.toggleExtendedKeypad = function (options) {
       this.wmksData.toggleExtendedKeypad(options);
     };
 
     // This method used to show/hide the trackpad  on the mobile device
     // depend on the current visibility.
-    WMKS.CoreWMKS.prototype.toggleTrackpad = function(options) {
+    WMKS.CoreWMKS.prototype.toggleTrackpad = function (options) {
       this.wmksData.toggleTrackpad(options);
     };
 
-    WMKS.CoreWMKS.prototype.toggleRelativePad = function(options) {
+    WMKS.CoreWMKS.prototype.toggleRelativePad = function (options) {
       this.wmksData.toggleRelativePad(options);
     };
 
     // This method used to enable the input device on the mobile device according to
     // the deviceType(any value in WMKS.CONST.InputDeviceType)
-    WMKS.CoreWMKS.prototype.enableInputDevice = function(deviceType) {
+    WMKS.CoreWMKS.prototype.enableInputDevice = function (deviceType) {
       let cons = WMKS.CONST.InputDeviceType;
       let innerType = null;
       switch (deviceType) {
@@ -17613,7 +17611,7 @@ export function WmksLib($) {
 
     // This method used to disable the input device on the mobile device according to
     // the deviceType(any value in WMKS.CONST.InputDeviceType)
-    WMKS.CoreWMKS.prototype.disableInputDevice = function(deviceType) {
+    WMKS.CoreWMKS.prototype.disableInputDevice = function (deviceType) {
       let cons = WMKS.CONST.InputDeviceType;
       switch (deviceType) {
         case cons.KEYBOARD:
@@ -17641,7 +17639,7 @@ export function WmksLib($) {
     // -	reverseScrollY
     //   - fixANSIEquivalentKeys
     //   - sendProperMouseWheelDeltas
-    WMKS.CoreWMKS.prototype.setOption = function(key, value) {
+    WMKS.CoreWMKS.prototype.setOption = function (key, value) {
       this.wmksData._setOption(key, value);
     };
 
@@ -17649,7 +17647,7 @@ export function WmksLib($) {
     // By using this method, it would generate the widget which could display the
     // remote screen, and then return the WMKS core object which could use all the
     // WMKS API to connect to a VM and perform operations.
-    WMKS.createWMKS = function(id, options) {
+    WMKS.createWMKS = function (id, options) {
       let wmks = $("#" + id).nwmks(options);
 
       return new WMKS.CoreWMKS(wmks);

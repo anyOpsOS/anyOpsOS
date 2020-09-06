@@ -1,20 +1,20 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {v4 as uuidv4} from 'uuid';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { v4 as uuidv4 } from 'uuid';
 
-import {AnyOpsOSLibNodeNetappSoapApiService, AnyOpsOSLibNodeNetappSoapApiHelpersService, AnyOpsOSLibNodeNetappFileSystemService} from '@anyopsos/lib-node-netapp';
-import {AnyOpsOSLibNodeVmwareSoapApiService, AnyOpsOSLibNodeVmwareSoapApiHelpersService} from '@anyopsos/lib-node-vmware';
-import {VMWareFirewallRule} from '@anyopsos/module-node-vmware';
+import { AnyOpsOSLibNodeNetappSoapApiService, AnyOpsOSLibNodeNetappSoapApiHelpersService, AnyOpsOSLibNodeNetappFileSystemService } from '@anyopsos/lib-node-netapp';
+import { AnyOpsOSLibNodeVmwareSoapApiService, AnyOpsOSLibNodeVmwareSoapApiHelpersService } from '@anyopsos/lib-node-vmware';
+import { VMWareFirewallRule } from '@anyopsos/module-node-vmware';
 
-import {MountVolumeSnapshot} from '../types/mount-volume-snapshot';
-import {RestoreVolumeFiles} from '../types/restore-volume-files';
-import {RestoreVmGuestFiles} from '../types/restore-vm-guest-files';
-import {VmInstantRecovery} from '../types/vm-instant-recovery';
-import {RestoreVm} from '../types/restore-vm';
-import {BackupVm} from '../types/backup-vm';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { MountVolumeSnapshot } from '../types/mount-volume-snapshot';
+import { RestoreVolumeFiles } from '../types/restore-volume-files';
+import { RestoreVmGuestFiles } from '../types/restore-vm-guest-files';
+import { VmInstantRecovery } from '../types/vm-instant-recovery';
+import { RestoreVm } from '../types/restore-vm';
+import { BackupVm } from '../types/backup-vm';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
 
 @Injectable({
   providedIn: 'root'
@@ -364,126 +364,126 @@ export class AnyOpsOSAppBackupsManagerHelpersService {
               /*
                * Create VM Snapshot if vm state is poweredOn and quiesceTools checked
                */
-              /*if (key.state === 'poweredOn' && data.quiesceTools) {
-                this.logger.debug('Backups Manager [%s] -> Creating VM snapshot -> VM [%s]', data.uuid, key.vm);
+    /*if (key.state === 'poweredOn' && data.quiesceTools) {
+      this.logger.debug('Backups Manager [%s] -> Creating VM snapshot -> VM [%s]', data.uuid, key.vm);
 
-                ss_promises.push(this.VMWare.createSnapShot(
-                  esxi_credential,
-                  esxi_address,
-                  esxi_port,
-                  key.vm,
-                  'anyOpsOS_backup_' + data.uuid,
-                  'anyOpsOS temporary snapshot. Do not delete this snapshot while a backup is running.',
-                  false,
-                  true
-                ).then((res) => {
-                  if (res.status === 'error') throw new Error('Failed to create snapshot');
-                  if (res.data[0].propSet.info.error) throw new Error('Failed to create snapshot');
+      ss_promises.push(this.VMWare.createSnapShot(
+        esxi_credential,
+        esxi_address,
+        esxi_port,
+        key.vm,
+        'anyOpsOS_backup_' + data.uuid,
+        'anyOpsOS temporary snapshot. Do not delete this snapshot while a backup is running.',
+        false,
+        true
+      ).then((res) => {
+        if (res.status === 'error') throw new Error('Failed to create snapshot');
+        if (res.data[0].propSet.info.error) throw new Error('Failed to create snapshot');
 
-                  this.logger.debug('Backups Manager [%s] -> VM snapshot created -> vCenter [%s], vm [%s], snapshot [%s]', data.uuid, esxi_address, key.vm, res.data[0].propSet.info.result.name);
+        this.logger.debug('Backups Manager [%s] -> VM snapshot created -> vCenter [%s], vm [%s], snapshot [%s]', data.uuid, esxi_address, key.vm, res.data[0].propSet.info.result.name);
 
-                  snapshots.push(res.data[0].propSet.info.result.name);
+        snapshots.push(res.data[0].propSet.info.result.name);
 
-                }).catch((e) => {
-                  console.log(e);
-                  return e;
-                }));
-              } else {
-                this.logger.debug('Backups Manager [%s] -> VM poweredOff, do not create snapshot -> VM [%s]', data.uuid, key.vm);
-              }
+      }).catch((e) => {
+        console.log(e);
+        return e;
+      }));
+    } else {
+      this.logger.debug('Backups Manager [%s] -> VM poweredOff, do not create snapshot -> VM [%s]', data.uuid, key.vm);
+    }
 
-            });
-            //End VM each
+  });
+  //End VM each
 
-            return Promise.all(ss_promises).then(() => {
+  return Promise.all(ss_promises).then(() => {
 
-              return this.VMWare.updateTaskProgress(esxi_credential, esxi_address, esxi_port, datastore_task_id, 40);
-            }).then((res) => {
-              if (res.status === 'error') throw new Error('Failed to update task progress');
-              this.logger.debug('Backups Manager [%s] -> Datastore task 40% -> vCenter [%s], task [%s]', data.uuid, esxi_address, datastore_task_id);
+    return this.VMWare.updateTaskProgress(esxi_credential, esxi_address, esxi_port, datastore_task_id, 40);
+  }).then((res) => {
+    if (res.status === 'error') throw new Error('Failed to update task progress');
+    this.logger.debug('Backups Manager [%s] -> Datastore task 40% -> vCenter [%s], task [%s]', data.uuid, esxi_address, datastore_task_id);
 
-              /*
-               * Create Storage Snapshot
-               */
-              /*return this.NetApp.createSnapshot(netapp_credential, netapp_host, netapp_port, vserver['vserver-name'], volume['volume-id-attributes'].name, data.backupName);
+    /*
+     * Create Storage Snapshot
+     */
+    /*return this.NetApp.createSnapshot(netapp_credential, netapp_host, netapp_port, vserver['vserver-name'], volume['volume-id-attributes'].name, data.backupName);
 
-            }).then((res) => {
-              if (res.status === 'error') throw new Error('Failed to create Volume Snapshot');
-              this.logger.debug('Backups Manager [%s] -> Storage snapshot created -> vCenter [%s],
-               storage [%s], vserver [%s], volume [%s]', data.uuid, esxi_address, netapp_host, vserver['vserver-name'], volume['volume-id-attributes'].name);
-              return this.VMWare.updateTaskProgress(esxi_credential, esxi_address, esxi_port, datastore_task_id, 60);
-            }).then((res) => {
-              if (res.status === 'error') throw new Error('Failed to update task progress');
-              this.logger.debug('Backups Manager [%s] -> Datastore task 60% -> vCenter [%s], task [%s]', data.uuid, esxi_address, datastore_task_id);
+  }).then((res) => {
+    if (res.status === 'error') throw new Error('Failed to create Volume Snapshot');
+    this.logger.debug('Backups Manager [%s] -> Storage snapshot created -> vCenter [%s],
+     storage [%s], vserver [%s], volume [%s]', data.uuid, esxi_address, netapp_host, vserver['vserver-name'], volume['volume-id-attributes'].name);
+    return this.VMWare.updateTaskProgress(esxi_credential, esxi_address, esxi_port, datastore_task_id, 60);
+  }).then((res) => {
+    if (res.status === 'error') throw new Error('Failed to update task progress');
+    this.logger.debug('Backups Manager [%s] -> Datastore task 60% -> vCenter [%s], task [%s]', data.uuid, esxi_address, datastore_task_id);
 
-              /*
-               * Delete VM Snapshot
-               */
-              /*angular.forEach(snapshots, (snapshot) => {
-                ssr_promises.push(this.VMWare.removeSnapshot(esxi_credential, esxi_address, esxi_port, snapshot, false).then((res) => {
-                  if (res.status === 'error') throw new Error('Failed to delete snapshot');
-                  this.logger.debug('Backups Manager [%s] -> VM snapshot deleted -> vCenter [%s], snapshot [%s]', data.uuid, esxi_address, snapshot);
+    /*
+     * Delete VM Snapshot
+     */
+    /*angular.forEach(snapshots, (snapshot) => {
+      ssr_promises.push(this.VMWare.removeSnapshot(esxi_credential, esxi_address, esxi_port, snapshot, false).then((res) => {
+        if (res.status === 'error') throw new Error('Failed to delete snapshot');
+        this.logger.debug('Backups Manager [%s] -> VM snapshot deleted -> vCenter [%s], snapshot [%s]', data.uuid, esxi_address, snapshot);
 
-                }).catch((e) => {
-                  console.log(e);
-                  return e;
-                }));
-              });
-              //End Snapshots each
-
-              return Promise.all(ssr_promises);
-
-            }).then(() => {
-              return this.VMWare.updateTaskProgress(esxi_credential, esxi_address, esxi_port, datastore_task_id, 80);
-            }).then((res) => {
-              if (res.status === 'error') throw new Error('Failed to update task progress');
-              this.logger.debug('Backups Manager [%s] -> Datastore task 80% -> vCenter [%s], task [%s]', data.uuid, esxi_address, datastore_task_id);
-
-              // End Task
-              return this.VMWare.setTaskState(esxi_credential, esxi_address, esxi_port, datastore_task_id, 'success');
-
-            }).then((res) => {
-              if (res.status === 'error') throw new Error('Failed to set task state');
-              this.logger.debug('Backups Manager [%s] -> Datastore task success -> vCenter [%s], task [%s]', data.uuid, esxi_address, datastore_task_id);
-
-            }).catch((e) => {
-              console.log(e);
-              return e;
-            });
-
-          }));
-
-        });
-        //End Datastore each
-
-        // End vCenter backup task
-        return Promise.all(datastore_promises).then(() => {
-
-          return this.VMWare.updateTaskProgress(esxi_credential, esxi_address, esxi_port, task_id, 80);
-
-        }).then((res) => {
-          if (res.status === 'error') throw new Error('Failed to update task progress');
-          this.logger.debug('Backups Manager [%s] -> Main task 80% -> vCenter [%s], task [%s]', data.uuid, esxi_address, task_id);
-
-          // End Task
-          return this.VMWare.setTaskState(esxi_credential, esxi_address, esxi_port, task_id, 'success');
-        }).then((res) => {
-          if (res.status === 'error') throw new Error('Failed to set task state');
-          this.logger.debug('Backups Manager [%s] -> Main task success -> vCenter [%s], task [%s]', data.uuid, esxi_address, task_id);
-
-        }).catch((e) => {
-          console.log(e);
-          return e;
-        });
-
+      }).catch((e) => {
+        console.log(e);
+        return e;
       }));
     });
-    // End vCenter each
+    //End Snapshots each
 
-    return Promise.all(main_promises).catch((e) => {
-      console.log(e);
-      return e;
-    });*/
+    return Promise.all(ssr_promises);
+
+  }).then(() => {
+    return this.VMWare.updateTaskProgress(esxi_credential, esxi_address, esxi_port, datastore_task_id, 80);
+  }).then((res) => {
+    if (res.status === 'error') throw new Error('Failed to update task progress');
+    this.logger.debug('Backups Manager [%s] -> Datastore task 80% -> vCenter [%s], task [%s]', data.uuid, esxi_address, datastore_task_id);
+
+    // End Task
+    return this.VMWare.setTaskState(esxi_credential, esxi_address, esxi_port, datastore_task_id, 'success');
+
+  }).then((res) => {
+    if (res.status === 'error') throw new Error('Failed to set task state');
+    this.logger.debug('Backups Manager [%s] -> Datastore task success -> vCenter [%s], task [%s]', data.uuid, esxi_address, datastore_task_id);
+
+  }).catch((e) => {
+    console.log(e);
+    return e;
+  });
+
+}));
+
+});
+//End Datastore each
+
+// End vCenter backup task
+return Promise.all(datastore_promises).then(() => {
+
+return this.VMWare.updateTaskProgress(esxi_credential, esxi_address, esxi_port, task_id, 80);
+
+}).then((res) => {
+if (res.status === 'error') throw new Error('Failed to update task progress');
+this.logger.debug('Backups Manager [%s] -> Main task 80% -> vCenter [%s], task [%s]', data.uuid, esxi_address, task_id);
+
+// End Task
+return this.VMWare.setTaskState(esxi_credential, esxi_address, esxi_port, task_id, 'success');
+}).then((res) => {
+if (res.status === 'error') throw new Error('Failed to set task state');
+this.logger.debug('Backups Manager [%s] -> Main task success -> vCenter [%s], task [%s]', data.uuid, esxi_address, task_id);
+
+}).catch((e) => {
+console.log(e);
+return e;
+});
+
+}));
+});
+// End vCenter each
+
+return Promise.all(main_promises).catch((e) => {
+console.log(e);
+return e;
+});*/
   }
 
   /**
@@ -933,7 +933,7 @@ export class AnyOpsOSAppBackupsManagerHelpersService {
 
       // TODO, folder recursive
       return this.LibNodeNetappFileSystemService.getFolder(`/vol/${data.volume.name}/.snapshot/${data.snapshot.name}/${vmPath}`, data.storage.uuid, data.vserver.name).toPromise();
-    }).then((res: BackendResponse & { data: AnyOpsOSFile[]; })=> {
+    }).then((res: BackendResponse & { data: AnyOpsOSFile[]; }) => {
       if (res.status === 'error') throw new Error('Failed to get Snapshot files');
 
       res.data.forEach((file: { name: string }) => {

@@ -1,6 +1,6 @@
-import {Extension} from '@anyopsos/sdk-vmware/src/lib/types/data/extension';
-import {PropertyFilterSpec} from '@anyopsos/sdk-vmware/src/lib/types/data/property-filter-spec';
-import {TraversalSpec} from '@anyopsos/sdk-vmware/src/lib/types/data/traversal-spec';
+import { Extension } from '@anyopsos/sdk-vmware/src/lib/types/data/extension';
+import { PropertyFilterSpec } from '@anyopsos/sdk-vmware/src/lib/types/data/property-filter-spec';
+import { TraversalSpec } from '@anyopsos/sdk-vmware/src/lib/types/data/traversal-spec';
 
 export function anyOpsOSExtension(): Extension {
   return {
@@ -86,12 +86,12 @@ export function allBasicDataFilter(): PropertyFilterSpec {
         type: 'VirtualMachine',
         all: false,
         pathSet: ['name', 'parent', 'guest', 'runtime.powerState', 'runtime.connectionState', 'runtime.faultToleranceState',
-          'config.uuid', 'summary.quickStats.guestMemoryUsage', 'summary.config.memorySizeMB', 'summary.quickStats.overallCpuUsage', 'summary.runtime.maxCpuUsage',
-          'summary.config.vmPathName', 'summary.config.template', 'datastore', 'layout', 'config.files.logDirectory',
-          'config.hardware.device', 'resourcePool', 'runtime.host', 'config.version', 'config.changeTrackingEnabled', 'config.ftInfo',
-          'config.hardware.numCPU', 'config.hardware.memoryMB', 'config.files.snapshotDirectory', 'config.extraConfig', 'storage.perDatastoreUsage',
-          'snapshot', 'layoutEx', 'config.guestId', 'config.annotation', 'customValue', 'parentVApp', 'runtime.consolidationNeeded',
-          'config.flags.faultToleranceType', 'config.forkConfigInfo', 'config.files.vmPathName'
+                  'config.uuid', 'summary.quickStats.guestMemoryUsage', 'summary.config.memorySizeMB', 'summary.quickStats.overallCpuUsage', 'summary.runtime.maxCpuUsage',
+                  'summary.config.vmPathName', 'summary.config.template', 'datastore', 'layout', 'config.files.logDirectory',
+                  'config.hardware.device', 'resourcePool', 'runtime.host', 'config.version', 'config.changeTrackingEnabled', 'config.ftInfo',
+                  'config.hardware.numCPU', 'config.hardware.memoryMB', 'config.files.snapshotDirectory', 'config.extraConfig', 'storage.perDatastoreUsage',
+                  'snapshot', 'layoutEx', 'config.guestId', 'config.annotation', 'customValue', 'parentVApp', 'runtime.consolidationNeeded',
+                  'config.flags.faultToleranceType', 'config.forkConfigInfo', 'config.files.vmPathName'
         ]
       },
       {
@@ -103,8 +103,8 @@ export function allBasicDataFilter(): PropertyFilterSpec {
         type: 'HostSystem',
         all: false,
         pathSet: ['vm', 'datastore', 'hardware.cpuInfo.numCpuPackages', 'hardware.cpuFeature', 'hardware.cpuInfo.hz', 'hardware.systemInfo.uuid',
-          'config.product.productLineId', 'summary.config.product.fullName', 'summary.config.product.version', 'summary.config.product.apiVersion',
-          'configManager.storageSystem', 'hardware.cpuInfo.numCpuCores', 'hardware.cpuInfo.numCpuThreads', 'runtime', 'config.vsanHostConfig.clusterInfo'
+                  'config.product.productLineId', 'summary.config.product.fullName', 'summary.config.product.version', 'summary.config.product.apiVersion',
+                  'configManager.storageSystem', 'hardware.cpuInfo.numCpuCores', 'hardware.cpuInfo.numCpuThreads', 'runtime', 'config.vsanHostConfig.clusterInfo'
         ]
       },
       /*{
@@ -141,7 +141,7 @@ export function allBasicDataFilter(): PropertyFilterSpec {
         type: 'StoragePod',
         all: false,
         pathSet: ['name', 'parent', 'summary.capacity', 'summary.freeSpace', 'podStorageDrsEntry.storageDrsConfig.podConfig.enabled',
-          'podStorageDrsEntry.storageDrsConfig.podConfig.defaultVmBehavior'
+                  'podStorageDrsEntry.storageDrsConfig.podConfig.defaultVmBehavior'
         ]
       }
     ],

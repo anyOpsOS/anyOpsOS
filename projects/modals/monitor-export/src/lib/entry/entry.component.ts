@@ -1,8 +1,8 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 
-import {MatDialog, MatDialogConfig, MatDialogRef} from '@anyopsos/lib-angular-material';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@anyopsos/lib-angular-material';
 
-import {AnyOpsOSModalMonitorExportComponent} from '../anyopsos-modal-monitor-export.component';
+import { AnyOpsOSModalMonitorExportComponent } from '../anyopsos-modal-monitor-export.component';
 
 /**
  * This file is called by @anyopsos/lib-modal and is used to open a Modal.

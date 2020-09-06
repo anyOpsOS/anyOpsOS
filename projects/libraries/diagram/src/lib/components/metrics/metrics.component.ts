@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {combineLatest, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {AnyOpsOSLibDiagramService} from '../../services/anyopsos-lib-diagram.service';
-import {AnyOpsOSLibDiagramStateService} from '../../services/anyopsos-lib-diagram-state.service';
+import { AnyOpsOSLibDiagramService } from '../../services/anyopsos-lib-diagram.service';
+import { AnyOpsOSLibDiagramStateService } from '../../services/anyopsos-lib-diagram-state.service';
 
 @Component({
   selector: 'aldiagram-metrics',
@@ -14,7 +14,7 @@ import {AnyOpsOSLibDiagramStateService} from '../../services/anyopsos-lib-diagra
 export class MetricsComponent implements OnInit {
   private destroySubject$: Subject<void> = new Subject();
 
-  availableMetrics: {id: string; label: string;}[];
+  availableMetrics: { id: string; label: string; }[];
   pinnedMetricType: string;
   selectedMetricType: string;
 
@@ -31,7 +31,7 @@ export class MetricsComponent implements OnInit {
 
     // Listen for nodes change and set availableMetrics
     this.LibDiagramState.nodes
-      .pipe(takeUntil(this.destroySubject$)).subscribe(() =>  this.availableMetrics = this.LibDiagram.availableMetrics());
+      .pipe(takeUntil(this.destroySubject$)).subscribe(() => this.availableMetrics = this.LibDiagram.availableMetrics());
 
     // Listen for state changes and update selectedMetricType
     combineLatest(

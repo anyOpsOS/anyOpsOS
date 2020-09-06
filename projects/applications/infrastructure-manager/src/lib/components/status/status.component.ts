@@ -1,11 +1,11 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {takeUntil} from 'rxjs/operators';
-import {Observable, Subject} from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
-import {Application} from '@anyopsos/lib-application';
+import { Application } from '@anyopsos/lib-application';
 
-import {AnyOpsOSAppInfrastructureManagerService} from '../../services/anyopsos-app-infrastructure-manager.service';
-import {ConnectionTypes} from '@anyopsos/backend-core/app/types/connection-types';
+import { AnyOpsOSAppInfrastructureManagerService } from '../../services/anyopsos-app-infrastructure-manager.service';
+import { ConnectionTypes } from '@anyopsos/backend-core/app/types/connection-types';
 
 @Component({
   selector: 'aaim-status',

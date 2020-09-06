@@ -1,10 +1,10 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
 
-import {BodyComponent} from './anyopsos-app-wmks.component';
+import { BodyComponent } from './anyopsos-app-wmks.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ export class AnyOpsOSAppWmksModule {
       ico: 'fas fa-tv',
       name: 'VM Remote Console',
       menu: true,
-      style: {width: '90%', height: '90%', top: '2%', left: '5%'}
+      style: { width: '90%', height: '90%', top: '2%', left: '5%' }
     });
 
   }

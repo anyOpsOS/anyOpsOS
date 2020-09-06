@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {NGXLogger, CustomNGXLoggerService, NGXMapperService, NgxLoggerLevel, NGXLoggerUtils, NGXLogInterface} from 'ngx-logger';
+import { NGXLogger, CustomNGXLoggerService, NGXMapperService, NgxLoggerLevel, NGXLoggerUtils } from 'ngx-logger';
 
-import {AnyOpsOSLibUtilsService} from '@anyopsos/lib-utils';
-import {MatSnackBar} from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibUtilsService } from '@anyopsos/lib-utils';
+import { MatSnackBar } from '@anyopsos/lib-angular-material';
 
 const Levels = [
   'TRACE',
@@ -19,7 +19,7 @@ const Levels = [
 @Injectable({
   providedIn: 'root'
 })
-export class AnyOpsOSLibLoggerService{
+export class AnyOpsOSLibLoggerService {
   private logger: NGXLogger;
 
   constructor(private readonly customLogger: CustomNGXLoggerService,
@@ -100,8 +100,11 @@ export class AnyOpsOSLibLoggerService{
       if (isLogLevelEnabled) {
 
         // TODO hardcoded replace string
-        const metaString = NGXLoggerUtils.prepareMetaString(timestamp, logLevelString,
-          callerDetails.fileName.replace('../../../../projects/', ''), callerDetails.lineNumber.toString());
+        const metaString = NGXLoggerUtils.prepareMetaString(
+          timestamp,
+          logLevelString,
+          callerDetails.fileName.replace('../../../../projects/', ''),
+          callerDetails.lineNumber.toString());
 
         return this._logModern(level, metaString, message, additional);
       }
@@ -124,6 +127,7 @@ export class AnyOpsOSLibLoggerService{
         console.error(`%c${metaString}`, `color:${color}`, message, ...additional);
         break;
       case NgxLoggerLevel.INFO:
+        // tslint:disable-next-line: no-console
         console.info(`%c${metaString}`, `color:${color}`, message, ...additional);
         break;
       //  Disabling console.trace since the stack trace is not helpful. it is showing the stack trace of

@@ -1,22 +1,22 @@
-import {parse} from 'url';
-import {join} from 'path';
-import {EventEmitter} from 'events';
+import { parse } from 'url';
+import { join } from 'path';
+import { EventEmitter } from 'events';
 import childProcessPromise from 'child-process-promise';
-import log4js, {Logger} from 'log4js';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getLogger} = log4js;
-const {spawn} = childProcessPromise;
+const { getLogger } = log4js;
+const { spawn } = childProcessPromise;
 
-import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
-import {FileInfo} from '@anyopsos/sdk-vmware/src/lib/types/data/file-info';
-import {VmwareSdkFunctionsOutput} from '@anyopsos/sdk-vmware';
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { AnyOpsOSSysGetPathModule } from '@anyopsos/module-sys-get-path';
+import { FileInfo } from '@anyopsos/sdk-vmware/src/lib/types/data/file-info';
+import { VmwareSdkFunctionsOutput } from '@anyopsos/sdk-vmware';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
 
-import {AnyOpsOSNodeVmwareModule} from './anyopsos-module-node-vmware.module';
-import {AnyOpsOSNodeVmwareSessionStateModule} from './anyopsos-module-node-vmware-session-state';
+import { AnyOpsOSNodeVmwareModule } from './anyopsos-module-node-vmware.module';
+import { AnyOpsOSNodeVmwareSessionStateModule } from './anyopsos-module-node-vmware-session-state';
 
-import {ConnectionVmwareServer} from './types/connection-vmware-server';
+import { ConnectionVmwareServer } from './types/connection-vmware-server';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -133,7 +133,9 @@ export class AnyOpsOSNodeVmwareFileSystemModule {
     return eventEmitter;
   }
   async patchFile(type: 'rename', srcPath: string, srcDatastoreName: string, srcDatacenterName: string, dstPath: string): Promise<VmwareSdkFunctionsOutput<'MoveDatastoreFile_Task'>>;
+  // tslint:disable-next-line: max-line-length
   async patchFile(type: 'copy' | 'move', srcPath: string, srcDatastoreName: string, srcDatacenterName: string, dstPath: string, dstDatastoreName: string, dstDatacenterName: string): Promise<VmwareSdkFunctionsOutput<'MoveDatastoreFile_Task' | 'CopyDatastoreFile_Task'>>;
+  // tslint:disable-next-line: max-line-length
   async patchFile(type: 'copy' | 'move' | 'rename', srcPath: string, srcDatastoreName: string, srcDatacenterName: string, dstPath: string, dstDatastoreName?: string, dstDatacenterName?: string): Promise<VmwareSdkFunctionsOutput<'MoveDatastoreFile_Task' | 'CopyDatastoreFile_Task'> | undefined> {
     logger.debug(`[Module VmwareFileSystem] -> patchFile -> type [${type}], srcPath [${srcPath}], dstPath [${dstPath}], connectionUuid [${this.connectionUuid}]`);
 
@@ -240,6 +242,6 @@ export class AnyOpsOSNodeVmwareFileSystemModule {
     const fileUrl = parse(datastoreUrl).href;
     const realSrcPath = join(this.GetPathModule.filesystem, srcPath);
 
-    await spawn('curl', ['-k', '--user', `${mainServer.credential.username}:${mainServer.credential.password}`, '-X', fileUrl, '-T', realSrcPath], { capture: [ 'stdout', 'stderr' ]});
+    await spawn('curl', ['-k', '--user', `${mainServer.credential.username}:${mainServer.credential.password}`, '-X', fileUrl, '-T', realSrcPath], { capture: ['stdout', 'stderr'] });
   }
 }

@@ -1,11 +1,11 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
-import {LoggerModule} from 'ngx-logger';
+import { LoggerModule } from 'ngx-logger';
 
-import {AnyOpsOSLibAngularMaterialModule} from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibAngularMaterialModule } from '@anyopsos/lib-angular-material';
 
-import {AnyOpsOSLibLoggerService} from './services/anyopsos-lib-logger.service';
+import { AnyOpsOSLibLoggerService } from './services/anyopsos-lib-logger.service';
 
 @NgModule({
   declarations: [],
@@ -24,8 +24,8 @@ export class AnyOpsOSLibLoggerModule {
     console.log('Loading AnyOpsOSLibLoggerModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibLoggerModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibLoggerModule is already loaded. You should not import it manually.');
     }
   }
 

@@ -1,13 +1,13 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 
-import {AnyOpsOSLibBootstrapService} from '@anyopsos/lib-bootstrap';
+import { AnyOpsOSLibBootstrapService } from '@anyopsos/lib-bootstrap';
 
-import {AnyOpsOSLibNodeKubernetesService} from './services/anyopsos-lib-node-kubernetes.service';
-import {AnyOpsOSLibNodeKubernetesApiService} from './services/anyopsos-lib-node-kubernetes-api.service';
-import {AnyOpsOSLibNodeKubernetesHelpersService} from './services/anyopsos-lib-node-kubernetes-helpers.service';
-import {AnyOpsOSLibNodeKubernetesObjectHelpersService} from './services/anyopsos-lib-node-kubernetes-object-helpers.service';
-import {AnyOpsOSLibNodeKubernetesConnectionsStateService} from './services/anyopsos-lib-node-kubernetes-connections-state.service';
-import {AnyOpsOSLibNodeKubernetesFileSystemHandlersService} from './services/anyopsos-lib-node-kubernetes-file-system-handlers.service';
+import { AnyOpsOSLibNodeKubernetesService } from './services/anyopsos-lib-node-kubernetes.service';
+import { AnyOpsOSLibNodeKubernetesApiService } from './services/anyopsos-lib-node-kubernetes-api.service';
+import { AnyOpsOSLibNodeKubernetesHelpersService } from './services/anyopsos-lib-node-kubernetes-helpers.service';
+import { AnyOpsOSLibNodeKubernetesObjectHelpersService } from './services/anyopsos-lib-node-kubernetes-object-helpers.service';
+import { AnyOpsOSLibNodeKubernetesConnectionsStateService } from './services/anyopsos-lib-node-kubernetes-connections-state.service';
+import { AnyOpsOSLibNodeKubernetesFileSystemHandlersService } from './services/anyopsos-lib-node-kubernetes-file-system-handlers.service';
 
 @NgModule({
   declarations: [],
@@ -23,8 +23,8 @@ export class AnyOpsOSLibNodeKubernetesModule {
     console.log('Loading AnyOpsOSLibNodeKubernetesModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibNodeKubernetesModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibNodeKubernetesModule is already loaded. You should not import it manually.');
     }
 
     // Initialize connections when user is loggedIn

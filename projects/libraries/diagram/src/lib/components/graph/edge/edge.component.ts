@@ -1,9 +1,9 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import {AnyOpsOSLibDiagramStateService} from '../../../services/anyopsos-lib-diagram-state.service';
-import {AnyOpsOSLibDiagramDomUtilsService} from '../../../services/anyopsos-lib-diagram-dom-utils.service';
-import {STORAGE_COMPONENTS} from '../../../anyopsos-lib-diagram.constants';
-import {LayoutEdge} from '../../../types/layout-edge';
+import { AnyOpsOSLibDiagramStateService } from '../../../services/anyopsos-lib-diagram-state.service';
+import { AnyOpsOSLibDiagramDomUtilsService } from '../../../services/anyopsos-lib-diagram-dom-utils.service';
+import { STORAGE_COMPONENTS } from '../../../anyopsos-lib-diagram.constants';
+import { LayoutEdge } from '../../../types/layout-edge';
 
 @Component({
   selector: '[aldiagram-edge]',
@@ -16,7 +16,7 @@ export class EdgeComponent {
   @Input() thickness: number;
   @Input() path: {
     x: number;
-    y:number;
+    y: number;
   }[];
 
   encodeIdAttribute = this.LibDiagramDomUtils.encodeIdAttribute;

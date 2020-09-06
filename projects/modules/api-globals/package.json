@@ -7,6 +7,9 @@
     "express": "^4.17.1",
     "typescript": "^3.9.7"
   },
+  "dependencies": {
+    "log4js": "^6.3.0"
+  },
   "main": "src/index.ts",
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

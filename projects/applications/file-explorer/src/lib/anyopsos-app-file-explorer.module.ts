@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import {AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {AnyOpsOSLibFolderExplorerModule} from '@anyopsos/lib-folder-explorer';
+import { AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
+import { AnyOpsOSLibFolderExplorerModule } from '@anyopsos/lib-folder-explorer';
 
-import {BodyComponent} from './body/body.component';
-import {MenuComponent} from './menu/menu.component';
+import { BodyComponent } from './body/body.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,7 @@ export class AnyOpsOSAppFileExplorerModule {
       menu: true,
       actions: false,
       status: false,
-      style: {width: '770px', height: '600px', top: '9%', left: '12%'}
+      style: { width: '770px', height: '600px', top: '9%', left: '12%' }
     });
 
   }

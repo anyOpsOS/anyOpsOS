@@ -1,17 +1,17 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import routingControllers from 'routing-controllers';
 import routingControllersSessionParam from 'routing-controllers/decorator/SessionParam';
-import log4js, {Logger} from 'log4js';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {Controller, Authorized, Req, Res, Post, BodyParam, Param} = routingControllers;
-const {SessionParam} = routingControllersSessionParam;
-const {getLogger} = log4js;
+const { Controller, Authorized, Req, Res, Post, BodyParam, Param } = routingControllers;
+const { SessionParam } = routingControllersSessionParam;
+const { getLogger } = log4js;
 
-import {AnyOpsOSApiGlobalsModule} from '@anyopsos/module-api-globals';
-import {AnyOpsOSNodeVmwareModule, AnyOpsOSNodeVmwareFileSystemModule} from '@anyopsos/module-node-vmware';
-import {VmwareSdkFunctions, VmwareSdkFunctionsInput} from '@anyopsos/sdk-vmware';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSApiGlobalsModule } from '@anyopsos/module-api-globals';
+import { AnyOpsOSNodeVmwareModule, AnyOpsOSNodeVmwareFileSystemModule } from '@anyopsos/module-node-vmware';
+import { VmwareSdkFunctions, VmwareSdkFunctionsInput } from '@anyopsos/sdk-vmware';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 
 const logger: Logger = getLogger('mainLog');
@@ -67,7 +67,7 @@ export class AnyOpsOSVmwareApiController {
                        @SessionParam('userUuid') userUuid: string,
                        @SessionParam('id') sessionUuid: string,
                        @BodyParam('action') action: VmwareSdkFunctions,
-                       // @ts-ignore TODO
+    // @ts-ignore TODO
                        @BodyParam('data') data: VmwareSdkFunctionsInput<any>,
                        @Param('workspaceUuid') workspaceUuid: string,
                        @Param('connectionUuid') connectionUuid: string) {

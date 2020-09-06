@@ -3,5 +3,15 @@
   "dest": "../../../.dist/libraries/desktop",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "@anyopsos/lib-angular-material",
+    "@anyopsos/lib-application",
+    "@anyopsos/lib-file-system",
+    "@anyopsos/lib-file-system-ui",
+    "@anyopsos/lib-folder",
+    "@anyopsos/lib-logger",
+    "@anyopsos/lib-pipes",
+    "@anyopsos/lib-user"
+  ]
 }

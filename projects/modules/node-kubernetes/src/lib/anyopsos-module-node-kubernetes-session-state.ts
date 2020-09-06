@@ -1,22 +1,22 @@
 import socketControllers from 'socket-controllers';
-import k8sClientNode, {KubeConfig as IKubeConfig} from '@kubernetes/client-node';
-import {Cluster, User} from '@kubernetes/client-node/dist/config_types';
-import log4js, {Logger} from 'log4js';
+import k8sClientNode, { KubeConfig as IKubeConfig } from '@kubernetes/client-node';
+import { Cluster, User } from '@kubernetes/client-node/dist/config_types';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getSocketIO} = socketControllers;
-const {KubeConfig} = k8sClientNode;
-const {getLogger} = log4js;
+const { getSocketIO } = socketControllers;
+const { KubeConfig } = k8sClientNode;
+const { getLogger } = log4js;
 
-import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {AnyOpsOSCredentialModule} from '@anyopsos/module-credential';
+import { AnyOpsOSSysWorkspaceModule } from '@anyopsos/module-sys-workspace';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { AnyOpsOSCredentialModule } from '@anyopsos/module-credential';
 
-import {ConnectionKubernetesServer} from './types/connection-kubernetes-server';
-import {ConnectionKubernetes} from './types/connection-kubernetes';
-import {WorkspaceToKubernetesMap} from './types/workspace-to-kubernetes-map';
+import { ConnectionKubernetesServer } from './types/connection-kubernetes-server';
+import { ConnectionKubernetes } from './types/connection-kubernetes';
+import { WorkspaceToKubernetesMap } from './types/workspace-to-kubernetes-map';
 
-import {KUBERNETES_CONFIG_FILE} from './anyopsos-module-node-kubernetes.constants';
+import { KUBERNETES_CONFIG_FILE } from './anyopsos-module-node-kubernetes.constants';
 
 const logger: Logger = getLogger('mainLog');
 const kubernetesSessions: WorkspaceToKubernetesMap = {};

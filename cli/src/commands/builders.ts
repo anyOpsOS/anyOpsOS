@@ -1,24 +1,24 @@
-import {Stats} from 'fs';
+import { Stats } from 'fs';
 import nexe from 'nexe';
 import chalk from 'chalk';
 import fs from 'fs-extra';
 import rimraf from 'rimraf';
 import readLines from 'read-last-lines';
-import {parse} from 'path';
+import { parse } from 'path';
 
 // TODO ESM
-const {compile} = nexe;
-const {blue, blueBright, red, greenBright} = chalk;
-const {pathExistsSync, readdir, stat, truncate, statSync} = fs;
+const { compile } = nexe;
+const { blue, blueBright, red, greenBright } = chalk;
+const { pathExistsSync, readdir, stat, truncate, statSync } = fs;
 
-import {BuildModals} from '../scripts/build-modals.js';
-import {BuildExtLibs} from '../scripts/build-ext-libs.js';
-import {BuildLibs} from '../scripts/build-libs.js';
-import {BuildApps} from '../scripts/build-apps.js';
+import { BuildModals } from '../scripts/build-modals.js';
+import { BuildExtLibs } from '../scripts/build-ext-libs.js';
+import { BuildLibs } from '../scripts/build-libs.js';
+import { BuildApps } from '../scripts/build-apps.js';
 
-import {runInDocker} from '../utils.js';
-import {INTERNAL_PATH_CWD, MAIN_PATH_CWD} from '../constants.js';
-import {Types} from '../types/types.js';
+import { runInDocker } from '../utils.js';
+import { INTERNAL_PATH_CWD, MAIN_PATH_CWD } from '../constants.js';
+import { Types } from '../types/types.js';
 
 export class Builders {
 
@@ -319,10 +319,10 @@ export class Builders {
     await rimraf(`${INTERNAL_PATH_CWD}/.dist/modules`, (e) => { if (e) throw e; });
     await rimraf(`${INTERNAL_PATH_CWD}/.dist/websockets`, (e) => { if (e) throw e; });
 
-    await this.buildBackendTypes({type: 'module'});
-    await this.buildBackendTypes({type: 'api-middleware'});
-    await this.buildBackendTypes({type: 'api'}).then(async () => await import('../swagger-generator/index.js'));
-    await this.buildBackendTypes({type: 'websocket'});
+    await this.buildBackendTypes({ type: 'module' });
+    await this.buildBackendTypes({ type: 'api-middleware' });
+    await this.buildBackendTypes({ type: 'api' }).then(async () => import('../swagger-generator/index.js'));
+    await this.buildBackendTypes({ type: 'websocket' });
 
     await this.buildBackend();
 
@@ -332,13 +332,13 @@ export class Builders {
       ${INTERNAL_PATH_CWD}/.dist/anyOpsOS/fileSystem/filesystem/`
     );
 
-    await this.buildFrontendTypes({type: 'library'});
+    await this.buildFrontendTypes({ type: 'library' });
     await this.buildFrontend();
-    await this.buildFrontendTypes({type: 'external-library'});
-    await this.buildFrontendTypes({type: 'application'});
-    await this.buildFrontendTypes({type: 'modal'});
-  } 
-  
+    await this.buildFrontendTypes({ type: 'external-library' });
+    await this.buildFrontendTypes({ type: 'application' });
+    await this.buildFrontendTypes({ type: 'modal' });
+  }
+
   async buildCli(): Promise<void> {
     await runInDocker('export NODE_OPTIONS="" && cd cli/ && yarn build');
 
@@ -411,6 +411,6 @@ export class Builders {
     process.env.NODE_OPTIONS = currentNodeEnv;
 
     */
-  
+
   }
 }

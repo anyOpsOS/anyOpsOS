@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 
 // TODO ESM
-const {readFileSync, pathExistsSync} = fs;
+const { readFileSync, pathExistsSync } = fs;
 
 /**
  * Redis
@@ -28,7 +28,7 @@ export const AOO_AUTH_PORT: string = process.env.AOO_AUTH_PORT ?? '443';
 export const AOO_CORE_HOST: string = process.env.AOO_CORE_HOST ?? 'core.anyopsos.local';
 export const AOO_CORE_PORT: string = process.env.AOO_CORE_PORT ?? '443';
 
-export const AOO_ANYOPSOS_TYPE: 'filesystem' | 'auth' | 'core' |string = process.env.AOO_ANYOPSOS_TYPE ?? 'core';
+export const AOO_ANYOPSOS_TYPE: 'filesystem' | 'auth' | 'core' | string = process.env.AOO_ANYOPSOS_TYPE ?? 'core';
 export const AOO_BASE_PATH: string = process.env.AOO_BASE_PATH ?? '/var/www';
 
 /**
@@ -37,6 +37,7 @@ export const AOO_BASE_PATH: string = process.env.AOO_BASE_PATH ?? '/var/www';
 export const AOO_SESSION_COOKIE: string = process.env.AOO_SESSION_COOKIE ?? 'anyOpsOS';
 export const AOO_SESSION_COOKIE_SECRET: string = process.env.AOO_SESSION_COOKIE_SECRET ?? 'anyOpsOSSecret';
 export const AOO_UNIQUE_COOKIE_NAME: string = process.env.AOO_UNIQUE_COOKIE_NAME ?? 'uniqueId';
+export const AOO_IMPERSONATE_HEADER: string = 'anyopsos-impersonate';
 
 /**
  * Certificates
@@ -55,3 +56,23 @@ export const SSL_FILESYSTEM_CERT: string = process.env.SSL_FILESYSTEM_CERT ?? DE
 export const SSL_FILESYSTEM_CERT_KEY: string = process.env.SSL_FILESYSTEM_CERT_KEY ?? DEFAULT_CERT_KEY();
 export const SSL_CORE_CERT: string = process.env.SSL_CORE_CERT ?? DEFAULT_CERT();
 export const SSL_CORE_CERT_KEY: string = process.env.SSL_CORE_CERT_KEY ?? DEFAULT_CERT_KEY();
+
+/**
+ * Backend Controllers
+ */
+export const AOO_AUTH_CONTROLLERS: string[] = [
+  `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/apis/auth/index.js')}`,
+  `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/apis/credential/index.js')}`,
+  `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/apis/vault/index.js')}`,
+  `https://${AOO_FILESYSTEM_HOST}:${AOO_FILESYSTEM_PORT}/api/file/${encodeURIComponent('bin/apis/workspace/index.js')}`
+];
+
+export const AOO_FILESYSTEM_CONTROLLERS: string[] = [
+  'apis/config-file/index.js',
+  'apis/file/index.js',
+  'apis/folder/index.js',
+  'apis/loader/index.js'
+];
+
+// List of API Controllers to not load on Code Backend
+export const AOO_NOT_CORE_CONTROLLERS: string[] = ['auth', 'credential', 'vault', 'workspace', 'config-file', 'file', 'folder', 'loader'];

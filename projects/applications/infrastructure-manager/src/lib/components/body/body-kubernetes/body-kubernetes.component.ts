@@ -1,12 +1,12 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import {Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibServiceInjectorService} from '@anyopsos/lib-service-injector';
-import {AnyOpsOSLibNodeTemplateHelpersService} from '@anyopsos/lib-node';
-import {AnyOpsOSExtLibNetdataService, NetdataConnection} from '@anyopsos/ext-lib-netdata';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { Application } from '@anyopsos/lib-application';
+import { AnyOpsOSLibServiceInjectorService } from '@anyopsos/lib-service-injector';
+import { AnyOpsOSLibNodeTemplateHelpersService } from '@anyopsos/lib-node';
+import { AnyOpsOSExtLibNetdataService, NetdataConnection } from '@anyopsos/ext-lib-netdata';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
-import {AnyOpsOSAppInfrastructureManagerNodeMonitorService} from '../../../services/anyopsos-app-infrastructure-manager-node-monitor.service';
+import { AnyOpsOSAppInfrastructureManagerNodeMonitorService } from '../../../services/anyopsos-app-infrastructure-manager-node-monitor.service';
 
 @Component({
   selector: 'aaim-body-kubernetes',
@@ -21,9 +21,9 @@ export class BodyKubernetesComponent implements OnChanges {
 
   monitorConnection: NetdataConnection;
 
-  constructor(//private serviceInjector: AnyOpsOSLibServiceInjectorService,
-              //private Netdata: AnyOpsOSExtLibNetdataService,
-              //private InfrastructureManagerNodeMonitor: AnyOpsOSAppInfrastructureManagerNodeMonitorService,
+  constructor(// private serviceInjector: AnyOpsOSLibServiceInjectorService,
+              // private Netdata: AnyOpsOSExtLibNetdataService,
+              // private InfrastructureManagerNodeMonitor: AnyOpsOSAppInfrastructureManagerNodeMonitorService,
               public readonly LibNodeTemplateHelpers: AnyOpsOSLibNodeTemplateHelpersService) {
 
     // this.Monitor = this.serviceInjector.get('AnyOpsOSAppMonitorService');
@@ -35,18 +35,18 @@ export class BodyKubernetesComponent implements OnChanges {
     // TODO if old dashboard is active on Monitor Application, it will be reseated as well
     if (this.monitorConnection) {
       this.monitorConnection = undefined;
-      //this.Netdata.resetDashboard(changes.netappObject.previousValue);
+      // this.Netdata.resetDashboard(changes.netappObject.previousValue);
     }
 
     // Set Netdata Monitor Dashboard
     if (this.haveMonitor) {
-      //const linkToMonitor = this.Monitor.getConnectionByLink(this.kubernetesObject.info.uuid);
-      //if (linkToMonitor) this.monitorConnection = this.Netdata.newDashboard(linkToMonitor);
+      // const linkToMonitor = this.Monitor.getConnectionByLink(this.kubernetesObject.info.uuid);
+      // if (linkToMonitor) this.monitorConnection = this.Netdata.newDashboard(linkToMonitor);
     }
   }
 
   haveMonitor(): boolean {
-    //return this.InfrastructureManagerNodeMonitor.haveMonitor(this.kubernetesObject);
+    // return this.InfrastructureManagerNodeMonitor.haveMonitor(this.kubernetesObject);
     return false;
   }
 

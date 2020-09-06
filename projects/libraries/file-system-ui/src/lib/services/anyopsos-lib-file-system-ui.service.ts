@@ -1,13 +1,13 @@
-import {Injectable, ViewContainerRef} from '@angular/core';
+import { Injectable, ViewContainerRef } from '@angular/core';
 
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
 
-import {CutCopyFile} from '../types/cut-copy-file';
-import {FileSystemHandler} from '../types/file-system-handler';
-import {SendFileExchange} from '../types/send-file-exchange';
+import { CutCopyFile } from '../types/cut-copy-file';
+import { FileSystemHandler } from '../types/file-system-handler';
+import { SendFileExchange } from '../types/send-file-exchange';
 
 @Injectable({
   providedIn: 'root'
@@ -42,38 +42,38 @@ export class AnyOpsOSLibFileSystemUiService {
   /**
    * handlers by custom Applications
    */
-  private doWithFileHandlers: {[type: string]: { fn: any }} = {};
+  private doWithFileHandlers: { [type: string]: { fn: any } } = {};
 
-  private getFolderHandlers: {[type: string]: { fn: any }} = {};
-  private putFolderHandlers: {[type: string]: { fn: any }} = {};
+  private getFolderHandlers: { [type: string]: { fn: any } } = {};
+  private putFolderHandlers: { [type: string]: { fn: any } } = {};
 
-  private getFileHandlers: {[type: string]: { fn: any }} = {};
-  private deleteFileHandlers: {[type: string]: { fn: any }} = {};
-  private renameFileHandlers: {[type: string]: { fn: any }} = {};
+  private getFileHandlers: { [type: string]: { fn: any } } = {};
+  private deleteFileHandlers: { [type: string]: { fn: any } } = {};
+  private renameFileHandlers: { [type: string]: { fn: any } } = {};
 
-  private moveFileHandlers: {[type: string]: { fn: any }} = {};
-  private copyFileHandlers: {[type: string]: { fn: any }} = {};
+  private moveFileHandlers: { [type: string]: { fn: any } } = {};
+  private copyFileHandlers: { [type: string]: { fn: any } } = {};
 
-  private downloadFileHandlers: {[type: string]: { fn: any }} = {};
-  private uploadFileHandlers: {[type: string]: { fn: any }} = {};
-  private downloadFromURLFileHandlers: {[type: string]: { fn: any }} = {};
+  private downloadFileHandlers: { [type: string]: { fn: any } } = {};
+  private uploadFileHandlers: { [type: string]: { fn: any } } = {};
+  private downloadFromURLFileHandlers: { [type: string]: { fn: any } } = {};
 
   /**
    * Called by custom Applications
    */
   createHandler(handlerType: FileSystemHandler, type: string, fn: (data?) => Promise<any>) {
 
-    if (handlerType === 'do_with_file') this.doWithFileHandlers[type] = {fn};
-    if (handlerType === 'get_folder') this.getFolderHandlers[type] = {fn};
-    if (handlerType === 'put_folder') this.putFolderHandlers[type] = {fn};
-    if (handlerType === 'get_file') this.getFileHandlers[type] = {fn};
-    if (handlerType === 'rename') this.renameFileHandlers[type] = {fn};
-    if (handlerType === 'delete') this.deleteFileHandlers[type] = {fn};
-    if (handlerType === 'move') this.moveFileHandlers[type] = {fn};
-    if (handlerType === 'copy') this.copyFileHandlers[type] = {fn};
-    if (handlerType === 'download') this.downloadFileHandlers[type] = {fn};
-    if (handlerType === 'upload') this.uploadFileHandlers[type] = {fn};
-    if (handlerType === 'download_from_url') this.downloadFromURLFileHandlers[type] = {fn};
+    if (handlerType === 'do_with_file') this.doWithFileHandlers[type] = { fn };
+    if (handlerType === 'get_folder') this.getFolderHandlers[type] = { fn };
+    if (handlerType === 'put_folder') this.putFolderHandlers[type] = { fn };
+    if (handlerType === 'get_file') this.getFileHandlers[type] = { fn };
+    if (handlerType === 'rename') this.renameFileHandlers[type] = { fn };
+    if (handlerType === 'delete') this.deleteFileHandlers[type] = { fn };
+    if (handlerType === 'move') this.moveFileHandlers[type] = { fn };
+    if (handlerType === 'copy') this.copyFileHandlers[type] = { fn };
+    if (handlerType === 'download') this.downloadFileHandlers[type] = { fn };
+    if (handlerType === 'upload') this.uploadFileHandlers[type] = { fn };
+    if (handlerType === 'download_from_url') this.downloadFromURLFileHandlers[type] = { fn };
 
   }
 
@@ -216,7 +216,7 @@ export class AnyOpsOSLibFileSystemUiService {
         data.cutFile = this.dataStore.cutFile;
         data.dstPath = dstPath;
 
-        return  this.moveFileHandlers[connectionType].fn(data).then((cutData: unknown) => {
+        return this.moveFileHandlers[connectionType].fn(data).then((cutData: unknown) => {
 
           // Reset cutFrom
           this.dataStore.cutFile = null;

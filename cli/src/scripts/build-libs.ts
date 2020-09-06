@@ -1,10 +1,10 @@
 import fs from 'fs-extra';
 
 // TODO ESM
-const {readFile} = fs;
+const { readFile } = fs;
 
-import {runInDocker} from '../utils.js';
-import {INTERNAL_PATH_CWD} from '../constants.js';
+import { runInDocker } from '../utils.js';
+import { INTERNAL_PATH_CWD } from '../constants.js';
 
 const projectInOrder = [
   'anyopsos-lib-angular-material',

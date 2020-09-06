@@ -1,22 +1,22 @@
 import bluebird from 'bluebird';
-import {Client as ClientSsh, ClientChannel, ExecOptions, SFTPWrapper} from 'ssh2';
+import { Client as ClientSsh, ClientChannel, ExecOptions, SFTPWrapper } from 'ssh2';
 import * as ssh2 from 'ssh2';
 import validator from 'validator';
 
 // TODO ESM
-const {Client} = ssh2;
-const {promisifyAll} = bluebird;
+const { Client } = ssh2;
+const { promisifyAll } = bluebird;
 
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {AnyOpsOSCredentialModule} from '@anyopsos/module-credential';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { AnyOpsOSCredentialModule } from '@anyopsos/module-credential';
 
-import {ConnectionSsh} from './types/connection-ssh';
-import {ConnectionSshServer} from './types/connection-ssh-server';
-import {AsyncSFTPWrapper} from './types/async-sftp-wrapper';
-import {WorkspaceToSshMap} from './types/workspace-to-ssh-map';
-import {UserToWorkspaceToSftpMap} from './types/user-to-workspace-to-sftp-map';
+import { ConnectionSsh } from './types/connection-ssh';
+import { ConnectionSshServer } from './types/connection-ssh-server';
+import { AsyncSFTPWrapper } from './types/async-sftp-wrapper';
+import { WorkspaceToSshMap } from './types/workspace-to-ssh-map';
+import { UserToWorkspaceToSftpMap } from './types/user-to-workspace-to-sftp-map';
 
-import {SSH_ALGORITHMS, SSH_CONFIG_FILE, SSH_PORT} from './anyopsos-module-ssh.constants';
+import { SSH_ALGORITHMS, SSH_CONFIG_FILE, SSH_PORT } from './anyopsos-module-ssh.constants';
 
 
 const sshSessions: WorkspaceToSshMap = {};
@@ -51,19 +51,19 @@ export class AnyOpsOSSshSessionStateModule {
       // TODO dynamic srcPort
       // TODO connect if not connected
       await sshSessions[this.workspaceUuid][connectionData.hopServerUuid].forwardOut('127.0.0.1', 12345, mainServer.host, mainServer.port,
-        async (e: Error | undefined, stream: ClientChannel | undefined) => {
-        if (e) throw e;
+                                                                                     async (e: Error | undefined, stream: ClientChannel | undefined) => {
+          if (e) throw e;
 
-        await sshSessions[this.workspaceUuid][this.connectionUuid].connect({
-          sock: stream,
-          username: mainServer.credential.username,
-          password: mainServer.credential.password,
-          tryKeyboard: true,
-          algorithms: SSH_ALGORITHMS
+          await sshSessions[this.workspaceUuid][this.connectionUuid].connect({
+            sock: stream,
+            username: mainServer.credential.username,
+            password: mainServer.credential.password,
+            tryKeyboard: true,
+            algorithms: SSH_ALGORITHMS
+          });
         });
-      });
 
-    // Normal connection
+      // Normal connection
     } else {
 
       await sshSessions[this.workspaceUuid][this.connectionUuid].connect({
@@ -122,7 +122,7 @@ export class AnyOpsOSSshSessionStateModule {
 
     return {
       host: connectionData.host,
-      port: (validator.isInt(connectionData.port.toString(), {min: 1, max: 65535}) && connectionData.port) || SSH_PORT,
+      port: (validator.isInt(connectionData.port.toString(), { min: 1, max: 65535 }) && connectionData.port) || SSH_PORT,
       credential: await this.CredentialModule.getCredential(connectionData.credential)
     };
 

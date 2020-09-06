@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
-import {FormGroup, FormBuilder, AbstractControl, Validators} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, AbstractControl, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {VaultState} from '@anyopsos/module-vault';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { VaultState } from '@anyopsos/module-vault';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 interface InitializeResult {
   keys: string[]; keys_base64: string[]; root_token: string; successCreated: boolean; userUuid: string; password: string;

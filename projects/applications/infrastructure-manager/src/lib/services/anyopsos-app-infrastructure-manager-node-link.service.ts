@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
-import {ConnectionNetapp, NetAppIface, NetAppVolume, NetAppVserver} from '@anyopsos/module-node-netapp';
-import {VMWareDatastore} from '@anyopsos/module-node-vmware';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { AnyOpsOSLibNodeHelpersService } from '@anyopsos/lib-node';
+import { ConnectionNetapp, NetAppIface, NetAppVolume, NetAppVserver } from '@anyopsos/module-node-netapp';
+import { VMWareDatastore } from '@anyopsos/module-node-vmware';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
 @Injectable({
   providedIn: 'root'
@@ -47,13 +47,13 @@ export class AnyOpsOSAppInfrastructureManagerNodeLinkService {
         const netIfaces: (DataObject & { info: { data: NetAppIface } })[] = this.LibNodeHelpers.getObjectsByType(storageObj.uuid, 'netapp', 'netiface');
 
         const foundInterface: DataObject & { info: { data: NetAppIface } } = netIfaces.filter((ifaceObj: DataObject & { info: { data: NetAppIface } }) => {
-          return ifaceObj.info.data.address ===  datastoreObj.info.data.info.nas.remoteHost &&
+          return ifaceObj.info.data.address === datastoreObj.info.data.info.nas.remoteHost &&
             ifaceObj.info.data['data-protocols']['data-protocol'] === (
               datastoreObj.info.data.info.nas.type === 'NFS41' ||
-              datastoreObj.info.data.info.nas.type === 'NFS' ? 'nfs' :
+                datastoreObj.info.data.info.nas.type === 'NFS' ? 'nfs' :
                 datastoreObj.info.data.info.nas.type
             );
-          })[0];
+        })[0];
 
         // If not found any storage interface matching, return
         if (!foundInterface) continue;
@@ -67,7 +67,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeLinkService {
             vserverObj.info.data['allowed-protocols'].protocol.includes(
               (datastoreObj.info.data.info.nas.type === 'NFS41' || datastoreObj.info.data.info.nas.type === 'NFS' ? 'nfs' : datastoreObj.info.data.info.nas.type)
             );
-          })[0];
+        })[0];
 
         if (!foundVserver) continue;
 

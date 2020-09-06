@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {graphlib, layout as dagreLayout} from 'dagre';
+import { graphlib, layout as dagreLayout } from 'dagre';
 
-import {AnyOpsOSLibUtilsService} from '@anyopsos/lib-utils';
+import { AnyOpsOSLibUtilsService } from '@anyopsos/lib-utils';
 
 import {
   DEFAULT_MARGINS,
@@ -14,13 +14,13 @@ import {
   RANK_SEPARATION_FACTOR
 } from '../anyopsos-lib-diagram.constants';
 
-import {LayoutOptions} from '../types/layout-options';
-import {LayoutEdge} from '../types/layout-edge';
-import {LayoutNode} from '../types/layout-node';
-import {Layout} from '../types/layout';
-import {TopologyOption} from '../types/topology-option';
-import {TopologyCache} from '../types/topology-cache';
-import {NodeCache} from '../types/node-cache';
+import { LayoutOptions } from '../types/layout-options';
+import { LayoutEdge } from '../types/layout-edge';
+import { LayoutNode } from '../types/layout-node';
+import { Layout } from '../types/layout';
+import { TopologyOption } from '../types/topology-option';
+import { TopologyCache } from '../types/topology-cache';
+import { NodeCache } from '../types/node-cache';
 
 
 const topologyCaches: TopologyCache[] = [];
@@ -32,6 +32,43 @@ export class AnyOpsOSLibDiagramLayoutService {
 
   constructor(private readonly LibUtils: AnyOpsOSLibUtilsService) {
     this.doLayout = this.doLayout.bind(this);
+  }
+
+  private static euclideanDistance(pointA: LayoutNode, pointB: LayoutNode): number {
+    const dx = pointA.x - pointB.x;
+    const dy = pointA.y - pointB.y;
+
+    return Math.sqrt((dx * dx) + (dy * dy));
+  }
+
+  private static graphNodeId(id: string): string {
+    return id.replace('.', '<DOT>');
+  }
+
+  private static fromGraphNodeId(encodedId: string): string {
+    return encodedId.replace('<DOT>', '.');
+  }
+
+  /**
+   * Determine if nodes were added between node sets
+   * @param nodes     new Map of nodes
+   * @param cache     old Map of nodes
+   * @return True if nodes had node ids that are not in cache
+   */
+  private static hasUnseenNodes(nodes: LayoutNode[], cache: NodeCache[]): boolean {
+    const cacheIds: string[] = cache.map(n => n.id);
+    return nodes.length > cache.length || !nodes.map(n => n.id).every(id => cacheIds.includes(id));
+  }
+
+  /**
+   * Clones a previous layout
+   * @param layout Layout object
+   * @param nodes  new nodes
+   * @param edges  new edges
+   * @return layout clone
+   */
+  private static cloneLayout(layout: Layout, nodes: LayoutNode[], edges: LayoutEdge[]): Layout {
+    return Object.assign({}, layout, { edges, nodes });
   }
 
   private buildTopologyCacheId(topologyId: string, topologyOptions: TopologyOption[]): string {
@@ -63,13 +100,6 @@ export class AnyOpsOSLibDiagramLayoutService {
     return [...Array(size).keys()].map(index => array[parseInt(String(index * (array.length / (size - (1 - 1e-9)))), 10)]);
   }
 
-  private static euclideanDistance(pointA: LayoutNode, pointB: LayoutNode): number {
-    const dx = pointA.x - pointB.x;
-    const dy = pointA.y - pointB.y;
-
-    return Math.sqrt((dx * dx) + (dy * dy));
-  }
-
   private minEuclideanDistanceBetweenPoints(points: LayoutNode[]): number {
     let minDistance = Infinity;
     points.forEach((pointA) => {
@@ -84,21 +114,13 @@ export class AnyOpsOSLibDiagramLayoutService {
     return minDistance;
   }
 
-  private static graphNodeId(id: string): string {
-    return id.replace('.', '<DOT>');
-  }
-
-  private static fromGraphNodeId(encodedId: string): string {
-    return encodedId.replace('<DOT>', '.');
-  }
-
   // Adds some additional waypoints to the edge to make sure the it connects the node
   // centers and that the edge enters the target node relatively straight so that the
   // arrow is drawn correctly. The total number of waypoints is capped to EDGE_WAYPOINTS_CAP.
   private correctedEdgePath(waypoints: { x: number; y: number; }[], source: LayoutNode, target: LayoutNode): { x: number; y: number; }[] {
     // Get the relevant waypoints that will be added/replicated.
-    const sourcePoint: { x: number; y: number; } = {x: source.x, y: source.y};
-    const targetPoint: { x: number; y: number; } = {x: target.x, y: target.y};
+    const sourcePoint: { x: number; y: number; } = { x: source.x, y: source.y };
+    const targetPoint: { x: number; y: number; } = { x: target.x, y: target.y };
     const entrancePoint: { x: number; y: number; } = waypoints.slice(-1).pop();
 
     if (target !== source) {
@@ -122,7 +144,7 @@ export class AnyOpsOSLibDiagramLayoutService {
       // make them smoother and, of course, we cap the total number of waypoints.
       waypoints = this.uniformSelect(waypoints, EDGE_WAYPOINTS_CAP);
       waypoints[0] = sourcePoint;
-      waypoints[waypoints.length - 1] =targetPoint;
+      waypoints[waypoints.length - 1] = targetPoint;
     }
 
     return waypoints;
@@ -148,7 +170,7 @@ export class AnyOpsOSLibDiagramLayoutService {
     const graphWidth: number = layout.graphWidth || layout.width;
     const aspectRatio: number = graphHeight ? graphWidth / graphHeight : 1;
 
-    let {nodes} = layout;
+    let { nodes } = layout;
 
     // 0-degree nodes
     const singleNodes: LayoutNode[] = nodes.filter(node => node.degree === 0);
@@ -197,7 +219,7 @@ export class AnyOpsOSLibDiagramLayoutService {
           singleY = (row * (rankSep + nodeHeight)) + offsetY;
           col += 1;
 
-          return {...node, x: singleX, y: singleY};
+          return { ...node, x: singleX, y: singleY };
         }
         return node;
       });
@@ -222,8 +244,8 @@ export class AnyOpsOSLibDiagramLayoutService {
    * @return Layout with nodes, edges, dimensions
    */
   private runLayoutEngine(graph: graphlib.Graph, imNodes: LayoutNode[], imEdges: LayoutEdge[], opts: LayoutOptions): Layout {
-    let nodes: LayoutNode[] = imNodes;
-    let edges: LayoutEdge[] = imEdges;
+    const nodes: LayoutNode[] = imNodes;
+    const edges: LayoutEdge[] = imEdges;
 
     const rankSep: number = RANK_SEPARATION_FACTOR;
     const nodeSep: number = NODE_SEPARATION_FACTOR;
@@ -263,7 +285,7 @@ export class AnyOpsOSLibDiagramLayoutService {
 
       if (!graph.hasEdge(s, t)) {
         const virtualNodes: 1 | 0 = s === t ? 1 : 0;
-        graph.setEdge(s, t, {id: edge.id, minlen: virtualNodes});
+        graph.setEdge(s, t, { id: edge.id, minlen: virtualNodes });
       }
     });
 
@@ -278,7 +300,7 @@ export class AnyOpsOSLibDiagramLayoutService {
     });
 
     // @ts-ignore
-    dagreLayout(graph, {debugTiming: false});
+    dagreLayout(graph, { debugTiming: false });
 
     // apply coordinates to nodes and edges
     graph.nodes().forEach((gNodeId) => {
@@ -298,7 +320,7 @@ export class AnyOpsOSLibDiagramLayoutService {
       edges.find(e => e.id === graphEdgeMeta.id).points = this.correctedEdgePath(graphEdgeMeta.points, source, target);
     });
 
-    const {width, height} = graph.graph();
+    const { width, height } = graph.graph();
 
     let layout: Layout = {
       nodes,
@@ -327,8 +349,8 @@ export class AnyOpsOSLibDiagramLayoutService {
     const target: NodeCache = nodeCache.find(n => n.id === edge.target);
 
     edge.points = [
-      {x: source.x, y: source.y},
-      {x: target.x, y: target.y}
+      { x: source.x, y: source.y },
+      { x: target.x, y: target.y }
     ];
 
     return edge;
@@ -360,7 +382,7 @@ export class AnyOpsOSLibDiagramLayoutService {
         if (nodesSameRank.length > 0) {
           const y: number = nodesSameRank[0].y;
           const x: number = Math.max(...nodesSameRank.map(nn => nn.x), 0) + nodeSep + nodeWidth;
-          return {...n, x, y}
+          return { ...n, x, y }
         }
 
         return n;
@@ -376,17 +398,6 @@ export class AnyOpsOSLibDiagramLayoutService {
     });
 
     return result;
-  }
-
-  /**
-   * Determine if nodes were added between node sets
-   * @param nodes     new Map of nodes
-   * @param cache     old Map of nodes
-   * @return True if nodes had node ids that are not in cache
-   */
-  private static hasUnseenNodes(nodes: LayoutNode[], cache: NodeCache[]): boolean {
-    const cacheIds: string[] = cache.map(n => n.id);
-    return nodes.length > cache.length || !nodes.map(n => n.id).every(id => cacheIds.includes(id));
   }
 
   /**
@@ -436,9 +447,9 @@ export class AnyOpsOSLibDiagramLayoutService {
    * @return True if old and new endpoints have same coordinates
    */
   private hasSameEndpoints(cachedEdge: LayoutEdge, nodes: LayoutNode[]): boolean {
-    const oldPoints: { x: number; y:number; }[] = cachedEdge.points;
-    const oldSourcePoint: { x: number; y:number; } = oldPoints[0];
-    const oldTargetPoint: { x: number; y:number; } = oldPoints.slice(-1).pop();
+    const oldPoints: { x: number; y: number; }[] = cachedEdge.points;
+    const oldSourcePoint: { x: number; y: number; } = oldPoints[0];
+    const oldTargetPoint: { x: number; y: number; } = oldPoints.slice(-1).pop();
     const newSource: LayoutNode = nodes.find(n => n.id === cachedEdge.source);
     const newTarget: LayoutNode = nodes.find(n => n.id === cachedEdge.target);
 
@@ -447,17 +458,6 @@ export class AnyOpsOSLibDiagramLayoutService {
       && oldSourcePoint.y === newSource.y
       && oldTargetPoint.x === newTarget.x
       && oldTargetPoint.y === newTarget.y);
-  }
-
-  /**
-   * Clones a previous layout
-   * @param layout Layout object
-   * @param nodes  new nodes
-   * @param edges  new edges
-   * @return layout clone
-   */
-  private static cloneLayout(layout: Layout, nodes: LayoutNode[], edges: LayoutEdge[]): Layout {
-    return Object.assign({}, layout, {edges, nodes});
   }
 
   /**
@@ -471,11 +471,11 @@ export class AnyOpsOSLibDiagramLayoutService {
   private copyLayoutProperties(layout: Layout, nodeCache: NodeCache[], edgeCache: LayoutEdge[]): Layout {
     const result: Layout = Object.assign({}, layout);
 
-    result.nodes = layout.nodes.map(node => (nodeCache.some(n => n.id === node.id) ? {...node, ...nodeCache.find(n => n.id === node.id)} : node));
+    result.nodes = layout.nodes.map(node => (nodeCache.some(n => n.id === node.id) ? { ...node, ...nodeCache.find(n => n.id === node.id) } : node));
     result.edges = layout.edges.map((edge) => {
 
       if (edgeCache.some(e => e.id === edge.id) && this.hasSameEndpoints(edgeCache.find(e => e.id === edge.id), result.nodes)) {
-        return {...edge, ...edgeCache.find(e => e.id === edge.id)};
+        return { ...edge, ...edgeCache.find(e => e.id === edge.id) };
       }
 
       if (nodeCache.some(n => n.id === edge.source) && nodeCache.some(n => n.id === edge.target)) {
@@ -565,7 +565,7 @@ export class AnyOpsOSLibDiagramLayoutService {
       // only cache layout-related properties
       // NB: These properties must be immutable wrt a given node because properties of updated nodes
       // will be overwritten with the cached values, see copyLayoutProperties()
-      cache.nodeCache = [...cache.nodeCache, ...layout.nodes.map(({id, x, y, rank}) => ({id, x, y, rank}))];
+      cache.nodeCache = [...cache.nodeCache, ...layout.nodes.map(({ id, x, y, rank }) => ({ id, x, y, rank }))];
       cache.edgeCache = [...cache.edgeCache, ...layout.edges];
     }
 

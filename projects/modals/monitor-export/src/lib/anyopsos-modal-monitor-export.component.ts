@@ -1,10 +1,10 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 
-import {MAT_DIALOG_DATA, MatDialogRef} from '@anyopsos/lib-angular-material';
-import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
-import {ConnectionMonitor} from '@anyopsos/module-monitor';
-import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@anyopsos/lib-angular-material';
+import { BodyComponent, ModalData } from '@anyopsos/lib-modal';
+import { ConnectionMonitor } from '@anyopsos/module-monitor';
+import { AnyOpsOSLibFileSystemService } from '@anyopsos/lib-file-system';
 
 @Component({
   selector: 'ammonitor-export-anyopsos-modal-monitor-export',
@@ -12,7 +12,7 @@ import {AnyOpsOSLibFileSystemService} from '@anyopsos/lib-file-system';
   styleUrls: ['./anyopsos-modal-monitor-export.component.scss']
 })
 export class AnyOpsOSModalMonitorExportComponent implements OnInit {
-  @ViewChild('modalBody', {static: true}) modalBody: BodyComponent;
+  @ViewChild('modalBody', { static: true }) modalBody: BodyComponent;
 
   connection: ConnectionMonitor;
 
@@ -243,7 +243,7 @@ export class AnyOpsOSModalMonitorExportComponent implements OnInit {
 
         if (this.chartsFailed) this.progressType = 'danger';
         // tslint:disable-next-line:max-line-length
-        this.progressText  = 'Current chart: ' + this.progressCurrentId + '. Generated snapshot data size <b>' + (Math.round(this.totalSnapshotSize * 100 / 1024 / 1024) / 100) + ' MB</b>. ' + ((this.chartsFailed) ? (this.chartsFailed + ' charts have failed to be downloaded') : '') + info;
+        this.progressText = 'Current chart: ' + this.progressCurrentId + '. Generated snapshot data size <b>' + (Math.round(this.totalSnapshotSize * 100 / 1024 / 1024) / 100) + ' MB</b>. ' + ((this.chartsFailed) ? (this.chartsFailed + ' charts have failed to be downloaded') : '') + info;
 
         if (idx > 0) {
           this.updateChart(idx);
@@ -260,7 +260,7 @@ export class AnyOpsOSModalMonitorExportComponent implements OnInit {
           this.saveData = null;
         }
       });
-    }, 0);
+    },         0);
   }
 
   private pack_api1_v1_chart_data(state) {
@@ -320,10 +320,13 @@ export class AnyOpsOSModalMonitorExportComponent implements OnInit {
       el.innerHTML = '';
       el.appendChild(link);
 
-      setTimeout(() => {
-        el.removeChild(link);
-        URL.revokeObjectURL(url);
-      }, 60);
+      setTimeout(
+        () => {
+          el.removeChild(link);
+          URL.revokeObjectURL(url);
+        },
+        60
+      );
 
       link.click();
     }

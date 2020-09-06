@@ -1,12 +1,12 @@
 import socketControllers from 'socket-controllers';
 
 // TODO ESM
-const {getSocketIO} = socketControllers;
+const { getSocketIO } = socketControllers;
 
-import {AnyOpsOSConfigFileModule} from '@anyopsos/module-config-file';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { AnyOpsOSConfigFileModule } from '@anyopsos/module-config-file';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
-import {VMWARE_CONFIG_FILE} from './anyopsos-module-node-vmware.constants';
+import { VMWARE_CONFIG_FILE } from './anyopsos-module-node-vmware.constants';
 
 export class AnyOpsOSNodeVmwareDataRefresherModule {
 

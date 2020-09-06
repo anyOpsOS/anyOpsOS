@@ -1,14 +1,13 @@
-import {Injectable, ViewContainerRef} from '@angular/core';
+import { Injectable, ViewContainerRef } from '@angular/core';
 
-import {BehaviorSubject, Observable} from 'rxjs';
-import {v4 as uuidv4} from 'uuid';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
-import {AnyOpsOSLibModalService} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibSshConnectionsStateService, AnyOpsOSLibSshHelpersService, AnyOpsOSLibSshService} from '@anyopsos/lib-ssh';
-import {ConnectionSftp} from '@anyopsos/module-ssh';
-import {take} from 'rxjs/operators';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
+import { AnyOpsOSLibModalService } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibSshConnectionsStateService, AnyOpsOSLibSshHelpersService, AnyOpsOSLibSshService } from '@anyopsos/lib-ssh';
+import { ConnectionSftp } from '@anyopsos/module-ssh';
 
 @Injectable({
   providedIn: 'root'
@@ -142,7 +141,9 @@ export class AnyOpsOSAppSftpService {
     if (!connectionUuid) connectionUuid = this.dataStore.activeConnectionUuid;
 
     const currentConnection: ConnectionSftp = this.LibSshHelpers.getConnectionByUuid(connectionUuid, 'sftp') as ConnectionSftp;
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.bodyContainer,
       {
         title: `Delete connection ${currentConnection.description}`,
         text: 'Remove the selected connection from the inventory?',
@@ -152,8 +153,7 @@ export class AnyOpsOSAppSftpService {
         boxContent: 'This action is permanent. Anything using this connection as a dependency will be deleted as well.',
         boxClass: 'text-danger',
         boxIcon: 'fa-exclamation-triangle'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (result: boolean): Promise<void> => {
       if (result !== true) return;
@@ -172,7 +172,9 @@ export class AnyOpsOSAppSftpService {
     const currentConnection: ConnectionSftp = await this.LibSshHelpers.getConnectionByUuid(connectionUuid, 'sftp') as ConnectionSftp;
     if (currentConnection.state !== 'ready') return this.setActiveConnectionUuid(connectionUuid);
 
-    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal('question', this.bodyContainer,
+    const modalInstance: MatDialogRef<any> = await this.LibModal.openRegisteredModal(
+      'question',
+      this.bodyContainer,
       {
         title: `Edit connection ${currentConnection.description}`,
         text: 'Your connection will be disconnected before editing it. Continue?',
@@ -182,8 +184,7 @@ export class AnyOpsOSAppSftpService {
         boxContent: 'Anything using this as a dependency will be disconnected.',
         boxClass: 'text-danger',
         boxIcon: 'fa-exclamation-triangle'
-      }
-    );
+      });
 
     modalInstance.afterClosed().subscribe(async (result: boolean): Promise<void> => {
       if (result !== true) return;

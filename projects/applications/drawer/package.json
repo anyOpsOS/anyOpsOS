@@ -6,6 +6,10 @@
     "@angular/core": "~10.0.11",
     "tslib": "^2.0.0"
   },
+  "devDependencies": {
+    "@angular/platform-browser-dynamic": "~10.0.11",
+    "zone.js": "~0.10.3"
+  },
   "dependencies": {
     "draw.io": "git+https://github.com/jgraph/drawio.git"
   },

@@ -1,4 +1,4 @@
-import {ModuleWithComponentFactories, NgModuleRef} from '@angular/core';
+import { ModuleWithComponentFactories, NgModuleRef } from '@angular/core';
 
 export interface Modal {
   uuid: string;

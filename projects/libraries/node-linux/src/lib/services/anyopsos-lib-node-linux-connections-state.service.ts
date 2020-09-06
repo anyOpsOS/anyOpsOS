@@ -67,19 +67,20 @@ export class AnyOpsOSLibNodeLinuxConnectionsStateService {
         // Update state
         connectionsData.data.forEach((connection: ConnectionLinux) => this.putConnection(connection, false));
       },
-      async (error) => {
+                 async (error) => {
 
         // If config file not exist, create a new one and try again
         if (error.data === 'resource_not_found') {
 
-          await this.LibFileSystem.putConfigFile([], LINUX_CONFIG_FILE).subscribe((res: BackendResponse) => {
-            if (res.status === 'error') throw res.data;
+          await this.LibFileSystem.putConfigFile([], LINUX_CONFIG_FILE).subscribe(
+            (res: BackendResponse) => {
+              if (res.status === 'error') throw res.data;
 
-            return this.initConnections();
-          },
-          error => {
-            this.logger.error('LibNodeLinux', 'Error while getting connections', null, error);
-            this.logger.error('LibNodeLinux', 'Error while creating configuration file', null, error);
+              return this.initConnections();
+            },
+            err => {
+              this.logger.error('LibNodeLinux', 'Error while getting connections', null, err);
+              this.logger.error('LibNodeLinux', 'Error while creating configuration file', null, err);
           });
         } else {
           this.logger.error('LibNodeLinux', 'Error while getting connections', null, error);
@@ -169,7 +170,7 @@ export class AnyOpsOSLibNodeLinuxConnectionsStateService {
 
     return new Promise(async (resolve, reject) => {
 
-      let fileSystemObservable: Observable<Object>;
+      let fileSystemObservable: Observable<{ [key: string]: any }>;
 
       if (type === 'put') fileSystemObservable = this.LibFileSystem.putConfigFile(currentConnection, LINUX_CONFIG_FILE, currentConnection.uuid);
       if (type === 'patch') fileSystemObservable = this.LibFileSystem.patchConfigFile(currentConnection, LINUX_CONFIG_FILE, currentConnection.uuid);
@@ -184,7 +185,7 @@ export class AnyOpsOSLibNodeLinuxConnectionsStateService {
           this.logger.debug('LibNodeLinux', 'Saved connection successfully', loggerArgs);
           return resolve(res.data);
         },
-        error => {
+                                     error => {
           this.logger.error('LibNodeLinux', 'Error while saving connection', loggerArgs, error);
           return reject(error);
         });

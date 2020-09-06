@@ -7,11 +7,21 @@
     "tslib": "^2.0.0",
     "rxjs": "~6.6.0"
   },
+  "devDependencies": {
+    "@angular/platform-browser-dynamic": "~10.0.11",
+    "zone.js": "~0.10.3",
+    "@anyopsos/module-node-netapp": "~0.0.1",
+    "@anyopsos/module-node-vmware": "~0.0.1",
+    "@anyopsos/backend-core": "~0.0.1"
+  },
   "dependencies": {
+    "uuid": "^8.3.0",
+    "@anyopsos/lib-angular-material": "~0.0.1",
     "@anyopsos/lib-application": "~0.0.1",
     "@anyopsos/lib-file-system": "~0.0.1",
     "@anyopsos/lib-logger": "~0.0.1",
     "@anyopsos/lib-modal": "~0.0.1",
+    "@anyopsos/lib-node": "~0.0.1",
     "@anyopsos/lib-node-netapp": "~0.0.1",
     "@anyopsos/lib-node-vmware": "~0.0.1"
   },

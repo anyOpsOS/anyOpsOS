@@ -14,14 +14,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {isEqual} from 'lodash-es';
+import { isEqual } from 'lodash-es';
 
-import {AnyOpsOSLibDiagramStateService} from '../services/anyopsos-lib-diagram-state.service';
-import {AnyOpsOSLibDiagramInitializerService} from '../services/anyopsos-lib-diagram-initializer.service';
-import {Node} from '../types/node';
-import {filter, flatMap, isEmpty} from 'rxjs/operators';
+import { AnyOpsOSLibDiagramStateService } from '../services/anyopsos-lib-diagram-state.service';
+import { AnyOpsOSLibDiagramInitializerService } from '../services/anyopsos-lib-diagram-initializer.service';
+import { Node } from '../types/node';
+import { filter, flatMap, isEmpty } from 'rxjs/operators';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -31,7 +31,7 @@ import {filter, flatMap, isEmpty} from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnyOpsOSLibDiagramComponent implements OnInit, AfterViewInit, OnChanges {
-  @ViewChild('diagramApp', {static: false}) private readonly diagramApp: ElementRef;
+  @ViewChild('diagramApp', { static: false }) private readonly diagramApp: ElementRef;
   @Input() private readonly graphNodes: Node[];
   @Input() private readonly graphTopologies;
   @Input() readonly simpleLayout: boolean = false;

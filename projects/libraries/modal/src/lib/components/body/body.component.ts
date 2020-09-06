@@ -1,6 +1,6 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import {MatDialogRef} from '@anyopsos/lib-angular-material';
+import { MatDialogRef } from '@anyopsos/lib-angular-material';
 
 @Component({
   selector: 'almodal-body',

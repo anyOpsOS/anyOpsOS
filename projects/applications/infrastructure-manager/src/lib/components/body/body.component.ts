@@ -1,21 +1,21 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 
-import {Observable, of as observableOf, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Observable, of as observableOf, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {MatTreeFlatDataSource, MatTreeFlattener, MatMenuTrigger, FlatTreeControl} from '@anyopsos/lib-angular-material';
-import {Application} from '@anyopsos/lib-application';
-import {AnyOpsOSLibUtilsService} from '@anyopsos/lib-utils';
-import {ContextMenuItem} from '@anyopsos/lib-types';
-import {AnyOpsOSLibNodeTemplateHelpersService} from '@anyopsos/lib-node';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
-import {ConnectionTypes} from '@anyopsos/backend-core/app/types/connection-types';
+import { MatTreeFlatDataSource, MatTreeFlattener, MatMenuTrigger, FlatTreeControl } from '@anyopsos/lib-angular-material';
+import { Application } from '@anyopsos/lib-application';
+import { AnyOpsOSLibUtilsService } from '@anyopsos/lib-utils';
+import { ContextMenuItem } from '@anyopsos/lib-types';
+import { AnyOpsOSLibNodeTemplateHelpersService } from '@anyopsos/lib-node';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
+import { ConnectionTypes } from '@anyopsos/backend-core/app/types/connection-types';
 
-import {AnyOpsOSAppInfrastructureManagerService} from '../../services/anyopsos-app-infrastructure-manager.service';
-import {AnyOpsOSAppInfrastructureManagerTreeDataService} from '../../services/anyopsos-app-infrastructure-manager-tree-data.service';
-import {AnyOpsOSAppInfrastructureManagerContextMenusService} from '../../services/anyopsos-app-infrastructure-manager-context-menus.service';
+import { AnyOpsOSAppInfrastructureManagerService } from '../../services/anyopsos-app-infrastructure-manager.service';
+import { AnyOpsOSAppInfrastructureManagerTreeDataService } from '../../services/anyopsos-app-infrastructure-manager-tree-data.service';
+import { AnyOpsOSAppInfrastructureManagerContextMenusService } from '../../services/anyopsos-app-infrastructure-manager-context-menus.service';
 
-import {ImTreeNode} from '../../types/im-tree-node';
+import { ImTreeNode } from '../../types/im-tree-node';
 
 interface InfrastructureManagerFlatNode {
   expandable: boolean;
@@ -31,8 +31,8 @@ interface InfrastructureManagerFlatNode {
   styleUrls: ['./body.component.scss']
 })
 export class BodyComponent implements OnInit, OnDestroy {
-  @ViewChild('bodyContainer', {static: true, read: ViewContainerRef}) private readonly bodyContainer: ViewContainerRef;
-  @ViewChild(MatMenuTrigger, {static: false}) readonly contextMenuTree: MatMenuTrigger;
+  @ViewChild('bodyContainer', { static: true, read: ViewContainerRef }) private readonly bodyContainer: ViewContainerRef;
+  @ViewChild(MatMenuTrigger, { static: false }) readonly contextMenuTree: MatMenuTrigger;
   @Input() readonly application: Application;
 
   private readonly destroySubject$: Subject<void> = new Subject();
@@ -42,7 +42,7 @@ export class BodyComponent implements OnInit, OnDestroy {
   activeConnectionUuid: string | null = null;
   activeObjectUuid: string | null = null;
 
-  contextMenuPosition = {x: '0px', y: '0px'};
+  contextMenuPosition = { x: '0px', y: '0px' };
 
   private contextMenus: { [s: string]: ContextMenuItem[]; };
 

@@ -1,23 +1,23 @@
-import {join} from 'path';
+import { join } from 'path';
 import fs from 'fs-extra';
 import log4js from 'log4js';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import properLockfile from 'proper-lockfile';
 
 // TODO ESM
-const {pathExistsSync, readJSON, unlink, writeJson} = fs;
-const {getLogger} = log4js;
-const {lock} = properLockfile;
+const { pathExistsSync, readJSON, unlink, writeJson } = fs;
+const { getLogger } = log4js;
+const { lock } = properLockfile;
 
-import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
-import {AnyOpsOSSysWorkspaceModule} from '@anyopsos/module-sys-workspace';
+import { AnyOpsOSSysGetPathModule } from '@anyopsos/module-sys-get-path';
+import { AnyOpsOSSysWorkspaceModule } from '@anyopsos/module-sys-workspace';
 
-import {ApiCaller} from './decorators/api-caller'
+import { ApiCaller } from './decorators/api-caller'
 
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
-import {ConfigFile} from './types/config-file';
-import {ConfigFileData} from './types/config-file-data';
 import { Workspace } from '@anyopsos/module-sys-workspace/src/lib/types/workspace';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
+import { ConfigFile } from './types/config-file';
+import { ConfigFileData } from './types/config-file-data';
 
 
 const logger = getLogger('mainLog');
@@ -50,7 +50,7 @@ export class AnyOpsOSConfigFileModule {
     return writeJson(
       configPath,
       fileData,
-      {spaces: 2}
+      { spaces: 2 }
     ).then(() => {
       return releaseLock();
     }).catch((e) => {
@@ -216,7 +216,7 @@ export class AnyOpsOSConfigFileModule {
 
       return fileData;
 
-    } catch(e) {
+    } catch (e) {
       logger.error(`[Module ConfigFile] -> put -> ${e}`);
 
       releaseLock();
@@ -310,7 +310,7 @@ export class AnyOpsOSConfigFileModule {
       /**
        * By data object uuid
        */
-      const {data: DOdata} = configFile[itemIndex];
+      const { data: DOdata } = configFile[itemIndex];
 
       if (!DOdata?.Data) throw new Error('resource_invalid');
 
@@ -326,7 +326,7 @@ export class AnyOpsOSConfigFileModule {
       await this.writeJsonAndRelease(configPath, configFile, releaseLock);
 
       return { uuid: fileData.info.uuid };
-    } catch(e) {
+    } catch (e) {
       logger.error(`[Module ConfigFile] -> patch -> ${e}`);
 
       releaseLock();
@@ -392,7 +392,7 @@ export class AnyOpsOSConfigFileModule {
       /**
        * By data object uuid
        */
-      const {data: DOdata} = configFile[itemIndex];
+      const { data: DOdata } = configFile[itemIndex];
 
       if (!DOdata?.Data) throw new Error('resource_invalid');
       const dataIndex: number = DOdata.Data.findIndex((entry: DataObject) => entry.info.uuid === dataUuid);
@@ -404,7 +404,7 @@ export class AnyOpsOSConfigFileModule {
         DOdata.Data.findIndex((i: DataObject) => i.info.uuid === dataUuid), 1);
 
       return this.writeJsonAndRelease(configPath, configFile, releaseLock);
-    } catch(e) {
+    } catch (e) {
       logger.error(`[Module ConfigFile] -> delete -> ${e}`);
 
       releaseLock();

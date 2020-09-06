@@ -1,20 +1,20 @@
-import {parse} from 'url';
-import {join} from 'path';
-import {FileEntry, Stats as SftpStats} from 'ssh2-streams';
-import {EventEmitter} from 'events';
+import { parse } from 'url';
+import { join } from 'path';
+import { FileEntry, Stats as SftpStats } from 'ssh2-streams';
+import { EventEmitter } from 'events';
 import fs from 'fs-extra';
-import log4js, {Logger} from 'log4js';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getLogger} = log4js;
-const {pathExistsSync} = fs;
+const { getLogger } = log4js;
+const { pathExistsSync } = fs;
 
-import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
-import {AnyOpsOSCredentialModule, Credential} from '@anyopsos/module-credential';
-import {AnyOpsOSFile} from '@anyopsos/backend-core/app/types/anyopsos-file';
+import { AnyOpsOSSysGetPathModule } from '@anyopsos/module-sys-get-path';
+import { AnyOpsOSCredentialModule, Credential } from '@anyopsos/module-credential';
+import { AnyOpsOSFile } from '@anyopsos/backend-core/app/types/anyopsos-file';
 
-import {AnyOpsOSSshSessionStateModule} from './anyopsos-module-ssh-session-state';
-import {AsyncSFTPWrapper} from './types/async-sftp-wrapper';
+import { AnyOpsOSSshSessionStateModule } from './anyopsos-module-ssh-session-state';
+import { AsyncSFTPWrapper } from './types/async-sftp-wrapper';
 
 
 const logger: Logger = getLogger('mainLog');

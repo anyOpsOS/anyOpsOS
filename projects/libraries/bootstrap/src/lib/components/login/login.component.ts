@@ -1,9 +1,9 @@
-import {Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibUserService} from '@anyopsos/lib-user';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibUserService } from '@anyopsos/lib-user';
 
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 @Component({
   selector: 'albp-login',
@@ -19,10 +19,12 @@ export class LoginComponent implements OnDestroy {
   date: string;
   time: string;
 
-  private timeInterval: NodeJS.Timeout = setInterval(() => {
-    this.date = new Date().toLocaleDateString('en-US', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
-    this.time = new Date().toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: true});
-  }, 1000);
+  private timeInterval: NodeJS.Timeout = setInterval(
+    () => {
+      this.date = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      this.time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    },
+    1000);
 
   constructor(private readonly logger: AnyOpsOSLibLoggerService,
               private readonly LibUserState: AnyOpsOSLibUserService) {

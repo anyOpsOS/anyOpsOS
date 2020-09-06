@@ -1,9 +1,9 @@
 import socketControllers from 'socket-controllers';
-import {Socket} from 'socket.io';
-import log4js, {Logger} from 'log4js';
+import { Socket } from 'socket.io';
+import log4js, { Logger } from 'log4js';
 
 // TODO ESM
-const {getLogger} = log4js;
+const { getLogger } = log4js;
 const {
   SocketController,
   ConnectedSocket,
@@ -15,8 +15,8 @@ const {
   SocketSessionParam
 } = socketControllers;
 
-import {AnyOpsOSNodeDockerModule} from '@anyopsos/module-node-docker';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSNodeDockerModule } from '@anyopsos/module-node-docker';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 const logger: Logger = getLogger('mainLog');
 
@@ -43,7 +43,7 @@ export class AnyOpsOSDockerWebsocketController {
     return DockerModule.disconnectConnection().then((result: BackendResponse) => {
       return result;
     }).catch((e: Error) => {
-      return {status: 'error', data: e.toString()} as BackendResponse;
+      return { status: 'error', data: e.toString() } as BackendResponse;
     });
   }
 
@@ -61,7 +61,7 @@ export class AnyOpsOSDockerWebsocketController {
     return DockerModule.newConnection().then((result: BackendResponse) => {
       return result;
     }).catch((e: Error) => {
-      return {status: 'error', data: e.toString()} as BackendResponse;
+      return { status: 'error', data: e.toString() } as BackendResponse;
     });
   }
 

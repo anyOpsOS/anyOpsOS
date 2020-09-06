@@ -1,4 +1,4 @@
-import {ElementRef, Injectable} from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,8 @@ export class AnyOpsOSLibUtilsService {
     });
   }
 
-  stringify(obj, {cycles = false, space = '', replacer = undefined, comparator = undefined} = {}) {
+  // tslint:disable-next-line: no-unnecessary-initializer
+  stringify(obj, { cycles = false, space = '', replacer = undefined, comparator = undefined } = {}) {
     const colon = space ? ': ' : ':';
     const cmp = comparator && (f => (
       node => (a, b) => f({ key: a, value: node[a] }, { key: b, value: node[b] })
@@ -46,7 +47,7 @@ export class AnyOpsOSLibUtilsService {
       if (Array.isArray(node)) {
         return `[${node.reduce((acc, n, i) => (
           acc += `${i ? ',' : ''}${indent}${space}${stringify(node, i, n, level + 1) || 'null'}`
-        ), '')}${indent}]`;
+        ),                     '')}${indent}]`;
       }
 
       if (seen.has(node)) {
@@ -63,13 +64,13 @@ export class AnyOpsOSLibUtilsService {
           return v
             ? acc += `${acc ? ',' : ''}${indent}${space}${JSON.stringify(k)}${colon}${v}`
             : acc;
-        }, '');
+        },      '');
 
       seen.delete(node);
 
       return `{${out}${indent}}`;
     };
 
-    return stringify({'': obj}, '', obj, 0);
+    return stringify({ '': obj }, '', obj, 0);
   }
 }

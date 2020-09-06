@@ -1,14 +1,14 @@
-import log4js, {Logger} from 'log4js';
+import log4js, { Logger } from 'log4js';
 import fs from 'fs-extra';
-import nodeVault, {client} from 'node-vault';
+import nodeVault, { client } from 'node-vault';
 
 // TODO ESM
-const {getLogger} = log4js;
-const {readFile} = fs;
+const { getLogger } = log4js;
+const { readFile } = fs;
 
-import {AOO_ANYOPSOS_TYPE, AOO_VAULT_HOST, AOO_VAULT_PORT, AOO_VAULT_API_VERSION, AOO_VAULT_SECRET_SHARES, AOO_VAULT_SECRET_THRESHOLD} from '@anyopsos/module-sys-constants';
+import { AOO_ANYOPSOS_TYPE, AOO_VAULT_HOST, AOO_VAULT_PORT, AOO_VAULT_API_VERSION, AOO_VAULT_SECRET_SHARES, AOO_VAULT_SECRET_THRESHOLD } from '@anyopsos/module-sys-constants';
 
-import {VaultState} from './types/vault-state';
+import { VaultState } from './types/vault-state';
 
 
 const logger: Logger = getLogger('vault');
@@ -28,6 +28,40 @@ const vaultClient: client = nodeVault(options);
 export class AnyOpsOSVaultModule {
 
   constructor() {
+  }
+
+  /**
+   * anyOpsOS uses this secrets to connect against nodes. All credentials provided by the users are stored using kv2 on their Workspace
+   * After {@link initializeVault} we call this method
+   */
+  private static async enableKv2Secrets(): Promise<void> {
+    logger.trace(`[Module Vault] -> enableKv2Secrets`);
+
+    const mountsEnabled: { [key: string]: string; } = await vaultClient.mounts();
+    if (mountsEnabled.hasOwnProperty('secret/')) return;
+
+    return vaultClient.mount({
+      mount_point: 'secret',
+      type: 'generic',
+      description: 'Workspaces credentials Kv2 store'
+    });
+  }
+
+  /**
+   * anyOpsOS uses user:password auth to login users at Frontend
+   * After {@link initializeVault} we call this method
+   */
+  private static async enableUserPasswordAuth(): Promise<void> {
+    logger.trace(`[Module Vault] -> enableUserPasswordAuth`);
+
+    const authsEnabled: { [key: string]: string; } = await vaultClient.auths();
+    if (authsEnabled.hasOwnProperty('userpass/')) return;
+
+    return vaultClient.enableAuth({
+      mount_point: 'userpass ',
+      type: 'userpass',
+      description: 'Auth using username:password',
+    });
   }
 
   /**
@@ -146,40 +180,6 @@ export class AnyOpsOSVaultModule {
     vaultClient.token = loginResult.auth.client_token;
 
     logger.info(`[Module Vault] -> Pod logged in to Vault successfully`);
-  }
-
-  /**
-   * anyOpsOS uses this secrets to connect against nodes. All credentials provided by the users are stored using kv2 on their Workspace
-   * After {@link initializeVault} we call this method
-   */
-  private static async enableKv2Secrets(): Promise<void> {
-    logger.trace(`[Module Vault] -> enableKv2Secrets`);
-
-    const mountsEnabled: { [key: string]: string; } = await vaultClient.mounts();
-    if (mountsEnabled.hasOwnProperty('secret/')) return;
-
-    return vaultClient.mount({
-      mount_point: 'secret',
-      type: 'generic',
-      description: 'Workspaces credentials Kv2 store'
-    });
-  }
-
-  /**
-   * anyOpsOS uses user:password auth to login users at Frontend
-   * After {@link initializeVault} we call this method
-   */
-  private static async enableUserPasswordAuth(): Promise<void> {
-    logger.trace(`[Module Vault] -> enableUserPasswordAuth`);
-
-    const authsEnabled: { [key: string]: string; } = await vaultClient.auths();
-    if (authsEnabled.hasOwnProperty('userpass/')) return;
-
-    return vaultClient.enableAuth({
-      mount_point: 'userpass ',
-      type: 'userpass',
-      description: 'Auth using username:password',
-    });
   }
 
   /**

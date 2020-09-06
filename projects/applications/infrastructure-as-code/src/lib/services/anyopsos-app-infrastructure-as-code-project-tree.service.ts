@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {BehaviorSubject} from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
-import {FileNode} from '../types/file-node';
+import { FileNode } from '../types/file-node';
 
 const TREE_DATA: string = JSON.stringify({
   inventories: {
@@ -74,26 +74,28 @@ export class AnyOpsOSAppInfrastructureAsCodeProjectTreeService {
    * The return value is the list of `FileNode`.
    */
   private buildFileTree(obj: { [key: string]: any; }, level: number, parentId: string = '0'): FileNode[] {
-    return Object.keys(obj).reduce<FileNode[]>((accumulator, key, idx) => {
-      const value = obj[key];
-      const node = new FileNode();
-      node.fileName = key;
-      /**
-       * Make sure your node has an id so we can properly rearrange the tree during drag'n'drop.
-       * By passing parentId to buildFileTree, it constructs a path of indexes which make
-       * it possible find the exact sub-array that the node was grabbed from when dropped.
-       */
-      node.id = `${parentId}/${idx}`;
+    return Object.keys(obj).reduce<FileNode[]>(
+      (accumulator, key, idx) => {
+        const value = obj[key];
+        const node = new FileNode();
+        node.fileName = key;
+        /**
+         * Make sure your node has an id so we can properly rearrange the tree during drag'n'drop.
+         * By passing parentId to buildFileTree, it constructs a path of indexes which make
+         * it possible find the exact sub-array that the node was grabbed from when dropped.
+         */
+        node.id = `${parentId}/${idx}`;
 
-      if (value != null) {
-        if (typeof value === 'object') {
-          node.children = this.buildFileTree(value, level + 1, node.id);
-        } else {
-          node.type = value;
+        if (value != null) {
+          if (typeof value === 'object') {
+            node.children = this.buildFileTree(value, level + 1, node.id);
+          } else {
+            node.type = value;
+          }
         }
-      }
 
-      return accumulator.concat(node);
-    }, []);
+        return accumulator.concat(node);
+      },
+      []);
   }
 }

@@ -5,6 +5,7 @@
     "entryFile": "src/public-api.ts"
   },
   "whitelistedNonPeerDependencies": [
+    "uuid",
     "@anyopsos/lib-angular-material",
     "@anyopsos/lib-logger"
   ]

@@ -4,14 +4,17 @@
   "main": "src/index.ts",
   "dependencies": {
     "@kubernetes/client-node": "^0.12.0",
+    "log4js": "^6.3.0",
     "request": "^2.88.0",
     "socket-controllers": "https://github.com/anyOpsOS/socket-controllers.git#build",
     "uuid": "^8.3.0"
   },
   "peerDependencies": {
+    "@anyopsos/module-config-file": "~0.0.1",
     "@anyopsos/module-credential": "~0.0.1",
     "@anyopsos/module-socket": "~0.0.1",
-    "@anyopsos/module-terminal": "~0.0.1"
+    "@anyopsos/module-terminal": "~0.0.1",
+    "@anyopsos/module-sys-workspace": "~0.0.1"
   },
   "devDependencies": {
     "@anyopsos/backend-core": "~0.0.1",

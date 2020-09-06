@@ -1,11 +1,11 @@
-import {Request} from 'express';
-import fetch, {Response} from 'node-fetch';
+import { Request } from 'express';
+import fetch, { Response } from 'node-fetch';
 
-import {AnyOpsOSMonitorSessionStateModule} from './anyopsos-module-monitor-session-state';
+import { AnyOpsOSMonitorSessionStateModule } from './anyopsos-module-monitor-session-state';
 
-import {ConnectionMonitor} from './types/connection-monitor';
-import {ConnectionMonitorServer} from './types/connection-monitor-server';
-import {ForwarderResponse} from './types/forwarder-response';
+import { ConnectionMonitor } from './types/connection-monitor';
+import { ConnectionMonitorServer } from './types/connection-monitor-server';
+import { ForwarderResponse } from './types/forwarder-response';
 
 export class AnyOpsOSMonitorModule {
 
@@ -56,7 +56,7 @@ export class AnyOpsOSMonitorModule {
       Object.keys(this.request.query).length ?
         '?' + Object.keys(this.request.query).map(k => `${k}${(this.request.query[k] ? '=' + this.request.query[k] : '')}`).join('&') :
         ''
-      );
+    );
 
     const requestHeaders: any = new Headers();
 

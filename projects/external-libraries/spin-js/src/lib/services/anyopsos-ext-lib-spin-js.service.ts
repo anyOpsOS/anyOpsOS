@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Spinner} from 'spin.js';
+import { Spinner } from 'spin.js';
 
 @Injectable({
   providedIn: 'root'

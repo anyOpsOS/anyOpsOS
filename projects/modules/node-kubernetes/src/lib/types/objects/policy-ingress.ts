@@ -1,5 +1,5 @@
-import {PolicySelector} from './policy-selector';
-import {PolicyIpBlock} from './policy-ip-block';
+import { PolicySelector } from './policy-selector';
+import { PolicyIpBlock } from './policy-ip-block';
 
 export interface PolicyIngress {
   from: {

@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Socket} from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {AnyOpsOSLibWorkspaceService} from '@anyopsos/lib-workspace';
-import {ConnectionSsh, ConnectionSftp} from '@anyopsos/module-ssh';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { AnyOpsOSLibWorkspaceService } from '@anyopsos/lib-workspace';
+import { ConnectionSsh, ConnectionSftp } from '@anyopsos/module-ssh';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSLibSshConnectionsStateService} from './anyopsos-lib-ssh-connections-state.service';
-import {AnyOpsOSLibSshHelpersService} from './anyopsos-lib-ssh-helpers.service';
+import { AnyOpsOSLibSshConnectionsStateService } from './anyopsos-lib-ssh-connections-state.service';
+import { AnyOpsOSLibSshHelpersService } from './anyopsos-lib-ssh-helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +55,7 @@ export class AnyOpsOSLibSshService {
       this.socket.emit('[ssh-session]', {
         connectionUuid: connection.uuid,
         workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (data: BackendResponse) => {
+      },               async (data: BackendResponse) => {
 
         if (data.status === 'error') {
           this.logger.error('LibSsh', 'Error while emitting [ssh-session]', loggerArgs, data.data);
@@ -87,7 +87,7 @@ export class AnyOpsOSLibSshService {
         connectionUuid,
         terminalUuid,
         workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (shellState: BackendResponse) => {
+      },               async (shellState: BackendResponse) => {
         if (shellState.status === 'error') {
           this.logger.error('LibSsh', 'Error while emitting [ssh-shell]', loggerArgs, shellState.data);
           return reject(shellState.data);
@@ -111,9 +111,9 @@ export class AnyOpsOSLibSshService {
 
       // Create new SSH Shell
       this.socket.emit('[ssh-sftp]', {
-          connectionUuid,
-          workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-        }, async (sftpState: BackendResponse) => {
+        connectionUuid,
+        workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
+      },               async (sftpState: BackendResponse) => {
         if (sftpState.status === 'error') {
           this.logger.error('LibSsh', 'Error while emitting [ssh-sftp]', loggerArgs, sftpState.data);
           return reject(sftpState.data);
@@ -141,7 +141,7 @@ export class AnyOpsOSLibSshService {
       this.socket.emit('[ssh-disconnect]', {
         connectionUuid,
         workspaceUuid: this.LibWorkspace.getCurrentWorkspaceUuid()
-      }, async (data: BackendResponse) => {
+      },               async (data: BackendResponse) => {
 
         if (data.status === 'error') {
           this.logger.error('LibSsh', 'Error while emitting [ssh-disconnect]', loggerArgs, data.data);

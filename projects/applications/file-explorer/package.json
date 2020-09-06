@@ -8,6 +8,10 @@
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0"
   },
+  "devDependencies": {
+    "@angular/platform-browser-dynamic": "~10.0.11",
+    "zone.js": "~0.10.3"
+  },
   "dependencies": {
     "@anyopsos/lib-angular-material": "~0.0.1",
     "@anyopsos/lib-application": "~0.0.1",

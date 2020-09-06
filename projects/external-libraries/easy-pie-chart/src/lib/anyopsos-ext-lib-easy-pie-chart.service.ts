@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import * as easyPieChart from 'easy-pie-chart/dist/easypiechart.js';
 

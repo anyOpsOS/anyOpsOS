@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
-import {ConnectionTypes} from '@anyopsos/backend-core/app/types/connection-types';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { AnyOpsOSLibNodeHelpersService } from '@anyopsos/lib-node';
+import { ConnectionTypes } from '@anyopsos/backend-core/app/types/connection-types';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
 
-import {ImTreeNode} from '../types/im-tree-node';
-import {ImGraphNode} from '../types/im-graph-node';
-import {ImGraphNodeMetric} from '../types/im-graph-node-metric';
-import {NodeGraphNodeMetadata} from '../types/node-graph-node-metadata';
+import { ImTreeNode } from '../types/im-tree-node';
+import { ImGraphNode } from '../types/im-graph-node';
+import { ImGraphNodeMetric } from '../types/im-graph-node-metric';
+import { NodeGraphNodeMetadata } from '../types/node-graph-node-metadata';
 
 @Injectable({
   providedIn: 'root'
@@ -91,7 +91,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
     if (!objData.info) {
       return `pseudo:${(objData.type === 'vmware' ? 'virtual' : objData.type === 'netapp' ? 'storage' : objData.type === 'kubernetes' ? 'container' : '')}:`;
 
-    // Have parent connect to it
+      // Have parent connect to it
     } else if (objData.info.parent) {
       if (objData.info.parent.type === 'Folder') return;
 
@@ -99,7 +99,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
 
       return `${objData.info.mainUuid}#${connectionType};\u003c${objData.info.parent.name}:${objData.info.parent.type}\u003e`;
 
-    // Don't have parent, connect to main object
+      // Don't have parent, connect to main object
     } else {
       return objData.info.mainUuid;
     }
@@ -205,9 +205,12 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
             return disk.key === device.key;
           }).chain[0].fileKey;
 
-          const diskUsage = objData.info.data.layoutEx[0].file.filter(file => diskChain.includes(file.key)).reduce((sum, { size }: { size: string } ) => {
-            return sum + parseInt(size, 10);
-          }, 0);
+          const diskUsage = objData.info.data.layoutEx[0].file.filter(file => diskChain.includes(file.key))
+            .reduce(
+              (sum, { size }: { size: string }) => {
+                return sum + parseInt(size, 10);
+              },
+              0);
 
           adjacentDisks.push(diskId);
 
@@ -365,7 +368,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
               subsetAddress.targetRef.kind === imObj.type &&
               subsetAddress.targetRef.name === imObj.name &&
               subsetAddress.targetRef.namespace === imObj.info.data.metadata.namespace
-              ) : false) ||
+            ) : false) ||
               (objSubset.notReadyAddresses ? objSubset.notReadyAddresses.some((subsetAddress) =>
                 subsetAddress.targetRef &&
                 subsetAddress.targetRef.kind === imObj.type &&
@@ -422,7 +425,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
               subsetAddress.targetRef.kind === objData.type &&
               subsetAddress.targetRef.name === objData.name &&
               subsetAddress.targetRef.namespace === objData.info.data.metadata.namespace
-              ) : false) ||
+            ) : false) ||
               (objSubset.notReadyAddresses ? objSubset.notReadyAddresses.some((subsetAddress) =>
                 subsetAddress.targetRef &&
                 subsetAddress.targetRef.kind === objData.type &&
@@ -503,7 +506,7 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
     if (objData.type === 'Pod') {
       if (!objData.info.data.spec.volumes) return [];
 
-      const objects: string[] =objData.info.data.spec.volumes.map(objVolume => {
+      const objects: string[] = objData.info.data.spec.volumes.map(objVolume => {
         if (!objVolume.persistentVolumeClaim) return null;
 
         const foundPVCs: DataObject[] = this.LibNodeHelpers.getObjectByCustomFilter(objData.info.mainUuid, 'kubernetes', (imObj: DataObject) => {
@@ -620,7 +623,8 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
     const metrics = [];
 
     if (objData.type === 'VirtualMachine') {
-      metrics.push({
+      metrics.push(
+        {
           id: 'cpu_total_usage',
           label: 'CPU',
           format: 'percent',
@@ -645,12 +649,13 @@ export class AnyOpsOSAppInfrastructureManagerNodeGraphService {
     }
 
     if (objData.type === 'ClusterComputeResource') {
-      metrics.push({
+      metrics.push(
+        {
           id: 'cpu_total_usage',
           label: 'CPU',
           format: 'percent',
           value: (objData.info.data.summary[0].usageSummary[0].totalCpuCapacityMhz === 0 ? 0 :
-              (objData.info.data.summary[0].usageSummary[0].cpuDemandMhz * 100) / objData.info.data.summary[0].usageSummary[0].totalCpuCapacityMhz
+            (objData.info.data.summary[0].usageSummary[0].cpuDemandMhz * 100) / objData.info.data.summary[0].usageSummary[0].totalCpuCapacityMhz
           ),
           priority: 1,
           samples: null,

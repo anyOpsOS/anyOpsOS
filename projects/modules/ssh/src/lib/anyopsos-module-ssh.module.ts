@@ -1,12 +1,12 @@
-import {Client, ClientChannel, ClientErrorExtensions, SFTPWrapper} from 'ssh2';
+import { Client, ClientChannel, ClientErrorExtensions, SFTPWrapper } from 'ssh2';
 
-import {AnyOpsOSTerminalModule} from '@anyopsos/module-terminal';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSTerminalModule } from '@anyopsos/module-terminal';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSSshSessionStateModule} from './anyopsos-module-ssh-session-state';
+import { AnyOpsOSSshSessionStateModule } from './anyopsos-module-ssh-session-state';
 
-import {SSH_TERM} from './anyopsos-module-ssh.constants';
-import {ConnectionSsh} from './types/connection-ssh';
+import { SSH_TERM } from './anyopsos-module-ssh.constants';
+import { ConnectionSsh } from './types/connection-ssh';
 
 export class AnyOpsOSSshModule {
 
@@ -37,7 +37,7 @@ export class AnyOpsOSSshModule {
           message = message.replace(/\r?\n/g, '\r\n');
           console.log(message);
         });
-        ssh2Client.on('ready', () => resolve({status: 'ok', data: 'connected'}));
+        ssh2Client.on('ready', () => resolve({ status: 'ok', data: 'connected' }));
 
         const connectionData: ConnectionSsh = await this.SshSessionStateModule.getConnection();
 
@@ -58,7 +58,7 @@ export class AnyOpsOSSshModule {
 
     return this.SshSessionStateModule.disconnectSession().then(() => {
 
-      return {status: 'ok', data: 'disconnected'} as BackendResponse;
+      return { status: 'ok', data: 'disconnected' } as BackendResponse;
 
     }).catch((e: Error) => {
       throw e;
@@ -79,17 +79,17 @@ export class AnyOpsOSSshModule {
           term: SSH_TERM,
           cols: terminalGeometry.cols,
           rows: terminalGeometry.rows
-        }, (e: Error | undefined, stream: ClientChannel | undefined) => {
+        },               (e: Error | undefined, stream: ClientChannel | undefined) => {
           if (e) {
             this.TerminalsModule.deleteTerminal(terminalUuid);
             return reject(e);
           }
 
           this.TerminalsModule.setTerminalStream(terminalUuid, stream);
-          return resolve({status: 'ok', data: 'connected'});
+          return resolve({ status: 'ok', data: 'connected' });
         });
 
-      } catch(e) {
+      } catch (e) {
         return reject(e);
       }
 
@@ -115,10 +115,10 @@ export class AnyOpsOSSshModule {
             // TODO sftp disconnected
           });
 
-          return resolve({status: 'ok', data: 'connected'});
+          return resolve({ status: 'ok', data: 'connected' });
         });
 
-      } catch(e) {
+      } catch (e) {
         return reject(e);
       }
 

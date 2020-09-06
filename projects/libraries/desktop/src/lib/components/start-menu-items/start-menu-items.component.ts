@@ -1,30 +1,31 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 
-import {MatMenuTrigger} from '@anyopsos/lib-angular-material';
-import {Application, AnyOpsOSLibApplicationService} from '@anyopsos/lib-application';
-import {ContextMenuItem} from '@anyopsos/lib-types';
+import { MatMenuTrigger } from '@anyopsos/lib-angular-material';
+import { Application, AnyOpsOSLibApplicationService } from '@anyopsos/lib-application';
+import { ContextMenuItem } from '@anyopsos/lib-types';
 
-import {AnyOpsOSLibDesktopTaskBarService} from '../../services/anyopsos-lib-desktop-task-bar.service';
+import { AnyOpsOSLibDesktopTaskBarService } from '../../services/anyopsos-lib-desktop-task-bar.service';
 
 @Component({
-  selector: 'app-start-menu-items',
+  selector: 'aldesktop-start-menu-items',
   templateUrl: './start-menu-items.component.html',
   styleUrls: ['./start-menu-items.component.scss']
 })
 export class StartMenuItemsComponent {
-  @ViewChild(MatMenuTrigger, {static: false}) readonly contextMenuApp: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, { static: false }) readonly contextMenuApp: MatMenuTrigger;
   @Input() readonly application: Application;
 
-  readonly contextMenuPosition = {x: '0px', y: '0px'};
+  readonly contextMenuPosition = { x: '0px', y: '0px' };
   readonly appContextMenuItems: ContextMenuItem[] = [
     {
       id: 1, text: (application: Application) => {
         return '<span class="fa-stack"><i class="fa-stack-2x ' + application.ico + '"></i></span> ' + application.name;
-      }, action: (application: Application) => {
+      },
+      action: (application: Application) => {
         this.toggleApplication(application.uuid);
       }
     },
-    {id: 2, text: 'divider'},
+    { id: 2, text: 'divider' },
     {
       id: 3, text: (application: Application) => {
         if (this.LibDesktopTaskBar.isApplicationPinned(application.uuid)) {
@@ -33,12 +34,16 @@ export class StartMenuItemsComponent {
             '</span> Unpin from Task Bar';
         }
         return '<span class="fa-stack"><i class="fas fa-stack-2x fa-thumbtack fa-rotate-90"></i></span> Pin to Task Bar';
-      }, action: (application: Application) => {
+      },
+      action: (application: Application) => {
         // Pin application
-        this.LibDesktopTaskBar.registerTaskBarApplication({
-          uuid: application.uuid,
-          pinned: !this.LibDesktopTaskBar.isApplicationPinned(application.uuid)
-        }, true);
+        this.LibDesktopTaskBar.registerTaskBarApplication(
+          {
+            uuid: application.uuid,
+            pinned: !this.LibDesktopTaskBar.isApplicationPinned(application.uuid)
+          },
+          true
+        );
       }
     }
   ];

@@ -1,5 +1,5 @@
-import {SecretType} from './secret-type';
-import {KubeObject} from './kube-object';
+import { SecretType } from './secret-type';
+import { KubeObject } from './kube-object';
 
 export interface Secret extends KubeObject {
   kind: 'Secret';

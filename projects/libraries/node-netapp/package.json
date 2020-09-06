@@ -1,14 +1,31 @@
 {
   "name": "@anyopsos/lib-node-netapp",
   "version": "0.0.1",
+  "dependencies": {
+    "tslib": "^2.0.0",
+    "@anyopsos/lib-angular-material": "~0.0.1",
+    "@anyopsos/lib-bootstrap": "~0.0.1",
+    "@anyopsos/lib-file-system": "~0.0.1",
+    "@anyopsos/lib-file-system-ui": "~0.0.1",
+    "@anyopsos/lib-logger": "~0.0.1",
+    "@anyopsos/lib-modal": "~0.0.1",
+    "@anyopsos/lib-ssh": "~0.0.1",
+    "@anyopsos/lib-workspace": "~0.0.1",
+    "ngx-socket-io": "^3.2.0"
+  },
   "peerDependencies": {
     "@angular/common": "~10.0.11",
     "@angular/core": "~10.0.11",
     "rxjs": "~6.6.0"
   },
-  "dependencies": {
-    "tslib": "^2.0.0",
-    "@anyopsos/lib-logger": "~0.0.1"
+  "devDependencies": {
+    "@angular/platform-browser-dynamic": "~10.0.11",
+    "zone.js": "~0.10.3",
+    "@anyopsos/backend-core": "~0.0.1",
+    "@anyopsos/module-node-netapp": "~0.0.1",
+    "@anyopsos/module-node-vmware": "~0.0.1",
+    "@anyopsos/module-ssh": "~0.0.1",
+    "@anyopsos/sdk-netapp": "~0.0.1"
   },
   "homepage": "https://github.com/anyOpsOS/anyOpsOS#readme",
   "repository": {

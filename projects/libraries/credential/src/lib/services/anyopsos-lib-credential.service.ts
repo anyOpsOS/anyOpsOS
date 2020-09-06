@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {AnyOpsOSLibLoggerService} from '@anyopsos/lib-logger';
-import {Credential} from '@anyopsos/module-credential';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+import { AnyOpsOSLibLoggerService } from '@anyopsos/lib-logger';
+import { Credential } from '@anyopsos/module-credential';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
-import {AnyOpsOSLibCredentialStateService} from './anyopsos-lib-credential-state.service';
-import {AnyOpsOSLibCredentialHelpersService} from './anyopsos-lib-credential-helpers.service';
-import {AnyOpsOSLibCredentialApiService} from './anyopsos-lib-credential-api.service';
+import { AnyOpsOSLibCredentialStateService } from './anyopsos-lib-credential-state.service';
+import { AnyOpsOSLibCredentialHelpersService } from './anyopsos-lib-credential-helpers.service';
+import { AnyOpsOSLibCredentialApiService } from './anyopsos-lib-credential-api.service';
 
 @Injectable({
   providedIn: 'root'

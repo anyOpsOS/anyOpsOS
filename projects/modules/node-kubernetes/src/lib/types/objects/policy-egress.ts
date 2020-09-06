@@ -1,4 +1,4 @@
-import {PolicyIpBlock} from './policy-ip-block';
+import { PolicyIpBlock } from './policy-ip-block';
 
 export interface PolicyEgress {
   to: {

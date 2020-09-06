@@ -1,16 +1,16 @@
-import {Stats} from 'fs';
-import {join} from 'path';
-import {Request, Response} from 'express';
+import { Stats } from 'fs';
+import { join } from 'path';
+import { Request, Response } from 'express';
 import routingControllers from 'routing-controllers';
-import log4js, {Logger} from 'log4js';
+import log4js, { Logger } from 'log4js';
 import fs from 'fs-extra';
 
 // TODO ESM
-const {Controller, Get, Authorized, Req, Res, Param} = routingControllers;
-const {getLogger} = log4js;
-const {pathExistsSync, stat} = fs;
+const { Controller, Get, Req, Res, Param } = routingControllers;
+const { getLogger } = log4js;
+const { pathExistsSync, stat } = fs;
 
-import {AnyOpsOSSysGetPathModule} from '@anyopsos/module-sys-get-path';
+import { AnyOpsOSSysGetPathModule } from '@anyopsos/module-sys-get-path';
 
 
 const logger: Logger = getLogger('mainLog');

@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {ConnectionNetapp} from '@anyopsos/module-node-netapp';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
+import { map } from 'rxjs/operators';
 
-import {AnyOpsOSLibNodeNetappSoapApiService} from './anyopsos-lib-node-netapp-soap-api.service';
-import {NetAppSnapshot, NetAppVolume, NetAppVserver} from '@anyopsos/module-node-netapp';
-import {VMWareDatastore, VMWareVM} from '@anyopsos/module-node-vmware';
-import {map} from 'rxjs/operators';
-import {BackendResponse} from '@anyopsos/backend-core/app/types/backend-response';
+
+import { AnyOpsOSLibNodeNetappSoapApiService } from './anyopsos-lib-node-netapp-soap-api.service';
+import { ConnectionNetapp, NetAppSnapshot, NetAppVolume, NetAppVserver } from '@anyopsos/module-node-netapp';
+import { VMWareDatastore, VMWareVM } from '@anyopsos/module-node-vmware';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
+import { BackendResponse } from '@anyopsos/backend-core/app/types/backend-response';
 
 @Injectable({
   providedIn: 'root'

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import * as gaugeJS from 'gaugeJS/dist/gauge.js';
 

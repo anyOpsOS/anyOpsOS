@@ -1,8 +1,8 @@
-import {NgModule, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import {AnyOpsOSLibTerminalService} from './services/anyopsos-lib-terminal.service';
-import {TerminalComponent} from './components/terminal.component';
+import { AnyOpsOSLibTerminalService } from './services/anyopsos-lib-terminal.service';
+import { TerminalComponent } from './components/terminal.component';
 
 @NgModule({
   declarations: [
@@ -21,8 +21,8 @@ export class AnyOpsOSLibTerminalModule {
     console.log('Loading AnyOpsOSLibTerminalModule');
 
     if (parentModule) {
-      //throw new Error(
-        //'AnyOpsOSLibTerminalModule is already loaded. You should not import it manually.');
+      // throw new Error(
+      // 'AnyOpsOSLibTerminalModule is already loaded. You should not import it manually.');
     }
 
   }

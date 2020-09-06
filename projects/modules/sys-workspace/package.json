@@ -2,6 +2,18 @@
   "name": "@anyopsos/module-sys-workspace",
   "version": "0.0.1",
   "main": "src/index.ts",
+  "dependencies": {
+    "log4js": "^6.3.0",
+    "node-vault": "^0.9.20",
+    "uuid": "^8.3.0"
+  },
+  "peerDependencies": {
+    "@anyopsos/module-config-file": "~0.0.1",
+    "@anyopsos/module-file-system": "~0.0.1",
+    "@anyopsos/module-vault": "~0.0.1",
+    "@anyopsos/module-sys-api-caller": "~0.0.1",
+    "@anyopsos/module-sys-constants": "~0.0.1"
+  },
   "devDependencies": {
     "@types/node": "^14.0.27",
     "typescript": "^3.9.7"

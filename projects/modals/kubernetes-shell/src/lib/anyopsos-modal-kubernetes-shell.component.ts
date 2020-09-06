@@ -1,14 +1,14 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
-import {pairwise, startWith} from 'rxjs/operators';
+import { pairwise, startWith } from 'rxjs/operators';
 
-import {MAT_DIALOG_DATA, MatDialogRef} from '@anyopsos/lib-angular-material';
-import {BodyComponent, ModalData} from '@anyopsos/lib-modal';
-import {AnyOpsOSLibNodeHelpersService} from '@anyopsos/lib-node';
-import {AnyOpsOSLibNodeKubernetesApiService} from '@anyopsos/lib-node-kubernetes';
-import {DataObject} from '@anyopsos/backend-core/app/types/data-object';
-import {Pod} from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@anyopsos/lib-angular-material';
+import { BodyComponent, ModalData } from '@anyopsos/lib-modal';
+import { AnyOpsOSLibNodeHelpersService } from '@anyopsos/lib-node';
+import { AnyOpsOSLibNodeKubernetesApiService } from '@anyopsos/lib-node-kubernetes';
+import { DataObject } from '@anyopsos/backend-core/app/types/data-object';
+import { Pod } from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod';
 
 @Component({
   selector: 'amkubernetes-shell-anyopsos-modal-kubernetes-shell',
@@ -16,7 +16,7 @@ import {Pod} from '@anyopsos/module-node-kubernetes/src/lib/types/objects/pod';
   styleUrls: ['./anyopsos-modal-kubernetes-shell.component.scss']
 })
 export class AnyOpsOSModalKubernetesShellComponent implements OnInit {
-  @ViewChild('modalBody', {static: true}) modalBody: BodyComponent;
+  @ViewChild('modalBody', { static: true }) modalBody: BodyComponent;
 
   object: DataObject;
   shellType: 'exec' | 'attach';
@@ -34,7 +34,7 @@ export class AnyOpsOSModalKubernetesShellComponent implements OnInit {
     this.object = data.object;
     this.shellType = data.shellType ?? 'attach';
 
-    this.containerForm.valueChanges.pipe(startWith(null), pairwise()).subscribe( async ([previousData, selectedData]) => {
+    this.containerForm.valueChanges.pipe(startWith(null), pairwise()).subscribe(async ([previousData, selectedData]) => {
 
       // End previous shell
       if (previousData) await this.LibKubernetesApi.endContainerShell(this.terminalUuid);
