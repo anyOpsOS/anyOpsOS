@@ -29,6 +29,7 @@
     "@angular/cli": "~10.0.6",
     "@commitlint/cli": "^9.1.1",
     "@commitlint/config-conventional": "^9.1.1",
+    "codelyzer": "^6.0.0",
     "download-git-repo": "^3.0.2",
     "husky": "^4.2.5",
     "ng-packagr": "^10.0.0",
